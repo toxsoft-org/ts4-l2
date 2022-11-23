@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ru.toxsoft.l2.core_plugin -->
+
+<!-- создает плагин для Eclipse -->
+<project name="l2.core_plugin" default="build">
+  <!-- это имя проекта -->
+  <property name="plugin.name" value="ru.toxsoft.l2.core" />
+
+  <!-- это версия проекта -->
+  <property name="plugin.version" value="3.0.1" />
+
+  <!-- имя jar-файла собираемого для создания плагина (идентификатор и версия плагина) -->
+  <property name="jarfile.name" value="ru.toxsoft.l2.core-lib.jar" />
+
+  <!-- это имя - идентификатор plugin-а -->
+  <property name="plugin.id" value="${plugin.name}_plugin" />
+
+  <!-- это имя проекта plugin-а -->
+  <property name="project.name" value="${plugin.name}_plugin" />
+
+    <!-- это имя определяется из настроек plugin-а (идентификатор и версия плагина) -->
+  <property name="pluginfile.name" value="${plugin.id}_${plugin.version}.jar" />
+
+  <!-- директория целевой платформы сгенерированной Jar-библиотеки -->
+  <property name="libs-target" value="../../ts-targets/target-lib" />
+
+  <!-- директория целевой платформы сгенерированного плагина -->
+  <property name="plugins-target" value="../../ts-targets/target-ts-addons/plugins" />
+
+  <!-- директория wildfly -->
+  <property name="jboss.home" value="../../../tsjboss/" />
+
+  <!-- каталог откомпилированных класс-файлов -->
+  <property name="bin.dir" value="bin" />
+  
+  <!-- каталог исходных текстов -->
+  <property name="src.dir" value="src" />
+  
+  
+  <tstamp>
+    <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+  </tstamp>
+
+  <manifest file="dist/temp_META_INF_dir/MANIFEST.MF">
+    <attribute name="Application-Name" value="tslib - ToxSoft's common library" />
+    <attribute name="Company-Name" value="ToxSoft LLC" />
+    <attribute name="L2-Version" value="${plugin.version}" />
+    <attribute name="Built-Date" value="${TODAY}" />
+  </manifest>
+
+  <target name="build_plugin" depends="build_jar">
+    <pde.exportPlugins destination="dist"
+                       exportSource="true"
+                       exportSourceBundle="false"
+                       exportType="directory"
+                       plugins="${plugin.id}"
+                       useworkspacecompiledclasses="true"
+                       qualifier="0"
+                       useJARFormat="true" />
+  </target>
+
+    
+  <target name="build_jar">
+    <jar destfile="dist/${jarfile.name}" manifest="dist/temp_META_INF_dir/MANIFEST.MF">
+      <metainf dir="dist/temp_META_INF_dir" />
+      <fileset dir="${bin.dir}">
+        <include name="ru/**/*.class" />
+      </fileset>
+      <fileset dir="${src.dir}">
+        <include name="ru/**/*.java" />
+      </fileset>
+      <fileset dir="${bin.dir}">
+        <include name="gnu/io/**/*.class" />
+      </fileset>
+      <fileset dir="${src.dir}">
+        <include name="gnu/io/**/*.java" />
+      </fileset>
+    </jar>
+    <eclipse.refreshLocal resource="${project.name}/dist" depth="infinite" />
+  </target>
+
+  <target name="build" description="Собирает всё" depends="build_plugin">
+  </target>
+
+  <target name="make_target" description="Копирует собранные файлы в целевые директории target-xxx" depends="make_target_lib, make_target_plugin">
+  </target>
+
+  <target name="make_target_lib" depends="build_jar">
+    <eclipse.refreshLocal resource="${project.name}/dist" depth="infinite" />
+    <copy todir="${libs-target}" file="dist/${jarfile.name}" overwrite="true" />
+    <!-- Удаление старой версии плагина в DEPLOY(!) каталоге -->
+    <delete>
+      <fileset dir="${plugins-target}" includes="${plugin.name}*" />
+    </delete>
+    <eclipse.refreshLocal resource="${plugins-target}" depth="infinite" />
+  </target>
+
+  <target name="make_target_plugin" depends="build_plugin">
+    <copy todir="${plugins-target}" file="dist/plugins/${pluginfile.name}" overwrite="true" />
+  </target>
+
+  <target name="clean" description="Удаляет собранные файлы">
+    <delete file="dist/${jarfile.name}" />
+    <delete>
+      <fileset dir="dist/temp_META_INF_dir" includes="*" />
+      <fileset dir="dist/plugins" includes="*" />
+    </delete>
+    <eclipse.refreshLocal resource="${project.name}/dist" depth="infinite" />
+  </target>
+
+</project>
