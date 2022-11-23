@@ -1,0 +1,136 @@
+#Конфигурайионный файл загружаемого модуля opc-моста
+DlmConfig = 
+{
+ false,
+ "opc_bridge.dlm.cfg",
+ {
+  # параметры модуля
+  id="ru.toxsoft.l2.dlm.opc_bridge.OpcBridgeDlm",
+  description="ru.toxsoft.l2.dlm.opc_bridge.OpcBridgeDlm"
+ },
+ {
+  cmdClassDefs=
+  {
+   true,
+   [
+#    {
+#     false,
+#     "class1.def", # send LlTest llTest testPin
+#     {
+#      class.id = "tm.Clock" ,      # String идентификатор  класса
+#      obj.names.list="tahRelayRoomClock", # список String имён объектов 
+#      cmd.ids.list="brightness"   # список String идентфикаторов команд             
+#     },
+#     {
+#     }
+#    }   
+   ]
+  },
+  cmdDefs=
+  {
+  	true,
+    [
+#  		{
+#  			false, "cmd1.def",
+#  			{
+#  			    class.id="tm.Clock",
+#                obj.name="tahRelayRoomClock",
+#  				cmd.id = "brightness",                  # long идентификатор команды
+#  				cmd.type = "FEEDBACK_INVERSE",                 # String тип команды PULSE, VALUE 
+#  				pin.id = "do.pin1" ,                       # long идентификатор пина
+#  				cmd.timeout = 10,
+#  				fb.pin.id.number1 = "di.pin15",
+#  				fb.pin.id.number2 = "di.pin16"
+#  			},
+#  			{}
+#  		}
+#        ,
+#  		{
+# 			false, "cmd2.def",
+#			{
+#  				type = "VALUE",
+#  				class.id="tm.Clock",
+#  				obj.name="tahRelayRoomClock",
+#  				cmd.id = "valueTest",                  # long идентификатор команды
+#  			    pin.id = "do.pin8"                        # long идентификатор пина
+#  			},
+#  			{}
+#  		}  	
+  	]
+  },
+  dataDefs=
+  {
+  	true,
+    [
+  		{
+          false,
+          "data.transmitter1.def",
+          {          
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory"  
+            class.id="tm.Clock",
+            obj.name="tahSubstationClock",
+            data.id="alive",            
+            tag.dev.id = "Tag.Dev.Id",
+            tag.id = "Tag.Id",
+            is.hist=true,
+            is.curr=true
+            
+          }
+          ,
+          {
+            tags = 
+            {       
+              true,
+              [                
+                {
+                  false,
+                  "tag1.def",       #формальный идентификатор - используется внутри длм
+                  {
+                    tag.dev.id = "Tag.Dev.Id",
+                    tag.id = "Tag.Id",
+                  },{}
+                },
+                {
+                  false,
+                  "tag2.def",       #формальный идентификатор - используется внутри длм
+                  {                     
+                    tag.id = "Tag.Id",
+                  },{}
+                }
+              ]
+            },
+            data = 
+            {       
+              true,
+              [                
+                {
+                  false,
+                  "data1.def",       #формальный идентификатор - используется внутри длм
+                  {
+                    class.id="tm.Clock",
+                    obj.name="tahSubstationClock",
+                    data.id="alive"
+                  },{}
+                },
+                {
+                  false,
+                  "data2.def",       #формальный идентификатор - используется внутри длм
+                  {                     
+                    data.id="alive"
+                  },{}
+                }
+              ]
+            }
+          }
+        }
+  	]
+  },
+  eventDefs=
+  {
+  	true,
+    [
+  		
+  	]
+  }  
+ }
+}

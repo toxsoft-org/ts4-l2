@@ -1,0 +1,68 @@
+dataDefs=
+  {
+     true,
+     [
+        {
+          false,
+          "data.transmitter1.def",
+          {          
+            type = "Transmitter.Type",
+            java.class = ""  
+            class.id="tm.Clock",
+            obj.name="tahSubstationClock",
+            data.id="alive",            
+            tag.dev.id = "Tag.Dev.Id",
+            tag.id = "Tag.Id",
+            is.hist=true,
+            is.curr=true
+            
+          }
+          ,
+          {
+            tags = 
+            {       
+              true,
+              [                
+                {
+                  false,
+                  "tag1.def",       #формальный идентификатор - используется внутри длм
+                  {
+                    tag.dev.id = "Tag.Dev.Id",
+                    tag.id = "Tag.Id",
+                  },{}
+                },
+                {
+                  false,
+                  "tag2.def",       #формальный идентификатор - используется внутри длм
+                  {                     
+                    tag.id = "Tag.Id",
+                  },{}
+                }
+              ]
+            },
+            data = 
+            {       
+              true,
+              [                
+                {
+                  false,
+                  "data1.def",       #формальный идентификатор - используется внутри длм
+                  {
+                    class.id="tm.Clock",
+                    obj.name="tahSubstationClock",
+                    data.id="alive"
+                  },{}
+                },
+                {
+                  false,
+                  "data2.def",       #формальный идентификатор - используется внутри длм
+                  {                     
+                    data.id="alive"
+                  },{}
+                }
+              ]
+            }
+          }
+        }
+     ]
+  }

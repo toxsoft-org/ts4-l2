@@ -1,0 +1,92 @@
+eventDefs=
+  {
+    true,
+    [
+      {
+          false,
+          "simple.event.def",
+          {
+            class.id="tm.AkhmeteliBox",     #описание события в системе - класс
+            obj.name="tahBox",              #описание события в системе - объект
+            event.id="L802",
+            
+            
+            event.sender.java.class = "Class",
+                        
+            condition.java.class = "Class",
+            condition.switch.on = true,
+            condition.switch.off = false,
+            condition.switch.bit.index = 3,        
+            
+            param.former.java.class = "Class",        
+            former.event.params = "param",        
+                        
+            tag.dev.id = "Tag.Dev.Id",
+            tag.id = "Tag.Id"            
+          },
+          {
+          }
+      },
+      {
+          false,
+          "event.power.def",                #формальный идентификатор -  используется внутри длм
+          {
+            class.id="tm.AkhmeteliBox",     #описание события в системе - класс
+            obj.name="tahBox",              #описание события в системе - объект
+            event.id="L802",
+            event.param1.id
+            event.param2.id
+            tag.dev.id = "Tag.Dev.Id",
+            tag.id = "Tag.Id"
+            event.sender.java.class = "Class",            
+            condition1.java.class
+            condition2.java.class
+            params.former1.java.class
+            params.former1.params = event.param1
+            params.former2.java.class
+            params.former2.params = event.param2
+          },
+          {
+            condition1.params={
+              false,
+              "condition1",
+              {
+                condition.java.class
+                
+              },{}
+            },
+              params.former1.params={
+              false,
+              "params.former1",
+              {
+                condition.java.class
+                
+              },{}
+            },
+            tags = 
+            {       
+              true,
+              [                
+                {
+                  false,
+                  "tag1",       #формальный идентификатор - используется внутри длм
+                  {
+                    tag.dev.id = "Tag.Dev.Id",
+                    tag.id = "Tag.Id",
+                    tag.conditions = condition1
+                  },{}
+                },
+                {
+                  false,
+                  "tag2",       #формальный идентификатор - используется внутри длм
+                  {                     
+                    tag.id = "Tag.Id",
+                    condition = condition1
+                    tag.param.formers = param.former1
+                  },{}
+                }
+              ]
+            }
+        }   
+    ]
+  }

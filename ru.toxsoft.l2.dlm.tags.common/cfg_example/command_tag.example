@@ -1,0 +1,59 @@
+cmdDefs=
+  {
+    true,
+    [
+     {
+       false, "cmd1.def",
+       {
+         class.id="tm.Clock",
+         obj.name="tahRelayRoomClock",
+         cmd.id = "brightness",                  
+         command.exec.java.class = "FEEDBACK_INVERSE",                 
+         command.param1.id=""
+         
+         tag.dev.id = "Tag.Dev.Id",
+         tag.id = "Tag.Id",
+       },
+       {
+         tags = 
+            {       
+              true,
+              [                
+                {
+                  false,
+                  "tag1",       #формальный идентификатор - используется внутри длм
+                  {
+                    tag.dev.id = "Tag.Dev.Id",
+                    tag.id = "Tag.Id"
+                  },{}
+                },
+                {
+                  false,
+                  "tag2",       #формальный идентификатор - используется внутри длм
+                  {                     
+                    tag.id = "Tag.Id",
+                    condition = condition1
+                  },{}
+                }
+              ]
+            }
+       }
+     }
+        ,
+     {
+       false, "cmd2.def",
+       {
+         class.id="tm.Clock",
+         obj.name="tahRelayRoomClock",
+         cmd.id = "brightness",   
+                      
+         command.exec.java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.ValueCommandExec",                 
+         value.param.id="value"
+         
+         tag.dev.id = "Tag.Dev.Id",
+         tag.id = "Tag.Id",
+       },
+       {}
+     }   
+    ]
+  }
