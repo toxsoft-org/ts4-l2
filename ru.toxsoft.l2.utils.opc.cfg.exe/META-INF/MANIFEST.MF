@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Opc Driver and Tags Dlm Cfg Creator
+Bundle-SymbolicName: ru.toxsoft.l2.utils.opc.cfg.exe
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: ToxSoft
+Automatic-Module-Name: ru.toxsoft.l2.utils.opc.cfg.exe
+Require-Bundle: org.toxsoft.core.tslib,
+ org.toxsoft.extlibs.opendocument,
+ org.toxsoft.uskat.core
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Export-Package: ru.toxsoft.l2.dlms.pins.base,
+ ru.toxsoft.l2.utils.opc.cfg.exe,
+ ru.toxsoft.l2.utils.opc.cfg.exe.ods,
+ ru.toxsoft.l2.utils.opc.ods2s5scripts
