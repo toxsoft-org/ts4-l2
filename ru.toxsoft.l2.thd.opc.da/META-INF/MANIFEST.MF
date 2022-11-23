@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: opc da drivers
+Bundle-SymbolicName: ru.toxsoft.l2.thd.opc.da
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Toxsoft
+Automatic-Module-Name: ru.toxsoft.l2.thd.opc.da
+Require-Bundle: ru.toxsoft.l2.core,
+ org.toxsoft.core.tslib,
+ org.toxsoft.extlibs.openscada,
+ org.toxsoft.core.log4j,
+ org.toxsoft.extlibs.log4j,
+ org.toxsoft.extlibs.jeasyopc
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Export-Package: ru.toxsoft.l2.thd.opc,
+ ru.toxsoft.l2.thd.opc.da
