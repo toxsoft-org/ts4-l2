@@ -37,30 +37,27 @@ public class OpenSCADA2S5Bridge
     extends AbstractSpecificDevice
     implements IOpc2S5Bridge, DataCallback {
 
-  /**
-   * Для корректной сериализации.
-   */
-  private static final long      serialVersionUID = 1L;
   @SuppressWarnings( "nls" )
-  private static final String    SYNC_GROUP       = "ops2s5_sync_data_group";
+  private static final String SYNC_GROUP   = "ops2s5_sync_data_group";
   @SuppressWarnings( "nls" )
-  private static final String    ASYNC_GROUP      = "ops2s5_async_data_group";
+  private static final String ASYNC_GROUP  = "ops2s5_async_data_group";
   @SuppressWarnings( "nls" )
-  private static final String    OUTPUT_GROUP     = "ops2s5_output_tags_group";
+  private static final String OUTPUT_GROUP = "ops2s5_output_tags_group";
   /**
    * OPC server
    */
-  private final Server           server;
+  private final Server        server;
   /**
    * Группа синхронных данных
    */
-  private Group                  syncGroup;
+  private Group               syncGroup;
   /**
    * Группы асинхронных данных
    */
+
+  private AccessBase          asyncGroup;
   // переходим полностью на синхронное чтение
-  // private AccessBase asyncGroup;
-  private Group                  asyncGroup;
+  // private Group asyncGroup;
   /**
    * Группа выходных каналов
    */
@@ -68,19 +65,19 @@ public class OpenSCADA2S5Bridge
   /**
    * Журнал работы
    */
-  private ILogger                logger           = LoggerWrapper.getLogger( this.getClass().getName() );
+  private ILogger                logger     = LoggerWrapper.getLogger( this.getClass().getName() );
   /**
    * Промежуточный буфер для хранения значений считанных с OPC
    */
-  private Map<String, JIVariant> bufferVal        = new HashMap<>();
+  private Map<String, JIVariant> bufferVal  = new HashMap<>();
   /**
    * Список элементов синхронного обновления
    */
-  private ArrayList<Item>        syncItems        = new ArrayList<>();
+  private ArrayList<Item>        syncItems  = new ArrayList<>();
   /**
    * Список элементов Асинхронного обновления
    */
-  private ArrayList<Item>        asyncItems       = new ArrayList<>();
+  private ArrayList<Item>        asyncItems = new ArrayList<>();
 
   /**
    * Период обновления синхронных данных мс
@@ -96,9 +93,15 @@ public class OpenSCADA2S5Bridge
   private long              lastUpdateTimestamp = 0;
 
   private StringMap<ITag> tags = new StringMap<>();
-  // Список тегов на чтение (и синхронные и асинхронные)
+
+  /**
+   * Список тегов на чтение (и синхронные и асинхронные)
+   */
   private StringMap<ITag> readableTags = new StringMap<>();
-  // Список тегов на запись (пересекаются со множеством на чтение)
+
+  /**
+   * Список тегов на запись (пересекаются со множеством на чтение)
+   */
   private StringMap<ITag>         writeableTags = new StringMap<>();
   /**
    * Контроллер переподключения к ОРС
@@ -314,8 +317,8 @@ public class OpenSCADA2S5Bridge
       syncGroup = server.addGroup( SYNC_GROUP );
 
       // Группа асинхронных данных
-      // asyncGroup = new Async20Access( server, aUpdatePeriod, true );
-      asyncGroup = server.addGroup( ASYNC_GROUP );
+      asyncGroup = new Async20Access( server, aUpdatePeriod, true );
+      // asyncGroup = server.addGroup( ASYNC_GROUP );
 
       // Группа выходных пинов
       outputGroup = server.addGroup( OUTPUT_GROUP );
@@ -343,11 +346,11 @@ public class OpenSCADA2S5Bridge
       for( OpcTagPinDefinition tagDef : aAsyncTags ) {
         try {
           // Группа асинхронных данных
-          // asyncGroup.addItem( tagDef.tagId(), this );
-          // logger.debug( "Tag %s added to group: %s", tagDef.tagId(), "Async20Access" );
+          asyncGroup.addItem( tagDef.tagId(), this );
+          logger.debug( "Tag %s added to group: %s", tagDef.tagId(), "Async20Access" );
 
-          Item asyncItem = asyncGroup.addItem( tagDef.tagId() );
-          asyncItems.add( asyncItem );
+          // Item asyncItem = asyncGroup.addItem( tagDef.tagId() );
+          // asyncItems.add( asyncItem );
         }
         catch( final JIException e ) {
           logger.error( ERR_ADD_ASYNC_GROUP );
@@ -373,7 +376,7 @@ public class OpenSCADA2S5Bridge
         }
       }
       // Начинаем работу c того что запрашиваем значения всех тегов
-      // asyncGroup.bind(); // binding removed for test
+      asyncGroup.bind(); // binding removed for test
       logger.debug( "init OPC items OK" );
 
       readValuesFromLL();
@@ -421,14 +424,14 @@ public class OpenSCADA2S5Bridge
         }
         // Считываем значения с Асинхронных тегов
         // TODO отключить и проверить асинхронную работу
-        itemsArray = new Item[asyncItems.size()];
-        itemsArray = asyncItems.toArray( itemsArray );
-        Map<Item, ItemState> asyncTags = asyncGroup.read( false, itemsArray );
-        for( Item item : asyncTags.keySet() ) {
-          // рассовываем в промежуточный буфер
-          JIVariant tagValue = asyncTags.get( item ).getValue();
-          bufferVal.put( item.getId(), tagValue );
-        }
+        // itemsArray = new Item[asyncItems.size()];
+        // itemsArray = asyncItems.toArray( itemsArray );
+        // Map<Item, ItemState> asyncTags = asyncGroup.read( false, itemsArray );
+        // for( Item item : asyncTags.keySet() ) {
+        // // рассовываем в промежуточный буфер
+        // JIVariant tagValue = asyncTags.get( item ).getValue();
+        // bufferVal.put( item.getId(), tagValue );
+        // }
       }
       catch( Exception e ) {
         logger.error( e );
@@ -465,7 +468,13 @@ public class OpenSCADA2S5Bridge
               outputItem.write( new JIVariant( tagImpl.newValue.asFloat() ) );
               break;
             case INTEGER:
+              // Short shortVal = Short.valueOf( (short)tagImpl.newValue.asInt() );
+              // IJIUnsigned val = JIUnsignedFactory.getUnsigned( shortVal, JIFlags.FLAG_REPRESENTATION_UNSIGNED_SHORT
+              // );
+              // outputItem.write( new JIVariant( val ) );
+
               outputItem.write( new JIVariant( tagImpl.newValue.asInt() ) );
+              logger.debug( "Wrote tag %s, value=%s", tag.id(), String.valueOf( tagImpl.newValue.asInt() ) );
               break;
             case BOOLEAN:
               outputItem.write( new JIVariant( tagImpl.newValue.asBool() ) );
@@ -593,7 +602,9 @@ public class OpenSCADA2S5Bridge
                 tagImpl.updateVal( avInt( rawVal.getObjectAsShort() ) );
                 break;
               case JIVariant.VT_UI2:
-                tagImpl.updateVal( avInt( rawVal.getObjectAsUnsigned().getValue().shortValue() ) );
+                short shortVal = rawVal.getObjectAsUnsigned().getValue().shortValue();
+                tagImpl.updateVal( avInt( Short.toUnsignedInt( shortVal ) ) );
+                logger.debug( "tag: %s, read Val: %s", tag.tagId(), Short.valueOf( shortVal ) );
                 break;
               case JIVariant.VT_I4:
                 tagImpl.updateVal( avInt( rawVal.getObjectAsInt() ) );
@@ -628,7 +639,7 @@ public class OpenSCADA2S5Bridge
   public void closeApparatResources() {
     try {
       // stop async reading
-      // asyncGroup.unbind();
+      asyncGroup.unbind();
       server.disconnect();
     }
     catch( Exception ex ) {
@@ -660,9 +671,6 @@ public class OpenSCADA2S5Bridge
   public void changed( Item aItem, ItemState aItemState ) {
     bufferVal.put( aItem.getId(), aItemState.getValue() );
     // for debug
-    if( aItem.getId().compareTo( "S71500ET200MP station_1.PLC_40.TP1.FV" ) == 0 ) {
-      logger.debug( "S71500ET200MP station_1.PLC_40.TP1.FV = " + aItemState.getValue() );
-      System.out.println( "S71500ET200MP station_1.PLC_40.TP1.FV = " + aItemState.getValue() );
-    }
+    logger.debug( "Asinc tag: %s, changed = %s", aItem.getId(), aItemState.getValue().toString() );
   }
 }
