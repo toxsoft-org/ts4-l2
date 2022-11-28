@@ -44,24 +44,34 @@ public class ValueCommandExec
     // Допускаются команды без аргументов (сброс целочисленных счетчиков)
     IAtomicValue value =
         aCmd.argValues().hasValue( valueParamId ) ? aCmd.argValues().getValue( valueParamId ) : AvUtils.avInt( 0 );
-
+    logger.debug( "ValueCmd tag = %s", tag.id() ); //$NON-NLS-1$
     if( bitIndex > 0 ) {
 
       int newBitValue = value.asBool() ? 1 : 0;
 
       IAtomicValue currTagValue = tag.get();
       int currTagValueInt = currTagValue.asInt();
+
+      logger.debug( "bitIndex = %d, newBitVal = %d, carTagvalue = %d", bitIndex, newBitValue, currTagValueInt ); //$NON-NLS-1$
+
+      if( currTagValueInt < 0 ) {
+        currTagValueInt = Short.toUnsignedInt( (short)currTagValueInt );
+        logger.debug( "unsign carTagvalue = %d", currTagValueInt );
+      }
+
       int currBitValue = (currTagValueInt >> bitIndex) % 2;
 
       int sign = newBitValue - currBitValue;
 
       int newTagValueInt = currTagValueInt + sign * (1 << bitIndex);
+
+      logger.debug( "currBitValue = %d, sign = %d, newTagValueInt = %d", currBitValue, sign, newTagValueInt ); //$NON-NLS-1$
+
       value = AvUtils.avInt( newTagValueInt );
     }
 
     tag.set( value );
 
-    logger.debug( "ValueCmd tag = %s", tag.id() ); //$NON-NLS-1$
     logger.debug( "in do exec isDirty = %s", String.valueOf( ((Tag)tag).isDirty() ) ); //$NON-NLS-1$
   }
 
@@ -106,6 +116,36 @@ public class ValueCommandExec
       logger.error( e );
     }
 
+  }
+
+  public static void main( String[] a ) {
+
+    short b = -4096;
+    System.out.println( b );
+
+    int n = b;
+    System.out.println( n );
+
+    short bb = (short)n;
+    System.out.println( bb );
+
+    int ui = Short.toUnsignedInt( b );
+
+    System.out.println( ui );
+
+    short ubb = (short)ui;
+
+    System.out.println( ubb );
+
+    System.out.println();
+
+    int cw = 61440;
+
+    for( int i = 0; i < 16; i++ ) {
+      int cwc = cw >> i;
+      int currBitValue = (cw >> i) % 2;
+      System.out.println( String.format( "%d - %d - %d", i, currBitValue, cwc ) );
+    }
   }
 
 }
