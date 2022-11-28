@@ -131,6 +131,8 @@ public class HistDataTransmittersInitializer
 
     private Gwid dataGwid;
 
+    private IAtomicValue value;
+
     public SimpleHistDataSetter( IMap<Gwid, ISkWriteHistDataChannel> aDataSet, Gwid aDataGwid ) {
       super();
       TsIllegalArgumentRtException.checkFalse( aDataSet.hasKey( aDataGwid ) );
@@ -140,23 +142,30 @@ public class HistDataTransmittersInitializer
 
     @Override
     public boolean setDataValue( IAtomicValue aValue, long aTime ) {
+      boolean result = aValue.isAssigned() && (value == null || !value.equals( aValue ));
 
-      if( !aValue.equals( IAtomicValue.NULL ) ) {
-        long currWriteStamp = System.currentTimeMillis();
-        TemporalAtomicValue tVal = new TemporalAtomicValue( currWriteStamp, aValue );
-        values.add( tVal );
-        // обновляем данные по интервалу
-        if( startTime < 0 ) {
-          startTime = currWriteStamp;
-          endTime = currWriteStamp;
-        }
-        else {
-          endTime = currWriteStamp;
-        }
-        return true;
+      if( result ) {
+        result = result && doSetDataValue( aValue, aTime );
+        value = aValue;
       }
+      return result;
+    }
 
-      return false;
+    protected boolean doSetDataValue( IAtomicValue aValue, long aTime ) {
+
+      long currWriteStamp = aTime;// System.currentTimeMillis();
+      TemporalAtomicValue tVal = new TemporalAtomicValue( currWriteStamp, aValue );
+      values.add( tVal );
+      // обновляем данные по интервалу
+      if( startTime < 0 ) {
+        startTime = currWriteStamp;
+        endTime = currWriteStamp;
+      }
+      else {
+        endTime = currWriteStamp;
+      }
+      return true;
+
     }
 
     @Override
@@ -185,6 +194,11 @@ public class HistDataTransmittersInitializer
     @Override
     public void close() {
       channel.close();
+    }
+
+    @Override
+    public String toString() {
+      return dataGwid.asString();
     }
 
   }
@@ -223,7 +237,7 @@ public class HistDataTransmittersInitializer
 
       if( result ) {
         // просто устанавливается значение
-        super.setDataValue( aValue, aTime );
+        result = result && super.doSetDataValue( newVal, aTime );
         value = newVal;
         prevSetTime = aTime;
       }
