@@ -888,6 +888,13 @@ public class OpcOdsToBaseDlmsConvertor {
     pinOpSet1.setStr( OBJ_NAME, objName );
     pinOpSet1.setStr( DATA_ID, dataId );
 
+    // дичайшая заплатка для МСС - добавление поля при наличии поля//TODO
+    // data.id="rtdEnblAlarmTreat",
+    // inv.data.id="rtdBlockAlarm",
+    if( dataId.equals( "rtdEnblAlarmTreat" ) ) {
+      pinOpSet1.setStr( "inv.data.id", "rtdBlockAlarm" );
+    }
+
     // вместо пина - данные о теге
     // идентификатор OPC-устройства (драйвера)
     pinOpSet1.setStr( TAG_DEVICE_ID, OpcOdsToOpcThdConvertor.OPC_TAG_DEVICE );
