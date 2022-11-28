@@ -38,6 +38,11 @@ public class SingleIntToSingleBoolDataTransmitter<T extends ISkRtdataChannel>
   protected IDataSetter dataSetter;
 
   /**
+   * Установщик инверсного значения в дата-сет
+   */
+  protected IDataSetter invDataSetter;
+
+  /**
    * Номер значащего бита (от 0)
    */
   protected int bitIndex = -1;
@@ -62,6 +67,16 @@ public class SingleIntToSingleBoolDataTransmitter<T extends ISkRtdataChannel>
       logger.error( e, "Set data error: gwid: %s, tag: %s, error: %s", dataSetter.toString(), tag.tagId(),
           e.getMessage() );
     }
+
+    if( invDataSetter != null ) {
+      try {
+        result = invDataSetter.setDataValue( AvUtils.avBool( !val ), aTime );
+      }
+      catch( Exception e ) {
+        logger.error( e, "Set data error: gwid: %s, tag: %s, error: %s", invDataSetter.toString(), tag.tagId(),
+            e.getMessage() );
+      }
+    }
     return result;
   }
 
@@ -83,6 +98,11 @@ public class SingleIntToSingleBoolDataTransmitter<T extends ISkRtdataChannel>
   public void start( IDataSetter[] aDataSetindexes, IList<ITag> aTags, IMap<Gwid, T> aWriteDataSet ) {
     dataSetter = aDataSetindexes[0];
     tag = aTags.get( 0 );
+
+    if( aDataSetindexes.length > 1 ) {
+      invDataSetter = aDataSetindexes[1];
+      logger.info( "ADD INVERSE DATA: %s", invDataSetter.toString() );
+    }
   }
 
   protected ITag getTag() {

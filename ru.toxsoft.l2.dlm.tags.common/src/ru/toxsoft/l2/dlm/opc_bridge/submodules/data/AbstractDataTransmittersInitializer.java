@@ -232,6 +232,8 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
     }
 
     // в случае одного данного
+    IListEdit<DataObjNameExtension> oneResult = new ElemArrayList<>();
+
     IOptionSetEdit dParams = new OptionSet();
     dParams.setValue( CLASS_ID, defaultClassId );
     dParams.setValue( OBJ_NAME, defaultObjName );
@@ -240,9 +242,22 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
     dParams.setValue( IS_HIST, defaultHist );
     dParams.setValue( SYNCH_PERIOD, defaultSynchPeriod );
 
-    DataObjNameExtension dataObjName = new DataObjNameExtension( dParams );
+    oneResult.add( new DataObjNameExtension( dParams ) );
 
-    return new ElemArrayList<>( dataObjName );
+    // Лютый костыль для инверсионного сигнала
+    if( transmitterParams.hasValue( INV_DATA_ID ) ) {
+      dParams = new OptionSet();
+      dParams.setValue( CLASS_ID, defaultClassId );
+      dParams.setValue( OBJ_NAME, defaultObjName );
+      dParams.setValue( DATA_ID, transmitterParams.getValue( INV_DATA_ID ) );
+      dParams.setValue( IS_CURR, defaultCurr );
+      dParams.setValue( IS_HIST, defaultHist );
+      dParams.setValue( SYNCH_PERIOD, defaultSynchPeriod );
+
+      oneResult.add( new DataObjNameExtension( dParams ) );
+    }
+
+    return oneResult;
   }
 
   @SuppressWarnings( "static-method" )

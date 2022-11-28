@@ -62,6 +62,11 @@ public interface IDlmsBaseConstants {
   String DATA_ID = "data.id";
 
   /**
+   * Имя параметра - идентификатор инверсионного данного.
+   */
+  String INV_DATA_ID = "inv.data.id";
+
+  /**
    * Имя параметра - идентификатор события.
    */
   String EVENT_ID = "event.id";
@@ -381,7 +386,7 @@ public interface IDlmsBaseConstants {
    * Имя параметра - наличие условия: включение (переход из 0 в 1 )
    */
   String CONDITION_SWITCH_ON = "condition.switch.on";
-  
+
   /**
    * Имя параметра - минимальное изменение значения, которое считается измененим (в процентах)
    */
