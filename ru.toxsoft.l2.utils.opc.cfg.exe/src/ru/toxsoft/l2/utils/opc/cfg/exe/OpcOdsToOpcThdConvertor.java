@@ -1,15 +1,20 @@
 package ru.toxsoft.l2.utils.opc.cfg.exe;
 
+import static ru.toxsoft.l2.utils.opc.cfg.exe.ISkResources.*;
+
 import java.io.*;
 import java.util.*;
 
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.bricks.validator.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
 
 import ru.toxsoft.l2.utils.opc.cfg.exe.OdsFileReader.*;
 
@@ -19,6 +24,8 @@ import ru.toxsoft.l2.utils.opc.cfg.exe.OdsFileReader.*;
  * @author max
  */
 public class OpcOdsToOpcThdConvertor {
+
+  private static final ILogger logger = LoggerUtils.errorLogger();
 
   // public static final String OPC_TAG_DEVICE = "opc2s5.vj";
   public static final String OPC_TAG_DEVICE = "opc2s5.bridge.collection.id";
@@ -102,6 +109,34 @@ public class OpcOdsToOpcThdConvertor {
     catch( IOException e ) {
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Генерация файла конфигурации из файла описания сигналов
+   *
+   * @param aSourceOdsFile - исходный Ods файл описания
+   * @param aTargetThdFile - целевой файл *.devcfg
+   * @return результат выполнения операции { @link ValidationResult }
+   */
+  public static ValidationResult generate( String aSourceOdsFile, String aTargetThdFile ) {
+
+    IListEdit<StringData> result;
+    try {
+      result = TwoTabsOdsFileReader.readSheet( aSourceOdsFile );
+    }
+    catch( IOException e ) {
+      logger.error( e.getMessage() );
+      return ValidationResult.error( FMT_ERR_READ_SHEET, aSourceOdsFile );
+    }
+
+    try {
+      formThdFile( aTargetThdFile, result );
+    }
+    catch( IOException e ) {
+      logger.error( e.getMessage() );
+      return ValidationResult.error( FMT_ERR_FORM_THD_FILE, aTargetThdFile );
+    }
+    return ValidationResult.SUCCESS;
   }
 
   private static void formThdFile( String aDestFile, IListEdit<StringData> aResult )
