@@ -83,8 +83,8 @@ public class OpcOdsToBaseDlmsConvertor {
   private static final String DLM_CFG_NODE_ID_TEMPLATE = "dispatch.dlm.cfg";
   private static final String TMP_DEST_FILE            = "destDlmFile.tmp";
   private static final String DLM_CONFIG_STR           = "DlmConfig = ";
-  private static final String DLM_ID_TEMPLATE          = "ru.toxsoft.l2.dlm.opc_bridge.OpcBridgeDlm";
-  private static final String DLM_DESCR_TEMPLATE       = "ru.toxsoft.l2.dlm.opc_bridge.OpcBridgeDlm";
+  private static final String DLM_ID_TEMPLATE          = "ru.toxsoft.l2.dlm.tags.common.OpcBridgeDlm";
+  private static final String DLM_DESCR_TEMPLATE       = "ru.toxsoft.l2.dlm.tags.common.OpcBridgeDlm";
 
   private static final String DESCRIPTION_STR          = "description";
   private static final String ID_STR                   = "id";
