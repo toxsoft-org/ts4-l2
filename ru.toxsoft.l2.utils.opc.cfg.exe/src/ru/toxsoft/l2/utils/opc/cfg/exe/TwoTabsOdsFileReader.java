@@ -69,7 +69,7 @@ public class TwoTabsOdsFileReader
     }
 
     if( isProccess.intValue() != 1 || tagName.length() == 0 || tagFullName.length() == 0 || classId.length() == 0
-        || objName.length() == 0 ) {
+        || objName.length() == 0 || objName.startsWith( "-" ) ) {
       return;
     }
 
