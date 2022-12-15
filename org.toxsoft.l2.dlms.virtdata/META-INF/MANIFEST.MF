@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: l2 virt data library
+Bundle-SymbolicName: org.toxsoft.l2.dlms.virtdata
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: toxsoft.org
+Automatic-Module-Name: org.toxsoft.l2.dlms.virtdata
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Require-Bundle: org.toxsoft.core.tslib,
+ org.toxsoft.uskat.core
+Export-Package: org.toxsoft.l2.dlms.virtdata
