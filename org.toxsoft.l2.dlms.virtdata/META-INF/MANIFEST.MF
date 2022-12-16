@@ -7,5 +7,8 @@ Bundle-Vendor: toxsoft.org
 Automatic-Module-Name: org.toxsoft.l2.dlms.virtdata
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.toxsoft.core.tslib,
- org.toxsoft.uskat.core
+ org.toxsoft.uskat.core,
+ ru.toxsoft.l2.core,
+ org.eclipse.jface
 Export-Package: org.toxsoft.l2.dlms.virtdata
+Import-Package: ru.toxsoft.l2.core.dlm.impl

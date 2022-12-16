@@ -3,6 +3,8 @@
  */
 package org.toxsoft.l2.dlms.virtdata;
 
+import org.toxsoft.core.tslib.gw.gwid.*;
+
 /**
  * Контейнер для описания одного параметра правила
  *
@@ -16,19 +18,9 @@ public class ParamInfo {
   private String name;
 
   /**
-   * class id
+   * parameter's Gwid
    */
-  private String classId;
-
-  /**
-   * название объекта
-   */
-  private String objName;
-
-  /**
-   * data id
-   */
-  private String dataId;
+  private Gwid gwid;
 
   /**
    * @param aScriptName название в параметра тексте JavaScript
@@ -39,9 +31,7 @@ public class ParamInfo {
   public ParamInfo( String aScriptName, String aClassId, String aObjName, String aDataId ) {
     super();
     name = aScriptName;
-    classId = aClassId;
-    objName = aObjName;
-    dataId = aDataId;
+    gwid = Gwid.createRtdata( aClassId, aObjName, aDataId );
   }
 
   /**
@@ -55,21 +45,29 @@ public class ParamInfo {
    * @return class id
    */
   public String getClassId() {
-    return classId;
+    return gwid.classId();
   }
 
   /**
    * @return название объекта
    */
   public String getObjName() {
-    return objName;
+    return gwid.strid();
   }
 
   /**
    * @return id данного
    */
   public String getDataId() {
-    return dataId;
+    return gwid.propId();
+
+  }
+
+  /**
+   * @return Gwid данного
+   */
+  public Gwid gwid() {
+    return gwid;
   }
 
 }

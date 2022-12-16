@@ -5,32 +5,24 @@ import static org.toxsoft.l2.dlms.virtdata.IL2Resources.*;
 
 import java.io.*;
 
-import org.apache.log4j.Logger;
+import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.gw.skid.*;
+import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.uskat.core.api.rtdserv.*;
+import org.toxsoft.uskat.core.connection.*;
 
-import ru.toxsoft.l2.core.cfg.IUnitConfig;
-import ru.toxsoft.l2.core.dlm.IDlmContext;
-import ru.toxsoft.l2.core.dlm.IDlmInfo;
-import ru.toxsoft.l2.core.dlm.impl.AbstractDlm;
-import ru.toxsoft.l2.core.hal.devices.impl.modbus.rtu.PinsConfigFileFormatter;
-import ru.toxsoft.l2.core.util.DataObjName;
-import ru.toxsoft.s5.client.connection.IS5Connection;
-import ru.toxsoft.s5.common.services.currdata.IReadCurrDataSet;
-import ru.toxsoft.s5.common.services.currdata.IWriteCurrDataSet;
-import ru.toxsoft.s5.common.services.histdata.Cod;
-import ru.toxsoft.s5.utils.WrapperLog4jLogger;
-import ru.toxsoft.tslib.datavalue.IDvWriter;
-import ru.toxsoft.tslib.datavalue.avtree.*;
-import ru.toxsoft.tslib.datavalue.impl.DvWriter;
-import ru.toxsoft.tslib.error.TsItemNotFoundRtException;
-import ru.toxsoft.tslib.patterns.opset.IOptionSetEdit;
-import ru.toxsoft.tslib.patterns.opset.OptionSet;
-import ru.toxsoft.tslib.strids.rw.*;
-import ru.toxsoft.tslib.utils.collections.IListEdit;
-import ru.toxsoft.tslib.utils.collections.IStringMap;
-import ru.toxsoft.tslib.utils.collections.impl.ElemArrayList;
-import ru.toxsoft.tslib.utils.collections.impl.StringMap;
-import ru.toxsoft.tslib.utils.logs.ILogger;
-import ru.toxsoft.tslib.utils.logs.LoggerUtils;
+import ru.toxsoft.l2.core.cfg.*;
+import ru.toxsoft.l2.core.dlm.*;
+import ru.toxsoft.l2.core.dlm.impl.*;
 
 /**
  * Модуль выполняющий проверку правил описанных пользователем.
@@ -43,7 +35,7 @@ public class UserRulesExecutionDlm
   /**
    * Журнал работы
    */
-  private ILogger logger = new WrapperLog4jLogger( Logger.getLogger( this.getClass().getName() ) );
+  private static final ILogger logger = LoggerUtils.errorLogger();
 
   /**
    * Список правил
@@ -60,9 +52,7 @@ public class UserRulesExecutionDlm
    */
   private boolean configured = false;
 
-  private IS5Connection connection;
-
-  private DataObjName doName;
+  private ISkConnection connection;
 
   /**
    * Конструктор.
@@ -140,7 +130,7 @@ public class UserRulesExecutionDlm
     }
 
     // Получаем связь с сервером системы
-    connection = context.network().getConnection();
+    connection = context.network().getSkConnection();
     // На каждое правило создаем блок для его мониторинга
     for( RuleInfo ruleInfo : rulesInfoes ) {
       // создаем монитор для одного правила
@@ -148,7 +138,7 @@ public class UserRulesExecutionDlm
       // инициализируем мониторинг значений входных параметров
       initInParamsMonitoring( ruleInfo, ruleMonitoring );
       // инициализируем обновление значений выходных параметров
-      ruleMonitoring.setEvSrcObjId( initOutParamsWriteCds( ruleInfo, ruleMonitoring ) );
+      ruleMonitoring.setEvSrcSkid( initOutParamsWriteChannels( ruleInfo, ruleMonitoring ) );
       rulesMonitors.add( ruleMonitoring );
     }
   }
@@ -158,46 +148,54 @@ public class UserRulesExecutionDlm
    *
    * @param aRuleInfo описание правила
    * @param aRuleMonitoring монитор
-   * @return objId объекта выходного параметра
+   * @return {@link Skid} id объекта выходного параметра
    */
-  private long initOutParamsWriteCds( RuleInfo aRuleInfo, RuleMonitoring aRuleMonitoring ) {
-    IListEdit<Cod> outCODs = new ElemArrayList<>();
-    ParamInfo paramInfo = aRuleInfo.getOutParam();
-    doName = new DataObjName( paramInfo.getClassId(), paramInfo.getObjName(), paramInfo.getDataId() );
-    TsItemNotFoundRtException.checkNull(
-        connection.serverApi().objectService().find( paramInfo.getClassId(), paramInfo.getObjName() ),
-        ERR_MSG_RULE_OBJ_NOT_FOUND, aRuleInfo.getDefinition(), paramInfo.getClassId(), paramInfo.getObjName() );
-    Cod cod = doName.convertToCod( connection );
-    outCODs.add( cod );
-    // Создаем набор данных для обновления выходных данных
-    IWriteCurrDataSet outCdSet = connection.serverApi().currDataService().createWriteCurrDataSet( outCODs );
-    aRuleMonitoring.setOutDataCurrDataSet( outCdSet );
-    // for debug
-    aRuleMonitoring.setDebugInfo( paramInfo.getClassId(), paramInfo.getObjName() );
-    return outCODs.first().objId();
+  private Skid initOutParamsWriteChannels( RuleInfo aRuleInfo, RuleMonitoring aRuleMonitoring ) {
+
+    ParamInfo outParamInfo = aRuleInfo.getOutParam();
+    Skid retVal = new Skid( outParamInfo.getClassId(), outParamInfo.getObjName() );
+    TsItemNotFoundRtException.checkNull( connection.coreApi().objService().find( retVal ), ERR_MSG_RULE_OBJ_NOT_FOUND,
+        aRuleInfo.getDefinition(), retVal.classId(), retVal.strid() );
+    GwidList outDataGwidsList = new GwidList();
+    outDataGwidsList.add( outParamInfo.gwid() );
+
+    IMap<Gwid, ISkWriteCurrDataChannel> wCurrDataSet =
+        connection.coreApi().rtdService().createWriteCurrDataChannels( outDataGwidsList );
+
+    aRuleMonitoring.setOutDataChannels( wCurrDataSet );
+    aRuleMonitoring.setEvSrcSkid( retVal );
+    return retVal;
   }
 
   /**
-   * Инициализируем мониторинг значений выходных параметров
+   * Инициализируем мониторинг значений входных параметров
    *
    * @param aRuleInfo описание одного правила
    * @param aRuleMonitoring монитор
    */
   private void initInParamsMonitoring( RuleInfo aRuleInfo, RuleMonitoring aRuleMonitoring ) {
-    IListEdit<Cod> inParamCODs = new ElemArrayList<>();
+    // IListEdit<Cod> inParamCODs = new ElemArrayList<>();
+    // // входные параметры
+    // for( ParamInfo paramInfo : aRuleInfo.getInputParams() ) {
+    // doName = new DataObjName( paramInfo.getClassId(), paramInfo.getObjName(), paramInfo.getDataId() );
+    // TsItemNotFoundRtException.checkNull(
+    // connection.serverApi().objectService().find( paramInfo.getClassId(), paramInfo.getObjName() ),
+    // ERR_MSG_RULE_OBJ_NOT_FOUND, aRuleInfo.getDefinition(), paramInfo.getClassId(), paramInfo.getObjName() );
+    // Cod cod = doName.convertToCod( connection );
+    // inParamCODs.add( cod );
+    // }
+    // // Создаем набор данных для мониторинга значений входных параметров
+    // IReadCurrDataSet inParamsCdSet = connection.serverApi().currDataService().createReadCurrDataSet( inParamCODs );
+    // // и слушаем его изменения
+    // inParamsCdSet.addReadCurrDataSetListener( aRuleMonitoring );
+
     // входные параметры
-    for( ParamInfo paramInfo : aRuleInfo.getInputParams() ) {
-      doName = new DataObjName( paramInfo.getClassId(), paramInfo.getObjName(), paramInfo.getDataId() );
-      TsItemNotFoundRtException.checkNull(
-          connection.serverApi().objectService().find( paramInfo.getClassId(), paramInfo.getObjName() ),
-          ERR_MSG_RULE_OBJ_NOT_FOUND, aRuleInfo.getDefinition(), paramInfo.getClassId(), paramInfo.getObjName() );
-      Cod cod = doName.convertToCod( connection );
-      inParamCODs.add( cod );
+    GwidList inDataGwidsList = new GwidList();
+    for( ParamInfo inParamInfo : aRuleInfo.getInputParams() ) {
+      inDataGwidsList.add( inParamInfo.gwid() );
     }
-    // Создаем набор данных для мониторинга значений входных параметров
-    IReadCurrDataSet inParamsCdSet = connection.serverApi().currDataService().createReadCurrDataSet( inParamCODs );
-    // и слушаем его изменения
-    inParamsCdSet.addReadCurrDataSetListener( aRuleMonitoring );
+    connection.coreApi().rtdService().createReadCurrDataChannels( inDataGwidsList );
+    connection.coreApi().rtdService().eventer().addListener( aRuleMonitoring );
   }
 
   @Override
@@ -226,15 +224,16 @@ public class UserRulesExecutionDlm
   /**
    * Пример создания конфигурационного файла описания маршрутов
    *
-   * @throws IOException
+   * @throws IOException исключение при работе с файловой
    */
+  @SuppressWarnings( "nls" )
   public static void testWrite()
       throws IOException {
-    File f = new File( ".\\test1.t" );
-    FileWriter fw = new FileWriter( f );
-    IStridWriter writer = new StridWriter( new CharOutputStreamAppendable( fw ) );
+    // File f = new File( ".\\test1.t" );
+    // FileWriter fw = new FileWriter( f );
+    // IStrioWriter writer = new StrioWriter( new CharOutputStreamAppendable( fw ) );
 
-    IDvWriter dr = new DvWriter( writer );
+    // IDvWriter dr = new DvWriter( writer );
 
     // массив правил
     AvTree rulesArrayTree = AvTree.createArrayAvTree();
@@ -253,14 +252,18 @@ public class UserRulesExecutionDlm
 
     IAvTree moduleTree = AvTree.createSingleAvTree( "rules.def", moduleSet, ruleNodes );
 
-    AvTreeKeeper.INSTANCE.write( dr, moduleTree );
+    // AvTreeKeeper.INSTANCE.write( dr, moduleTree );
 
-    fw.close();
+    File f = new File( "test1.t" );
+    AvTreeKeeper.KEEPER.write( f, moduleTree );
 
-    PinsConfigFileFormatter.format( "test1.t",
-        "C:\\works\\ws_mm\\org.toxsoft.l2.dlms.virtdata\\dlmcfg\\user_rules.dlmcfg", "DlmConfig = " );
+    // fw.close();
+
+    // PinsConfigFileFormatter.format( "test1.t",
+    // "C:\\works\\ws_mm\\org.toxsoft.l2.dlms.virtdata\\dlmcfg\\user_rules.dlmcfg", "DlmConfig = " );
   }
 
+  @SuppressWarnings( "nls" )
   private static IAvTree createRule1Section() {
 
     IOptionSetEdit ruleOpSet = new OptionSet();
@@ -316,7 +319,7 @@ public class UserRulesExecutionDlm
   }
 
   /**
-   * @param args
+   * @param args аргументы командной строки
    */
   public static void main( String[] args ) {
     try {
@@ -324,8 +327,7 @@ public class UserRulesExecutionDlm
       testWrite();
     }
     catch( Exception e ) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      logger.error( e );
     }
   }
 

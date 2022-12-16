@@ -3,8 +3,8 @@
  */
 package org.toxsoft.l2.dlms.virtdata;
 
-import ru.toxsoft.tslib.utils.collections.IListEdit;
-import ru.toxsoft.tslib.utils.collections.impl.ElemArrayList;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
 
 /**
  * Контейнер для описания одного правила.<br>

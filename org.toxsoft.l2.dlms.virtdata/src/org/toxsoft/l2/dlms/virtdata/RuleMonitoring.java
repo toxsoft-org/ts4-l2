@@ -6,24 +6,23 @@ package org.toxsoft.l2.dlms.virtdata;
 import static org.toxsoft.l2.dlms.virtdata.IDlmConstants.*;
 import static org.toxsoft.l2.dlms.virtdata.IL2Resources.*;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.atomic.*;
+import java.util.concurrent.locks.*;
 
 import javax.script.*;
 
-import org.apache.log4j.Logger;
-
-import ru.toxsoft.s5.client.connection.IS5Connection;
-import ru.toxsoft.s5.common.services.currdata.*;
-import ru.toxsoft.s5.utils.WrapperLog4jLogger;
-import ru.toxsoft.tslib.datavalue.IAtomicValue;
-import ru.toxsoft.tslib.datavalue.impl.DvUtils;
-import ru.toxsoft.tslib.utils.collections.IIntList;
-import ru.toxsoft.tslib.utils.collections.IList;
-import ru.toxsoft.tslib.utils.collections.impl.ElemArrayList;
-import ru.toxsoft.tslib.utils.collections.impl.StringMap;
-import ru.toxsoft.tslib.utils.logs.ILogger;
+import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.gw.skid.*;
+import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.uskat.core.api.evserv.*;
+import org.toxsoft.uskat.core.api.rtdserv.*;
+import org.toxsoft.uskat.core.connection.*;
 
 /**
  * Мониторинг одного правила
@@ -31,12 +30,12 @@ import ru.toxsoft.tslib.utils.logs.ILogger;
  * @author dima
  */
 public class RuleMonitoring
-    implements IReadCurrDataSetListener {
+    implements ISkCurrDataChangeListener {
 
   /**
    * Журнал работы
    */
-  private ILogger logger = new WrapperLog4jLogger( Logger.getLogger( this.getClass().getName() ) );
+  private static final ILogger logger = LoggerUtils.errorLogger();
 
   /**
    * Ключ блокировки для обмена данными с буферными значениями
@@ -44,19 +43,18 @@ public class RuleMonitoring
   private Lock receivedValuesLock = new ReentrantLock();
 
   /**
-   * Набор текущих данных для изменения значения выходных данных.
+   * Каналы для изменения значения выходных данных.
    */
-  private IWriteCurrDataSet outDataWriteCurrDataSet;
+  private IMap<Gwid, ISkWriteCurrDataChannel> writeChannels;
 
   /**
    * Значения входных параметров правила
    */
-  private final ElemArrayList<IAtomicValue> inputParamValues = new ElemArrayList<>();
-
+  private final IMapEdit<Gwid, IAtomicValue> inputParamValues = new ElemMap<>();
   /**
    * Флаг изменения состояния входных данных правила
    */
-  private AtomicBoolean inputDataChanged = new AtomicBoolean( false );
+  private AtomicBoolean                      inputDataChanged = new AtomicBoolean( false );
 
   /**
    * Движек для проигрыша JavaScript правила
@@ -78,22 +76,12 @@ public class RuleMonitoring
    */
   private boolean outParamOldVal = false;
 
-  private IS5Connection connection;
+  private ISkConnection connection;
 
   /**
    * объект - источник события о сработке правила
    */
-  private long evSrcObjId;
-
-  /**
-   * класс - источник события о сработке правила
-   */
-  private String evSrcClassId;
-
-  /**
-   * объект - источник события о сработке правила
-   */
-  private String evSrcObjName;
+  private Skid evSrcSkid;
 
   /**
    * Конструктор.
@@ -101,12 +89,15 @@ public class RuleMonitoring
    * @param aConnection соединение с сервером
    * @param aRuleInfo описание одного правила
    */
-  public RuleMonitoring( IS5Connection aConnection, RuleInfo aRuleInfo ) {
+  public RuleMonitoring( ISkConnection aConnection, RuleInfo aRuleInfo ) {
     super();
     connection = aConnection;
     // сразу инициализируем массив значений входных и вЫходных данных
     for( int i = 0; i < aRuleInfo.getInputParams().size(); i++ ) {
-      inputParamValues.add( IAtomicValue.NULL );
+      ParamInfo inputParam = aRuleInfo.getInputParams().get( i );
+      Gwid inputParamGwid =
+          Gwid.createRtdata( inputParam.getClassId(), inputParam.getObjName(), inputParam.getDataId() );
+      inputParamValues.put( inputParamGwid, IAtomicValue.NULL );
     }
     rule = aRuleInfo;
     ScriptEngineManager mgr = new ScriptEngineManager();
@@ -115,12 +106,12 @@ public class RuleMonitoring
   }
 
   /**
-   * Установить набор данных для изменения выходных данных
+   * Установить каналы для записи выходных данных
    *
-   * @param aOutDataCdSet набор данных для записи
+   * @param aWriteChannels набор каналов для записи
    */
-  public void setOutDataCurrDataSet( IWriteCurrDataSet aOutDataCdSet ) {
-    outDataWriteCurrDataSet = aOutDataCdSet;
+  public void setOutDataChannels( IMap<Gwid, ISkWriteCurrDataChannel> aWriteChannels ) {
+    writeChannels = aWriteChannels;
   }
 
   //
@@ -130,18 +121,19 @@ public class RuleMonitoring
   /**
    * Выполняет квант работы
    */
+  @SuppressWarnings( "nls" )
   public void doJob() {
 
     // быстрый синхронизированный обмен и очистка
     try {
       receivedValuesLock.lock();
-      if( inputDataChanged.get() != false || fireTimestamp != null ) {
+      if( inputDataChanged.get() || fireTimestamp != null ) {
         inputDataChanged.set( false );
         // Изменилось состояние входных данных правила, прогоняем скрипт заново
         // заносим значения входных параметров
-        for( int i = 0; i < rule.getInputParams().size(); i++ ) {
-          String inParam = rule.getInputParams().get( i ).getName();
-          IAtomicValue paramVal = inputParamValues.get( i );
+        for( ParamInfo inParamInfo : rule.getInputParams() ) {
+          String inParam = inParamInfo.getName();
+          IAtomicValue paramVal = inputParamValues.getByKey( inParamInfo.gwid() );
           engine.put( inParam, paramVal );
         }
         // прогоняем скрипт
@@ -149,7 +141,7 @@ public class RuleMonitoring
         // получаем его результат
         String outParam = rule.getOutParam().getName();
         Boolean outParamVal = (Boolean)engine.get( outParam );
-        if( outParamVal.booleanValue() != false ) {
+        if( outParamVal.booleanValue() ) {
           // Сработало правило
           // Делаем пометку времени сработки
           if( fireTimestamp == null ) {
@@ -157,38 +149,38 @@ public class RuleMonitoring
           }
           // Проверяем вышел ли таймаут
           long currTime = System.currentTimeMillis();
-          if( outParamOldVal == false && (currTime - fireTimestamp.longValue()) >= rule.getTimeout() ) {
+          if( !outParamOldVal && (currTime - fireTimestamp.longValue()) >= rule.getTimeout() ) {
             outParamOldVal = true;
-            // обновляем набор данных
-            outDataWriteCurrDataSet.set( 0, DvUtils.avBool( outParamVal.booleanValue() ), System.currentTimeMillis() );
-            outDataWriteCurrDataSet.write();
+            // обновляем выходные данные
+            writeChannels.getByKey( rule.getOutParam().gwid() )
+                .setValue( AvUtils.avBool( outParamVal.booleanValue() ) );
             // Генерируем событие с пояснением
-            StringMap<IAtomicValue> paramValues = new StringMap<>();
-            // Заносим описание нарушения
-            paramValues.put( EVENT_DESCR_PAR_ID, DvUtils.avStr( rule.getEventText() ) );
-            // Заносим флаг выставлено
-            paramValues.put( EVENT_ON_PAR_ID, DvUtils.avBool( true ) );
-            connection.serverApi().eventService().fireEvent( evSrcObjId, ERROR_EVENT_ID, paramValues,
-                System.currentTimeMillis() );
-            logger.debug( DEBUG_MSG_FIRE_EVENT, evSrcClassId, evSrcObjName, "on", rule.getEventText() );
+            OptionSet evParams = new OptionSet();
+            evParams.setValue( EVENT_DESCR_PAR_ID, AvUtils.avStr( rule.getEventText() ) );
+            evParams.setValue( EVENT_ON_PAR_ID, AvUtils.avBool( true ) );
+            Gwid eventGwid = Gwid.createEvent( evSrcSkid.classId(), evSrcSkid.strid(), ERROR_EVENT_ID );
+            SkEvent event = new SkEvent( currTime, eventGwid, evParams );
+            connection.coreApi().eventService().fireEvent( event );
+            logger.debug( DEBUG_MSG_FIRE_EVENT, evSrcSkid.classId(), evSrcSkid.strid(), "on", rule.getEventText() );
             fireTimestamp = null;
           }
         }
         else {
           // Проверяем и сбрасываем флаги и единожды обновляем сервер
           fireTimestamp = null;
-          if( outParamOldVal != false ) {
+          if( outParamOldVal ) {
             outParamOldVal = false;
-            outDataWriteCurrDataSet.set( 0, DvUtils.avBool( outParamVal.booleanValue() ), System.currentTimeMillis() );
-            outDataWriteCurrDataSet.write();
-            StringMap<IAtomicValue> paramValues = new StringMap<>();
+            writeChannels.getByKey( rule.getOutParam().gwid() )
+                .setValue( AvUtils.avBool( outParamVal.booleanValue() ) );
+
             // Заносим описание нарушения
-            paramValues.put( EVENT_DESCR_PAR_ID, DvUtils.avStr( rule.getEventText() ) );
-            // Заносим флаг сброшено
-            paramValues.put( EVENT_ON_PAR_ID, DvUtils.avBool( false ) );
-            connection.serverApi().eventService().fireEvent( evSrcObjId, ERROR_EVENT_ID, paramValues,
-                System.currentTimeMillis() );
-            logger.debug( DEBUG_MSG_FIRE_EVENT, evSrcClassId, evSrcObjName, "off", rule.getEventText() );
+            OptionSet evParams = new OptionSet();
+            evParams.setValue( EVENT_DESCR_PAR_ID, AvUtils.avStr( rule.getEventText() ) );
+            evParams.setValue( EVENT_ON_PAR_ID, AvUtils.avBool( false ) );
+            Gwid eventGwid = Gwid.createEvent( evSrcSkid.classId(), evSrcSkid.strid(), ERROR_EVENT_ID );
+            SkEvent event = new SkEvent( System.currentTimeMillis(), eventGwid, evParams );
+            connection.coreApi().eventService().fireEvent( event );
+            logger.debug( DEBUG_MSG_FIRE_EVENT, evSrcSkid.classId(), evSrcSkid.strid(), "off", rule.getEventText() );
           }
         }
       }
@@ -204,50 +196,33 @@ public class RuleMonitoring
     }
   }
 
+  /**
+   * Устновить Skid источника события
+   *
+   * @param aEvSrcSkid - {@link Skid } id сущности источника события
+   */
+
+  void setEvSrcSkid( Skid aEvSrcSkid ) {
+    evSrcSkid = aEvSrcSkid;
+  }
+
   @Override
-  public void onCurrDataValuesChanged( IReadCurrDataSet aCurrDataSet, IIntList aIndexes, IList<IAtomicValue> aValues ) {
-    // получение изменённых значений и помещение их в некий буфер
+  public void onCurrData( IMap<Gwid, IAtomicValue> aNewValues ) {
     try {
       receivedValuesLock.lock();
       // Обработка изменений входных данных
-      for( Integer index : aIndexes ) {
-        IAtomicValue val = aCurrDataSet.values().get( index.intValue() );
-        inputParamValues.set( index.intValue(), val );
-        inputDataChanged = new AtomicBoolean( true );
+      for( Gwid gwid : aNewValues.keys() ) {
+        // проверяем что это "мои" данные
+        if( inputParamValues.hasKey( gwid ) ) {
+          IAtomicValue value = aNewValues.getByKey( gwid );
+          inputParamValues.put( gwid, value );
+          inputDataChanged = new AtomicBoolean( true );
+        }
       }
     }
     finally {
       receivedValuesLock.unlock();
     }
-  }
-
-  @Override
-  public void onReady( IReadCurrDataSet aCurrDataSet ) {
-    // nop
-  }
-
-  @Override
-  public void onDataSetCodsChanged( IRtDataSet<?> aRtDataSet ) {
-    // nop
-  }
-
-  @Override
-  public void onBeforeClose( IRtDataSet<?> aRtDataSet ) {
-    // nop
-  }
-
-  /**
-   * Устновить ObjId источника события
-   *
-   * @param aEvSrcObjId
-   */
-  void setEvSrcObjId( long aEvSrcObjId ) {
-    evSrcObjId = aEvSrcObjId;
-  }
-
-  void setDebugInfo( String aEvSrcClassId, String aEvSrcObjName ) {
-    evSrcClassId = aEvSrcClassId;
-    evSrcObjName = aEvSrcObjName;
   }
 
 }
