@@ -9,6 +9,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.toxsoft.core.tslib,
  org.toxsoft.uskat.core,
  ru.toxsoft.l2.core,
- org.eclipse.jface
+ org.eclipse.jface,
+ ru.toxsoft.l2.utils.opc.cfg.exe
 Export-Package: org.toxsoft.l2.dlms.virtdata
 Import-Package: ru.toxsoft.l2.core.dlm.impl

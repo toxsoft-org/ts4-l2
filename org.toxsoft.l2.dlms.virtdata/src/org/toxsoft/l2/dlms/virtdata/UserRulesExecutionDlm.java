@@ -23,6 +23,7 @@ import org.toxsoft.uskat.core.connection.*;
 import ru.toxsoft.l2.core.cfg.*;
 import ru.toxsoft.l2.core.dlm.*;
 import ru.toxsoft.l2.core.dlm.impl.*;
+import ru.toxsoft.l2.utils.opc.cfg.exe.*;
 
 /**
  * Модуль выполняющий проверку правил описанных пользователем.
@@ -229,11 +230,6 @@ public class UserRulesExecutionDlm
   @SuppressWarnings( "nls" )
   public static void testWrite()
       throws IOException {
-    // File f = new File( ".\\test1.t" );
-    // FileWriter fw = new FileWriter( f );
-    // IStrioWriter writer = new StrioWriter( new CharOutputStreamAppendable( fw ) );
-
-    // IDvWriter dr = new DvWriter( writer );
 
     // массив правил
     AvTree rulesArrayTree = AvTree.createArrayAvTree();
@@ -257,10 +253,7 @@ public class UserRulesExecutionDlm
     File f = new File( "test1.t" );
     AvTreeKeeper.KEEPER.write( f, moduleTree );
 
-    // fw.close();
-
-    // PinsConfigFileFormatter.format( "test1.t",
-    // "C:\\works\\ws_mm\\org.toxsoft.l2.dlms.virtdata\\dlmcfg\\user_rules.dlmcfg", "DlmConfig = " );
+    PinsConfigFileFormatter.format( "test1.t", "user_rules.dlmcfg", "DlmConfig = " );
   }
 
   @SuppressWarnings( "nls" )
