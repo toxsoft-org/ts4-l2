@@ -37,6 +37,11 @@ public interface INetworkConstants {
   String CGF_PARAM_LOGIN = "login";
 
   /**
+   * Максимальный интервал чтения текущих данных из НУ на сервер SK.
+   */
+  String CGF_PARAM_CURR_DATA_TIMEOUT = "currDataTimeout";
+
+  /**
    * Идентификатор команды завершения работы НУ.
    */
   String CGF_PARAM_QUIT_CMD_ID = "quitCmdId";

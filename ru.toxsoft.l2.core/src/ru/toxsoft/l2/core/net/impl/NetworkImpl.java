@@ -152,7 +152,8 @@ public class NetworkImpl
     IIntList ports = new IntArrayList( netOps.getInt( CGF_PARAM_PORT ) );
     int connectTimeout = 3000;
     int failureTimeout = 120000;
-    int currdataTimeout = 1000;
+    int currdataTimeout =
+        netOps.hasKey( CGF_PARAM_CURR_DATA_TIMEOUT ) ? netOps.getInt( CGF_PARAM_CURR_DATA_TIMEOUT ) : 50;
     int histdataTimeout = 10000;
 
     // Создание соединения
