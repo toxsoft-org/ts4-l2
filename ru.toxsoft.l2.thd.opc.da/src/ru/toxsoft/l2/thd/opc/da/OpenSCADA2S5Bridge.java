@@ -65,19 +65,19 @@ public class OpenSCADA2S5Bridge
   /**
    * Журнал работы
    */
-  private ILogger                logger     = LoggerWrapper.getLogger( this.getClass().getName() );
+  private ILogger                logger    = LoggerWrapper.getLogger( this.getClass().getName() );
   /**
    * Промежуточный буфер для хранения значений считанных с OPC
    */
-  private Map<String, JIVariant> bufferVal  = new HashMap<>();
+  private Map<String, JIVariant> bufferVal = new HashMap<>();
   /**
    * Список элементов синхронного обновления
    */
-  private ArrayList<Item>        syncItems  = new ArrayList<>();
+  private ArrayList<Item>        syncItems = new ArrayList<>();
   /**
    * Список элементов Асинхронного обновления
    */
-  private ArrayList<Item>        asyncItems = new ArrayList<>();
+  // private ArrayList<Item> asyncItems = new ArrayList<>();
 
   /**
    * Период обновления синхронных данных мс
