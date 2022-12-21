@@ -463,9 +463,11 @@ public class OpenSCADA2S5Bridge
         Tag tagImpl = (Tag)tag;
         if( tagImpl.isDirty() ) {
           Item outputItem = tagId2OutputItem.get( tagImpl.tagId() );
+          JIVariant tagValue;
           switch( tag.valueType() ) {
             case FLOATING:
-              outputItem.write( new JIVariant( tagImpl.newValue.asFloat() ) );
+              //outputItem.write( new JIVariant( tagImpl.newValue.asFloat() ) );
+              tagValue = new JIVariant( tagImpl.newValue.asFloat() );
               break;
             case INTEGER:
               // Short shortVal = Short.valueOf( (short)tagImpl.newValue.asInt() );
@@ -473,19 +475,25 @@ public class OpenSCADA2S5Bridge
               // );
               // outputItem.write( new JIVariant( val ) );
 
-              outputItem.write( new JIVariant( tagImpl.newValue.asInt() ) );
-              logger.debug( "Wrote tag %s, value=%s", tag.id(), String.valueOf( tagImpl.newValue.asInt() ) );
+              //outputItem.write( new JIVariant( tagImpl.newValue.asInt() ) );
+              tagValue = new JIVariant( tagImpl.newValue.asInt() );
               break;
             case BOOLEAN:
-              outputItem.write( new JIVariant( tagImpl.newValue.asBool() ) );
+              //outputItem.write( new JIVariant( tagImpl.newValue.asBool() ) );
+              tagValue = new JIVariant( tagImpl.newValue.asBool() );
               break;
             case STRING:
-              outputItem.write( new JIVariant( tagImpl.newValue.asString() ) );
+              //outputItem.write( new JIVariant( tagImpl.newValue.asString() ) );
+              tagValue = new JIVariant( tagImpl.newValue.asString() );
               break;
             // $CASES-OMITTED$
             default:
               throw new TsNotAllEnumsUsedRtException();
           }
+          long startTagWriteTime = System.currentTimeMillis();
+          outputGroup.write( new WriteRequest(outputItem,tagValue) );
+          long tagWriteTime = System.currentTimeMillis() - startTagWriteTime;
+          logger.debug( "Wrote tag %s, value=%s, by time=%d", tag.id(),  tagImpl.newValue.asString(), Long.valueOf( tagWriteTime )  );
           tagImpl.setDirty( false );
         }
       }
