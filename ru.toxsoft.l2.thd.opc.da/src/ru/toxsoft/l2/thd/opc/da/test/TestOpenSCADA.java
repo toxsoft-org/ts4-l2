@@ -6,11 +6,15 @@ import java.io.*;
 import java.util.concurrent.*;
 
 import org.jinterop.dcom.common.*;
+import org.jinterop.dcom.core.*;
 import org.openscada.opc.lib.da.*;
 import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
+
+import ru.toxsoft.l2.core.hal.devices.*;
 
 /**
  * Тест библиотеки OpenSCADA
@@ -54,15 +58,17 @@ public class TestOpenSCADA
    * OPC server
    */
   private final Server        server;
+
   /**
    * Группа синхронных данных
    */
-  private Group               syncGroup;
+  private Group syncGroup;
+
   /**
    * Группы асинхронных данных
    */
   // переходим полностью на синхронное чтение
-  private AccessBase          asyncGroup;
+  private AccessBase asyncGroup;
   // private Group asyncGroup;
   /**
    * Группа выходных каналов
@@ -75,7 +81,11 @@ public class TestOpenSCADA
 
   private IStringList asyncList;
 
-  private IStringList outputList;
+  private IStringMap<String> outputMap;
+
+  private Item outputItem;
+
+  private String outputValType = "Boolean";
 
   public TestOpenSCADA( String aHost, String aUser, String aPass, String aCls ) {
 
@@ -103,18 +113,20 @@ public class TestOpenSCADA
     catch( IOException ex ) {
     }
 
-    outputList = IStringList.EMPTY;
+    outputMap = IStringMap.EMPTY;
     try {
-      outputList = loadStringListFromFile( OUTPUT_TAGS_FILE );
-      logger.debug( "Output tags loaded size = %d", Integer.valueOf( outputList.size() ) );
+      outputMap = loadStringMapFromFile( OUTPUT_TAGS_FILE );
+      logger.debug( "Output tags loaded size = %d", Integer.valueOf( outputMap.size() ) );
     }
     catch( IOException ex ) {
     }
 
     // Создаем соединение с сервером
     server = new Server( ci, Executors.newSingleThreadScheduledExecutor() );
+    // server = new Server( ci, Executors.newScheduledThreadPool( 3 ) );
+    server.setDefaultUpdateRate( 500 );
     // disable GC for COM objects to prevent the socket from being closed
-    JISystem.setJavaCoClassAutoCollection( false );
+    // JISystem.setJavaCoClassAutoCollection( false );
     // Turn off logging
     java.util.logging.Logger.getLogger( "org.jinterop" ).setLevel( java.util.logging.Level.OFF );
     autoReconnectController = new AutoReconnectController( server );
@@ -126,7 +138,7 @@ public class TestOpenSCADA
         logger.info( AUTO_RECONNECT_STATE, state.name() );
         if( state == AutoReconnectState.CONNECTED ) {
 
-          checkOPCTags( syncList, asyncList, outputList );
+          checkOPCTags( syncList, asyncList, outputMap );
 
         }
 
@@ -136,12 +148,75 @@ public class TestOpenSCADA
 
     autoReconnectController.connect();
 
+    // ScheduledExecutorService writeThread = Executors.newSingleThreadScheduledExecutor();
+    // writeThread.scheduleWithFixedDelay( this::writeValuesOnLL, 10, 3, TimeUnit.SECONDS ); // The code is executed for
+    // the first time 5 seconds
+    // after startup, and the code
+    // is
+    // executed every 3 seconds thereafter
+
+    // wait a little bit, delay 3 seconds
+    // try {
+    // Thread.sleep( 3 * 1000 );
+    // }
+    // catch( InterruptedException ex1 ) {
+    //
+    // }
+    // writeThread.shutdownNow();
+
     while( true ) {
       try {
-        Thread.sleep( 1000L );
+        Thread.sleep( 3000L );
       }
       catch( InterruptedException ex ) {
       }
+
+      Thread t = new Thread( this::writeValuesOnLL );
+      t.setPriority( Thread.MAX_PRIORITY );
+      t.start();
+    }
+  }
+
+  private void writeValuesOnLL()
+      throws TsMultipleApparatRtException {
+
+    try {
+      JIVariant outputVal = null;
+      String outputValStr = null;
+      outputValStr = switch( outputValType ) {
+        case "Float" -> {
+          float fValue = (float)Math.random();
+          outputVal = new JIVariant( fValue );
+          yield String.valueOf( fValue );
+        }
+        case "Integer" -> {
+          int iValue = (int)(1000 * Math.random());
+          outputVal = new JIVariant( iValue );
+          yield String.valueOf( iValue );
+        }
+        case "Boolean" -> {
+          boolean bValue = Math.random() > 0.5;
+          outputVal = new JIVariant( bValue );
+          yield String.valueOf( bValue );
+        }
+        case "String" -> {
+          String sValue = "empty";
+          outputVal = new JIVariant( sValue );
+          yield sValue;
+        }
+        default -> throw new TsNotAllEnumsUsedRtException();
+      };
+
+      long startWriteTime = System.currentTimeMillis();
+      // outputItem.write( outputVal );
+      WriteRequest request = new WriteRequest( outputItem, outputVal );
+      outputGroup.write( request );
+      long writeTime = System.currentTimeMillis() - startWriteTime;
+      logger.debug( "Wrote tag %s, value=%s", outputItem.getId(), outputValStr );
+      logger.debug( "Write Time = %d", Long.valueOf( writeTime ) );
+    }
+    catch( Exception e ) {
+      logger.error( e );
     }
   }
 
@@ -153,7 +228,7 @@ public class TestOpenSCADA
    * @param aOutputTags описание выходных тегов
    */
   @SuppressWarnings( "nls" )
-  private void checkOPCTags( IStringList aSyncTags, IStringList aAsyncTags, IStringList aOutputTags ) {
+  private void checkOPCTags( IStringList aSyncTags, IStringList aAsyncTags, IStringMap<String> aOutputTags ) {
 
     try {
       // Группа синхронных данных
@@ -203,11 +278,11 @@ public class TestOpenSCADA
         }
       }
       logger.debug( "Output tags adding to the group: %s", String.valueOf( aOutputTags.size() ) );
-      for( String tagDef : aOutputTags ) {
+      for( String tagDef : aOutputTags.keys() ) {
         try {
-          // Группа тегов на запись
-          Item item = outputGroup.addItem( tagDef );
-          // tagId2OutputItem.put( tagDef.tagId(), item );
+          outputItem = outputGroup.addItem( tagDef );
+          // outputItem.setActive( true );
+          outputValType = aOutputTags.getByKey( tagDef );
         }
         catch( final JIException e ) {
           logger.error( ERR_ADD_OUTPUT_GROUP );
@@ -218,7 +293,7 @@ public class TestOpenSCADA
         }
       }
       // Начинаем работу c того что запрашиваем значения всех тегов
-      asyncGroup.bind(); // binding removed for test
+      // asyncGroup.bind(); // binding removed for test
       logger.debug( "init OPC items OK" );
 
     }
@@ -248,6 +323,31 @@ public class TestOpenSCADA
 
     while( line != null ) {
       result.add( line );
+      line = br.readLine();
+    }
+    br.close();
+    fr.close();
+
+    return result;
+  }
+
+  private static IStringMap<String> loadStringMapFromFile( String aFile )
+      throws IOException {
+    IStringMapEdit<String> result = new StringMap<>();
+    FileReader fr = new FileReader( aFile );
+    BufferedReader br = new BufferedReader( fr );
+    String line = br.readLine();
+
+    String tag = new String();
+    while( line != null ) {
+      if( tag.length() == 0 ) {
+        tag = line.trim();
+      }
+      else {
+        result.put( tag, line );
+        tag = new String();
+      }
+
       line = br.readLine();
     }
     br.close();
