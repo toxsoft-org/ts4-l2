@@ -72,7 +72,17 @@ public class OneTagSwitchEventCondition
       value = ((tagValue.asInt() >> bitIndex) & 1) == 1;
     }
     else {
-      value = tagValue.asBool();
+      if( tagValue.atomicType() == EAtomicType.BOOLEAN ) {
+        value = tagValue.asBool();
+      }
+      else
+        if( tagValue.atomicType() == EAtomicType.INTEGER ) {
+          value = tagValue.asInt() != 0;
+        }
+        else
+          if( tagValue.atomicType() == EAtomicType.FLOATING ) {
+            value = tagValue.asFloat() > 0.0 && tagValue.asFloat() < 0.0;
+          }
     }
 
     // тег имеет нужное для события значени

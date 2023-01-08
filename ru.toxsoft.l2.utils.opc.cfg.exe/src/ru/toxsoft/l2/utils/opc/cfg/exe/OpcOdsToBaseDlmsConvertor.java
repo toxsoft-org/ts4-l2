@@ -507,9 +507,17 @@ public class OpcOdsToBaseDlmsConvertor {
           eventParamsList = "on";
         }
         else {
-          eventConditionClass = ONE_INT_TAG_CHANGE_EVENT_CONDITION_CLASS;
-          eventParamFormClass = ONE_TAG_TO_CHANGED_PARAM_FORMER_CLASS;
-          eventParamsList = "oldVal;newVal";
+          if( eventData.isOnTrigger() || eventData.isOffTrigger() ) {
+            eventConditionClass = ONE_TAG_SWITCH_EVENT_CONDITION_CLASS;
+            // не понятен параметр, который ставить в событии - посмотреть в системно описании TODO
+            // eventParamFormClass = ONE_TAG_TO_ONE_PARAM_FORMER_CLASS;
+            // eventParamsList = "on";
+          }
+          else {
+            eventConditionClass = ONE_INT_TAG_CHANGE_EVENT_CONDITION_CLASS;
+            eventParamFormClass = ONE_TAG_TO_CHANGED_PARAM_FORMER_CLASS;
+            eventParamsList = "oldVal;newVal";
+          }
         }
       }
       else
