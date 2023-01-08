@@ -1,8 +1,9 @@
 package ge.toxsoft.gwp.opcuabridge;
 
+import org.eclipse.milo.opcua.sdk.client.*;
+import org.eclipse.milo.opcua.stack.core.*;
 import org.toxsoft.core.tslib.av.avtree.*;
-
-import ge.toxsoft.gwp.opcuabridge.opcua.*;
+import org.toxsoft.l2.thd.opc.ua.milo.*;
 
 /**
  * Thread for server level processing (read, write from/on sk server)
@@ -27,8 +28,9 @@ public class OpcUaBridge
   private volatile boolean isRun = false;
 
   public OpcUaBridge() {
-    opcUaNodesReader = new NodesReader();
-    opcUaNodesWriter = new NodesWriter();
+    OpcUaClient client = new OpcUaClient( null, null );// TODO
+    opcUaNodesReader = new NodesReader( client );
+    opcUaNodesWriter = new NodesWriter( client );
 
     l2Tread = new OpcUaThread( opcUaNodesReader, opcUaNodesWriter );
 
@@ -36,8 +38,14 @@ public class OpcUaBridge
 
   @Override
   public void config( IAvTree aCfgInfo ) {
-    opcUaNodesReader.config( aCfgInfo );
-    opcUaNodesWriter.config( aCfgInfo );
+    try {
+      opcUaNodesReader.config( aCfgInfo );
+      opcUaNodesWriter.config( aCfgInfo );
+    }
+    catch( UaException ex ) {
+      // TODO Auto-generated catch block
+
+    }
 
     dataModule.config( aCfgInfo );
     cmdModule.config( aCfgInfo );

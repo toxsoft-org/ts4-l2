@@ -7,7 +7,7 @@ import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 
-import ge.toxsoft.gwp.opcuabridge.*;
+import ru.toxsoft.l2.thd.opc.*;
 
 /**
  * Простое условие события - изменение float значения тега.
@@ -24,7 +24,7 @@ public class OneFloatTagChangedEventCondition
   /**
    * Тег, значение которого отслеживается
    */
-  private IReadTag tag;
+  private ITag tag;
 
   @Override
   public void config( IAvTree aParams ) {
@@ -36,18 +36,18 @@ public class OneFloatTagChangedEventCondition
   }
 
   @Override
-  public void start( IMap<String, IReadTag> aTags ) {
+  public void start( IMap<String, ITag> aTags ) {
     TsNullArgumentRtException.checkNull( aTags );
     TsIllegalArgumentRtException.checkFalse( aTags.size() == 1 );
 
     tag = aTags.values().get( 0 );
-    TsIllegalArgumentRtException.checkFalse( (tag.type() == EAtomicType.FLOATING), "tag %s must have float type",
+    TsIllegalArgumentRtException.checkFalse( (tag.valueType() == EAtomicType.FLOATING), "tag %s must have float type",
         tag.id() );
   }
 
   @Override
   public boolean isEventCondition( long aTime ) {
-    IAtomicValue tagValue = tag.getValue();
+    IAtomicValue tagValue = tag.get();
 
     if( tagValue == null || tagValue.equals( IAtomicValue.NULL ) ) {
       return false;

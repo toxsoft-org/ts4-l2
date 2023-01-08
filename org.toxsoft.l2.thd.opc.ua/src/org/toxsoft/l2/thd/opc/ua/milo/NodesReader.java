@@ -1,5 +1,7 @@
 package org.toxsoft.l2.thd.opc.ua.milo;
 
+import static ru.toxsoft.l2.thd.opc.IOpcConstants.*;
+
 import java.util.*;
 
 import org.eclipse.milo.opcua.sdk.client.*;
@@ -14,7 +16,7 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 
-import ge.toxsoft.gwp.opcuabridge.*;
+import ru.toxsoft.l2.thd.opc.*;
 
 /**
  * Читатель тегов OPC UA
@@ -36,16 +38,7 @@ public class NodesReader {
   /**
    * Группа синхронных данных
    */
-  private IList<UaVariableNode> syncGroup;
-  /**
-   * Группы асинхронных данных
-   */
-  // private OpcGroup asyncGroup;
-  // private Map<String, OpcGroup> asyncGroupMap = new HashMap<>();
-  /**
-   * Группа выходных каналов
-   */
-  // private OpcGroup outputGroup;
+  private IListEdit<UaVariableNode> syncGroup;
 
   /**
    * Промежуточный буфер для хранения значений считанных с OPC синхронных данных
@@ -58,17 +51,15 @@ public class NodesReader {
   private IMapEdit<String, Variant> bufferAsynchVal = new ElemMap<>();
 
   /**
-   * Тип данных тега
-   */
-  // private IMapEdit<String, EAtomicType> types = new ElemMap<>();
-
-  /**
    * Теги
    */
-  private IMapEdit<String, ReadOpcUaTag> tags = new ElemMap<>();
+  private IMapEdit<String, TagImpl> tags = new ElemMap<>();
 
-  public NodesReader() {
-
+  /**
+   * @param aClient
+   */
+  public NodesReader( OpcUaClient aClient ) {
+    client = aClient;
   }
 
   /**
@@ -77,7 +68,7 @@ public class NodesReader {
    * @param aId
    * @return
    */
-  public IReadTag getTag( String aId ) {
+  public ITag getTag( String aId ) {
     return tags.getByKey( aId );
   }
 
@@ -119,18 +110,58 @@ public class NodesReader {
 
       String tagId = dataItem.getNodeId().toParseableString();
 
-      ReadOpcUaTag tag = tags.getByKey( tagId );
+      TagImpl tag = tags.getByKey( tagId );
 
-      EAtomicType tagType = tag.type();
+      EAtomicType tagType = tag.valueType();
       Variant vValue = dataValue.getValue();
 
       IAtomicValue atomicVal = OpcUaUtils.convertFromOpc( vValue, tagType );
-      tag.setValue( atomicVal );
+      tag.updateVal( atomicVal );
     }
   }
 
-  public void config( IAvTree aCfgInfo ) {
-    // TODO Auto-generated method stub
+  public void config( IAvTree aCfgInfo )
+      throws UaException {
+
+    // synch
+    IAvTree tagsConfig = aCfgInfo.nodes().findByKey( SYNC_TAGS_PARAM_NAME );
+    IList<TagCfgItem> synchTagsCfgItems = OpcUaUtils.createTagsCfgItems( tagsConfig );
+
+    for( int i = 0; i < synchTagsCfgItems.size(); i++ ) {
+      TagCfgItem item = synchTagsCfgItems.get( i );
+      NodeId nodeId = new NodeId( item.namespaceId, item.tagId );
+      UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
+      syncGroup.add( dNode );
+
+      TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.R, item.tagType );
+      tags.put( tag.tagId(), tag );
+    }
+
+    // async
+    tagsConfig = aCfgInfo.nodes().findByKey( ASYNC_TAGS_PARAM_NAME );
+    IList<TagCfgItem> asynchTagsCfgItems = OpcUaUtils.createTagsCfgItems( tagsConfig );
+
+    ManagedSubscription subscription = ManagedSubscription.create( client );
+
+    subscription.addDataChangeListener( ( items, values ) -> {
+      onDataChanged( items, values );
+    } );
+
+    for( int i = 0; i < asynchTagsCfgItems.size(); i++ ) {
+      TagCfgItem item = asynchTagsCfgItems.get( i );
+      NodeId nodeId = new NodeId( item.namespaceId, item.tagId );
+      ManagedDataItem dataItem = subscription.createDataItem( nodeId );
+      if( dataItem.getStatusCode().isGood() ) {
+        logger.debug( "item created for nodeId={}", dataItem.getNodeId() );
+        TagImpl tag = new TagImpl( dataItem.getNodeId().toParseableString(), EKind.R, item.tagType );
+        tags.put( tag.tagId(), tag );
+      }
+      else {
+        logger.error( "failed to create item for nodeId={} (status={})", dataItem.getNodeId(),
+            dataItem.getStatusCode() );
+      }
+
+    }
 
   }
 
@@ -150,13 +181,14 @@ public class NodesReader {
   private void readValuesFromBuffer( IMapEdit<String, Variant> aBuffer ) {
     IList<String> synchGroupKeys = aBuffer.keys();
     for( String key : synchGroupKeys ) {
-      ReadOpcUaTag tag = tags.getByKey( key );
+      TagImpl tag = tags.getByKey( key );
 
-      EAtomicType tagType = tag.type();
+      EAtomicType tagType = tag.valueType();
       Variant vValue = aBuffer.removeByKey( key );
 
       IAtomicValue atomicVal = OpcUaUtils.convertFromOpc( vValue, tagType );
-      tag.setValue( atomicVal );
+      tag.updateVal( atomicVal );
     }
   }
+
 }

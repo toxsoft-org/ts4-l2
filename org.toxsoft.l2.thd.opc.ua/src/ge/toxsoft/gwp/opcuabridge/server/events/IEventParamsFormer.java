@@ -6,7 +6,7 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 
-import ge.toxsoft.gwp.opcuabridge.*;
+import ru.toxsoft.l2.thd.opc.*;
 
 /**
  * Формирователь параметров события, которые потом отправляются вместе с событием на сервер
@@ -28,7 +28,7 @@ public interface IEventParamsFormer {
    * @param aTags IMap - теги драйвера OPC, ключ - идентификатор структуры тега из конфигурационного файла ("default" -
    *          если описание тег находится в корневой секции).
    */
-  void start( IMap<String, IReadTag> aTags );
+  void start( IMap<String, ITag> aTags );
 
   /**
    * Формирует параметры произошедшего события.

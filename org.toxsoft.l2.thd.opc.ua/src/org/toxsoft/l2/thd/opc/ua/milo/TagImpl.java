@@ -97,7 +97,7 @@ public class TagImpl
   }
 
   @Override
-  public synchronized void set( IAtomicValue aVal ) {
+  public void set( IAtomicValue aVal ) {
     if( kind.compareTo( EKind.R ) == 0 ) {
       throw new TsIllegalStateRtException( "ERROR_TRY_SET_READ_ONLY_TAG" );
     }
@@ -140,7 +140,7 @@ public class TagImpl
    *
    * @param aVal значение считанное с OPC
    */
-  synchronized void updateVal( IAtomicValue aVal ) {
+  void updateVal( IAtomicValue aVal ) {
     if( !isDirty() ) {
       value = aVal;
     }

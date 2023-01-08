@@ -11,6 +11,7 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.uskat.core.connection.*;
+import ru.toxsoft.l2.dlm.opc_bridge.ConfigurableWorkerModuleBase;
 
 /**
  * Класс работы с событиями системы диспетчеризации.
@@ -18,7 +19,7 @@ import org.toxsoft.uskat.core.connection.*;
  * @author max
  */
 public class EventModule
-// extends ConfigurableWorkerModuleBase
+ extends ConfigurableWorkerModuleBase
 {
 
   private static final String OPC_UA_BRIDGE = "OPC UA Bridge";

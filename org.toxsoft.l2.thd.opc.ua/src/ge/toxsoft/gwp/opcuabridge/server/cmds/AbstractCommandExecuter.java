@@ -2,6 +2,8 @@ package ge.toxsoft.gwp.opcuabridge.server.cmds;
 
 import org.toxsoft.uskat.core.api.cmdserv.*;
 
+import ru.toxsoft.l2.thd.opc.*;
+
 import ge.toxsoft.gwp.opcuabridge.*;
 
 /**
@@ -14,7 +16,7 @@ public abstract class AbstractCommandExecuter
 
   private IWriteTag[] wTags;
 
-  private IReadTag[] rTags;
+  private ITag[] rTags;
 
   public void job() {
     doJob();

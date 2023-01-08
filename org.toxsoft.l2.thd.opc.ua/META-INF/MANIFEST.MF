@@ -11,4 +11,6 @@ Require-Bundle: org.toxsoft.extlibs.milo;bundle-version="1.0.0",
  org.toxsoft.core.log4j;bundle-version="1.0.0",
  org.toxsoft.extlibs.log4j;bundle-version="1.0.0",
  org.toxsoft.uskat.core,
- ru.toxsoft.l2.thd.opc.da;bundle-version="1.0.0"
+ ru.toxsoft.l2.thd.opc.da;bundle-version="1.0.0",
+ ru.toxsoft.l2.dlm.tags.common,
+ ru.toxsoft.l2.core;bundle-version="1.0.0"

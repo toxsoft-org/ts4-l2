@@ -1,9 +1,13 @@
 package org.toxsoft.l2.thd.opc.ua.milo;
 
+import static ru.toxsoft.l2.thd.opc.IOpcConstants.*;
+
 import java.util.*;
 import java.util.concurrent.*;
 
 import org.eclipse.milo.opcua.sdk.client.*;
+import org.eclipse.milo.opcua.sdk.client.nodes.*;
+import org.eclipse.milo.opcua.stack.core.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.*;
 import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.*;
@@ -12,7 +16,7 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 
-import ge.toxsoft.gwp.opcuabridge.*;
+import ru.toxsoft.l2.thd.opc.*;
 
 /**
  * Писатель тегов OPC UA
@@ -34,12 +38,23 @@ public class NodesWriter {
   /**
    * Список всех тегов на запись
    */
-  private IMapEdit<String, IWriteTag> tags = new ElemMap<>();
+  private IMapEdit<String, ITag> tags = new ElemMap<>();
 
   /**
    * Промежуточный буфер, состоящий из спец. тегов, агрегирующих теги записи
    */
   private IListEdit<BufferedUaTag> bufferedTags = new ElemArrayList<>();
+
+  private List<NodeId>        currWriteIds    = new ArrayList<>();
+  private List<DataValue>     currWriteValues = new ArrayList<>();
+  private List<BufferedUaTag> currWriteTags   = new ArrayList<>();
+
+  /**
+   * @param aClient
+   */
+  public NodesWriter( OpcUaClient aClient ) {
+    client = aClient;
+  }
 
   /**
    * Возвращает тег по иду
@@ -47,13 +62,9 @@ public class NodesWriter {
    * @param aId
    * @return
    */
-  public IWriteTag getTag( String aId ) {
+  public ITag getTag( String aId ) {
     return tags.getByKey( aId );
   }
-
-  List<NodeId>        currWriteIds    = new ArrayList<>();
-  List<DataValue>     currWriteValues = new ArrayList<>();
-  List<BufferedUaTag> currWriteTags   = new ArrayList<>();
 
   public void writeValuesToNodes()
       throws InterruptedException,
@@ -67,48 +78,28 @@ public class NodesWriter {
       }
     }
 
-    if( currWriteIds.size() == 0 ) {
-      return;
-    }
+    if( currWriteIds.size() > 0 ) {
 
-    CompletableFuture<List<StatusCode>> f = client.writeValues( currWriteIds, currWriteValues );
+      CompletableFuture<List<StatusCode>> f = client.writeValues( currWriteIds, currWriteValues );
+
+      List<StatusCode> statusCodes = f.get();
+
+      for( int i = 0; i < statusCodes.size(); i++ ) {
+        StatusCode code = statusCodes.get( i );
+
+        if( code.isGood() ) {
+          // TODO
+          currWriteTags.get( i ).clear();
+        }
+        else {
+          logger.error( "tag %s error writing", currWriteTags.get( i ).getNodeId().toParseableString() );
+        }
+      }
+    }
 
     currWriteIds.clear();
     currWriteValues.clear();
     currWriteTags.clear();
-
-    List<StatusCode> statusCodes = f.get();
-
-    for( int i = 0; i < statusCodes.size(); i++ ) {
-      StatusCode code = statusCodes.get( i );
-
-      if( code.isGood() ) {
-        // TODO
-        currWriteTags.get( i ).clear();
-      }
-    }
-
-    // List<NodeId> nodeIds =
-    // com.google.common.collect.ImmutableList.of( new NodeId( 2, "HelloWorld/ScalarTypes/Int32" ) );
-    //
-    // for( int i = 0; i < 10; i++ ) {
-    // Variant v = new Variant( i );
-    //
-    // // don't write status or timestamps
-    // DataValue dv = new DataValue( v, null, null );
-    //
-    // // write asynchronously....
-    // CompletableFuture<List<StatusCode>> f =
-    // client.writeValues( nodeIds, com.google.common.collect.ImmutableList.of( dv ) );
-    //
-    // // ...but block for the results so we write in order
-    // List<StatusCode> statusCodes = f.get();
-    // StatusCode status = statusCodes.get( 0 );
-    //
-    // if( status.isGood() ) {
-    // logger.info( "Wrote '{}' to nodeId={}", v, nodeIds.get( 0 ) );
-    // }
-    // }
   }
 
   public void writeValuesToBuffer() {
@@ -124,7 +115,7 @@ public class NodesWriter {
    */
   static class BufferedUaTag {
 
-    private WriteOpcUaTag tag;
+    private TagImpl tag;
 
     private IAtomicValue oldValue = IAtomicValue.NULL;
 
@@ -134,24 +125,25 @@ public class NodesWriter {
 
     private boolean changed = false;
 
-    BufferedUaTag( WriteOpcUaTag aTag, NodeId aNodeId, IAtomicValue aCurValue ) {
+    BufferedUaTag( TagImpl aTag, NodeId aNodeId, IAtomicValue aCurValue ) {
       super();
       tag = aTag;
       curValue = aCurValue;
       nodeId = aNodeId;
     }
 
-    public void clear() {
-      oldValue = curValue;
-      changed = false;
-    }
-
-    BufferedUaTag( WriteOpcUaTag aTag, NodeId aNodeId ) {
+    BufferedUaTag( TagImpl aTag, NodeId aNodeId ) {
       this( aTag, aNodeId, IAtomicValue.NULL );
     }
 
+    public void clear() {
+      oldValue = curValue;
+      changed = false;
+      tag.setDirty( false );
+    }
+
     void setToBuffer() {
-      curValue = tag.getValue();
+      curValue = tag.newValue;
       changed = !curValue.equals( oldValue );
     }
 
@@ -160,7 +152,7 @@ public class NodesWriter {
     }
 
     Variant getValue() {
-      Variant result = OpcUaUtils.convertToOpc( curValue, tag.type() );
+      Variant result = OpcUaUtils.convertToOpc( curValue, tag.valueType() );
       // oldValue = curValue;
       return result;
     }
@@ -171,8 +163,27 @@ public class NodesWriter {
 
   }
 
-  public void config( IAvTree aCfgInfo ) {
-    // TODO Auto-generated method stub
+  public void config( IAvTree aCfgInfo )
+      throws UaException {
+    // output
+
+    IAvTree tagsConfig = aCfgInfo.nodes().findByKey( OUTPUT_TAGS_PARAM_NAME );
+
+    IList<TagCfgItem> outputTagsCfgItems = new ElemArrayList<>();
+
+    for( int i = 0; i < outputTagsCfgItems.size(); i++ ) {
+      TagCfgItem item = outputTagsCfgItems.get( i );
+      NodeId nodeId = new NodeId( item.namespaceId, item.tagId );
+
+      UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
+
+      TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.W, item.tagType );
+      tags.put( tag.id(), tag );
+
+      BufferedUaTag bTag = new BufferedUaTag( tag, nodeId );
+      bufferedTags.add( bTag );
+
+    }
 
   }
 }

@@ -13,7 +13,7 @@ import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 
-import ge.toxsoft.gwp.opcuabridge.*;
+import ru.toxsoft.l2.thd.opc.*;
 
 /**
  * Формирователь параметров - простой проброс одного тега в один параметр
@@ -26,7 +26,7 @@ public class OneTagToOneParamFormer
   /**
    * Тег, значение которого является параметром
    */
-  private IReadTag tag;
+  private ITag tag;
 
   /**
    * Идентификатор параметра.
@@ -56,19 +56,20 @@ public class OneTagToOneParamFormer
   }
 
   @Override
-  public void start( IMap<String, IReadTag> aTags ) {
+  public void start( IMap<String, ITag> aTags ) {
     TsNullArgumentRtException.checkNull( aTags );
     TsIllegalArgumentRtException.checkFalse( aTags.size() == 1 );
 
     tag = aTags.values().get( 0 );
 
-    TsIllegalArgumentRtException.checkFalse( ((bitIndex >= 0 && tag.type() == EAtomicType.INTEGER) || bitIndex < 0),
+    TsIllegalArgumentRtException.checkFalse(
+        ((bitIndex >= 0 && tag.valueType() == EAtomicType.INTEGER) || bitIndex < 0),
         ERR_MSG_IF_BIT_INDEX_IS_SET_THAN_TAG_MUST_HAVE_TYPE_INTEGER );
   }
 
   @Override
   public IStringMap<IAtomicValue> getEventParamValues( long aTime ) {
-    IAtomicValue tagValue = tag.getValue();
+    IAtomicValue tagValue = tag.get();
     IStringMapEdit<IAtomicValue> result = new StringMap<>();
     if( bitIndex >= 0 ) {
       result.put( eventParamId, AvUtils.avBool( ((tagValue.asInt() >> bitIndex) & 1) == 1 ) );

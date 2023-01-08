@@ -20,7 +20,7 @@ import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.uskat.core.api.evserv.*;
 import org.toxsoft.uskat.core.connection.*;
 
-import ge.toxsoft.gwp.opcuabridge.*;
+import ru.toxsoft.l2.thd.opc.*;
 
 /**
  * Класс формирования и отправки события на сервер, работающий в составе opc моста
@@ -43,7 +43,7 @@ public class OpcTagsEventSender
   // определяются
   private IMapEdit<String, TagConfig> tagsConfig = new ElemMap<>();
 
-  private IMapEdit<String, IReadTag> tags = new ElemMap<>();
+  private IMapEdit<String, ITag> tags = new ElemMap<>();
 
   private IMapEdit<String, IOpcTagsCondition> conditions = new ElemMap<>();
 
@@ -253,8 +253,8 @@ public class OpcTagsEventSender
     for( String tagKey : tagsConfig.keys() ) {
       TagConfig tc = tagsConfig.getByKey( tagKey );
 
-      ITsOpc tagsDevice = (ITsOpc)aContext.hal().listSpecificDevices().getItem( tc.getDeviceId() );
-      IReadTag tag = tagsDevice.tag( tc.getTagId() );
+      ITsOpc tagsDevice = (ITsOpc)aContext.get( tc.getDeviceId() );
+      ITag tag = tagsDevice.tag( tc.getTagId() );
       tags.put( tagKey, tag );
     }
 
@@ -262,7 +262,7 @@ public class OpcTagsEventSender
     for( String condKey : conditions.keys() ) {
       IOpcTagsCondition condition = conditions.getByKey( condKey );
 
-      IMapEdit<String, IReadTag> condTags = new ElemMap<>();
+      IMapEdit<String, ITag> condTags = new ElemMap<>();
 
       for( String tagKey : tagsConfig.keys() ) {
         TagConfig tc = tagsConfig.getByKey( tagKey );
@@ -278,7 +278,7 @@ public class OpcTagsEventSender
     for( String formerKey : formers.keys() ) {
       IEventParamsFormer former = formers.getByKey( formerKey );
 
-      IMapEdit<String, IReadTag> formerTags = new ElemMap<>();
+      IMapEdit<String, ITag> formerTags = new ElemMap<>();
 
       for( String tagKey : tagsConfig.keys() ) {
         TagConfig tc = tagsConfig.getByKey( tagKey );

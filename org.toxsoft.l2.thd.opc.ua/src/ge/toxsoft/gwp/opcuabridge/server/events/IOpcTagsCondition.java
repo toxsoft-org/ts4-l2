@@ -3,7 +3,7 @@ package ge.toxsoft.gwp.opcuabridge.server.events;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
 
-import ge.toxsoft.gwp.opcuabridge.*;
+import ru.toxsoft.l2.thd.opc.*;
 
 /**
  * Условие возникновения события.
@@ -25,7 +25,7 @@ public interface IOpcTagsCondition {
    * @param aTags IMap - теги драйвера OPC, ключ - идентификатор структуры тега из конфигурационного файла ("default" -
    *          если описание тега находится в корневой секции).
    */
-  void start( IMap<String, IReadTag> aTags );
+  void start( IMap<String, ITag> aTags );
 
   /**
    * Возвращает признак того, произошло ли событие или нет.

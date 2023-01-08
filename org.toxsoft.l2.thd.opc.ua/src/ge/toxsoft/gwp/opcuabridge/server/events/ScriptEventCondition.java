@@ -12,8 +12,9 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.l2.thd.opc.ua.milo.*;
 
-import ge.toxsoft.gwp.opcuabridge.*;
+import ru.toxsoft.l2.thd.opc.*;
 
 /**
  * Условие возникновения события, логика которого программируется в скрипте, расположенном в конфигурационном файле.
@@ -44,7 +45,7 @@ public class ScriptEventCondition
   }
 
   @Override
-  public void start( IMap<String, IReadTag> aTags ) {
+  public void start( IMap<String, ITag> aTags ) {
     ScriptEngineManager mgr = new ScriptEngineManager();
     engine = mgr.getEngineByName( JAVA_SCRIPT_NAME );
 
@@ -123,41 +124,9 @@ public class ScriptEventCondition
         valueStr, isOn ? isOnEventStr : emptyStr, (isOn && isOff) ? orStr : emptyStr,
         isOff ? isOffEventStr : emptyStr );
 
-    IReadTag tag = new IReadTag() {
+    ITag tag = new TagImpl( "", EKind.R, EAtomicType.BOOLEAN );
 
-      @Override
-      public String id() {
-        // TODO Auto-generated method stub
-        return null;
-      }
-
-      @Override
-      public String nmName() {
-        // TODO Auto-generated method stub
-        return null;
-      }
-
-      @Override
-      public String description() {
-        // TODO Auto-generated method stub
-        return null;
-      }
-
-      @Override
-      public IAtomicValue getValue() {
-        // TODO Auto-generated method stub
-        return null;
-      }
-
-      @Override
-      public EAtomicType type() {
-        // TODO Auto-generated method stub
-        return null;
-      }
-
-    };
-
-    IMapEdit<String, IReadTag> map = new ElemMap();
+    IMapEdit<String, ITag> map = new ElemMap();
     map.put( "tag", tag ); //$NON-NLS-1$
 
     eventCond.start( map );

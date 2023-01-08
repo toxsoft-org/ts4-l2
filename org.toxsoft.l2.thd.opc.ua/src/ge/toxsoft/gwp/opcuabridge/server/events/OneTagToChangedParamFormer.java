@@ -12,7 +12,7 @@ import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 
-import ge.toxsoft.gwp.opcuabridge.*;
+import ru.toxsoft.l2.thd.opc.*;
 
 /**
  * Формирователь параметров - текущего и предыдущего значения тега
@@ -25,7 +25,7 @@ public class OneTagToChangedParamFormer
   /**
    * Тег, значения которого является параметром
    */
-  private IReadTag tag;
+  private ITag tag;
 
   /**
    * Идентификатор параметра - предыдущее значение.
@@ -59,17 +59,17 @@ public class OneTagToChangedParamFormer
   }
 
   @Override
-  public void start( IMap<String, IReadTag> aTags ) {
+  public void start( IMap<String, ITag> aTags ) {
     TsNullArgumentRtException.checkNull( aTags );
     TsIllegalArgumentRtException.checkFalse( aTags.size() == 1 );
 
     tag = aTags.values().get( 0 );
-    prevValue = tag.getValue();
+    prevValue = tag.get();
   }
 
   @Override
   public IStringMap<IAtomicValue> getEventParamValues( long aTime ) {
-    IAtomicValue tagValue = tag.getValue();
+    IAtomicValue tagValue = tag.get();
 
     IStringMapEdit<IAtomicValue> result = new StringMap<>();
     result.put( prevValueEventParamId, prevValue );

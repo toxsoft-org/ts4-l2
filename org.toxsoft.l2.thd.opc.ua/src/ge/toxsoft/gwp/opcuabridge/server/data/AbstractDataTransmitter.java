@@ -3,13 +3,13 @@ package ge.toxsoft.gwp.opcuabridge.server.data;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.coll.*;
 
-import ge.toxsoft.gwp.opcuabridge.*;
+import ru.toxsoft.l2.thd.opc.*;
 
 public abstract class AbstractDataTransmitter {
 
   private IList<IChannelDataSetter>[] setters;
 
-  private IReadTag[] tags;
+  private ITag[] tags;
 
   private int outputCount;
 
