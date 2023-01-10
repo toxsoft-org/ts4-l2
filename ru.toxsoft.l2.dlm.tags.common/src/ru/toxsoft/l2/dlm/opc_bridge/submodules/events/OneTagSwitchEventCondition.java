@@ -87,13 +87,15 @@ public class OneTagSwitchEventCondition
 
     // тег имеет нужное для события значени
     boolean isEvent = (isOn && value) || (isOff && !value);
-    if( !isEvent ) {
-      return false;
-    }
+    // if( !isEvent ) {
+    // return false;
+    // }
 
-    boolean isHappend = prevValue == null || prevValue.booleanValue() != value;
+    // boolean isHappend = prevValue == null || prevValue.booleanValue() != value;
+    boolean isHappend = prevValue != null && prevValue.booleanValue() != value; // Событие действительно произошло, TODO
+                                                                                // - залить.
     prevValue = Boolean.valueOf( value );
-    return isHappend;
+    return isEvent && isHappend;
   }
 
 }
