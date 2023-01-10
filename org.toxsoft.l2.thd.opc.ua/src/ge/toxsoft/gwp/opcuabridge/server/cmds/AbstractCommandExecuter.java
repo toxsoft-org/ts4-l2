@@ -4,8 +4,6 @@ import org.toxsoft.uskat.core.api.cmdserv.*;
 
 import ru.toxsoft.l2.thd.opc.*;
 
-import ge.toxsoft.gwp.opcuabridge.*;
-
 /**
  * Абстрактная реализация исполнителя команды.
  *
@@ -14,7 +12,7 @@ import ge.toxsoft.gwp.opcuabridge.*;
 public abstract class AbstractCommandExecuter
     implements ISkCommandExecutor {
 
-  private IWriteTag[] wTags;
+  private ITag[] wTags;
 
   private ITag[] rTags;
 

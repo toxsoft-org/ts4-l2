@@ -173,11 +173,11 @@ public class NodesWriter {
 
     for( int i = 0; i < outputTagsCfgItems.size(); i++ ) {
       TagCfgItem item = outputTagsCfgItems.get( i );
-      NodeId nodeId = new NodeId( item.namespaceId, item.tagId );
+      NodeId nodeId = new NodeId( item.getNamespaceId(), item.getTagId() );
 
       UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
 
-      TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.W, item.tagType );
+      TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.W, item.getTagType() );
       tags.put( tag.id(), tag );
 
       BufferedUaTag bTag = new BufferedUaTag( tag, nodeId );

@@ -129,11 +129,11 @@ public class NodesReader {
 
     for( int i = 0; i < synchTagsCfgItems.size(); i++ ) {
       TagCfgItem item = synchTagsCfgItems.get( i );
-      NodeId nodeId = new NodeId( item.namespaceId, item.tagId );
+      NodeId nodeId = new NodeId( item.getNamespaceId(), item.getTagId() );
       UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
       syncGroup.add( dNode );
 
-      TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.R, item.tagType );
+      TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.R, item.getTagType() );
       tags.put( tag.tagId(), tag );
     }
 
@@ -149,11 +149,11 @@ public class NodesReader {
 
     for( int i = 0; i < asynchTagsCfgItems.size(); i++ ) {
       TagCfgItem item = asynchTagsCfgItems.get( i );
-      NodeId nodeId = new NodeId( item.namespaceId, item.tagId );
+      NodeId nodeId = new NodeId( item.getNamespaceId(), item.getTagId() );
       ManagedDataItem dataItem = subscription.createDataItem( nodeId );
       if( dataItem.getStatusCode().isGood() ) {
         logger.debug( "item created for nodeId={}", dataItem.getNodeId() );
-        TagImpl tag = new TagImpl( dataItem.getNodeId().toParseableString(), EKind.R, item.tagType );
+        TagImpl tag = new TagImpl( dataItem.getNodeId().toParseableString(), EKind.R, item.getTagType() );
         tags.put( tag.tagId(), tag );
       }
       else {
