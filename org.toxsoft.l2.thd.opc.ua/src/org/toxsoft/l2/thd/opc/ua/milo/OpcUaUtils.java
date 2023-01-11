@@ -5,6 +5,7 @@ import static ru.toxsoft.l2.thd.opc.IOpcConstants.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 
@@ -22,11 +23,25 @@ public class OpcUaUtils {
   }
 
   public static IAtomicValue convertFromOpc( Variant aValue, EAtomicType aTagType ) {
-    return IAtomicValue.NULL;
+    if( aValue.isNull() ) {
+      return IAtomicValue.NULL;
+    }
+    return AvUtils.avFromObj( aValue.getValue() );
+
   }
 
   public static Variant convertToOpc( IAtomicValue aValue, EAtomicType aTagType ) {
-    return Variant.NULL_VALUE;
+    Variant result = switch( aTagType ) {
+      case BOOLEAN -> new Variant( Boolean.valueOf( aValue.asBool() ) );
+      case FLOATING -> new Variant( Double.valueOf( aValue.asDouble() ) );
+      case INTEGER -> new Variant( Integer.valueOf( aValue.asInt() ) );
+      case NONE -> Variant.NULL_VALUE;
+      case STRING -> new Variant( aValue.asString() );
+      case TIMESTAMP -> new Variant( Long.valueOf( aValue.asLong() ) );
+      case VALOBJ -> new Variant( aValue.asValobj() );
+      default -> new Variant( aValue.asString() );
+    };
+    return result;
   }
 
   /**

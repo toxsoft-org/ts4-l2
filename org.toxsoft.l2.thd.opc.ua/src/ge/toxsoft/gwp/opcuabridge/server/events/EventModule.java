@@ -11,7 +11,6 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.uskat.core.connection.*;
-import ru.toxsoft.l2.dlm.opc_bridge.ConfigurableWorkerModuleBase;
 
 /**
  * Класс работы с событиями системы диспетчеризации.
@@ -19,7 +18,7 @@ import ru.toxsoft.l2.dlm.opc_bridge.ConfigurableWorkerModuleBase;
  * @author max
  */
 public class EventModule
- extends ConfigurableWorkerModuleBase
+// extends ConfigurableWorkerModuleBase
 {
 
   private static final String OPC_UA_BRIDGE = "OPC UA Bridge";
@@ -103,6 +102,11 @@ public class EventModule
     // // Слушаем сообщения об изменениях набора
     // messageService.addMessageListener( S5ServerMsgObjectOperation.class.getName(), this );
     // }
+  }
+
+  private boolean isConfigured() {
+    // TODO Auto-generated method stub
+    return false;
   }
 
   // @Override
