@@ -1,5 +1,7 @@
 package org.toxsoft.l2.thd.opc.ua.milo;
 
+import static ru.toxsoft.l2.thd.opc.IOpcConstants.*;
+
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.*;
@@ -18,6 +20,7 @@ import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 
 import ru.toxsoft.l2.core.hal.*;
@@ -53,6 +56,9 @@ public class OpcUaMiloDriver
   private OpcUaClient client;
 
   private StringMap<ITag> tags = new StringMap<>();
+  private String          host;
+  private String          user;
+  private String          pass;
 
   /**
    * @param aId String - строковый идентификатор.
@@ -74,6 +80,10 @@ public class OpcUaMiloDriver
     // ci.setUser( aCi.user() );
     // ci.setPassword( aCi.password() );
     // ci.setClsid( aCi.clsId() );
+
+    host = aCfgInfo.fields().getStr( HOST_PARAM_NAME );
+    user = aCfgInfo.fields().getStr( USER_PARAM_NAME, TsLibUtils.EMPTY_STRING );
+    pass = aCfgInfo.fields().getStr( PASSWORD_PARAM_NAME, TsLibUtils.EMPTY_STRING );
 
     // Создаем соединение с сервером
     // server = new Server( ci, Executors.newSingleThreadScheduledExecutor() );
@@ -173,7 +183,8 @@ public class OpcUaMiloDriver
   }
 
   String getEndpointUrl() {
-    return "opc.tcp://192.168.153.1:4850";
+    return host;
+    // return "opc.tcp://192.168.153.1:4850"; //poligon
     // return "opc.tcp://localhost:12686/milo";
 
   }
@@ -187,7 +198,11 @@ public class OpcUaMiloDriver
   }
 
   IdentityProvider getIdentityProvider() {
-    // return new UsernameProvider("admin","123");
+    if( user.length() > 0 ) {
+      // return new UsernameProvider("admin","123"); //poligon
+      return new UsernameProvider( user, pass );
+    }
+
     return new AnonymousProvider();
   }
 

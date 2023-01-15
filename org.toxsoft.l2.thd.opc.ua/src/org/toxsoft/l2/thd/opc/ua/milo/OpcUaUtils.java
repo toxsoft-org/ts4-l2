@@ -71,8 +71,33 @@ public class OpcUaUtils {
     String pinTypeId = aTagConfig.fields().getStr( PIN_TYPE_PARAM_NAME );
     EAtomicType tagType = EAtomicType.findById( pinTypeId );
     int namespace = aTagConfig.fields().getInt( "opc.tag.namespace" );
-    String tagId = aTagConfig.fields().getStr( OPC_TAG_PARAM_NAME );
+    IAtomicValue tagId = aTagConfig.fields().getByKey( OPC_TAG_PARAM_NAME );
 
     return new TagCfgItem( namespace, tagId, tagType );
+  }
+
+  /**
+   * Создаёт идентификатор узла (тега) по конфигурации этого узла.
+   *
+   * @param aItemCfg TagCfgItem - конфигурация узла.
+   * @return NodeId - идентификатор узла (тега)
+   */
+  public static NodeId createNodeFromCfg( TagCfgItem aItemCfg ) {
+    int namespaceId = aItemCfg.getNamespaceId();
+    IAtomicValue tagId = aItemCfg.getTagId();
+
+    NodeId nodeId;
+    if( tagId.atomicType() == EAtomicType.INTEGER ) {
+      nodeId = new NodeId( namespaceId, tagId.asInt() );
+    }
+    else
+      if( tagId.atomicType() == EAtomicType.STRING ) {
+        nodeId = new NodeId( namespaceId, tagId.asString() );
+      }
+      else {
+        nodeId = new NodeId( namespaceId, tagId.asString() );
+      }
+
+    return nodeId;
   }
 }

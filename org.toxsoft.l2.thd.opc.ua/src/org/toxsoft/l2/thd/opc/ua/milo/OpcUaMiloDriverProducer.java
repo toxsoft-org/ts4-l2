@@ -55,12 +55,18 @@ public class OpcUaMiloDriverProducer
    */
   private OpcUaMiloDriver createOpcUaMiloDriver( IUnitConfig aConfig ) {
     IAvTree params = aConfig.params();
-    String driverId = params.fields().getStr( ID );
-    String driverDescr = params.fields().getStr( DESCRIPTION );
+    // Массив мостов
+    IAvTree bridges = params.nodes().findByKey( BRIDGES_PARAM_NAME );
 
-    OpcUaMiloDriver result = new OpcUaMiloDriver( driverId, driverDescr, errorProcessor, params );
+    if( bridges.arrayLength() > 0 ) {
+      IAvTree bridgeConfig = bridges.arrayElement( 0 );
+      String driverId = bridgeConfig.fields().getStr( ID );
+      String driverDescr = bridgeConfig.fields().getStr( DESCRIPTION );
 
-    return result;
+      return new OpcUaMiloDriver( driverId, driverDescr, errorProcessor, bridgeConfig );
+    }
+
+    return null;
   }
 
   @Override
@@ -73,7 +79,9 @@ public class OpcUaMiloDriverProducer
   public IStridablesList<AbstractSpecificDevice> createSpecificDevices()
       throws Exception {
     StridablesList<AbstractSpecificDevice> devices = new StridablesList<>();
-    devices.add( opcUaDriver );
+    if( opcUaDriver != null ) {
+      devices.add( opcUaDriver );
+    }
     return devices;
   }
 }

@@ -173,7 +173,7 @@ public class NodesWriter {
 
     for( int i = 0; i < outputTagsCfgItems.size(); i++ ) {
       TagCfgItem item = outputTagsCfgItems.get( i );
-      NodeId nodeId = new NodeId( item.getNamespaceId(), item.getTagId() );
+      NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
 
       UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
 

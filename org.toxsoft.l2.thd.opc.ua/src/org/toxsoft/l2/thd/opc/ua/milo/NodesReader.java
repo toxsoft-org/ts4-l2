@@ -129,7 +129,7 @@ public class NodesReader {
 
     for( int i = 0; i < synchTagsCfgItems.size(); i++ ) {
       TagCfgItem item = synchTagsCfgItems.get( i );
-      NodeId nodeId = new NodeId( item.getNamespaceId(), item.getTagId() );
+      NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
       UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
       syncGroup.add( dNode );
 
@@ -149,7 +149,7 @@ public class NodesReader {
 
     for( int i = 0; i < asynchTagsCfgItems.size(); i++ ) {
       TagCfgItem item = asynchTagsCfgItems.get( i );
-      NodeId nodeId = new NodeId( item.getNamespaceId(), item.getTagId() );
+      NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
       ManagedDataItem dataItem = subscription.createDataItem( nodeId );
       if( dataItem.getStatusCode().isGood() ) {
         logger.debug( "item created for nodeId={}", dataItem.getNodeId() );

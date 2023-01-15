@@ -9,25 +9,47 @@ import org.toxsoft.core.tslib.av.*;
  */
 public class TagCfgItem {
 
-  private int         namespaceId;
-  private String      tagId;
-  private EAtomicType tagType;
+  private int          namespaceId;
+  private IAtomicValue tagId;
+  private EAtomicType  tagType;
 
-  public TagCfgItem( int aNamespaceId, String aTagId, EAtomicType aTagType ) {
+  /**
+   * Конструктор конфигурации тега по идентификаторм и типу.
+   *
+   * @param aNamespaceId int - идентификатор пространства имён
+   * @param aTagId IAtomicValue - идентификатор тега
+   * @param aTagType EAtomicType - тип значения тега
+   */
+  public TagCfgItem( int aNamespaceId, IAtomicValue aTagId, EAtomicType aTagType ) {
     super();
     namespaceId = aNamespaceId;
     tagId = aTagId;
     tagType = aTagType;
   }
 
+  /**
+   * Возвращает идентификатор пространства имён
+   *
+   * @return int - идентификатор пространства имён
+   */
   public int getNamespaceId() {
     return namespaceId;
   }
 
-  public String getTagId() {
+  /**
+   * Возвращает идентификатор тега
+   *
+   * @return IAtomicValue - идентификатор тега
+   */
+  public IAtomicValue getTagId() {
     return tagId;
   }
 
+  /**
+   * Возвращает тип значения тега
+   *
+   * @return EAtomicType - тип значения тега
+   */
   public EAtomicType getTagType() {
     return tagType;
   }
