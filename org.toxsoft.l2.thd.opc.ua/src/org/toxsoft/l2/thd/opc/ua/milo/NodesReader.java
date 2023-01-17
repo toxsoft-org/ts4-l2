@@ -38,7 +38,7 @@ public class NodesReader {
   /**
    * Группа синхронных данных
    */
-  private IListEdit<UaVariableNode> syncGroup;
+  private IListEdit<UaVariableNode> syncGroup = new ElemArrayList<>();
 
   /**
    * Промежуточный буфер для хранения значений считанных с OPC синхронных данных
@@ -123,50 +123,58 @@ public class NodesReader {
   public void config( IAvTree aCfgInfo )
       throws UaException {
 
-    // synch
-    IAvTree tagsConfig = aCfgInfo.nodes().findByKey( SYNC_TAGS_PARAM_NAME );
-    IList<TagCfgItem> synchTagsCfgItems = OpcUaUtils.createTagsCfgItems( tagsConfig );
+    for( int i = 0; i < aCfgInfo.arrayLength(); i++ ) {
+      IAvTree groupConfig = aCfgInfo.arrayElement( i );
+      if( groupConfig.structId().endsWith( SYNC_GROUP_DEF_POSTFIX ) ) {
+        // synch
+        IAvTree tagsConfig = groupConfig.nodes().findByKey( SYNC_TAGS_PARAM_NAME );
+        IList<TagCfgItem> synchTagsCfgItems = OpcUaUtils.createTagsCfgItems( tagsConfig );
 
-    for( int i = 0; i < synchTagsCfgItems.size(); i++ ) {
-      TagCfgItem item = synchTagsCfgItems.get( i );
-      NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
-      UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
-      syncGroup.add( dNode );
+        for( int j = 0; j < synchTagsCfgItems.size(); j++ ) {
+          TagCfgItem item = synchTagsCfgItems.get( j );
+          NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
+          UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
+          syncGroup.add( dNode );
 
-      TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.R, item.getTagType() );
-      tags.put( tag.tagId(), tag );
-    }
-
-    // async
-    tagsConfig = aCfgInfo.nodes().findByKey( ASYNC_TAGS_PARAM_NAME );
-    IList<TagCfgItem> asynchTagsCfgItems = OpcUaUtils.createTagsCfgItems( tagsConfig );
-
-    ManagedSubscription subscription = ManagedSubscription.create( client );
-
-    subscription.addDataChangeListener( ( items, values ) -> {
-      onDataChanged( items, values );
-    } );
-
-    for( int i = 0; i < asynchTagsCfgItems.size(); i++ ) {
-      TagCfgItem item = asynchTagsCfgItems.get( i );
-      NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
-      ManagedDataItem dataItem = subscription.createDataItem( nodeId );
-      if( dataItem.getStatusCode().isGood() ) {
-        logger.debug( "item created for nodeId={}", dataItem.getNodeId() );
-        TagImpl tag = new TagImpl( dataItem.getNodeId().toParseableString(), EKind.R, item.getTagType() );
-        tags.put( tag.tagId(), tag );
+          TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.R, item.getTagType() );
+          tags.put( tag.tagId(), tag );
+        }
       }
-      else {
-        logger.error( "failed to create item for nodeId={} (status={})", dataItem.getNodeId(),
-            dataItem.getStatusCode() );
-      }
+      else
+        if( groupConfig.structId().endsWith( ASYNC_GROUP_DEF_POSTFIX ) ) {
+          // async
+          IAvTree tagsConfig = groupConfig.nodes().findByKey( ASYNC_TAGS_PARAM_NAME );
+          IList<TagCfgItem> asynchTagsCfgItems = OpcUaUtils.createTagsCfgItems( tagsConfig );
 
+          ManagedSubscription subscription = ManagedSubscription.create( client );
+
+          subscription.addDataChangeListener( ( items, values ) -> {
+            onDataChanged( items, values );
+          } );
+
+          for( int j = 0; j < asynchTagsCfgItems.size(); j++ ) {
+            TagCfgItem item = asynchTagsCfgItems.get( j );
+            NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
+            ManagedDataItem dataItem = subscription.createDataItem( nodeId );
+            if( dataItem.getStatusCode().isGood() ) {
+              logger.debug( "item created for nodeId=%s", dataItem.getNodeId().toParseableString() );
+              TagImpl tag = new TagImpl( dataItem.getNodeId().toParseableString(), EKind.R, item.getTagType() );
+              tags.put( tag.tagId(), tag );
+            }
+            else {
+              logger.error( "failed to create item for nodeId=%s (status=%s)", dataItem.getNodeId().toParseableString(),
+                  dataItem.getStatusCode().toString() );
+            }
+
+          }
+
+        }
     }
-
   }
 
   private synchronized void readValuesFromAsyncBuffer() {
     readValuesFromBuffer( bufferAsynchVal );
+    bufferAsynchVal.clear();
   }
 
   private synchronized void setValuesToAsyncBuffer( List<ManagedDataItem> aItems, List<DataValue> aValues ) {
@@ -184,11 +192,15 @@ public class NodesReader {
       TagImpl tag = tags.getByKey( key );
 
       EAtomicType tagType = tag.valueType();
-      Variant vValue = aBuffer.removeByKey( key );
+      Variant vValue = aBuffer.getByKey( key );
 
       IAtomicValue atomicVal = OpcUaUtils.convertFromOpc( vValue, tagType );
       tag.updateVal( atomicVal );
     }
+  }
+
+  IMapEdit<String, TagImpl> getTags() {
+    return tags;
   }
 
 }

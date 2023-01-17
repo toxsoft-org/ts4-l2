@@ -18,6 +18,7 @@ import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.*;
 import org.eclipse.milo.opcua.stack.core.types.structured.*;
 import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.*;
@@ -88,17 +89,48 @@ public class OpcUaMiloDriver
     // Создаем соединение с сервером
     // server = new Server( ci, Executors.newSingleThreadScheduledExecutor() );
     // autoReconnectController.connect();
-    client = new OpcUaClient( null, null );// TODO
-    opcUaNodesReader = new NodesReader( client );
-    opcUaNodesWriter = new NodesWriter( client );
-
     try {
-      opcUaNodesReader.config( aCfgInfo );
-      opcUaNodesWriter.config( aCfgInfo );
-    }
-    catch( UaException ex ) {
-      // TODO Auto-generated catch block
+      client = createClient();// new OpcUaClient( null, null );// TODO
+      client.connect().get();
+      opcUaNodesReader = new NodesReader( client );
+      opcUaNodesWriter = new NodesWriter( client );
 
+      IAvTree groupsConfig = aCfgInfo.nodes().findByKey( GROUPS_PARAM_NAME );
+
+      opcUaNodesReader.config( groupsConfig );
+      opcUaNodesWriter.config( groupsConfig );
+
+      IMapEdit<String, TagImpl> readTags = opcUaNodesReader.getTags();
+      IMap<String, TagImpl> writeTags = opcUaNodesWriter.getTags();
+
+      // поиск совпадающих тегов на запись и на чтение
+      IList<String> writeTagsKeys = writeTags.keys();
+      for( String writeTagKey : writeTagsKeys ) {
+        if( readTags.hasKey( writeTagKey ) ) {
+          TagImpl wTagImpl = writeTags.getByKey( writeTagKey );
+          // если идентификаторы тегов чтения и записи совпадают - поменять тип тега и заменить тег на чтение
+          wTagImpl.setKind( EKind.RW );
+          readTags.put( writeTagKey, wTagImpl );
+        }
+
+        // просто добавить все теги на запись в список тегов
+        tags.put( writeTagKey, writeTags.getByKey( writeTagKey ) );
+      }
+
+      // просто добавить все теги на чтение в список тегов
+      IList<String> readTagsKeys = readTags.keys();
+      for( String readTagKey : readTagsKeys ) {
+        tags.put( readTagKey, readTags.getByKey( readTagKey ) );
+      }
+
+      // список тегов печать
+      IList<String> tagsKeys = tags.keys();
+      for( String tagKey : tagsKeys ) {
+        logger.info( "Tag '%s' of type %s", tagKey, tags.getByKey( tagKey ).kind().getName() );
+      }
+    }
+    catch( Exception ex ) {
+      logger.error( ex );
     }
   }
 
@@ -116,7 +148,7 @@ public class OpcUaMiloDriver
     }
     catch( InterruptedException | ExecutionException ex ) {
       // TODO Auto-generated catch block
-
+      logger.error( ex );
     }
   }
 

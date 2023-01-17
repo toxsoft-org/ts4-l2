@@ -38,7 +38,7 @@ public class NodesWriter {
   /**
    * Список всех тегов на запись
    */
-  private IMapEdit<String, ITag> tags = new ElemMap<>();
+  private IMapEdit<String, TagImpl> tags = new ElemMap<>();
 
   /**
    * Промежуточный буфер, состоящий из спец. тегов, агрегирующих теги записи
@@ -165,25 +165,32 @@ public class NodesWriter {
 
   public void config( IAvTree aCfgInfo )
       throws UaException {
-    // output
 
-    IAvTree tagsConfig = aCfgInfo.nodes().findByKey( OUTPUT_TAGS_PARAM_NAME );
+    for( int i = 0; i < aCfgInfo.arrayLength(); i++ ) {
+      IAvTree groupConfig = aCfgInfo.arrayElement( i );
+      if( groupConfig.structId().endsWith( ".output.group.def" ) ) {
 
-    IList<TagCfgItem> outputTagsCfgItems = new ElemArrayList<>();
+        // output
+        IAvTree tagsConfig = groupConfig.nodes().findByKey( OUTPUT_TAGS_PARAM_NAME );
+        IList<TagCfgItem> outputTagsCfgItems = OpcUaUtils.createTagsCfgItems( tagsConfig );
 
-    for( int i = 0; i < outputTagsCfgItems.size(); i++ ) {
-      TagCfgItem item = outputTagsCfgItems.get( i );
-      NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
+        for( int j = 0; j < outputTagsCfgItems.size(); j++ ) {
+          TagCfgItem item = outputTagsCfgItems.get( j );
+          NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
 
-      UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
+          UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
 
-      TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.W, item.getTagType() );
-      tags.put( tag.id(), tag );
+          TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.W, item.getTagType() );
+          tags.put( tag.id(), tag );
 
-      BufferedUaTag bTag = new BufferedUaTag( tag, nodeId );
-      bufferedTags.add( bTag );
-
+          BufferedUaTag bTag = new BufferedUaTag( tag, nodeId );
+          bufferedTags.add( bTag );
+        }
+      }
     }
+  }
 
+  IMap<String, TagImpl> getTags() {
+    return tags;
   }
 }
