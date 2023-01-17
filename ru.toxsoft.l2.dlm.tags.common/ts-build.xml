@@ -8,7 +8,7 @@
   <property name="plugin.name" value="ru.toxsoft.l2.dlm.tags.common" />
 
 	<!-- это версия проекта -->
-	<property name="plugin.version" value="2.1" />
+	<property name="plugin.version" value="2,1" />
 
 	<!-- имя jar-файла собираемого для создания плагина (идентификатор и версия плагина) -->
 	<property name="jarfile.name" value="${plugin.name}-dlm.jar" />
@@ -26,13 +26,13 @@
 	<property name="src.dir" value="src" />
 
 	<tstamp>
-		<format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+		<format property="TODAY" pattern="yyyy-MM-dd_HH:mm:ss" />
 	</tstamp>
 
 	<manifest file="dist/temp_META_INF_dir/MANIFEST.MF">
 		<attribute name="TsPluginContainerVersion" value="2" />
 		<section name="ru.toxsoft.l2.dlm.tags.common.OpcBridgeDlm">
-			<attribute name="TsPluginVersion" value="${plugin.version} ${TODAY}" />
+			<attribute name="TsPluginVersion" value="${plugin.version},${TODAY}" />
 			<attribute name="TsPluginType" value="DLM" />
 			
 			<attribute name="TsPluginClassName" value="ru.toxsoft.l2.dlm.opc_bridge.DlmFactory" />
