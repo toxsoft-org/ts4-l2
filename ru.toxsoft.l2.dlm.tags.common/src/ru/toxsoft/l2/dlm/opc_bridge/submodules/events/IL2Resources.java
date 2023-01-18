@@ -47,7 +47,7 @@ interface IL2Resources {
   String ERR_MSG_CANT_CREATE_INSTANCE_SENDER_FORMAT = "Cant create instance of sender %s";
 
   String ERR_MSG_IF_TAG_HAS_TYPE_INT_THEN_BIT_INDEX_MUST_BE_SETTED_ELSE_TAG_MUST_HAVE_TYPE_BOOLEAN =
-      "if tag has type of int, then bit index must be setted, else tag must have type of boolean ";
+      "if tag has type of int, then bit index must be setted, else tag must have type of boolean, tagId: %s";
 
   String ERR_MSG_IF_BIT_INDEX_IS_SET_THAN_TAG_MUST_HAVE_TYPE_INTEGER =
       "if   bit index is set, than tag must have type of integer ";

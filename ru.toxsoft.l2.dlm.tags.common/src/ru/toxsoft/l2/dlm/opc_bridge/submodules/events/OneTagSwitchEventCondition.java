@@ -55,7 +55,7 @@ public class OneTagSwitchEventCondition
     tag = aTags.values().get( 0 );
     TsIllegalArgumentRtException.checkFalse(
         ((bitIndex >= 0 && tag.valueType() == EAtomicType.INTEGER) || tag.valueType() == EAtomicType.BOOLEAN),
-        ERR_MSG_IF_TAG_HAS_TYPE_INT_THEN_BIT_INDEX_MUST_BE_SETTED_ELSE_TAG_MUST_HAVE_TYPE_BOOLEAN );
+        ERR_MSG_IF_TAG_HAS_TYPE_INT_THEN_BIT_INDEX_MUST_BE_SETTED_ELSE_TAG_MUST_HAVE_TYPE_BOOLEAN, tag.tagId() );
   }
 
   @Override
