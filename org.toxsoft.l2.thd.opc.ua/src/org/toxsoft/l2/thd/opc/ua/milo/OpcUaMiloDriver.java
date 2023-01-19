@@ -15,7 +15,9 @@ import org.eclipse.milo.opcua.stack.core.*;
 import org.eclipse.milo.opcua.stack.core.security.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.*;
+import org.eclipse.milo.opcua.stack.core.types.enumerated.*;
 import org.eclipse.milo.opcua.stack.core.types.structured.*;
+import org.eclipse.milo.opcua.stack.core.util.*;
 import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
@@ -57,9 +59,9 @@ public class OpcUaMiloDriver
   private OpcUaClient client;
 
   private StringMap<ITag> tags = new StringMap<>();
-  private String          host;
-  private String          user;
-  private String          pass;
+  private String          host = new String();
+  private String          user = new String();
+  private String          pass = new String();
 
   /**
    * @param aId String - строковый идентификатор.
@@ -249,7 +251,8 @@ public class OpcUaMiloDriver
       client = createClient();
       client.connect().get();
 
-      testRead();
+      // testRead();
+      testBrowse();
 
       client.disconnect().get();
     }
@@ -280,8 +283,50 @@ public class OpcUaMiloDriver
 
   }
 
+  private void testBrowse() {
+    // start browsing at root folder
+    browseNode( "", client, Identifiers.RootFolder );
+  }
+
+  private void browseNode( String indent, OpcUaClient client, NodeId browseRoot ) {
+    BrowseDescription browse = new BrowseDescription( browseRoot, BrowseDirection.Forward, Identifiers.References, true,
+        Unsigned.uint( NodeClass.Object.getValue() | NodeClass.Variable.getValue() ),
+        Unsigned.uint( BrowseResultMask.All.getValue() ) );
+
+    try {
+      BrowseResult browseResult = client.browse( browse ).get();
+
+      List<ReferenceDescription> references = ConversionUtil.toList( browseResult.getReferences() );
+
+      for( ReferenceDescription rd : references ) {
+        logger.info( "%s Node=%s", indent, rd.getBrowseName().toString() );
+        logger.info( "%s NodE=%s", indent, rd.getNodeId() );// .toParseableString());
+        System.out.println( String.format( "%s NodE=%s", indent, rd.getNodeId() ) );
+        // recursively browse to children
+        rd.getNodeId().toNodeId( client.getNamespaceTable() )
+            .ifPresent( nodeId -> browseNode( indent + "  ", client, nodeId ) );
+      }
+    }
+    catch( InterruptedException |
+
+        ExecutionException e ) {
+      logger.error( "Browsing nodeId=%s failed: %s", browseRoot, e.getMessage(), e );
+    }
+  }
+
   public static void main( String[] a ) {
-    new OpcUaMiloDriver();
+    new OpcUaMiloDriver() {
+
+      @Override
+      String getEndpointUrl() {
+        return "opc.tcp://192.168.153.1:4850"; // poligon
+      }
+
+      // @Override
+      // IdentityProvider getIdentityProvider() {
+      // return new UsernameProvider( "admin", "123" ); // poligon
+      // }
+    };
   }
 
 }
