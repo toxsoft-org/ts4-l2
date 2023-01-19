@@ -1,7 +1,6 @@
 package ru.toxsoft.l2.dlm.opc_bridge.submodules.events;
 
 import static ru.toxsoft.l2.dlm.opc_bridge.IDlmsBaseConstants.*;
-import static ru.toxsoft.l2.dlm.opc_bridge.submodules.events.IL2Resources.*;
 
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
@@ -53,9 +52,13 @@ public class OneTagSwitchEventCondition
     TsIllegalArgumentRtException.checkFalse( aTags.size() == 1 );
 
     tag = aTags.values().get( 0 );
-    TsIllegalArgumentRtException.checkFalse(
-        ((bitIndex >= 0 && tag.valueType() == EAtomicType.INTEGER) || tag.valueType() == EAtomicType.BOOLEAN),
-        ERR_MSG_IF_TAG_HAS_TYPE_INT_THEN_BIT_INDEX_MUST_BE_SETTED_ELSE_TAG_MUST_HAVE_TYPE_BOOLEAN, tag.tagId() );
+    // проверка что, если bitIndex установлен - тег должен быть Integer
+    TsIllegalArgumentRtException.checkTrue( bitIndex >= 0 && tag.valueType() != EAtomicType.INTEGER,
+        "if bit index is set, then tag must have type of integer, tagId: %s", tag.tagId() );
+
+    TsIllegalArgumentRtException.checkFalse( tag.valueType() == EAtomicType.INTEGER
+        || tag.valueType() == EAtomicType.BOOLEAN || tag.valueType() == EAtomicType.FLOATING,
+        "tag must have type of integer, boolean or floating, tagId: %s", tag.tagId() );
   }
 
   @Override
