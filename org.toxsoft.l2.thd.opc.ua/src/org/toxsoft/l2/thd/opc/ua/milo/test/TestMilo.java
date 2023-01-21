@@ -197,7 +197,8 @@ public class TestMilo {
         System.out.println( String.format( "%s Node=%s", indent, node.getNodeId().toParseableString() ) );
 
         if( node instanceof UaVariableNode vNode ) {
-          System.out.println( String.format( "%s NodeType=%s", indent, vNode.getTypeDefinition().getDisplayName() ) );
+          UaDataTypeNode vNodeType = (UaDataTypeNode)client.getAddressSpace().getNode( vNode.getDataType() );
+          System.out.println( String.format( "%s NodeType=%s", indent, vNodeType.getDisplayName() ) );
         }
 
         // recursively browse to children
