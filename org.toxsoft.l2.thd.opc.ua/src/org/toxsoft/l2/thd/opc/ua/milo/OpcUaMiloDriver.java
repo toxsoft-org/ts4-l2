@@ -10,14 +10,10 @@ import java.util.function.*;
 import org.eclipse.milo.opcua.sdk.client.*;
 import org.eclipse.milo.opcua.sdk.client.api.config.*;
 import org.eclipse.milo.opcua.sdk.client.api.identity.*;
-import org.eclipse.milo.opcua.sdk.client.nodes.*;
-import org.eclipse.milo.opcua.stack.core.*;
 import org.eclipse.milo.opcua.stack.core.security.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.*;
-import org.eclipse.milo.opcua.stack.core.types.enumerated.*;
 import org.eclipse.milo.opcua.stack.core.types.structured.*;
-import org.eclipse.milo.opcua.stack.core.util.*;
 import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
@@ -238,95 +234,6 @@ public class OpcUaMiloDriver
     }
 
     return new AnonymousProvider();
-  }
-
-  //
-  // ---------------------------------
-  // test
-
-  private OpcUaMiloDriver() {
-    super( "test.opc.ua.drivaer", "Test Opc Ua Driver", null );
-
-    try {
-      client = createClient();
-      client.connect().get();
-
-      // testRead();
-      testBrowse();
-
-      client.disconnect().get();
-    }
-    catch( Exception ex ) {
-      ex.printStackTrace();
-    }
-  }
-
-  private void testRead()
-      throws UaException,
-      InterruptedException {
-    // poligon test
-    // UaVariableNode dNode = client.getAddressSpace().getVariableNode(new NodeId(2,96));
-    UaVariableNode dNode = client.getAddressSpace().getVariableNode( new NodeId( 1, 71 ) );
-
-    // local test UaVariableNode dNode = client.getAddressSpace().getVariableNode(new
-    // NodeId(2,"HelloWorld/Dynamic/Double"));
-    // Ge Test UaVariableNode dNode = client.getAddressSpace().getVariableNode(new NodeId(2,"TEST SERVER.PLC TAGS FOR
-    // OPC SERVER.COMPRESSOR ON"));
-    // UaVariableNode dNode = client.getAddressSpace().getVariableNode(new NodeId(2,"COMPRESSOR ON"));
-
-    for( int i = 0; i < 10; i++ ) {
-      DataValue dValue = dNode.readValue();
-      System.out.println( String.format( "Node %s Value=%s", dNode.getNodeId().toParseableString(),
-          dValue.getValue().getValue().toString() ) );
-      Thread.sleep( 2000L );
-    }
-
-  }
-
-  private void testBrowse() {
-    // start browsing at root folder
-    browseNode( "", client, Identifiers.RootFolder );
-  }
-
-  private void browseNode( String indent, OpcUaClient client, NodeId browseRoot ) {
-    BrowseDescription browse = new BrowseDescription( browseRoot, BrowseDirection.Forward, Identifiers.References, true,
-        Unsigned.uint( NodeClass.Object.getValue() | NodeClass.Variable.getValue() ),
-        Unsigned.uint( BrowseResultMask.All.getValue() ) );
-
-    try {
-      BrowseResult browseResult = client.browse( browse ).get();
-
-      List<ReferenceDescription> references = ConversionUtil.toList( browseResult.getReferences() );
-
-      for( ReferenceDescription rd : references ) {
-        logger.info( "%s Node=%s", indent, rd.getBrowseName().toString() );
-        logger.info( "%s NodE=%s", indent, rd.getNodeId() );// .toParseableString());
-        System.out.println( String.format( "%s NodE=%s", indent, rd.getNodeId() ) );
-        // recursively browse to children
-        rd.getNodeId().toNodeId( client.getNamespaceTable() )
-            .ifPresent( nodeId -> browseNode( indent + "  ", client, nodeId ) );
-      }
-    }
-    catch( InterruptedException |
-
-        ExecutionException e ) {
-      logger.error( "Browsing nodeId=%s failed: %s", browseRoot, e.getMessage(), e );
-    }
-  }
-
-  public static void main( String[] a ) {
-    new OpcUaMiloDriver() {
-
-      @Override
-      String getEndpointUrl() {
-        return "opc.tcp://192.168.153.1:4850"; // poligon
-      }
-
-      // @Override
-      // IdentityProvider getIdentityProvider() {
-      // return new UsernameProvider( "admin", "123" ); // poligon
-      // }
-    };
   }
 
 }
