@@ -3,6 +3,7 @@ package ru.toxsoft.l2.utils.opc.cfg.exe;
 import static ru.toxsoft.l2.utils.opc.cfg.exe.ISkResources.*;
 
 import java.io.*;
+import java.lang.reflect.*;
 import java.util.*;
 
 import org.toxsoft.core.tslib.av.avtree.*;
@@ -17,6 +18,7 @@ import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 
 import ru.toxsoft.l2.utils.opc.cfg.exe.OdsFileReader.*;
+import ru.toxsoft.l2.utils.opc.cfg.exe.ods.*;
 
 /**
  * Конвертор ODS-файла с описанием OPC в файл конфигурации драйвера OPC-моста.
@@ -95,6 +97,21 @@ public class OpcOdsToOpcThdConvertor {
 
     IListEdit<StringData> result;
     try {
+      if( args.length > 2 ) {
+        String fulTagNameFormerClass = args[2];
+
+        try {
+          Object fulTagNameFormer = Class.forName( fulTagNameFormerClass ).getConstructor().newInstance();
+          if( fulTagNameFormer instanceof StringFieldValueGetter ) {
+            TwoTabsOdsFileReader.TAG_FULL_NAME_COLUMN = (StringFieldValueGetter)fulTagNameFormer;
+          }
+        }
+        catch( InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+            | NoSuchMethodException | SecurityException | ClassNotFoundException ex ) {
+          ex.printStackTrace();
+        }
+      }
+
       result = TwoTabsOdsFileReader.readSheet( srcFileName );
       System.out.println( result.size() );
     }

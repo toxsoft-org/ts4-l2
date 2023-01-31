@@ -26,7 +26,7 @@ public class TwoTabsOdsFileReader
 
   private final static StringFieldValueGetter TAG_NAME_COLUMN = new StringFieldValueGetter( 2 );
 
-  private final static StringFieldValueGetter TAG_FULL_NAME_COLUMN = new StringFieldValueGetter( 6 );
+  static StringFieldValueGetter TAG_FULL_NAME_COLUMN = new StringFieldValueGetter( 6 );
 
   private final static StringFieldValueGetter CLASS_ID_COLUMN = new StringFieldValueGetter( 13 );
 
@@ -132,6 +132,8 @@ public class TwoTabsOdsFileReader
     result = result.replace( ".", "_" );
     result = result.replace( "(", "_" );
     result = result.replace( ")", "_" );
+    result = result.replace( "=", "_" );
+    result = result.replace( ";", "_" );
     return result;
   }
 
