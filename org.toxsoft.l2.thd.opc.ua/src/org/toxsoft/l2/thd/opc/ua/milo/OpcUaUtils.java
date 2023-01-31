@@ -16,6 +16,8 @@ import org.toxsoft.core.tslib.coll.impl.*;
  */
 public class OpcUaUtils {
 
+  private static final String OPC_TAG_NAMESPACE_PARAM_NAME = "opc.tag.namespace";
+
   /**
    * Закрытый конструктор
    */
@@ -70,8 +72,19 @@ public class OpcUaUtils {
   public static TagCfgItem createOpcTagCfgItem( IAvTree aTagConfig ) {
     String pinTypeId = aTagConfig.fields().getStr( PIN_TYPE_PARAM_NAME );
     EAtomicType tagType = EAtomicType.findById( pinTypeId );
-    int namespace = aTagConfig.fields().getInt( "opc.tag.namespace" );
+
     IAtomicValue tagId = aTagConfig.fields().getByKey( OPC_TAG_PARAM_NAME );
+
+    int namespace = 0;
+
+    if( !aTagConfig.fields().hasKey( OPC_TAG_NAMESPACE_PARAM_NAME ) ) {
+      NodeId nodeId = NodeId.parse( tagId.asString() );
+      namespace = nodeId.getNamespaceIndex().intValue();
+      tagId = AvUtils.avStr( nodeId.getIdentifier().toString() );
+    }
+    else {
+      namespace = aTagConfig.fields().getInt( OPC_TAG_NAMESPACE_PARAM_NAME );
+    }
 
     return new TagCfgItem( namespace, tagId, tagType );
   }

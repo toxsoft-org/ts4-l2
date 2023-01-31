@@ -134,6 +134,7 @@ public class TwoTabsOdsFileReader
     result = result.replace( ")", "_" );
     result = result.replace( "=", "_" );
     result = result.replace( ";", "_" );
+    result = result.replace( "\"", "" );
     return result;
   }
 
