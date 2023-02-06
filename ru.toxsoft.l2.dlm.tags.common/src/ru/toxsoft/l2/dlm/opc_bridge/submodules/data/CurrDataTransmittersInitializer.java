@@ -85,8 +85,9 @@ public class CurrDataTransmittersInitializer
   @Override
   protected IDataSetter createSetter( Gwid aDataGwid, DataObjNameExtension aDataObjName,
       IMap<Gwid, ISkWriteCurrDataChannel> aDataSet ) {
-
-    return new CurrDataSetter( aDataSet, aDataGwid );
+    boolean synch = aDataObjName.isSynch();
+    long synchPeriod = aDataObjName.getSynchPeriod();
+    return new CurrDataSetter( aDataSet, aDataGwid, synch ? synchPeriod : 0 );
   }
 
   /**
@@ -103,16 +104,28 @@ public class CurrDataTransmittersInitializer
 
     private Gwid dataGwid;
 
-    public CurrDataSetter( IMap<Gwid, ISkWriteCurrDataChannel> aDataSet, Gwid aDataGwid ) {
+    private long minWritePeriod = 0;
+
+    protected long prevSetTime = 0;
+
+    public CurrDataSetter( IMap<Gwid, ISkWriteCurrDataChannel> aDataSet, Gwid aDataGwid, long aMinWritePeriod ) {
       super();
       TsIllegalArgumentRtException.checkFalse( aDataSet.hasKey( aDataGwid ) );
       channel = aDataSet.getByKey( aDataGwid );
       dataGwid = aDataGwid;
+
+      minWritePeriod = aMinWritePeriod / 2;
     }
 
     @Override
     public boolean setDataValue( IAtomicValue aValue, long aTime ) {
+      if( !aValue.isAssigned() ) {
+        return false;
+      }
       boolean result = value == null || !value.equals( aValue );
+
+      // 2023.02.01 проверка в случае синхронного данного
+      result = result || (minWritePeriod > 0 && (aTime - prevSetTime > minWritePeriod || aTime < prevSetTime));
 
       // test
       // if( dataGwid.toString().contains( "n2AI_TP1" ) && dataGwid.toString().contains( "currentValue" ) ) {
@@ -123,6 +136,7 @@ public class CurrDataTransmittersInitializer
         // просто устанавливается значение
         channel.setValue( aValue );
         value = aValue;
+        prevSetTime = aTime;
 
         logger.debug( "curr data: %s - change value on: %s", dataGwid.asString(),
             (aValue.isAssigned() ? aValue.asString() : "Not Assigned") );

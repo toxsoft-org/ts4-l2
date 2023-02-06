@@ -29,7 +29,7 @@ public class OneToOneDataTransmitter<T extends ISkRtdataChannel>
    */
   protected ITag tag;
 
-  private IAtomicValue oldVal = IAtomicValue.NULL;
+  // private IAtomicValue oldVal = IAtomicValue.NULL;
 
   /**
    * Номер данного в дата-сете
@@ -39,21 +39,29 @@ public class OneToOneDataTransmitter<T extends ISkRtdataChannel>
   @Override
   public boolean transmit( long aTime ) {
     IAtomicValue newVal = tag.get();
-    if( !oldVal.equals( newVal ) ) {
-      logger.debug( "Value tag %s, changed: %s", tag.tagId(), newVal.toString() );
-      oldVal = newVal;
-      boolean result = false;
-      try {
-        result = dataSetter.setDataValue( newVal, aTime );
-      }
-      catch( Exception e ) {
-        logger.error( e, "Set data error: gwid: %s, tag: %s, error: %s", dataSetter.toString(), tag.tagId(),
-            e.getMessage() );
-      }
-      return result;
+
+    if( newVal == null || newVal.equals( IAtomicValue.NULL ) || !newVal.isAssigned() ) {
+      return false;
     }
-    oldVal = newVal;
-    return false;
+
+    // 2023.02.01 Убрана проверка, потому что она ещё присутствует в setter
+    // if( !oldVal.equals( newVal ) ) {
+    // logger.debug( "Value tag %s, changed: %s", tag.tagId(), newVal.toString() );
+    // oldVal = newVal;
+
+    boolean result = false;
+    try {
+      result = dataSetter.setDataValue( newVal, aTime );
+    }
+    catch( Exception e ) {
+      logger.error( e, "Set data error: gwid: %s, tag: %s, error: %s", dataSetter.toString(), tag.tagId(),
+          e.getMessage() );
+    }
+    return result;
+
+    // }
+    // oldVal = newVal;
+    // return false;
   }
 
   @Override

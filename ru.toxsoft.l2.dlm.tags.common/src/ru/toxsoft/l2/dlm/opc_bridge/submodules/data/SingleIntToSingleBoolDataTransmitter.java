@@ -70,7 +70,7 @@ public class SingleIntToSingleBoolDataTransmitter<T extends ISkRtdataChannel>
 
     if( invDataSetter != null ) {
       try {
-        result = invDataSetter.setDataValue( AvUtils.avBool( !val ), aTime );
+        result = result || invDataSetter.setDataValue( AvUtils.avBool( !val ), aTime );
       }
       catch( Exception e ) {
         logger.error( e, "Set data error: gwid: %s, tag: %s, error: %s", invDataSetter.toString(), tag.tagId(),
