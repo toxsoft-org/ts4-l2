@@ -36,6 +36,12 @@ public interface ISysClassRowDef {
   IDataDef EVENT_ID_PARAM = create( "event.id", STRING, TSID_DESCRIPTION, "Event Id", TSID_NAME, "event id",
       TSID_DEFAULT_VALUE, IAtomicValue.NULL, TSID_IS_MANDATORY, avBool( false ) );
 
+  IDataDef EVENT_ON_MESSAGE_PARAM = create( "event.on.message", STRING, TSID_DESCRIPTION, "Event On Message", TSID_NAME,
+      "event on message", TSID_DEFAULT_VALUE, IAtomicValue.NULL, TSID_IS_MANDATORY, avBool( false ) );
+
+  IDataDef EVENT_OFF_MESSAGE_PARAM = create( "event.off.message", STRING, TSID_DESCRIPTION, "Event Off Message",
+      TSID_NAME, "event off message", TSID_DEFAULT_VALUE, IAtomicValue.NULL, TSID_IS_MANDATORY, avBool( false ) );
+
   IDataDef EVENT_ON_PARAM = create( "event.on", BOOLEAN, TSID_DESCRIPTION, "Event On", TSID_NAME, "event on",
       TSID_DEFAULT_VALUE, IAtomicValue.NULL, TSID_IS_MANDATORY, avBool( false ) );
 

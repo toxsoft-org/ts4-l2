@@ -39,6 +39,10 @@ public class ClassTabsOdsFileReader
 
   private final static StringFieldValueGetter EVENT_ID_COLUMN = new StringFieldValueGetter( 17 );
 
+  private final static StringFieldValueGetter EVENT_ON_MESSAGE_COLUMN = new StringFieldValueGetter( 19 );
+
+  private final static StringFieldValueGetter EVENT_OFF_MESSAGE_COLUMN = new StringFieldValueGetter( 20 );
+
   private final static IntegerFieldValueGetter EVENT_ON_COLUMN = new IntegerFieldValueGetter( 21 );
 
   private final static IntegerFieldValueGetter EVENT_OFF_COLUMN = new IntegerFieldValueGetter( 22 );
@@ -47,7 +51,7 @@ public class ClassTabsOdsFileReader
 
   private final static TagTypeFieldValueGetter TAG_TYPE_COLUMN = new TagTypeFieldValueGetter( 11 );
 
-  private List<ClassRow> classRows = new ArrayList<>();
+  // private List<ClassRow> classRows = new ArrayList<>();
 
   private List<IOptionSet> optSetRows = new ArrayList<>();
 
@@ -91,6 +95,10 @@ public class ClassTabsOdsFileReader
     String dataId = DATA_ID_COLUMN.getValue( aSheet, aRowNumber );
 
     String eventId = EVENT_ID_COLUMN.getValue( aSheet, aRowNumber );
+
+    String eventOnMessage = EVENT_ON_MESSAGE_COLUMN.getValue( aSheet, aRowNumber );
+
+    String eventOffMessage = EVENT_OFF_MESSAGE_COLUMN.getValue( aSheet, aRowNumber );
 
     boolean eventOn = EVENT_ON_COLUMN.getValue( aSheet, aRowNumber ) == 1;
 
@@ -149,6 +157,12 @@ public class ClassTabsOdsFileReader
     newClassRow.eventId = eventId;
     EVENT_ID_PARAM.setValue( newOpt, avStr( eventId ) );
 
+    newClassRow.eventOnMessge = eventOnMessage;
+    EVENT_ON_MESSAGE_PARAM.setValue( newOpt, avStr( eventOnMessage ) );
+
+    newClassRow.eventOffMessge = eventOffMessage;
+    EVENT_OFF_MESSAGE_PARAM.setValue( newOpt, avStr( eventOffMessage ) );
+
     newClassRow.eventOn = eventOn;
     EVENT_ON_PARAM.setValue( newOpt, avBool( eventOn ) );
 
@@ -170,7 +184,7 @@ public class ClassTabsOdsFileReader
     newClassRow.valType = valType;
     VAL_TYPE_PARAM.setValue( newOpt, avStr( valType.getName() ) );
 
-    classRows.add( newClassRow );
+    // classRows.add( newClassRow );
     optSetRows.add( newOpt );
   }
 
@@ -189,6 +203,10 @@ public class ClassTabsOdsFileReader
     String dataId;
 
     String eventId;
+
+    String eventOnMessge;
+
+    String eventOffMessge;
 
     boolean eventOn;
 
