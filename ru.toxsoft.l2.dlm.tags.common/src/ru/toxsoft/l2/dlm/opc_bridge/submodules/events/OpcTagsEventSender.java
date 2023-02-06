@@ -9,10 +9,10 @@ import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
@@ -67,7 +67,8 @@ public class OpcTagsEventSender
   }
 
   private void fireEvent( long aTime ) {
-    IStringMapEdit<IAtomicValue> paramValues = new StringMap<>();
+    // IStringMapEdit<IAtomicValue> paramValues = new StringMap<>();
+    IOptionSetEdit paramValues = new OptionSet();
     try {
       for( IEventParamsFormer paramsFormer : formers.values() ) {
         IStringMap<IAtomicValue> params = paramsFormer.getEventParamValues( aTime );
@@ -79,7 +80,7 @@ public class OpcTagsEventSender
       return;
     }
     SkEvent ev = new SkEvent( aTime,
-        Gwid.createEvent( objNameObject.getClassId(), objNameObject.getObjName(), eventId ), IOptionSet.NULL );
+        Gwid.createEvent( objNameObject.getClassId(), objNameObject.getObjName(), eventId ), paramValues );
     connection.coreApi().eventService().fireEvent( ev );// TODO
 
     logger.debug( "Event sent: %s", eventId + " ( " + objId + " ) " );
