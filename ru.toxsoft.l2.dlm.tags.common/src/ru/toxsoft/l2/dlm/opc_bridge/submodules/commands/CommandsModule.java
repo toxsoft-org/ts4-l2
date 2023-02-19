@@ -227,6 +227,11 @@ public class CommandsModule
 
         ITsOpc tagsDevice = (ITsOpc)context.hal().listSpecificDevices().getByKey( tc.getDeviceId() );
         ITag tag = tagsDevice.tag( tc.getTagId() );
+
+        if( tag == null ) {
+          logger.debug( "Tag '%s' not found", tc.getDeviceId() + " | " + tc.getTagId() );
+        }
+
         execTags.put( tcId, tag );
       }
 
@@ -257,10 +262,27 @@ public class CommandsModule
     // }
     // System.out.println();
     // }
+
+    // long testComandSentTime = System.currentTimeMillis();
   }
+
+  // private boolean testComandVal = true;
+  // private long testComandSentPeriod = 30000L;
 
   @Override
   protected void doDoJob() {
+    // test
+    // if( System.currentTimeMillis() > testComandSentTime + testComandSentPeriod ) {
+    // testComandSentTime = System.currentTimeMillis();
+    // Gwid cmdGwid = Gwid.createCmd( "ci.AnalogInput", "ci_1.AI_BHB", "cmdImitation" );
+    // OptionSet cmdArgs = new OptionSet();
+    // cmdArgs.setValue( "value", AvUtils.avBool( testComandVal ) );
+    // testComandVal = !testComandVal;
+    // logger.debug( "Test Command come to sending" );
+    // connection.coreApi().cmdService().sendCommand( cmdGwid, new Skid( ISkUser.CLASS_ID, "root" ), cmdArgs );
+    // logger.debug( "Test Command just has sent" );
+    // }
+
     long time = System.currentTimeMillis();
     // Получение команды
     IDtoCommand cmd = commandsQueue.peekHeadOrNull();
