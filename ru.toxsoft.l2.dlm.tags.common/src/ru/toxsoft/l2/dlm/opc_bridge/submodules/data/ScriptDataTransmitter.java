@@ -191,6 +191,12 @@ public class ScriptDataTransmitter<T extends ISkRtdataChannel>
         // TODO Auto-generated method stub
         return null;
       }
+
+      @Override
+      public boolean isDirty() {
+        // TODO Auto-generated method stub
+        return false;
+      }
     };
 
     testTrans.start( new IDataSetter[] { setter }, new ElemArrayList<>( tag ), null );

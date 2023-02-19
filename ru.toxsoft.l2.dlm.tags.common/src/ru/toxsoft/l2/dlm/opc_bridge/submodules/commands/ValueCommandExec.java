@@ -12,7 +12,6 @@ import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
 
 import ru.toxsoft.l2.thd.opc.*;
-import ru.toxsoft.l2.thd.opc.da.*;
 
 /**
  * Команда, подающая на тег указанное в команде значение.
@@ -70,9 +69,11 @@ public class ValueCommandExec
       value = AvUtils.avInt( newTagValueInt );
     }
 
+    logger.debug( "Value = %s", value.asString() );
+
     tag.set( value );
 
-    logger.debug( "in do exec isDirty = %s", String.valueOf( ((Tag)tag).isDirty() ) ); //$NON-NLS-1$
+    logger.debug( "in do exec isDirty = %s", String.valueOf( tag.isDirty() ) ); //$NON-NLS-1$
   }
 
   @Override
@@ -91,9 +92,9 @@ public class ValueCommandExec
   public void doJob( long aTime ) {
     if( currentCmd != null ) {
       logger.debug( "DoJob  currentCmd != null" ); //$NON-NLS-1$
-      logger.debug( "in do job isDirty = %s", String.valueOf( ((Tag)tag).isDirty() ) ); //$NON-NLS-1$
+      logger.debug( "in do job isDirty = %s", String.valueOf( tag.isDirty() ) ); //$NON-NLS-1$
 
-      if( !((Tag)tag).isDirty() ) {
+      if( !tag.isDirty() ) {
 
         setCmdStateSuccess( currentCmd );
         clearCommand();

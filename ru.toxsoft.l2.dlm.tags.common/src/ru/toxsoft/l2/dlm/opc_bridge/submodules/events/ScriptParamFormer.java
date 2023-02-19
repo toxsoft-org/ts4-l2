@@ -192,6 +192,12 @@ public class ScriptParamFormer
         // TODO Auto-generated method stub
         return null;
       }
+
+      @Override
+      public boolean isDirty() {
+        // TODO Auto-generated method stub
+        return false;
+      }
     };
 
     IMapEdit<String, ITag> map = new ElemMap();
