@@ -3,7 +3,6 @@ package ru.toxsoft.l2.utils.opc.cfg.exe;
 import static ru.toxsoft.l2.utils.opc.cfg.exe.ISkResources.*;
 
 import java.io.*;
-import java.lang.reflect.*;
 import java.util.*;
 
 import org.toxsoft.core.tslib.av.avtree.*;
@@ -12,13 +11,13 @@ import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.bricks.validator.impl.*;
 import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 
 import ru.toxsoft.l2.utils.opc.cfg.exe.OdsFileReader.*;
-import ru.toxsoft.l2.utils.opc.cfg.exe.ods.*;
 
 /**
  * Конвертор ODS-файла с описанием OPC в файл конфигурации драйвера OPC-моста.
@@ -30,7 +29,7 @@ public class OpcOdsToOpcThdConvertor {
   private static final ILogger logger = LoggerUtils.errorLogger();
 
   // public static final String OPC_TAG_DEVICE = "opc2s5.vj";
-  public static final String OPC_TAG_DEVICE = "opc2s5.bridge.collection.id";
+  public static String OPC_TAG_DEVICE = "opc2s5.bridge.collection.id";
 
   private static final String DESCRIPTION_PARAM_NAME         = "description";
   private static final String DESCRIPTION_PARAM_VAL_TEMPLATE = "opc 2 s5 pins apparat producer";
@@ -41,7 +40,7 @@ public class OpcOdsToOpcThdConvertor {
   private static final String JAVA_CLASS_PARAM_NAME         = "javaClassName";
   private static final String JAVA_CLASS_PARAM_VAL_TEMPLATE = "ru.toxsoft.l2.thd.opc.da.Opc2S5CollectionProducer";
 
-  private static final String SIEMENS_BRIDGE_NODE_ID = "siemens.opc.def";
+  private static final String SIEMENS_BRIDGE_NODE_ID = "device1.opc.def";
 
   private static final String OPC2S5_CFG_NODE_ID = "opc2s5.cfg";
 
@@ -95,37 +94,7 @@ public class OpcOdsToOpcThdConvertor {
 
     String dstFileName = args[1];
 
-    IListEdit<StringData> result;
-    try {
-      if( args.length > 2 ) {
-        String fulTagNameFormerClass = args[2];
-
-        try {
-          Object fulTagNameFormer = Class.forName( fulTagNameFormerClass ).getConstructor().newInstance();
-          if( fulTagNameFormer instanceof StringFieldValueGetter ) {
-            TwoTabsOdsFileReader.TAG_FULL_NAME_COLUMN = (StringFieldValueGetter)fulTagNameFormer;
-          }
-        }
-        catch( InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-            | NoSuchMethodException | SecurityException | ClassNotFoundException ex ) {
-          ex.printStackTrace();
-        }
-      }
-
-      result = TwoTabsOdsFileReader.readSheet( srcFileName );
-      System.out.println( result.size() );
-    }
-    catch( IOException e ) {
-      e.printStackTrace();
-      return;
-    }
-
-    try {
-      formThdFile( dstFileName, result );
-    }
-    catch( IOException e ) {
-      e.printStackTrace();
-    }
+    generate( srcFileName, dstFileName );
   }
 
   /**
@@ -137,17 +106,44 @@ public class OpcOdsToOpcThdConvertor {
    */
   public static ValidationResult generate( String aSourceOdsFile, String aTargetThdFile ) {
 
+    String objSheetName = "Объекты";
+    String classSheetName = "Классы";
+    ClassTabsOdsFileReader classTabsOdsFileReader =
+        new ClassTabsOdsFileReader( new File( aSourceOdsFile ), objSheetName );
+    TwoTabsOdsFileReader reader =
+        new TwoTabsOdsFileReader( new File( aSourceOdsFile ), classSheetName, classTabsOdsFileReader );
+
     IListEdit<StringData> result;
     try {
-      result = TwoTabsOdsFileReader.readSheet( aSourceOdsFile );
+      reader.read();
+
+      result = new ElemArrayList<>( reader.getStringDataRows() );
     }
     catch( IOException e ) {
       logger.error( e.getMessage() );
       return ValidationResult.error( FMT_ERR_READ_SHEET, aSourceOdsFile );
     }
 
+    IOptionSetEdit opSet = new OptionSet();
+
+    opSet.setStr( JAVA_CLASS_PARAM_NAME, JAVA_CLASS_PARAM_VAL_TEMPLATE );
+    opSet.setStr( ID_PARAM_NAME, ID_PARAM_VAL_TEMPLATE );
+    opSet.setStr( DESCRIPTION_PARAM_NAME, DESCRIPTION_PARAM_VAL_TEMPLATE );
+
+    IOptionSetEdit siemensBridgeOps = new OptionSet();
+    // Dima, 05.07.16
+    // Добавляем новые настройки
+    siemensBridgeOps.setStr( BRIDGE_TYPE_PARAM_NAME, BRIDGE_TYPE_PARAM_VAL_TEMPLATE );
+    siemensBridgeOps.setInt( PERIOD_PARAM_NAME, PERIOD_PARAM_VAL_TEMPLATE );
+    siemensBridgeOps.setStr( HOST_PARAM_NAME, HOST_PARAM_VAL_TEMPLATE );
+    siemensBridgeOps.setStr( DOMAIN_PARAM_NAME, DOMAIN_PARAM_VAL_TEMPLATE );
+    siemensBridgeOps.setStr( USER_PARAM_NAME, USER_PARAM_VAL_TEMPLATE );
+    siemensBridgeOps.setStr( PASSWORD_PARAM_NAME, PASSWORD_PARAM_VAL_TEMPLATE );
+    siemensBridgeOps.setStr( PROG_ID_PARAM_NAME, PROG_ID_PARAM_VAL_TEMPLATE );
+    siemensBridgeOps.setStr( CLS_ID_PARAM_NAME, CLS_ID_PARAM_VAL_TEMPLATE );
+
     try {
-      formThdFile( aTargetThdFile, result );
+      formThdFile( aTargetThdFile, result, opSet, siemensBridgeOps );
     }
     catch( IOException e ) {
       logger.error( e.getMessage() );
@@ -156,7 +152,8 @@ public class OpcOdsToOpcThdConvertor {
     return ValidationResult.SUCCESS;
   }
 
-  private static void formThdFile( String aDestFile, IListEdit<StringData> aResult )
+  public static void formThdFile( String aDestFile, IListEdit<StringData> aResult, IOptionSet aCommonOptions,
+      IOptionSet aBridgeOptions )
       throws IOException {
     AvTree synchGroup = createGroup( aResult, aStringData -> {
       if( aStringData.getTagFullName() == null || aStringData.getTagFullName().trim().length() == 0 ) {
@@ -191,33 +188,16 @@ public class OpcOdsToOpcThdConvertor {
     // массив групп
     AvTree bridgesMassivTree = AvTree.createArrayAvTree();
 
-    IOptionSetEdit siemensBridgeOps = new OptionSet();
-    // Dima, 05.07.16
-    // Добавляем новые настройки
-    siemensBridgeOps.setStr( BRIDGE_TYPE_PARAM_NAME, BRIDGE_TYPE_PARAM_VAL_TEMPLATE );
-    siemensBridgeOps.setInt( PERIOD_PARAM_NAME, PERIOD_PARAM_VAL_TEMPLATE );
-    siemensBridgeOps.setStr( HOST_PARAM_NAME, HOST_PARAM_VAL_TEMPLATE );
-    siemensBridgeOps.setStr( DOMAIN_PARAM_NAME, DOMAIN_PARAM_VAL_TEMPLATE );
-    siemensBridgeOps.setStr( USER_PARAM_NAME, USER_PARAM_VAL_TEMPLATE );
-    siemensBridgeOps.setStr( PASSWORD_PARAM_NAME, PASSWORD_PARAM_VAL_TEMPLATE );
-    siemensBridgeOps.setStr( PROG_ID_PARAM_NAME, PROG_ID_PARAM_VAL_TEMPLATE );
-    siemensBridgeOps.setStr( CLS_ID_PARAM_NAME, CLS_ID_PARAM_VAL_TEMPLATE );
-
     StringMap<IAvTree> groupsNodes = new StringMap<>();
     groupsNodes.put( GROUPS_ARRAY_NAME, groupsMassivTree );
 
-    IAvTree siemensBridge = AvTree.createSingleAvTree( SIEMENS_BRIDGE_NODE_ID, siemensBridgeOps, groupsNodes );
+    IAvTree siemensBridge = AvTree.createSingleAvTree( SIEMENS_BRIDGE_NODE_ID, aBridgeOptions, groupsNodes );
     bridgesMassivTree.addElement( siemensBridge );
-    IOptionSetEdit opSet = new OptionSet();
-
-    opSet.setStr( JAVA_CLASS_PARAM_NAME, JAVA_CLASS_PARAM_VAL_TEMPLATE );
-    opSet.setStr( ID_PARAM_NAME, ID_PARAM_VAL_TEMPLATE );
-    opSet.setStr( DESCRIPTION_PARAM_NAME, DESCRIPTION_PARAM_VAL_TEMPLATE );
 
     StringMap<IAvTree> nodes = new StringMap<>();
     nodes.put( BRIDGES_ARRAY_NAME, bridgesMassivTree );
 
-    IAvTree tree = AvTree.createSingleAvTree( OPC2S5_CFG_NODE_ID, opSet, nodes );
+    IAvTree tree = AvTree.createSingleAvTree( OPC2S5_CFG_NODE_ID, aCommonOptions, nodes );
 
     String tmpDestFile = TMP_DEST_FILE;
 

@@ -41,7 +41,7 @@ public class TagTypeFieldValueGetter
           return ETagValueType.INTEGER;
         }
         else
-          if( typeStr.toLowerCase().contains( "float" ) ) {
+          if( typeStr.toLowerCase().contains( "float" ) || typeStr.toLowerCase().contains( "real" ) ) {
             return ETagValueType.FLOAT;
           }
           else

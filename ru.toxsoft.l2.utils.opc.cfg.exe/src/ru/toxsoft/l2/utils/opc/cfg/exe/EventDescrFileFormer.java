@@ -11,9 +11,9 @@ public class EventDescrFileFormer {
 
   private ClassTabsOdsFileReader classTabsOdsFileReader;
 
-  public EventDescrFileFormer( File odsFile ) {
+  public EventDescrFileFormer( File odsFile, String aClassSheetName ) {
 
-    classTabsOdsFileReader = new ClassTabsOdsFileReader( odsFile );
+    classTabsOdsFileReader = new ClassTabsOdsFileReader( odsFile, aClassSheetName );
     try {
       classTabsOdsFileReader.read();
     }
@@ -91,8 +91,10 @@ public class EventDescrFileFormer {
 
     String dstFileName = args[1];
 
+    String classSheetName = "Классы";
+
     try {
-      new EventDescrFileFormer( new File( srcFileName ) ).formDstTree( dstFileName );
+      new EventDescrFileFormer( new File( srcFileName ), classSheetName ).formDstTree( dstFileName );
     }
     catch( IOException ex ) {
       ex.printStackTrace();

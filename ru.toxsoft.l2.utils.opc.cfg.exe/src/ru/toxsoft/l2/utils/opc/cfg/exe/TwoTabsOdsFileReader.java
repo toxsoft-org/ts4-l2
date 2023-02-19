@@ -8,8 +8,6 @@ import java.util.*;
 import org.jopendocument.dom.spreadsheet.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
 
 import ru.toxsoft.l2.utils.opc.cfg.exe.OdsFileReader.*;
 import ru.toxsoft.l2.utils.opc.cfg.exe.ods.*;
@@ -22,26 +20,28 @@ import ru.toxsoft.l2.utils.opc.cfg.exe.ods.*;
 public class TwoTabsOdsFileReader
     extends CommonOdsFileReader {
 
-  private final static String SHEET_NAME = "Объекты";
+  protected IFieldValueGetter<String> TAG_NAME_COLUMN = new StringFieldValueGetter(2);// 4 );
 
-  private final static StringFieldValueGetter TAG_NAME_COLUMN = new StringFieldValueGetter( 2 );
+  protected IFieldValueGetter<String> TAG_FULL_NAME_COLUMN = new StringFieldValueGetter( 6 );
 
-  static StringFieldValueGetter TAG_FULL_NAME_COLUMN = new StringFieldValueGetter( 6 );
+  protected IFieldValueGetter<String> CLASS_ID_COLUMN = new StringFieldValueGetter(13);// 1 );
 
-  private final static StringFieldValueGetter CLASS_ID_COLUMN = new StringFieldValueGetter( 13 );
+  protected IFieldValueGetter<String> OBJ_NAME_COLUMN = new StringFieldValueGetter(14);// 9 );
 
-  private final static StringFieldValueGetter OBJ_NAME_COLUMN = new StringFieldValueGetter( 14 );
-
-  private final static IntegerFieldValueGetter IS_PROCCESS_COLUMN = new IntegerFieldValueGetter( 17 );
+  protected IFieldValueGetter<Integer> IS_PROCCESS_COLUMN = new IntegerFieldValueGetter( 17 );
 
   private ClassTabsOdsFileReader classTabsOdsFileReader;
 
   private List<StringData> rows = new ArrayList<>();
 
-  public TwoTabsOdsFileReader( File odsFile ) {
-    super( odsFile, SHEET_NAME );
+  public List<StringData> getStringDataRows() {
+    return rows;
+  }
 
-    classTabsOdsFileReader = new ClassTabsOdsFileReader( odsFile );
+  public TwoTabsOdsFileReader( File odsFile, String aObjectSheetName, ClassTabsOdsFileReader aClassTabsOdsFileReader ) {
+    super( odsFile, aObjectSheetName );
+
+    classTabsOdsFileReader = aClassTabsOdsFileReader;
     try {
       classTabsOdsFileReader.read();
     }
@@ -145,17 +145,27 @@ public class TwoTabsOdsFileReader
    * @return IListEdit - список объектов описаний тегов.
    * @throws IOException - ошибка чтения файла.
    */
-  public static IListEdit<StringData> readSheet( String aFileName )
-      throws IOException {
-    TwoTabsOdsFileReader reader = new TwoTabsOdsFileReader( new File( aFileName ) );
-    reader.read();
-
-    return new ElemArrayList<>( reader.rows );
-  }
+  // public static IListEdit<StringData> readSheetOld( String aFileName )
+  // throws IOException {
+  // String objSheetName = "objectsDescr";
+  // String classSheetName = "classDescr";
+  // ClassTabsOdsFileReader classTabsOdsFileReader = new ClassTabsOdsFileReader( new File( aFileName ), objSheetName );
+  // TwoTabsOdsFileReader reader =
+  // new TwoTabsOdsFileReader( new File( aFileName ), classSheetName, classTabsOdsFileReader );
+  // reader.read();
+  //
+  // return new ElemArrayList<>( reader.rows );
+  // }
 
   public static void main( String[] a ) {
     try {
-      TwoTabsOdsFileReader reader = new TwoTabsOdsFileReader( new File( "17023 Сигналы Москокс 2018-04-11.ods" ) );
+      String fileName = "17023 Сигналы Москокс 2018-04-11.ods";
+      String objSheetName = "Объекты";
+      String classSheetName = "Классы";
+      ClassTabsOdsFileReader classTabsOdsFileReader = new ClassTabsOdsFileReader( new File( fileName ), objSheetName );
+      TwoTabsOdsFileReader reader =
+          new TwoTabsOdsFileReader( new File( fileName ), classSheetName, classTabsOdsFileReader );
+
       reader.read();
       int i = 1;
       for( StringData cr : reader.rows ) {

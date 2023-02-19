@@ -105,7 +105,9 @@ public class OpcOdsToBaseDlmsConvertor {
   private static final String CMD_DEF_FORMAT           = "cmd.%s.def";
   private static final String CLASS_DEF_FORMAT         = "class.%s.def";
 
-  private static IListEdit<StringData> stringDatas;
+  public static IListEdit<StringData> stringDatas;
+
+  public static String objectIdPrefix = new String();// "ci_1.";
 
   /**
    * Запускает программу.
@@ -113,24 +115,7 @@ public class OpcOdsToBaseDlmsConvertor {
    * @param args - 0 параметр - исходный ODS-файл, 1 параметр - целевой dlmcfg-файл.
    */
   public static void main( String[] args ) {
-    String srcFileName = args[0];
-
-    try {
-      // stringDatas = OdsFileReader.readSheet( srcFileName );
-      stringDatas = TwoTabsOdsFileReader.readSheet( srcFileName );
-      System.out.println( "data size = " + stringDatas.size() );
-    }
-    catch( IOException e ) {
-      e.printStackTrace();
-      return;
-    }
-
-    try {
-      formDlmFile( args[1] );
-    }
-    catch( IOException e ) {
-      e.printStackTrace();
-    }
+    generate( args[0], args[1] );
   }
 
   /**
@@ -142,8 +127,17 @@ public class OpcOdsToBaseDlmsConvertor {
    */
   public static ValidationResult generate( String aSourceOdsFile, String aTargetThdFile ) {
 
+    String objSheetName = "Объекты";
+    String classSheetName = "Классы";
+    ClassTabsOdsFileReader classTabsOdsFileReader =
+        new ClassTabsOdsFileReader( new File( aSourceOdsFile ), objSheetName );
+    TwoTabsOdsFileReader reader =
+        new TwoTabsOdsFileReader( new File( aSourceOdsFile ), classSheetName, classTabsOdsFileReader );
+
     try {
-      stringDatas = TwoTabsOdsFileReader.readSheet( aSourceOdsFile );
+      reader.read();
+
+      stringDatas = new ElemArrayList<>( reader.getStringDataRows() );
     }
     catch( IOException e ) {
       logger.error( e.getMessage() );
@@ -160,7 +154,7 @@ public class OpcOdsToBaseDlmsConvertor {
     return ValidationResult.SUCCESS;
   }
 
-  private static void formDlmFile( String aDstFile )
+  public static void formDlmFile( String aDstFile )
       throws IOException {
     StringMap<IAvTree> nodes = new StringMap<>();
 
@@ -259,7 +253,7 @@ public class OpcOdsToBaseDlmsConvertor {
           cmdsByClass.put( basisData.getClassId(), cmds );
         }
 
-        objs.add( basisData.getObjName() );
+        objs.add( objectIdPrefix + basisData.getObjName() );
         cmds.add( tagData.getCmdId() );
 
       }
@@ -387,7 +381,7 @@ public class OpcOdsToBaseDlmsConvertor {
     System.out.println( tagFullName );
 
     cmdOpSet.setStr( CLASS_ID, aBasisData.getClassId() );
-    cmdOpSet.setStr( OBJ_NAME, aBasisData.getObjName() );
+    cmdOpSet.setStr( OBJ_NAME, objectIdPrefix + aBasisData.getObjName() );
     cmdOpSet.setStr( CMD_ID, aTagData.getCmdId().trim() );
 
     if( aTagData.getCmdWordBitIndex() >= 0 ) {
@@ -483,7 +477,7 @@ public class OpcOdsToBaseDlmsConvertor {
     IOptionSetEdit eventOpSet = new OptionSet();
 
     eventOpSet.setStr( CLASS_ID, aBasisData.getClassId() );
-    eventOpSet.setStr( OBJ_NAME, aBasisData.getObjName() );
+    eventOpSet.setStr( OBJ_NAME, objectIdPrefix + aBasisData.getObjName() );
     eventOpSet.setStr( EVENT_ID, eventData.getEventId() );
 
     eventOpSet.setStr( EVENT_SENDER_JAVA_CLASS, OPC_TAGS_EVENT_SENDER_CLASS );
@@ -809,8 +803,12 @@ public class OpcOdsToBaseDlmsConvertor {
     for( int i = 0; i < stringDatas.size(); i++ ) {
       StringData tagData = stringDatas.get( i );
 
-      if( // alreadyAddedTags.contains( tagData.getTagFullName() ) ||
-      tagData.getDataId() == null || tagData.getDataId().length() == 0 ) {
+      //if( tagData.getTagFullName().equals( "ns=3;s=\"BHB\".\"CW\"" ) ) {
+      //  System.out.println();
+      //}
+
+      // if( alreadyAddedTags.contains( tagData.getTagFullName() ) ||
+      if( tagData.getDataId() == null || tagData.getDataId().length() == 0 ) {
         continue;
       }
 
@@ -828,7 +826,7 @@ public class OpcOdsToBaseDlmsConvertor {
           if( !bitDataOn ) {
             prevTagData = tagData;
             bitDataOn = true;
-            continue;
+            // continue;
           }
         }
 
@@ -894,7 +892,7 @@ public class OpcOdsToBaseDlmsConvertor {
 
     // класс
     String classId = aTagData.getClassId();
-    String objName = aTagData.getObjName();
+    String objName = objectIdPrefix + aTagData.getObjName();
     String dataId = aTagData.getDataId();
 
     IOptionSetEdit pinOpSet1 = new OptionSet();

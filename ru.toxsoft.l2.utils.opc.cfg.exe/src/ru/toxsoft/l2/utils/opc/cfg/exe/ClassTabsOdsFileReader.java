@@ -17,46 +17,43 @@ import ru.toxsoft.l2.utils.opc.cfg.exe.ods.*;
 public class ClassTabsOdsFileReader
     extends CommonOdsFileReader {
 
-  private final static String SHEET_NAME = "Классы";
+  protected StringFieldValueGetter CLASS_TAG_ID_COLUMN = new StringFieldValueGetter( 0 );
 
-  private final static StringFieldValueGetter CLASS_TAG_ID_COLUMN = new StringFieldValueGetter( 0 );
+  protected StringFieldValueGetter CLASS_ID_COLUMN = new StringFieldValueGetter( 1 );
 
-  private final static StringFieldValueGetter CLASS_ID_COLUMN = new StringFieldValueGetter( 1 );
+  protected StringFieldValueGetter TAG_NAME_COLUMN = new StringFieldValueGetter( 4 );
 
-  private final static StringFieldValueGetter TAG_NAME_COLUMN = new StringFieldValueGetter( 4 );
+  protected IntegerFieldValueGetter BIT_INDEX_COLUMN = new IntegerFieldValueGetter( 10, -1 );
 
-  private final static IntegerFieldValueGetter BIT_INDEX_COLUMN = new IntegerFieldValueGetter( 10, -1 );
+  protected BooleanStringContaineFieldValueGetter IS_READ_COLUMN = new BooleanStringContaineFieldValueGetter( 12, "R" );
 
-  private final static BooleanStringContaineFieldValueGetter IS_READ_COLUMN =
-      new BooleanStringContaineFieldValueGetter( 12, "R" );
-
-  private final static BooleanStringContaineFieldValueGetter IS_WRITE_COLUMN =
+  protected BooleanStringContaineFieldValueGetter IS_WRITE_COLUMN =
       new BooleanStringContaineFieldValueGetter( 12, "W" );
 
-  private final static StringFieldValueGetter SYNCH_COLUMN = new StringFieldValueGetter( 16 );
+  protected StringFieldValueGetter SYNCH_COLUMN = new StringFieldValueGetter( 16 );
 
-  private final static StringFieldValueGetter DATA_ID_COLUMN = new StringFieldValueGetter( 13 );
+  protected StringFieldValueGetter DATA_ID_COLUMN = new StringFieldValueGetter( 13 );
 
-  private final static StringFieldValueGetter EVENT_ID_COLUMN = new StringFieldValueGetter( 17 );
+  protected StringFieldValueGetter EVENT_ID_COLUMN = new StringFieldValueGetter( 17 );
 
-  private final static StringFieldValueGetter EVENT_ON_MESSAGE_COLUMN = new StringFieldValueGetter( 19 );
+  protected StringFieldValueGetter EVENT_ON_MESSAGE_COLUMN = new StringFieldValueGetter( 19 );
 
-  private final static StringFieldValueGetter EVENT_OFF_MESSAGE_COLUMN = new StringFieldValueGetter( 20 );
+  protected StringFieldValueGetter EVENT_OFF_MESSAGE_COLUMN = new StringFieldValueGetter( 20 );
 
-  private final static IntegerFieldValueGetter EVENT_ON_COLUMN = new IntegerFieldValueGetter( 21 );
+  protected IntegerFieldValueGetter EVENT_ON_COLUMN = new IntegerFieldValueGetter( 21 );
 
-  private final static IntegerFieldValueGetter EVENT_OFF_COLUMN = new IntegerFieldValueGetter( 22 );
+  protected IntegerFieldValueGetter EVENT_OFF_COLUMN = new IntegerFieldValueGetter( 22 );
 
-  private final static StringFieldValueGetter CMD_ID_COLUMN = new StringFieldValueGetter( 23 );
+  protected StringFieldValueGetter CMD_ID_COLUMN = new StringFieldValueGetter( 23 );
 
-  private final static TagTypeFieldValueGetter TAG_TYPE_COLUMN = new TagTypeFieldValueGetter( 11 );
+  protected TagTypeFieldValueGetter TAG_TYPE_COLUMN = new TagTypeFieldValueGetter( 11 ); // 7 );
 
   // private List<ClassRow> classRows = new ArrayList<>();
 
   private List<IOptionSet> optSetRows = new ArrayList<>();
 
-  public ClassTabsOdsFileReader( File odsFile ) {
-    super( odsFile, SHEET_NAME );
+  public ClassTabsOdsFileReader( File odsFile, String aSheetName ) {
+    super( odsFile, aSheetName );
   }
 
   @Override
@@ -75,7 +72,9 @@ public class ClassTabsOdsFileReader
 
     String tagName = TAG_NAME_COLUMN.getValue( aSheet, aRowNumber );
 
-    if( classId.length() == 0 && tagName.length() == 0 ) {
+    int bitIndex = BIT_INDEX_COLUMN.getValue( aSheet, aRowNumber ).intValue();
+
+    if( classId.length() == 0 && tagName.length() == 0 && bitIndex < 0 ) {
       return;
     }
 
@@ -89,8 +88,6 @@ public class ClassTabsOdsFileReader
     if( SYNCH_COLUMN.getValue( aSheet, aRowNumber ).equals( "не обрабатывать" ) ) {
       return;
     }
-
-    Integer bitIndex = BIT_INDEX_COLUMN.getValue( aSheet, aRowNumber );
 
     String dataId = DATA_ID_COLUMN.getValue( aSheet, aRowNumber );
 
