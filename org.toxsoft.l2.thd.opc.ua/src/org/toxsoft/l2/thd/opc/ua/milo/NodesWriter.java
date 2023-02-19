@@ -72,6 +72,8 @@ public class NodesWriter {
 
     for( BufferedUaTag tag : bufferedTags ) {
       if( tag.isChanged() ) {
+        logger.debug( "BufferedUaTag %s changed, new val = %s", tag.getNodeId().toParseableString(),
+            tag.curValue.asString() );
         currWriteIds.add( tag.getNodeId() );
         currWriteValues.add( new DataValue( tag.getValue(), null, null ) );
         currWriteTags.add( tag );
@@ -90,6 +92,7 @@ public class NodesWriter {
         if( code.isGood() ) {
           // TODO
           currWriteTags.get( i ).clear();
+          logger.debug( "tag %s cleared", currWriteTags.get( i ).getNodeId().toParseableString() );
         }
         else {
           logger.error( "tag %s error writing", currWriteTags.get( i ).getNodeId().toParseableString() );

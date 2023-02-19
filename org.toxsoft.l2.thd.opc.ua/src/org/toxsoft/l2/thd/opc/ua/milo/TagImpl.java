@@ -1,9 +1,12 @@
 package org.toxsoft.l2.thd.opc.ua.milo;
 
+import org.toxsoft.core.log4j.*;
+
 //import static ru.toxsoft.l2.thd.opc.da.IL2Resources.*;
 
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.*;
 
 import ru.toxsoft.l2.thd.opc.*;
 
@@ -14,6 +17,11 @@ import ru.toxsoft.l2.thd.opc.*;
  */
 public class TagImpl
     implements ITag {
+
+  /**
+   * Журнал работы
+   */
+  private ILogger logger = LoggerWrapper.getLogger( this.getClass().getName() );
 
   /**
    * id тега в OPC сервере
@@ -43,7 +51,7 @@ public class TagImpl
   /**
    * Признак установки нового значения тега
    */
-  private boolean dirty;
+  private boolean dirty = false;
 
   /**
    * имя тега (опционально)
@@ -121,6 +129,7 @@ public class TagImpl
   /**
    * @return признак установки нового значения
    */
+  @Override
   public boolean isDirty() {
     return dirty;
   }
@@ -130,9 +139,9 @@ public class TagImpl
    */
   void setDirty( boolean aDirty ) {
     dirty = aDirty;
-    if( !dirty ) {
-      newValue = IAtomicValue.NULL;
-    }
+    // if( !dirty ) {
+    // newValue = IAtomicValue.NULL;
+    // }
   }
 
   /**
@@ -142,7 +151,10 @@ public class TagImpl
    */
   void updateVal( IAtomicValue aVal ) {
     if( !isDirty() ) {
-      value = aVal;
+      if( aVal != null && !value.equals( aVal ) ) {
+        logger.debug( "node %s changed value = %s", tagId, aVal.asString() );
+      }
+      value = aVal != null ? aVal : IAtomicValue.NULL;
     }
   }
 

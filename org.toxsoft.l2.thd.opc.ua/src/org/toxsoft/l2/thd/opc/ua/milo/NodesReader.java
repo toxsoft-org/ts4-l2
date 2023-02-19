@@ -82,6 +82,14 @@ public class NodesReader {
         DataValue dValue = dNode.readValue();
         Variant value = dValue.getValue();
 
+        if( dNode.getNodeId().toParseableString().equals( "ns=3;s=\"BHB\".\"X0\"" ) ) {
+          logger.debug( "Value of SyncTag=%s   is  %s", dNode.getNodeId().toParseableString(), value.toString() );
+        }
+
+        if( value == null ) {
+          logger.debug( "Value of SyncTag=%s   is NULL", dNode.getNodeId().toParseableString() );
+        }
+
         bufferSynchVal.put( dNode.getNodeId().toParseableString(), value );
       }
 
@@ -114,6 +122,13 @@ public class NodesReader {
 
       EAtomicType tagType = tag.valueType();
       Variant vValue = dataValue.getValue();
+
+      if( vValue == null ) {
+        logger.debug( "Value of AsyncTag=%s   is NULL", tagId );
+      }
+      else {
+        logger.debug( "Value of AsyncTag=%s   is %s", tagId, vValue.toString() );
+      }
 
       IAtomicValue atomicVal = OpcUaUtils.convertFromOpc( vValue, tagType );
       tag.updateVal( atomicVal );
@@ -158,16 +173,14 @@ public class NodesReader {
             ManagedDataItem dataItem = subscription.createDataItem( nodeId );
             if( dataItem.getStatusCode().isGood() ) {
               logger.debug( "item created for nodeId=%s", dataItem.getNodeId().toParseableString() );
-              TagImpl tag = new TagImpl( dataItem.getNodeId().toParseableString(), EKind.R, item.getTagType() );
-              tags.put( tag.tagId(), tag );
             }
             else {
               logger.error( "failed to create item for nodeId=%s (status=%s)", dataItem.getNodeId().toParseableString(),
                   dataItem.getStatusCode().toString() );
             }
-
+            TagImpl tag = new TagImpl( dataItem.getNodeId().toParseableString(), EKind.R, item.getTagType() );
+            tags.put( tag.tagId(), tag );
           }
-
         }
     }
   }
