@@ -56,4 +56,8 @@ public interface ITag
    */
   void set( IAtomicValue aVal );
 
+  /**
+   * @return признак установки нового значения
+   */
+  boolean isDirty();
 }

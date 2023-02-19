@@ -124,6 +124,7 @@ public class Tag
   /**
    * @return признак установки нового значения
    */
+  @Override
   public boolean isDirty() {
     return dirty;
   }
