@@ -13,18 +13,23 @@ public class TagCfgItem {
   private IAtomicValue tagId;
   private EAtomicType  tagType;
 
+  private String tagTypeExtra;
+
   /**
    * Конструктор конфигурации тега по идентификаторм и типу.
    *
    * @param aNamespaceId int - идентификатор пространства имён
    * @param aTagId IAtomicValue - идентификатор тега
    * @param aTagType EAtomicType - тип значения тега
+   * @param aTagTypeExtra String - подтип значения тега, по умолчанию - пустое
    */
-  public TagCfgItem( int aNamespaceId, IAtomicValue aTagId, EAtomicType aTagType ) {
+  public TagCfgItem( int aNamespaceId, IAtomicValue aTagId, EAtomicType aTagType, String aTagTypeExtra ) {
     super();
     namespaceId = aNamespaceId;
     tagId = aTagId;
     tagType = aTagType;
+
+    tagTypeExtra = aTagTypeExtra;
   }
 
   /**
@@ -52,6 +57,15 @@ public class TagCfgItem {
    */
   public EAtomicType getTagType() {
     return tagType;
+  }
+
+  /**
+   * Возвращает подтип.
+   *
+   * @return String - подтип.
+   */
+  public String getTagTypeExtra() {
+    return tagTypeExtra;
   }
 
 }

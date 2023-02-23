@@ -5,6 +5,7 @@ import org.toxsoft.core.log4j.*;
 //import static ru.toxsoft.l2.thd.opc.da.IL2Resources.*;
 
 import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 
@@ -39,6 +40,11 @@ public class TagImpl
   private EAtomicType valType;
 
   /**
+   * Подтип
+   */
+  private String valTypeExtra = TsLibUtils.EMPTY_STRING;
+
+  /**
    * Текущее значение тега
    */
   IAtomicValue value = IAtomicValue.NULL;
@@ -67,11 +73,23 @@ public class TagImpl
    * @param aTagId id тега на OPC
    * @param aKind тип тега (на чтение/запись/туда-сюда)
    * @param aValType тип значения
+   * @param aValTypeExtra String- подтип
    */
-  public TagImpl( String aTagId, EKind aKind, EAtomicType aValType ) {
+  public TagImpl( String aTagId, EKind aKind, EAtomicType aValType, String aValTypeExtra ) {
     tagId = aTagId;
     kind = aKind;
     valType = aValType;
+    valTypeExtra = aValTypeExtra;
+  }
+
+  /**
+   * Возвращает Подтип
+   *
+   * @return Подтип
+   */
+  @Override
+  public String valueTypeExtra() {
+    return valTypeExtra;
   }
 
   @Override

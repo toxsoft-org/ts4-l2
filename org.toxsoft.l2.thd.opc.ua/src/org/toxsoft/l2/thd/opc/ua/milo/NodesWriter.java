@@ -155,7 +155,7 @@ public class NodesWriter {
     }
 
     Variant getValue() {
-      Variant result = OpcUaUtils.convertToOpc( curValue, tag.valueType() );
+      Variant result = OpcUaUtils.convertToOpc( curValue, tag.valueType(), tag.valueTypeExtra() );
       // oldValue = curValue;
       return result;
     }
@@ -183,7 +183,8 @@ public class NodesWriter {
 
           UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
 
-          TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.W, item.getTagType() );
+          TagImpl tag =
+              new TagImpl( dNode.getNodeId().toParseableString(), EKind.W, item.getTagType(), item.getTagTypeExtra() );
           tags.put( tag.id(), tag );
 
           BufferedUaTag bTag = new BufferedUaTag( tag, nodeId );

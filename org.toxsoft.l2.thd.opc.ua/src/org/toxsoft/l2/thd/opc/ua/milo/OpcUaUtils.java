@@ -8,6 +8,7 @@ import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.utils.*;
 
 /**
  * Утилитный класс для работы с OPC
@@ -17,6 +18,11 @@ import org.toxsoft.core.tslib.coll.impl.*;
 public class OpcUaUtils {
 
   private static final String OPC_TAG_NAMESPACE_PARAM_NAME = "opc.tag.namespace";
+
+  /**
+   * Имя параметра - подтип пина.
+   */
+  private static final String PIN_TYPE_EXTRA_PARAM_NAME = "pin.type.extra";
 
   /**
    * Закрытый конструктор
@@ -32,17 +38,56 @@ public class OpcUaUtils {
 
   }
 
-  public static Variant convertToOpc( IAtomicValue aValue, EAtomicType aTagType ) {
-    Variant result = switch( aTagType ) {
-      case BOOLEAN -> new Variant( Boolean.valueOf( aValue.asBool() ) );
-      case FLOATING -> new Variant( Double.valueOf( aValue.asDouble() ) );
-      case INTEGER -> new Variant( Integer.valueOf( aValue.asInt() ) );
-      case NONE -> Variant.NULL_VALUE;
-      case STRING -> new Variant( aValue.asString() );
-      case TIMESTAMP -> new Variant( Long.valueOf( aValue.asLong() ) );
-      case VALOBJ -> new Variant( aValue.asValobj() );
-      default -> new Variant( aValue.asString() );
-    };
+  public static Variant convertToOpc( IAtomicValue aValue, EAtomicType aTagType, String aTagTypeExtra ) {
+    Variant result;
+    switch( aTagType ) {
+      case BOOLEAN:
+        result = new Variant( Boolean.valueOf( aValue.asBool() ) );
+        break;
+      case FLOATING:
+        result = new Variant( Float.valueOf( aValue.asFloat() ) );
+        break;
+      case INTEGER: {
+        result = new Variant( Integer.valueOf( aValue.asInt() ) );
+        if( aTagTypeExtra != null && aTagTypeExtra.length() > 0 ) {
+          // if( aTagTypeExtra.equals( "DINT" ) ) {
+          // result = new Variant( Integer.valueOf( aValue.asInt() ) );
+          // }
+          // else
+          if( aTagTypeExtra.equals( "INT" ) ) {
+            result = new Variant( Short.valueOf( String.valueOf( aValue.asInt() ) ) );
+          }
+          else
+            if( aTagTypeExtra.equals( "BYTE" ) ) {
+              result = new Variant( Byte.valueOf( String.valueOf( aValue.asInt() ) ) );
+            }
+            else
+              if( aTagTypeExtra.equals( "WORD" ) ) {// TODO сделать беззнаковый short
+                result = new Variant( Short.valueOf( String.valueOf( aValue.asInt() ) ) );
+              }
+        }
+        break;
+      }
+      case NONE: {
+        result = Variant.NULL_VALUE;
+        break;
+      }
+      case STRING: {
+        result = new Variant( aValue.asString() );
+        break;
+      }
+      case TIMESTAMP: {
+        result = new Variant( Long.valueOf( aValue.asLong() ) );
+        break;
+      }
+      case VALOBJ: {
+        result = new Variant( aValue.asValobj() );
+        break;
+      }
+      default: {
+        result = new Variant( aValue.asString() );
+      }
+    }
     return result;
   }
 
@@ -86,7 +131,9 @@ public class OpcUaUtils {
       namespace = aTagConfig.fields().getInt( OPC_TAG_NAMESPACE_PARAM_NAME );
     }
 
-    return new TagCfgItem( namespace, tagId, tagType );
+    String tagTypeExtra = aTagConfig.fields().getStr( PIN_TYPE_EXTRA_PARAM_NAME, TsLibUtils.EMPTY_STRING );
+
+    return new TagCfgItem( namespace, tagId, tagType, tagTypeExtra );
   }
 
   /**

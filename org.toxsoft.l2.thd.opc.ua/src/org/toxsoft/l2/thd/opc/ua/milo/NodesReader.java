@@ -151,7 +151,8 @@ public class NodesReader {
           UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
           syncGroup.add( dNode );
 
-          TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.R, item.getTagType() );
+          TagImpl tag =
+              new TagImpl( dNode.getNodeId().toParseableString(), EKind.R, item.getTagType(), item.getTagTypeExtra() );
           tags.put( tag.tagId(), tag );
         }
       }
@@ -167,20 +168,27 @@ public class NodesReader {
             onDataChanged( items, values );
           } );
 
+          int successAdded = 0;
+
           for( int j = 0; j < asynchTagsCfgItems.size(); j++ ) {
             TagCfgItem item = asynchTagsCfgItems.get( j );
             NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
             ManagedDataItem dataItem = subscription.createDataItem( nodeId );
             if( dataItem.getStatusCode().isGood() ) {
               logger.debug( "item created for nodeId=%s", dataItem.getNodeId().toParseableString() );
+              successAdded++;
             }
             else {
               logger.error( "failed to create item for nodeId=%s (status=%s)", dataItem.getNodeId().toParseableString(),
                   dataItem.getStatusCode().toString() );
             }
-            TagImpl tag = new TagImpl( dataItem.getNodeId().toParseableString(), EKind.R, item.getTagType() );
+            TagImpl tag = new TagImpl( dataItem.getNodeId().toParseableString(), EKind.R, item.getTagType(),
+                item.getTagTypeExtra() );
             tags.put( tag.tagId(), tag );
           }
+
+          logger.info( "Async group: successfully added %s nodes from %s", String.valueOf( successAdded ),
+              String.valueOf( asynchTagsCfgItems.size() ) );
         }
     }
   }

@@ -10,6 +10,7 @@ import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.l2.thd.opc.ua.milo.*;
@@ -124,7 +125,7 @@ public class ScriptEventCondition
         valueStr, isOn ? isOnEventStr : emptyStr, (isOn && isOff) ? orStr : emptyStr,
         isOff ? isOffEventStr : emptyStr );
 
-    ITag tag = new TagImpl( "", EKind.R, EAtomicType.BOOLEAN );
+    ITag tag = new TagImpl( "", EKind.R, EAtomicType.BOOLEAN, TsLibUtils.EMPTY_STRING );
 
     IMapEdit<String, ITag> map = new ElemMap();
     map.put( "tag", tag ); //$NON-NLS-1$
