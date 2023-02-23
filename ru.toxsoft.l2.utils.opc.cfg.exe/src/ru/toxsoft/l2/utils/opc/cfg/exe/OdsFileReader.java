@@ -83,6 +83,8 @@ public class OdsFileReader {
 
     ETagValueType tagValueType;
 
+    String tagValueRawType;
+
     String pinId;
 
     ETagSynchType tagType;
@@ -185,6 +187,10 @@ public class OdsFileReader {
 
     public ETagValueType getTagValueType() {
       return tagValueType;
+    }
+
+    public String getTagValueRawType() {
+      return tagValueRawType;
     }
 
     public String getPinId() {

@@ -60,4 +60,7 @@ public interface ISysClassRowDef {
   IDataDef VAL_TYPE_PARAM = create( "val.type", STRING, TSID_DESCRIPTION, "Value Type", TSID_NAME, "val type",
       TSID_DEFAULT_VALUE, avStr( "Integer" ), TSID_IS_MANDATORY, avBool( true ) );
 
+  IDataDef VAL_RAW_TYPE_PARAM = create( "val.raw.type", STRING, TSID_DESCRIPTION, "Value Raw Type", TSID_NAME,
+      "val raw type", TSID_DEFAULT_VALUE, avStr( "" ), TSID_IS_MANDATORY, avBool( false ) );
+
 }

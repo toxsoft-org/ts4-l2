@@ -20,13 +20,13 @@ import ru.toxsoft.l2.utils.opc.cfg.exe.ods.*;
 public class TwoTabsOdsFileReader
     extends CommonOdsFileReader {
 
-  protected IFieldValueGetter<String> TAG_NAME_COLUMN = new StringFieldValueGetter(2);// 4 );
+  protected IFieldValueGetter<String> TAG_NAME_COLUMN = new StringFieldValueGetter( 2 );// 4 );
 
   protected IFieldValueGetter<String> TAG_FULL_NAME_COLUMN = new StringFieldValueGetter( 6 );
 
-  protected IFieldValueGetter<String> CLASS_ID_COLUMN = new StringFieldValueGetter(13);// 1 );
+  protected IFieldValueGetter<String> CLASS_ID_COLUMN = new StringFieldValueGetter( 13 );// 1 );
 
-  protected IFieldValueGetter<String> OBJ_NAME_COLUMN = new StringFieldValueGetter(14);// 9 );
+  protected IFieldValueGetter<String> OBJ_NAME_COLUMN = new StringFieldValueGetter( 14 );// 9 );
 
   protected IFieldValueGetter<Integer> IS_PROCCESS_COLUMN = new IntegerFieldValueGetter( 17 );
 
@@ -90,6 +90,8 @@ public class TwoTabsOdsFileReader
       newStringData.tagFullName = tagFullName;
 
       newStringData.tagValueType = ETagValueType.searchTypeByName( VAL_TYPE_PARAM.getValue( classRow ).asString() );
+
+      newStringData.tagValueRawType = VAL_RAW_TYPE_PARAM.getValue( classRow ).asString();
 
       newStringData.classId = classId;
 

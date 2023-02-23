@@ -48,6 +48,8 @@ public class ClassTabsOdsFileReader
 
   protected TagTypeFieldValueGetter TAG_TYPE_COLUMN = new TagTypeFieldValueGetter( 11 ); // 7 );
 
+  protected IFieldValueGetter<String> TAG_RAW_TYPE_COLUMN = new StringFieldValueGetter( 11, "" ); // 7 );
+
   // private List<ClassRow> classRows = new ArrayList<>();
 
   private List<IOptionSet> optSetRows = new ArrayList<>();
@@ -136,6 +138,8 @@ public class ClassTabsOdsFileReader
 
     ETagValueType valType = TAG_TYPE_COLUMN.getValue( aSheet, aRowNumber );
 
+    String valRawtype = TAG_RAW_TYPE_COLUMN.getValue( aSheet, aRowNumber );
+
     newClassRow.classTagId = classTagId;
     CLASS_TAG_ID_PARAM.setValue( newOpt, avStr( classTagId ) );
 
@@ -180,6 +184,8 @@ public class ClassTabsOdsFileReader
 
     newClassRow.valType = valType;
     VAL_TYPE_PARAM.setValue( newOpt, avStr( valType.getName() ) );
+
+    VAL_RAW_TYPE_PARAM.setValue( newOpt, avStr( valRawtype ) );
 
     // classRows.add( newClassRow );
     optSetRows.add( newOpt );

@@ -68,21 +68,22 @@ public class OpcOdsToOpcThdConvertor {
   private static final String CLS_ID_PARAM_NAME         = "clsId";
   private static final String CLS_ID_PARAM_VAL_TEMPLATE = "B6EACB30-42D5-11d0-9517-0020AFAA4B3C";
 
-  private static final String GROUPS_ARRAY_NAME       = "groups";
-  private static final String BRIDGES_ARRAY_NAME      = "bridges";
-  private static final String SYNCH_PERIOD_PARAM_NAME = "period";
-  private static final String OUTPUT_TAGS_ARRAY_ID    = "output.tags";
-  private static final String ASYNC_TAGS_ARRAY_ID     = "async.tags";
-  private static final String SYNC_TAGS_ARRAY_ID      = "sync.tags";
-  private static final String OUTPUT_GROUP_NODE_ID    = "siemens.output.group.def";
-  private static final String ASYNC_GROUP_NODE_ID     = "siemens.async.group.def";
-  private static final String SYNC_GROUP_NODE_ID      = "siemens.sync.group.def";
-  private static final String TMP_DEST_FILE           = "thdDestFile.tmp";
-  private static final String DEVICE_CONFIG_STR       = "DeviceConfig = ";
-  private static final String OPC_TAG_PARAM_NAME      = "opc.tag";
-  private static final String PIN_ID_PARAM_NAME       = "pin.id";
-  private static final String PIN_TYPE_PARAM_NAME     = "pin.type";
-  private static final String PIN_TAG_NODE_ID_FORMAT  = "pin.tag.%s.def";
+  private static final String GROUPS_ARRAY_NAME         = "groups";
+  private static final String BRIDGES_ARRAY_NAME        = "bridges";
+  private static final String SYNCH_PERIOD_PARAM_NAME   = "period";
+  private static final String OUTPUT_TAGS_ARRAY_ID      = "output.tags";
+  private static final String ASYNC_TAGS_ARRAY_ID       = "async.tags";
+  private static final String SYNC_TAGS_ARRAY_ID        = "sync.tags";
+  private static final String OUTPUT_GROUP_NODE_ID      = "siemens.output.group.def";
+  private static final String ASYNC_GROUP_NODE_ID       = "siemens.async.group.def";
+  private static final String SYNC_GROUP_NODE_ID        = "siemens.sync.group.def";
+  private static final String TMP_DEST_FILE             = "thdDestFile.tmp";
+  private static final String DEVICE_CONFIG_STR         = "DeviceConfig = ";
+  private static final String OPC_TAG_PARAM_NAME        = "opc.tag";
+  private static final String PIN_ID_PARAM_NAME         = "pin.id";
+  private static final String PIN_TYPE_PARAM_NAME       = "pin.type";
+  private static final String PIN_TYPE_EXTRA_PARAM_NAME = "pin.type.extra";
+  private static final String PIN_TAG_NODE_ID_FORMAT    = "pin.tag.%s.def";
 
   /**
    * Запускает программу.
@@ -281,6 +282,7 @@ public class OpcOdsToOpcThdConvertor {
     // pinOpSet1.setStr( OPC_TAG_PARAM_NAME, aData.getTagName() );
     pinOpSet1.setStr( PIN_ID_PARAM_NAME, aData.getPinId() );
     pinOpSet1.setStr( PIN_TYPE_PARAM_NAME, aData.getTagValueType().getName() );
+    pinOpSet1.setStr( PIN_TYPE_EXTRA_PARAM_NAME, aData.getTagValueRawType() );
 
     IAvTree pinTree1 = null;
     try {
