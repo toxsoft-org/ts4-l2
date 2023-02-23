@@ -5,6 +5,7 @@ package ru.toxsoft.l2.thd.opc;
 
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.bricks.strid.*;
+import org.toxsoft.core.tslib.utils.*;
 
 /**
  * API тега OPC сервера
@@ -41,6 +42,15 @@ public interface ITag
    * @return тип значения тега
    */
   EAtomicType valueType();
+
+  /**
+   * Подтип основного типа (например целые: Short, Byte, UShort и т.д.)
+   *
+   * @return подтип основного типа
+   */
+  default String valueTypeExtra() {
+    return TsLibUtils.EMPTY_STRING;
+  }
 
   /**
    * получить значение тега
