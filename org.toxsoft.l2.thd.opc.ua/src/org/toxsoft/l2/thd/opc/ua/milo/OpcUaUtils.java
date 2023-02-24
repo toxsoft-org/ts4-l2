@@ -3,6 +3,7 @@ package org.toxsoft.l2.thd.opc.ua.milo;
 import static ru.toxsoft.l2.thd.opc.IOpcConstants.*;
 
 import org.eclipse.milo.opcua.stack.core.types.builtin.*;
+import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.av.impl.*;
@@ -34,6 +35,11 @@ public class OpcUaUtils {
     if( aValue.isNull() ) {
       return IAtomicValue.NULL;
     }
+    if( aValue.getValue() instanceof UShort ) {
+      UShort ushortVal = (UShort)aValue.getValue();
+
+      return AvUtils.avInt( ushortVal.intValue() );
+    }
     return AvUtils.avFromObj( aValue.getValue() );
 
   }
@@ -62,8 +68,10 @@ public class OpcUaUtils {
               result = new Variant( Byte.valueOf( String.valueOf( aValue.asInt() ) ) );
             }
             else
-              if( aTagTypeExtra.equals( "WORD" ) ) {// TODO сделать беззнаковый short
-                result = new Variant( Short.valueOf( String.valueOf( aValue.asInt() ) ) );
+              if( aTagTypeExtra.equals( "WORD" ) ) {
+                UShort ushortVal = UShort.valueOf( aValue.asInt() );
+                result = new Variant( ushortVal );
+                // result = new Variant( Short.valueOf( String.valueOf( aValue.asInt() ) ) );
               }
         }
         break;
@@ -160,4 +168,12 @@ public class OpcUaUtils {
 
     return nodeId;
   }
+
+  // public static void main( String[] a ) {
+  // int bit16 = 64512;
+  // System.out.println( Integer.toBinaryString( bit16 ) );
+  // UShort ushortVal = UShort.valueOf( bit16 );
+  // System.out.println( ushortVal );
+  // System.out.println( Integer.toBinaryString( ushortVal.intValue() ) );
+  // }
 }
