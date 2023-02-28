@@ -98,6 +98,7 @@ public class NodesWriter {
           logger.error( "tag %s error writing", currWriteTags.get( i ).getNodeId().toParseableString() );
         }
       }
+      logger.debug( "exit from writeValues method" );
     }
 
     currWriteIds.clear();
