@@ -4,12 +4,14 @@ import static ru.toxsoft.l2.thd.opc.IOpcConstants.*;
 
 import org.eclipse.milo.opcua.stack.core.types.builtin.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.*;
+import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.utils.*;
+import org.toxsoft.core.tslib.utils.logs.*;
 
 /**
  * Утилитный класс для работы с OPC
@@ -17,6 +19,11 @@ import org.toxsoft.core.tslib.utils.*;
  * @author max
  */
 public class OpcUaUtils {
+
+  /**
+   * Журнал работы
+   */
+  private static ILogger logger = LoggerWrapper.getLogger( OpcUaUtils.class.getName() );
 
   private static final String OPC_TAG_NAMESPACE_PARAM_NAME = "opc.tag.namespace";
 
@@ -40,8 +47,20 @@ public class OpcUaUtils {
 
       return AvUtils.avInt( ushortVal.intValue() );
     }
-    return AvUtils.avFromObj( aValue.getValue() );
 
+    if( aValue.getValue() instanceof UByte ) {
+      UByte ubytetVal = (UByte)aValue.getValue();
+
+      return AvUtils.avInt( ubytetVal.intValue() );
+    }
+
+    IAtomicValue defaultConvertVal = AvUtils.avFromObj( aValue.getValue() );
+
+    if( defaultConvertVal == null ) {
+      logger.error( "Cant convert from opc '%s' to IAtomicValue", aValue.getValue().getClass().getName() );
+    }
+
+    return defaultConvertVal;
   }
 
   public static Variant convertToOpc( IAtomicValue aValue, EAtomicType aTagType, String aTagTypeExtra ) {
