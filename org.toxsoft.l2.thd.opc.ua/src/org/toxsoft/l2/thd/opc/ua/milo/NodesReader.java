@@ -3,12 +3,15 @@ package org.toxsoft.l2.thd.opc.ua.milo;
 import static ru.toxsoft.l2.thd.opc.IOpcConstants.*;
 
 import java.util.*;
+import java.util.concurrent.*;
 
 import org.eclipse.milo.opcua.sdk.client.*;
-import org.eclipse.milo.opcua.sdk.client.nodes.*;
+import org.eclipse.milo.opcua.sdk.client.api.subscriptions.*;
+import org.eclipse.milo.opcua.sdk.client.api.subscriptions.UaSubscriptionManager.*;
 import org.eclipse.milo.opcua.sdk.client.subscriptions.*;
 import org.eclipse.milo.opcua.stack.core.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.*;
+import org.eclipse.milo.opcua.stack.core.types.enumerated.*;
 import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
@@ -26,6 +29,16 @@ import ru.toxsoft.l2.thd.opc.*;
 public class NodesReader {
 
   /**
+   * Настройка подписки опроса асинхронных данных
+   */
+  private static final double ASYNCH_SUBSCRIPTION_SAMPLING_INTERVAL = 200.0;
+
+  /**
+   * Настройка подписки выдачи асинхронных данных
+   */
+  private static final double ASYNCH_SUBSCRIPTION_PUBLISHING_INTERVAL = 200.0;
+
+  /**
    * Журнал работы
    */
   private ILogger logger = LoggerWrapper.getLogger( this.getClass().getName() );
@@ -38,7 +51,8 @@ public class NodesReader {
   /**
    * Группа синхронных данных
    */
-  private IListEdit<UaVariableNode> syncGroup = new ElemArrayList<>();
+  // private IListEdit<UaVariableNode> syncGroup = new ElemArrayList<>();
+  private List<NodeId> syncGroup = new ArrayList<>();
 
   /**
    * Промежуточный буфер для хранения значений считанных с OPC синхронных данных
@@ -56,10 +70,49 @@ public class NodesReader {
   private IMapEdit<String, TagImpl> tags = new ElemMap<>();
 
   /**
+   * Текущая подписка на асинхронные данные
+   */
+  private ManagedSubscription currSubscription;
+
+  /**
    * @param aClient
    */
   public NodesReader( OpcUaClient aClient ) {
     client = aClient;
+
+    client.getSubscriptionManager().addSubscriptionListener( new SubscriptionListener() {
+
+      @Override
+      public void onSubscriptionTransferFailed( UaSubscription subscription, StatusCode statusCode ) {
+        logger.info( "* onSubscriptionTransferFailed" );
+
+        if( currSubscription == null ) {
+          return;
+        }
+
+        // повторная регистрация асинхронных тегов
+
+        List<ManagedDataItem> dataItems = currSubscription.getDataItems();
+        IListEdit<NodeId> newNodeIds = new ElemArrayList<>();
+        for( ManagedDataItem mDataItem : dataItems ) {
+          newNodeIds.add( mDataItem.getNodeId() );
+        }
+
+        try {
+          currSubscription.delete();
+        }
+        catch( UaException e1 ) {
+          logger.error( e1 );
+        }
+
+        try {
+          currSubscription = createSubscriptionAndRegAsynchNodes( newNodeIds );
+        }
+        catch( UaException e ) {
+          logger.error( e.getMessage() );
+        }
+      }
+    } );
   }
 
   /**
@@ -73,30 +126,47 @@ public class NodesReader {
   }
 
   public void readValuesFromNodes() {
+    // logger.debug( "Start readValuesFromNodes" );
+
     try {
-      for( UaVariableNode dNode : syncGroup ) {
-        // .getVariableNode( new NodeId( 2, "TEST SERVER.PLC TAGS FOR OPC SERVER.COMPRESSOR ON" ) );
+      CompletableFuture<List<DataValue>> dValuesF = client.readValues( 0, TimestampsToReturn.Source, syncGroup );
 
-        // UaVariableNode dNode = client.getAddressSpace().getVariableNode(new NodeId(2,"COMPRESSOR ON"));
+      List<DataValue> dValues = dValuesF.get();
 
-        DataValue dValue = dNode.readValue();
-        Variant value = dValue.getValue();
+      for( int i = 0; i < syncGroup.size(); i++ ) {
+        bufferSynchVal.put( syncGroup.get( i ).toParseableString(), dValues.get( i ).getValue() );
 
-        if( dNode.getNodeId().toParseableString().equals( "ns=3;s=\"BHB\".\"X0\"" ) ) {
-          logger.debug( "Value of SyncTag=%s   is  %s", dNode.getNodeId().toParseableString(), value.toString() );
-        }
+        // if( syncGroup.get( i ).toParseableString().equals( "ns=3;s=\"TP1\".\"CV\"" ) ) {
+        // logger.debug( "Value of SyncTag=%s is %s", syncGroup.get( i ).toParseableString(),
+        // dValues.get( i ).getValue().toString() );
+        // }
 
-        if( value == null ) {
-          logger.debug( "Value of SyncTag=%s   is NULL", dNode.getNodeId().toParseableString() );
-        }
-
-        bufferSynchVal.put( dNode.getNodeId().toParseableString(), value );
       }
 
+      // for( UaVariableNode dNode : syncGroup ) {
+      //
+      // // .getVariableNode( new NodeId( 2, "TEST SERVER.PLC TAGS FOR OPC SERVER.COMPRESSOR ON" ) );
+      //
+      // // UaVariableNode dNode = client.getAddressSpace().getVariableNode(new NodeId(2,"COMPRESSOR ON"));
+      //
+      // DataValue dValue = dNode.readValue();
+      // Variant value = dValue.getValue();
+      //
+      // if( dNode.getNodeId().toParseableString().equals( "ns=3;s=\"BHB\".\"X0\"" ) ) {
+      // logger.debug( "Value of SyncTag=%s is %s", dNode.getNodeId().toParseableString(), value.toString() );
+      // }
+      //
+      // if( value == null ) {
+      // logger.debug( "Value of SyncTag=%s is NULL", dNode.getNodeId().toParseableString() );
+      // }
+      //
+      // bufferSynchVal.put( dNode.getNodeId().toParseableString(), value );
+      // }
     }
-    catch( UaException ex ) {
-      ex.printStackTrace();
+    catch( Exception ex ) {
+      logger.error( ex );
     }
+    // logger.debug( "End readValuesFromNodes" );
 
   }
 
@@ -112,6 +182,7 @@ public class NodesReader {
    * @param aValues
    */
   public void onDataChanged( List<ManagedDataItem> aItems, List<DataValue> aValues ) {
+    logger.debug( "Async Tags changed count %s", String.valueOf( aItems.size() ) );
     for( int i = 0; i < aItems.size(); i++ ) {
       ManagedDataItem dataItem = aItems.get( i );
       DataValue dataValue = aValues.get( i );
@@ -127,7 +198,7 @@ public class NodesReader {
         logger.debug( "Value of AsyncTag=%s   is NULL", tagId );
       }
       else {
-        logger.debug( "Value of AsyncTag=%s   is %s", tagId, vValue.toString() );
+        // logger.debug( "Value of AsyncTag=%s is %s", tagId, vValue.toString() );
       }
 
       IAtomicValue atomicVal = OpcUaUtils.convertFromOpc( vValue, tagType );
@@ -148,13 +219,14 @@ public class NodesReader {
         for( int j = 0; j < synchTagsCfgItems.size(); j++ ) {
           TagCfgItem item = synchTagsCfgItems.get( j );
           NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
-          UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
-          syncGroup.add( dNode );
+          syncGroup.add( nodeId );
+          // UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
+          // syncGroup.add( dNode );
 
-          TagImpl tag =
-              new TagImpl( dNode.getNodeId().toParseableString(), EKind.R, item.getTagType(), item.getTagTypeExtra() );
+          TagImpl tag = new TagImpl( nodeId.toParseableString(), EKind.R, item.getTagType(), item.getTagTypeExtra() );
           tags.put( tag.tagId(), tag );
         }
+        logger.info( "Sync group: successfully formed %s tags", String.valueOf( synchTagsCfgItems.size() ) );
       }
       else
         if( groupConfig.structId().endsWith( ASYNC_GROUP_DEF_POSTFIX ) ) {
@@ -162,35 +234,52 @@ public class NodesReader {
           IAvTree tagsConfig = groupConfig.nodes().findByKey( ASYNC_TAGS_PARAM_NAME );
           IList<TagCfgItem> asynchTagsCfgItems = OpcUaUtils.createTagsCfgItems( tagsConfig );
 
-          ManagedSubscription subscription = ManagedSubscription.create( client );
-
-          subscription.addDataChangeListener( ( items, values ) -> {
-            onDataChanged( items, values );
-          } );
-
-          int successAdded = 0;
-
+          IListEdit<NodeId> asynchNodeIds = new ElemArrayList<>();
           for( int j = 0; j < asynchTagsCfgItems.size(); j++ ) {
             TagCfgItem item = asynchTagsCfgItems.get( j );
             NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
-            ManagedDataItem dataItem = subscription.createDataItem( nodeId );
-            if( dataItem.getStatusCode().isGood() ) {
-              logger.debug( "item created for nodeId=%s", dataItem.getNodeId().toParseableString() );
-              successAdded++;
-            }
-            else {
-              logger.error( "failed to create item for nodeId=%s (status=%s)", dataItem.getNodeId().toParseableString(),
-                  dataItem.getStatusCode().toString() );
-            }
-            TagImpl tag = new TagImpl( dataItem.getNodeId().toParseableString(), EKind.R, item.getTagType(),
-                item.getTagTypeExtra() );
+
+            TagImpl tag = new TagImpl( nodeId.toParseableString(), EKind.R, item.getTagType(), item.getTagTypeExtra() );
             tags.put( tag.tagId(), tag );
+
+            asynchNodeIds.add( nodeId );
           }
 
-          logger.info( "Async group: successfully added %s nodes from %s", String.valueOf( successAdded ),
-              String.valueOf( asynchTagsCfgItems.size() ) );
+          currSubscription = createSubscriptionAndRegAsynchNodes( asynchNodeIds );
         }
     }
+  }
+
+  private ManagedSubscription createSubscriptionAndRegAsynchNodes( IList<NodeId> aAsynchNodeIds )
+      throws UaException {
+    ManagedSubscription subscription = ManagedSubscription.create( client, ASYNCH_SUBSCRIPTION_PUBLISHING_INTERVAL );
+    subscription.setDefaultSamplingInterval( ASYNCH_SUBSCRIPTION_SAMPLING_INTERVAL );
+
+    subscription.addDataChangeListener( ( items, values ) -> {
+      onDataChanged( items, values );
+    } );
+
+    int successAdded = 0;
+
+    for( int j = 0; j < aAsynchNodeIds.size(); j++ ) {
+      NodeId nodeId = aAsynchNodeIds.get( j );
+
+      ManagedDataItem dataItem = subscription.createDataItem( nodeId );
+      if( dataItem.getStatusCode().isGood() ) {
+        // logger.debug( "item created for nodeId=%s", dataItem.getNodeId().toParseableString() );
+        successAdded++;
+      }
+      else {
+        logger.error( "failed to create item for nodeId=%s (status=%s)", dataItem.getNodeId().toParseableString(),
+            dataItem.getStatusCode().toString() );
+      }
+
+    }
+
+    logger.info( "Async group: successfully added %s nodes from %s", String.valueOf( successAdded ),
+        String.valueOf( aAsynchNodeIds.size() ) );
+
+    return subscription;
   }
 
   private synchronized void readValuesFromAsyncBuffer() {
