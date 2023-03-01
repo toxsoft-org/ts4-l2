@@ -160,6 +160,13 @@ public class TagImpl
     // if( !dirty ) {
     // newValue = IAtomicValue.NULL;
     // }
+
+    if( !dirty ) {
+      if( !value.equals( newValue ) ) {
+        logger.debug( "node %s changed value = %s by undirty", tagId, newValue.asString() );
+      }
+      value = newValue;
+    }
   }
 
   /**
@@ -173,6 +180,13 @@ public class TagImpl
         logger.debug( "node %s changed value = %s", tagId, aVal.asString() );
       }
       value = aVal != null ? aVal : IAtomicValue.NULL;
+    }
+    else {
+      if( aVal != null && newValue.equals( aVal ) ) {
+        logger.debug( "node %s changed value = %s in dirty regim", tagId, aVal.asString() );
+        value = aVal;
+        setDirty( false );
+      }
     }
   }
 

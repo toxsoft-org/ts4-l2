@@ -82,28 +82,44 @@ public class NodesWriter {
 
     if( currWriteIds.size() > 0 ) {
 
-      CompletableFuture<List<StatusCode>> f = client.writeValues( currWriteIds, currWriteValues );
+      try {
+        logger.debug( "Try to write on LL" );
+        CompletableFuture<List<StatusCode>> f = client.writeValues( currWriteIds, currWriteValues );
+        logger.debug( "Affter write on LL before getting status" );
 
-      List<StatusCode> statusCodes = f.get();
-
-      for( int i = 0; i < statusCodes.size(); i++ ) {
-        StatusCode code = statusCodes.get( i );
-
-        if( code.isGood() ) {
-          // TODO
-          currWriteTags.get( i ).clear();
-          logger.debug( "tag %s cleared", currWriteTags.get( i ).getNodeId().toParseableString() );
+        List<StatusCode> statusCodes = new ArrayList<>();
+        try {
+          statusCodes = f.get( 10, TimeUnit.SECONDS );
         }
-        else {
-          logger.error( "tag %s error writing", currWriteTags.get( i ).getNodeId().toParseableString() );
+        catch( Exception ex ) {
+          logger.error( "cant get writing status codes", ex );
         }
+
+        for( int i = 0; i < statusCodes.size(); i++ ) {
+          StatusCode code = statusCodes.get( i );
+
+          if( code.isGood() ) {
+            // TODO
+            currWriteTags.get( i ).clear();
+            logger.debug( "tag %s cleared", currWriteTags.get( i ).getNodeId().toParseableString() );
+          }
+          else {
+            logger.error( "tag %s error writing", currWriteTags.get( i ).getNodeId().toParseableString() );
+          }
+        }
+        logger.debug( "exit from writeValues method" );
+
       }
-      logger.debug( "exit from writeValues method" );
+      catch( Exception wEx ) {
+        logger.error( "Exception in write on LL method", wEx );
+      }
+      finally {
+        currWriteIds.clear();
+        currWriteValues.clear();
+        currWriteTags.clear();
+      }
     }
 
-    currWriteIds.clear();
-    currWriteValues.clear();
-    currWriteTags.clear();
   }
 
   public void writeValuesToBuffer() {
@@ -121,13 +137,15 @@ public class NodesWriter {
 
     private TagImpl tag;
 
-    private IAtomicValue oldValue = IAtomicValue.NULL;
+    // private IAtomicValue oldValue = IAtomicValue.NULL;
 
-    private IAtomicValue curValue;
+    private IAtomicValue curValue = IAtomicValue.NULL;
 
     private NodeId nodeId;
 
     private boolean changed = false;
+
+    private boolean toClear = false;
 
     BufferedUaTag( TagImpl aTag, NodeId aNodeId, IAtomicValue aCurValue ) {
       super();
@@ -141,14 +159,30 @@ public class NodesWriter {
     }
 
     public void clear() {
-      oldValue = curValue;
-      changed = false;
-      tag.setDirty( false );
+      toClear = true;
+      // changed = false;
+      // tag.setDirty( false );
     }
 
     void setToBuffer() {
-      curValue = tag.newValue;
-      changed = !curValue.equals( oldValue );
+      if( tag.isDirty() ) {
+        changed = !curValue.equals( tag.newValue );
+        curValue = tag.newValue;
+
+        if( !changed ) {
+          if( toClear ) {
+            tag.setDirty( false );
+          }
+          else {
+            changed = true;
+          }
+        }
+        toClear = false;
+      }
+      else {
+        changed = false;
+        toClear = false;
+      }
     }
 
     boolean isChanged() {
