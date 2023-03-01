@@ -83,9 +83,7 @@ public class NodesWriter {
     if( currWriteIds.size() > 0 ) {
 
       try {
-        logger.debug( "Try to write on LL" );
         CompletableFuture<List<StatusCode>> f = client.writeValues( currWriteIds, currWriteValues );
-        logger.debug( "Affter write on LL before getting status" );
 
         List<StatusCode> statusCodes = new ArrayList<>();
         try {
@@ -99,7 +97,6 @@ public class NodesWriter {
           StatusCode code = statusCodes.get( i );
 
           if( code.isGood() ) {
-            // TODO
             currWriteTags.get( i ).clear();
             logger.debug( "tag %s cleared", currWriteTags.get( i ).getNodeId().toParseableString() );
           }
