@@ -138,7 +138,7 @@ public class ScriptParamFormer
 
     eventParamFormer.eventParamsIds.add( paramId );
 
-    ITag tag = new TagImpl( "", EKind.R, EAtomicType.BOOLEAN, TsLibUtils.EMPTY_STRING );
+    ITag tag = new TagImpl( "", EKind.R, EAtomicType.BOOLEAN, TsLibUtils.EMPTY_STRING, false );
 
     IMapEdit<String, ITag> map = new ElemMap();
     map.put( "tag", tag ); //$NON-NLS-1$

@@ -215,8 +215,8 @@ public class NodesWriter {
 
           UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
 
-          TagImpl tag =
-              new TagImpl( dNode.getNodeId().toParseableString(), EKind.W, item.getTagType(), item.getTagTypeExtra() );
+          TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.W, item.getTagType(),
+              item.getTagTypeExtra(), item.isControlWord() );
           tags.put( tag.id(), tag );
 
           BufferedUaTag bTag = new BufferedUaTag( tag, nodeId );

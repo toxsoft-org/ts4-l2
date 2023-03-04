@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.*;
 
 import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
@@ -68,22 +69,23 @@ public class OpcOdsToOpcThdConvertor {
   private static final String CLS_ID_PARAM_NAME         = "clsId";
   private static final String CLS_ID_PARAM_VAL_TEMPLATE = "B6EACB30-42D5-11d0-9517-0020AFAA4B3C";
 
-  private static final String GROUPS_ARRAY_NAME         = "groups";
-  private static final String BRIDGES_ARRAY_NAME        = "bridges";
-  private static final String SYNCH_PERIOD_PARAM_NAME   = "period";
-  private static final String OUTPUT_TAGS_ARRAY_ID      = "output.tags";
-  private static final String ASYNC_TAGS_ARRAY_ID       = "async.tags";
-  private static final String SYNC_TAGS_ARRAY_ID        = "sync.tags";
-  private static final String OUTPUT_GROUP_NODE_ID      = "siemens.output.group.def";
-  private static final String ASYNC_GROUP_NODE_ID       = "siemens.async.group.def";
-  private static final String SYNC_GROUP_NODE_ID        = "siemens.sync.group.def";
-  private static final String TMP_DEST_FILE             = "thdDestFile.tmp";
-  private static final String DEVICE_CONFIG_STR         = "DeviceConfig = ";
-  private static final String OPC_TAG_PARAM_NAME        = "opc.tag";
-  private static final String PIN_ID_PARAM_NAME         = "pin.id";
-  private static final String PIN_TYPE_PARAM_NAME       = "pin.type";
-  private static final String PIN_TYPE_EXTRA_PARAM_NAME = "pin.type.extra";
-  private static final String PIN_TAG_NODE_ID_FORMAT    = "pin.tag.%s.def";
+  private static final String GROUPS_ARRAY_NAME           = "groups";
+  private static final String BRIDGES_ARRAY_NAME          = "bridges";
+  private static final String SYNCH_PERIOD_PARAM_NAME     = "period";
+  private static final String OUTPUT_TAGS_ARRAY_ID        = "output.tags";
+  private static final String ASYNC_TAGS_ARRAY_ID         = "async.tags";
+  private static final String SYNC_TAGS_ARRAY_ID          = "sync.tags";
+  private static final String OUTPUT_GROUP_NODE_ID        = "siemens.output.group.def";
+  private static final String ASYNC_GROUP_NODE_ID         = "siemens.async.group.def";
+  private static final String SYNC_GROUP_NODE_ID          = "siemens.sync.group.def";
+  private static final String TMP_DEST_FILE               = "thdDestFile.tmp";
+  private static final String DEVICE_CONFIG_STR           = "DeviceConfig = ";
+  private static final String OPC_TAG_PARAM_NAME          = "opc.tag";
+  private static final String PIN_ID_PARAM_NAME           = "pin.id";
+  private static final String PIN_TYPE_PARAM_NAME         = "pin.type";
+  private static final String PIN_TYPE_EXTRA_PARAM_NAME   = "pin.type.extra";
+  private static final String PIN_CONTROL_WORD_PARAM_NAME = "is.pin.control.word";
+  private static final String PIN_TAG_NODE_ID_FORMAT      = "pin.tag.%s.def";
 
   /**
    * Запускает программу.
@@ -253,6 +255,31 @@ public class OpcOdsToOpcThdConvertor {
       System.out.print( tagData.getTagFullName() );
       if( alreadyAddedTags.contains( tagData.getTagFullName() ) ) {
         System.out.println();
+
+        if( tagData.getCmdWordBitIndex() >= 0 ) {
+
+          int tagToMofifyIndex = searchByFiledValue( tagsMassivTree, OPC_TAG_PARAM_NAME, tagData.getTagFullName() );
+          if( tagToMofifyIndex >= 0 ) {
+            IAvTree tagToMofify = tagsMassivTree.arrayElement( tagToMofifyIndex );
+            if( !tagToMofify.fields().hasKey( PIN_CONTROL_WORD_PARAM_NAME ) ) {
+              IOptionSetEdit optSetToMofify = new OptionSet( tagToMofify.fields() );
+              optSetToMofify.setBool( PIN_CONTROL_WORD_PARAM_NAME, true );
+
+              try {
+                IAvTree pinTree1 =
+                    AvTree.createSingleAvTree( tagToMofify.structId(), optSetToMofify, IStringMap.EMPTY );
+
+                tagsMassivTree.removeElement( tagToMofifyIndex );
+                tagsMassivTree.addElement( pinTree1 );
+              }
+              catch( TsValidationFailedRtException e ) {
+                System.out.println( "ERROR in modify tag " + tagData.getTagFullName().trim() );
+                throw e;
+              }
+            }
+          }
+        }
+
         continue;
       }
       System.out.println( " - *" );
@@ -284,6 +311,10 @@ public class OpcOdsToOpcThdConvertor {
     pinOpSet1.setStr( PIN_TYPE_PARAM_NAME, aData.getTagValueType().getName() );
     pinOpSet1.setStr( PIN_TYPE_EXTRA_PARAM_NAME, aData.getTagValueRawType() );
 
+    if( aData.getCmdWordBitIndex() > -1 ) {
+      pinOpSet1.setBool( PIN_CONTROL_WORD_PARAM_NAME, true );
+    }
+
     IAvTree pinTree1 = null;
     try {
       pinTree1 = AvTree.createSingleAvTree( String.format( PIN_TAG_NODE_ID_FORMAT, aData.getPinId() ), pinOpSet1,
@@ -301,4 +332,15 @@ public class OpcOdsToOpcThdConvertor {
     boolean isValid( StringData aStringData );
   }
 
+  private static int searchByFiledValue( IAvTree aParentMassiv, String aKey, String aValue ) {
+    for( int i = 0; i < aParentMassiv.arrayLength(); i++ ) {
+      IAvTree currElem = aParentMassiv.arrayElement( i );
+
+      if( currElem.fields().findValue( aKey ).equals( AvUtils.avStr( aValue ) ) ) {
+        return i;
+      }
+    }
+
+    return -1;
+  }
 }

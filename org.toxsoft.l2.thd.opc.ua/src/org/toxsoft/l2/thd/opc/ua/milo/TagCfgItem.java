@@ -13,7 +13,8 @@ public class TagCfgItem {
   private IAtomicValue tagId;
   private EAtomicType  tagType;
 
-  private String tagTypeExtra;
+  private String  tagTypeExtra;
+  private boolean isControlWord;
 
   /**
    * Конструктор конфигурации тега по идентификаторм и типу.
@@ -22,14 +23,17 @@ public class TagCfgItem {
    * @param aTagId IAtomicValue - идентификатор тега
    * @param aTagType EAtomicType - тип значения тега
    * @param aTagTypeExtra String - подтип значения тега, по умолчанию - пустое
+   * @param aIsControlWord boolean - тег является контрольным словом
    */
-  public TagCfgItem( int aNamespaceId, IAtomicValue aTagId, EAtomicType aTagType, String aTagTypeExtra ) {
+  public TagCfgItem( int aNamespaceId, IAtomicValue aTagId, EAtomicType aTagType, String aTagTypeExtra,
+      boolean aIsControlWord ) {
     super();
     namespaceId = aNamespaceId;
     tagId = aTagId;
     tagType = aTagType;
 
     tagTypeExtra = aTagTypeExtra;
+    isControlWord = aIsControlWord;
   }
 
   /**
@@ -66,6 +70,15 @@ public class TagCfgItem {
    */
   public String getTagTypeExtra() {
     return tagTypeExtra;
+  }
+
+  /**
+   * Вовзвращает признак того, что тег является контрольным словом (биты формируются независимо)
+   *
+   * @return boolean true - тег является контрольным словом.
+   */
+  public boolean isControlWord() {
+    return isControlWord;
   }
 
 }

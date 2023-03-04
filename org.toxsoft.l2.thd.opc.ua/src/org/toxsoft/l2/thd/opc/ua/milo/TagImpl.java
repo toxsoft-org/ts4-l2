@@ -70,16 +70,27 @@ public class TagImpl
   private String description;
 
   /**
+   * тег является контрольным словом
+   */
+  boolean isControlWord;
+
+  /**
    * @param aTagId id тега на OPC
    * @param aKind тип тега (на чтение/запись/туда-сюда)
    * @param aValType тип значения
    * @param aValTypeExtra String- подтип
+   * @param aIsControlWord boolean - тег является контрольным словом
    */
-  public TagImpl( String aTagId, EKind aKind, EAtomicType aValType, String aValTypeExtra ) {
+  public TagImpl( String aTagId, EKind aKind, EAtomicType aValType, String aValTypeExtra, boolean aIsControlWord ) {
     tagId = aTagId;
     kind = aKind;
     valType = aValType;
     valTypeExtra = aValTypeExtra;
+    isControlWord = aIsControlWord;
+
+    if( isControlWord ) {
+      logger.debug( "Node '%s' registered as ControlWord", tagId );
+    }
   }
 
   /**
@@ -127,11 +138,16 @@ public class TagImpl
     if( kind.compareTo( EKind.R ) == 0 ) {
       throw new TsIllegalStateRtException( "ERROR_TRY_SET_READ_ONLY_TAG" );
     }
+
+    // Убрана проверка на то, что значение изменилось
+    setDirty( true );
+    newValue = aVal;
+
     // Имеет смысл напрягатся, только если новое значение отличается от текущего
-    if( value.compareTo( aVal ) != 0 ) {
-      setDirty( true );
-      newValue = aVal;
-    }
+    // if( value.compareTo( aVal ) != 0 ) {
+    // setDirty( true );
+    // newValue = aVal;
+    // }
   }
 
   @Override
@@ -161,7 +177,8 @@ public class TagImpl
     // newValue = IAtomicValue.NULL;
     // }
 
-    if( !dirty ) {
+    // TODO этот кусок вернуть для слов состояния - тегов, которые содержать несколько битовых команд
+    if( isControlWord && !dirty ) {
       if( !value.equals( newValue ) ) {
         logger.debug( "node %s changed value = %s by undirty", tagId, newValue.asString() );
       }
@@ -176,7 +193,7 @@ public class TagImpl
    */
   void updateVal( IAtomicValue aVal ) {
     if( !isDirty() ) {
-      if( aVal != null && !value.equals( aVal ) ) {
+      if( aVal != null && !value.equals( aVal ) && aVal.atomicType() == EAtomicType.BOOLEAN ) {
         logger.debug( "node %s changed value = %s", tagId, aVal.asString() );
       }
       value = aVal != null ? aVal : IAtomicValue.NULL;

@@ -33,6 +33,11 @@ public class OpcUaUtils {
   private static final String PIN_TYPE_EXTRA_PARAM_NAME = "pin.type.extra";
 
   /**
+   * Имя параметра - пин является контрольным словом
+   */
+  private static final String PIN_CONTROL_WORD_PARAM_NAME = "is.pin.control.word";
+
+  /**
    * Закрытый конструктор
    */
   private OpcUaUtils() {
@@ -160,7 +165,9 @@ public class OpcUaUtils {
 
     String tagTypeExtra = aTagConfig.fields().getStr( PIN_TYPE_EXTRA_PARAM_NAME, TsLibUtils.EMPTY_STRING );
 
-    return new TagCfgItem( namespace, tagId, tagType, tagTypeExtra );
+    boolean isControlWord = aTagConfig.fields().getBool( PIN_CONTROL_WORD_PARAM_NAME, false );
+
+    return new TagCfgItem( namespace, tagId, tagType, tagTypeExtra, isControlWord );
   }
 
   /**

@@ -223,7 +223,8 @@ public class NodesReader {
           // UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
           // syncGroup.add( dNode );
 
-          TagImpl tag = new TagImpl( nodeId.toParseableString(), EKind.R, item.getTagType(), item.getTagTypeExtra() );
+          TagImpl tag = new TagImpl( nodeId.toParseableString(), EKind.R, item.getTagType(), item.getTagTypeExtra(),
+              item.isControlWord() );
           tags.put( tag.tagId(), tag );
         }
         logger.info( "Sync group: successfully formed %s tags", String.valueOf( synchTagsCfgItems.size() ) );
@@ -239,7 +240,8 @@ public class NodesReader {
             TagCfgItem item = asynchTagsCfgItems.get( j );
             NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
 
-            TagImpl tag = new TagImpl( nodeId.toParseableString(), EKind.R, item.getTagType(), item.getTagTypeExtra() );
+            TagImpl tag = new TagImpl( nodeId.toParseableString(), EKind.R, item.getTagType(), item.getTagTypeExtra(),
+                item.isControlWord() );
             tags.put( tag.tagId(), tag );
 
             asynchNodeIds.add( nodeId );
