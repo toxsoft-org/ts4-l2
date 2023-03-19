@@ -45,9 +45,9 @@ public class TestMilo {
       client = createClient();
       client.connect().get();
 
-      // testRead();
+      testRead();
       // testBrowse();
-      testWrite();
+      // testWrite();
 
       client.disconnect().get();
     }
@@ -86,10 +86,10 @@ public class TestMilo {
   }
 
   String getEndpointUrl() {
-    return "opc.tcp://localhost:12686/milo";
+    // return "opc.tcp://localhost:12686/milo";
     // return "opc.tcp://192.168.153.1:4850"; //poligon
     // return "opc.tcp://localhost:12686/milo";
-
+    return "opc.tcp://192.168.0.19:4840";
   }
 
   Predicate<EndpointDescription> endpointFilter() {
@@ -135,8 +135,7 @@ public class TestMilo {
     // UaVariableNode dNode = client.getAddressSpace().getVariableNode(new NodeId(2,96));
     // UaVariableNode dNode = client.getAddressSpace().getVariableNode( new NodeId( 1, 71 ) );
 
-    UaVariableNode dNode =
-        client.getAddressSpace().getVariableNode( new NodeId( 3, "\"Data_block_1\".\"pulse05Hz\"" ) );
+    UaVariableNode dNode = client.getAddressSpace().getVariableNode( new NodeId( 3, "\"P1\".\"CV\"" ) );
 
     // local test UaVariableNode dNode = client.getAddressSpace().getVariableNode(new
     // NodeId(2,"HelloWorld/Dynamic/Double"));
@@ -212,7 +211,7 @@ public class TestMilo {
 
   public static void main( String[] a ) {
 
-    String host = a.length > 0 ? a[0] : "opc.tcp://192.168.0.11:4840";
+    String host = a.length > 0 ? a[0] : "opc.tcp://192.168.0.19:4840";
     // "opc.tcp://192.168.153.1:4850"; // poligon
     // "opc.tcp://localhost:12686/milo";//milo
 
