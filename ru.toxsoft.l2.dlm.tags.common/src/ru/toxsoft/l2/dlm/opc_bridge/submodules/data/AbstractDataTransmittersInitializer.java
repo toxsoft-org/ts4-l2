@@ -60,6 +60,8 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
    */
   private IListEdit<IDataTransmitter<T>> dataTransmitters = new ElemArrayList<>();
 
+  private IListEdit<IDataTransmitter<T>> startedDataTransmitters = new ElemArrayList<>();
+
   /**
    * Признак окончания инициализации.
    */
@@ -400,7 +402,19 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
       for( int i = 0; i < transTagsParams.size(); i++ ) {
         IOptionSet tagOptSet = transTagsParams.get( i );
         ITag tag = getTag( aContext, tagOptSet );
-        tags.add( tag );
+
+        if( tag == null ) {
+          String tagsSpecDev = tagOptSet.getStr( TAG_DEVICE_ID );
+          String tagId = tagOptSet.getStr( TAG_ID );
+          logger.error( "Tag '%s' not found", tagsSpecDev + " | " + tagId );
+        }
+        else {
+          tags.add( tag );
+        }
+      }
+
+      if( transTagsParams.size() != tags.size() ) {
+        continue;
       }
 
       // запуск передатчика
@@ -408,6 +422,8 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
       transmitter.start( realDataIndexes, tags, wDataSet );
       long t2 = System.currentTimeMillis();
       System.out.printf( "j = %d, transmitter.start() : %d \n", j, (t2 - t1) );
+
+      startedDataTransmitters.add( transmitter );
     }
 
     initialized = true;
@@ -444,7 +460,7 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
   @Override
   public IList<IDataTransmitter<T>> getDataTransmitters()
       throws TsIllegalStateRtException {
-    return dataTransmitters;
+    return startedDataTransmitters;
   }
 
   /**
