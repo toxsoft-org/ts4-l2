@@ -16,10 +16,12 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
 import org.toxsoft.uskat.core.connection.*;
 
 import ru.toxsoft.l2.core.cfg.*;
@@ -229,18 +231,40 @@ public class CommandsModule
         ITag tag = tagsDevice.tag( tc.getTagId() );
 
         if( tag == null ) {
-          logger.debug( "Tag '%s' not found", tc.getDeviceId() + " | " + tc.getTagId() );
+          logger.error( "Tag '%s' not found", tc.getDeviceId() + " | " + tc.getTagId() );
         }
+        else {
+          execTags.put( tcId, tag );
+        }
+      }
 
-        execTags.put( tcId, tag );
+      if( execTagsInfoes.size() != execTags.size() ) {
+        continue;
+      }
+
+      DataObjName dataObjName = dataObjNemas.get( i );
+      String clsId = dataObjName.getClassId();
+      String objId = dataObjName.getObjName();
+      String cmdId = dataObjName.getDataId();
+      ISkClassInfo classInfo = connection.coreApi().sysdescr().findClassInfo( clsId );
+
+      if( classInfo == null ) {
+        logger.error( "Class '%s' not found during command '%s' exec registration", clsId, cmdId );
+        continue;
+      }
+
+      if( !classInfo.cmds().list().hasKey( cmdId ) ) {
+        logger.error( "Command '%s' of class '%s' not found during command exec registration", cmdId, clsId );
+        continue;
+      }
+
+      if( connection.coreApi().objService().find( new Skid( clsId, objId ) ) == null ) {
+        logger.error( "Object '%s' of class '%s' not found during cmd '%s' exec registration", objId, clsId, cmdId );
+        continue;
       }
 
       cExec.start( execTags, connection.coreApi().cmdService() );
 
-      DataObjName dataObjName = dataObjNemas.get( i );
-
-      String objId = dataObjName.getObjName();
-      String cmdId = dataObjName.getDataId();
       cmdExecs.put( getTotalCommandId( cmdId, objId ), cExec );
     }
 
