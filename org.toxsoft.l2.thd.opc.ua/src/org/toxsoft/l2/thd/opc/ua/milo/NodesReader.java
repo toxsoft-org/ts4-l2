@@ -17,6 +17,8 @@ import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 
 import ru.toxsoft.l2.thd.opc.*;
@@ -219,6 +221,15 @@ public class NodesReader {
         for( int j = 0; j < synchTagsCfgItems.size(); j++ ) {
           TagCfgItem item = synchTagsCfgItems.get( j );
           NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
+
+          try {
+            client.getAddressSpace().getVariableNode( nodeId );
+          }
+          catch( UaException uaEx ) {
+            logger.error( "Synch read tag '%s' creation faild '%s'", nodeId.toParseableString(), uaEx.getMessage() );
+            continue;
+          }
+
           syncGroup.add( nodeId );
           // UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
           // syncGroup.add( dNode );
@@ -227,7 +238,7 @@ public class NodesReader {
               item.isControlWord() );
           tags.put( tag.tagId(), tag );
         }
-        logger.info( "Sync group: successfully formed %s tags", String.valueOf( synchTagsCfgItems.size() ) );
+        logger.info( "Sync group: successfully formed %s tags", String.valueOf( syncGroup.size() ) );
       }
       else
         if( groupConfig.structId().endsWith( ASYNC_GROUP_DEF_POSTFIX ) ) {
@@ -236,18 +247,28 @@ public class NodesReader {
           IList<TagCfgItem> asynchTagsCfgItems = OpcUaUtils.createTagsCfgItems( tagsConfig );
 
           IListEdit<NodeId> asynchNodeIds = new ElemArrayList<>();
+
+          IStringMapEdit<TagImpl> pretends = new StringMap<>();
+
           for( int j = 0; j < asynchTagsCfgItems.size(); j++ ) {
             TagCfgItem item = asynchTagsCfgItems.get( j );
             NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
 
             TagImpl tag = new TagImpl( nodeId.toParseableString(), EKind.R, item.getTagType(), item.getTagTypeExtra(),
                 item.isControlWord() );
-            tags.put( tag.tagId(), tag );
+
+            pretends.put( tag.tagId(), tag );
 
             asynchNodeIds.add( nodeId );
           }
 
           currSubscription = createSubscriptionAndRegAsynchNodes( asynchNodeIds );
+
+          // добавляем только зарегистрированные
+          for( ManagedDataItem di : currSubscription.getDataItems() ) {
+            TagImpl tag = pretends.getByKey( di.getNodeId().toParseableString() );
+            tags.put( tag.tagId(), tag );
+          }
         }
     }
   }
@@ -257,29 +278,35 @@ public class NodesReader {
     ManagedSubscription subscription = ManagedSubscription.create( client, ASYNCH_SUBSCRIPTION_PUBLISHING_INTERVAL );
     subscription.setDefaultSamplingInterval( ASYNCH_SUBSCRIPTION_SAMPLING_INTERVAL );
 
-    subscription.addDataChangeListener( ( items, values ) -> {
-      onDataChanged( items, values );
-    } );
-
     int successAdded = 0;
 
     for( int j = 0; j < aAsynchNodeIds.size(); j++ ) {
       NodeId nodeId = aAsynchNodeIds.get( j );
 
-      ManagedDataItem dataItem = subscription.createDataItem( nodeId );
-      if( dataItem.getStatusCode().isGood() ) {
-        // logger.debug( "item created for nodeId=%s", dataItem.getNodeId().toParseableString() );
-        successAdded++;
+      try {
+        ManagedDataItem dataItem = subscription.createDataItem( nodeId );
+        if( dataItem.getStatusCode().isGood() ) {
+          // logger.debug( "item created for nodeId=%s", dataItem.getNodeId().toParseableString() );
+          successAdded++;
+        }
+        else {
+          logger.error( "failed to create item for nodeId=%s (status=%s)", dataItem.getNodeId().toParseableString(),
+              dataItem.getStatusCode().toString() );
+          subscription.deleteDataItem( dataItem );
+        }
       }
-      else {
-        logger.error( "failed to create item for nodeId=%s (status=%s)", dataItem.getNodeId().toParseableString(),
-            dataItem.getStatusCode().toString() );
+      catch( Exception uaEx ) {
+        logger.error( "Tag '%s' subscriptionEx '%s'", nodeId.toParseableString(), uaEx.getMessage() );
       }
 
     }
 
     logger.info( "Async group: successfully added %s nodes from %s", String.valueOf( successAdded ),
         String.valueOf( aAsynchNodeIds.size() ) );
+
+    subscription.addDataChangeListener( ( items, values ) -> {
+      onDataChanged( items, values );
+    } );
 
     return subscription;
   }

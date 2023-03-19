@@ -6,7 +6,6 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import org.eclipse.milo.opcua.sdk.client.*;
-import org.eclipse.milo.opcua.sdk.client.nodes.*;
 import org.eclipse.milo.opcua.stack.core.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.*;
 import org.toxsoft.core.log4j.*;
@@ -213,10 +212,16 @@ public class NodesWriter {
           TagCfgItem item = outputTagsCfgItems.get( j );
           NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
 
-          UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
+          try {
+            client.getAddressSpace().getVariableNode( nodeId );
+          }
+          catch( UaException uaEx ) {
+            logger.error( "Write tag '%s' creation faild '%s'", nodeId.toParseableString(), uaEx.getMessage() );
+            continue;
+          }
 
-          TagImpl tag = new TagImpl( dNode.getNodeId().toParseableString(), EKind.W, item.getTagType(),
-              item.getTagTypeExtra(), item.isControlWord() );
+          TagImpl tag = new TagImpl( nodeId.toParseableString(), EKind.W, item.getTagType(), item.getTagTypeExtra(),
+              item.isControlWord() );
           tags.put( tag.id(), tag );
 
           BufferedUaTag bTag = new BufferedUaTag( tag, nodeId );

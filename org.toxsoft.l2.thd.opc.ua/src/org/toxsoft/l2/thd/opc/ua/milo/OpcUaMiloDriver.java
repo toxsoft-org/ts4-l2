@@ -128,7 +128,7 @@ public class OpcUaMiloDriver
       }
     }
     catch( Exception ex ) {
-      logger.error( ex );
+      logger.error( "Global ua cfg driver exception: '%s'", ex.getMessage() );
     }
   }
 
