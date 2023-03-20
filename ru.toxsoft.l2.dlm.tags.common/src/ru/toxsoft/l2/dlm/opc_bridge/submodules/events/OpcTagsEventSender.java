@@ -14,13 +14,14 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.uskat.core.api.evserv.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
 import org.toxsoft.uskat.core.connection.*;
 
 import ru.toxsoft.l2.core.dlm.*;
-import ru.toxsoft.l2.core.util.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
@@ -50,14 +51,16 @@ public class OpcTagsEventSender
 
   private IMapEdit<String, IEventParamsFormer> formers = new ElemMap<>();
 
-  private String eventId;
+  private Gwid evenGwid;
 
-  private ObjName objNameObject;
-
-  private String objId;
+  
+  private boolean isStarted = false;
 
   @Override
   public void sendEvent( long aTime ) {
+    if( !isStarted ) {
+      return;
+    }
     for( IOpcTagsCondition condition : conditions.values() ) {
       if( !condition.isEventCondition( aTime ) ) {
         return;
@@ -76,14 +79,13 @@ public class OpcTagsEventSender
       }
     }
     catch( TsException ex ) {
-      logger.error( ex, ERR_MSG_EVENT_CANT_BE_SENT_DUE_TO_ERROR_FORMAT, eventId );
+      logger.error( ex, ERR_MSG_EVENT_CANT_BE_SENT_DUE_TO_ERROR_FORMAT, evenGwid.asString() );
       return;
     }
-    SkEvent ev = new SkEvent( aTime,
-        Gwid.createEvent( objNameObject.getClassId(), objNameObject.getObjName(), eventId ), paramValues );
+    SkEvent ev = new SkEvent( aTime, evenGwid, paramValues );
     connection.coreApi().eventService().fireEvent( ev );// TODO
 
-    logger.debug( "Event sent: %s", eventId + " ( " + objId + " ) " );
+    logger.debug( "Event sent: %s", evenGwid.asString() );
     if( paramValues.hasKey( "oldVal" ) && paramValues.hasKey( "newVal" ) ) {
       IAtomicValue oldVal = paramValues.getByKey( "oldVal" );
       IAtomicValue newVal = paramValues.getByKey( "newVal" );
@@ -104,8 +106,9 @@ public class OpcTagsEventSender
 
     String classId = aParams.fields().getStr( CLASS_ID );
     String objName = aParams.fields().getStr( OBJ_NAME );
-    eventId = aParams.fields().getStr( EVENT_ID );
-    objNameObject = new ObjName( classId, objName );
+    String eventId = aParams.fields().getStr( EVENT_ID );
+    
+    evenGwid = Gwid.createEvent( classId, objName, eventId );
 
     // начнём с тегов
 
@@ -249,6 +252,28 @@ public class OpcTagsEventSender
     // соединение
     connection = aContext.network().getSkConnection();
 
+    String clasId = evenGwid.classId();
+    String objId = evenGwid.strid();
+    String evntId = evenGwid.propId();
+
+    ISkClassInfo classInfo = connection.coreApi().sysdescr().findClassInfo( clasId );
+
+    if( classInfo == null ) {
+      logger.error( "Class '%s' not found during event '%s' sender registration", clasId, evntId );
+      return;
+    }
+
+    if( !classInfo.events().list().hasKey( evntId ) ) {
+      logger.error( "Event '%s' of class '%s' not found during event sender registration", evntId, clasId );
+      return;
+    }
+
+    if( connection.coreApi().objService().find( new Skid( clasId, objId ) ) == null ) {
+      logger.error( "Object '%s' of class '%s' not found during event '%s' sender registration", objId, clasId,
+          evntId );
+      return;
+    }
+
     // objId = objNameObject.convert( ); //TODO
 
     // найти все теги
@@ -257,7 +282,17 @@ public class OpcTagsEventSender
 
       ITsOpc tagsDevice = (ITsOpc)aContext.hal().listSpecificDevices().getByKey( tc.getDeviceId() );
       ITag tag = tagsDevice.tag( tc.getTagId() );
-      tags.put( tagKey, tag );
+
+      if( tag == null ) {
+        logger.error( "Tag '%s' not found", tc.getDeviceId() + " | " + tc.getTagId() );
+      }
+      else {
+        tags.put( tagKey, tag );
+      }
+    }
+
+    if( tags.size() != tagsConfig.size() ) {
+      return;
     }
 
     // условия
@@ -292,6 +327,8 @@ public class OpcTagsEventSender
       former.start( formerTags );
     }
 
+    logger.debug( "Event sender for: '%s' - started", evenGwid.asString() );
+    isStarted = true;
   }
 
   private TagConfig createTagConfig( IAvTree aTagParams, IAvTree aDefaultTagParams ) {
