@@ -361,6 +361,14 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
 
     // создаём датасет текущих данных на запись
     wDataSet = createWriteDataSet( aContext.network().getSkConnection(), currGwids );
+
+    // перечислить гвиды, по которым не были сформированы каналы
+    for( Gwid currGwid : currGwids ) {
+      if( !wDataSet.hasKey( currGwid ) ) {
+        logger.error( "For gwid '%s' curdata channel was not created",currGwid.asString() );
+      }
+    }
+
     // context.network().getConnection().serverApi().currDataService().createWriteCurrDataSet( currCods.keys() );
 
     // получаем список зарегистрированных кодов
@@ -418,12 +426,16 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
       }
 
       // запуск передатчика
-      long t1 = System.currentTimeMillis();
-      transmitter.start( realDataIndexes, tags, wDataSet );
-      long t2 = System.currentTimeMillis();
-      System.out.printf( "j = %d, transmitter.start() : %d \n", j, (t2 - t1) );
-
-      startedDataTransmitters.add( transmitter );
+      try {
+        long t1 = System.currentTimeMillis();
+        transmitter.start( realDataIndexes, tags, wDataSet );
+        long t2 = System.currentTimeMillis();
+        System.out.printf( "j = %d, transmitter.start() : %d \n", j, (t2 - t1) );
+        startedDataTransmitters.add( transmitter );
+      }
+      catch( Exception startEx ) {
+        logger.error( "Transmitter not started '%s", startEx.getMessage() );
+      }
     }
 
     initialized = true;
