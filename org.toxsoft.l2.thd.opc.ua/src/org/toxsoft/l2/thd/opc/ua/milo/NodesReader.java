@@ -278,6 +278,10 @@ public class NodesReader {
     ManagedSubscription subscription = ManagedSubscription.create( client, ASYNCH_SUBSCRIPTION_PUBLISHING_INTERVAL );
     subscription.setDefaultSamplingInterval( ASYNCH_SUBSCRIPTION_SAMPLING_INTERVAL );
 
+    subscription.addDataChangeListener( ( items, values ) -> {
+      onDataChanged( items, values );
+    } );
+
     int successAdded = 0;
 
     for( int j = 0; j < aAsynchNodeIds.size(); j++ ) {
@@ -303,10 +307,6 @@ public class NodesReader {
 
     logger.info( "Async group: successfully added %s nodes from %s", String.valueOf( successAdded ),
         String.valueOf( aAsynchNodeIds.size() ) );
-
-    subscription.addDataChangeListener( ( items, values ) -> {
-      onDataChanged( items, values );
-    } );
 
     return subscription;
   }

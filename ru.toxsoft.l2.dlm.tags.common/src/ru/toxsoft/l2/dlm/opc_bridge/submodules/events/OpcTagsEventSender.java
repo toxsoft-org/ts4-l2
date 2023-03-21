@@ -53,7 +53,6 @@ public class OpcTagsEventSender
 
   private Gwid evenGwid;
 
-  
   private boolean isStarted = false;
 
   @Override
@@ -107,7 +106,7 @@ public class OpcTagsEventSender
     String classId = aParams.fields().getStr( CLASS_ID );
     String objName = aParams.fields().getStr( OBJ_NAME );
     String eventId = aParams.fields().getStr( EVENT_ID );
-    
+
     evenGwid = Gwid.createEvent( classId, objName, eventId );
 
     // начнём с тегов
@@ -327,7 +326,7 @@ public class OpcTagsEventSender
       former.start( formerTags );
     }
 
-    logger.debug( "Event sender for: '%s' - started", evenGwid.asString() );
+    logger.info( "Event sender for: '%s' - started", evenGwid.asString() );
     isStarted = true;
   }
 
