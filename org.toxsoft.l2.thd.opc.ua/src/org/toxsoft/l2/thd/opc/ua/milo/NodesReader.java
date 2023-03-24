@@ -248,7 +248,8 @@ public class NodesReader {
 
           IListEdit<NodeId> asynchNodeIds = new ElemArrayList<>();
 
-          IStringMapEdit<TagImpl> pretends = new StringMap<>();
+          // список идов потенциальных тегов
+          IStringListEdit pretends = new StringArrayList();
 
           for( int j = 0; j < asynchTagsCfgItems.size(); j++ ) {
             TagCfgItem item = asynchTagsCfgItems.get( j );
@@ -257,17 +258,25 @@ public class NodesReader {
             TagImpl tag = new TagImpl( nodeId.toParseableString(), EKind.R, item.getTagType(), item.getTagTypeExtra(),
                 item.isControlWord() );
 
-            pretends.put( tag.tagId(), tag );
+            // заочно добавляем тегов
+            tags.put( tag.tagId(), tag );
+            // добавляем иды
+            pretends.add( tag.tagId() );
 
             asynchNodeIds.add( nodeId );
           }
 
           currSubscription = createSubscriptionAndRegAsynchNodes( asynchNodeIds );
 
-          // добавляем только зарегистрированные
+          // проверяем зарегистрированные теги и исключаем их из претендентов
           for( ManagedDataItem di : currSubscription.getDataItems() ) {
-            TagImpl tag = pretends.getByKey( di.getNodeId().toParseableString() );
-            tags.put( tag.tagId(), tag );
+            pretends.remove( di.getNodeId().toParseableString() );
+          }
+
+          // если в списке претендентов остались элементы - значит они не были зарегистрированы - их надо удалить из
+          // списка тегов
+          for( String nonRegId : pretends ) {
+            tags.removeByKey( nonRegId );
           }
         }
     }
