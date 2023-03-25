@@ -185,27 +185,28 @@ public class NodesReader {
    */
   public void onDataChanged( List<ManagedDataItem> aItems, List<DataValue> aValues ) {
     logger.debug( "Async Tags changed count %s", String.valueOf( aItems.size() ) );
-    for( int i = 0; i < aItems.size(); i++ ) {
-      ManagedDataItem dataItem = aItems.get( i );
-      DataValue dataValue = aValues.get( i );
-
-      String tagId = dataItem.getNodeId().toParseableString();
-
-      TagImpl tag = tags.getByKey( tagId );
-
-      EAtomicType tagType = tag.valueType();
-      Variant vValue = dataValue.getValue();
-
-      if( vValue == null ) {
-        logger.debug( "Value of AsyncTag=%s   is NULL", tagId );
-      }
-      else {
-        // logger.debug( "Value of AsyncTag=%s is %s", tagId, vValue.toString() );
-      }
-
-      IAtomicValue atomicVal = OpcUaUtils.convertFromOpc( vValue, tagType );
-      tag.updateVal( atomicVal );
-    }
+    setValuesToAsyncBuffer( aItems, aValues );
+    // for( int i = 0; i < aItems.size(); i++ ) {
+    // ManagedDataItem dataItem = aItems.get( i );
+    // DataValue dataValue = aValues.get( i );
+    //
+    // String tagId = dataItem.getNodeId().toParseableString();
+    //
+    // TagImpl tag = tags.getByKey( tagId );
+    //
+    // EAtomicType tagType = tag.valueType();
+    // Variant vValue = dataValue.getValue();
+    //
+    // if( vValue == null ) {
+    // logger.debug( "Value of AsyncTag=%s is NULL", tagId );
+    // }
+    // else {
+    // // logger.debug( "Value of AsyncTag=%s is %s", tagId, vValue.toString() );
+    // }
+    //
+    // IAtomicValue atomicVal = OpcUaUtils.convertFromOpc( vValue, tagType );
+    // tag.updateVal( atomicVal );
+    // }
   }
 
   public void config( IAvTree aCfgInfo )
@@ -287,40 +288,82 @@ public class NodesReader {
     ManagedSubscription subscription = ManagedSubscription.create( client, ASYNCH_SUBSCRIPTION_PUBLISHING_INTERVAL );
     subscription.setDefaultSamplingInterval( ASYNCH_SUBSCRIPTION_SAMPLING_INTERVAL );
 
-    subscription.addDataChangeListener( ( items, values ) -> {
-      onDataChanged( items, values );
-    } );
+    // subscription.addDataChangeListener( ( items, values ) -> {
+    // onDataChanged( items, values );
+    // } );
 
     int successAdded = 0;
 
-    for( int j = 0; j < aAsynchNodeIds.size(); j++ ) {
-      NodeId nodeId = aAsynchNodeIds.get( j );
+    int STEP_SIZE = 100;
+
+    for( int step = 0; step < aAsynchNodeIds.size(); ) {
+
+      List<NodeId> asynchNodeIds = new ArrayList<>();
+      for( int j = step; j < step + STEP_SIZE && j < aAsynchNodeIds.size(); j++ ) {
+        asynchNodeIds.add( aAsynchNodeIds.get( j ) );
+      }
+
+      step = step + STEP_SIZE;
 
       try {
-        ManagedDataItem dataItem = subscription.createDataItem( nodeId );
-        if( dataItem.getStatusCode().isGood() ) {
-          // logger.debug( "item created for nodeId=%s", dataItem.getNodeId().toParseableString() );
-          successAdded++;
+        List<ManagedDataItem> dataItems = subscription.createDataItems( asynchNodeIds );
+
+        for( ManagedDataItem dataItem : dataItems ) {
+          if( dataItem.getStatusCode().isGood() ) {
+            // logger.debug( "item created for nodeId=%s", dataItem.getNodeId().toParseableString() );
+            successAdded++;
+          }
+          else {
+            logger.error( "failed to create item for nodeId=%s (status=%s)", dataItem.getNodeId().toParseableString(),
+                dataItem.getStatusCode().toString() );
+            subscription.deleteDataItem( dataItem );
+            asynchNodeIds.remove( dataItem.getNodeId() );
+          }
         }
-        else {
-          logger.error( "failed to create item for nodeId=%s (status=%s)", dataItem.getNodeId().toParseableString(),
-              dataItem.getStatusCode().toString() );
-          subscription.deleteDataItem( dataItem );
+
+        // первичное синхронное чтение зарегистрированных элементов (без буфера)
+        try {
+          CompletableFuture<List<DataValue>> dValuesF =
+              client.readValues( 0, TimestampsToReturn.Source, asynchNodeIds );
+          List<DataValue> dValues = dValuesF.get();
+
+          for( int i = 0; i < asynchNodeIds.size(); i++ ) {
+            String key = asynchNodeIds.get( i ).toParseableString();
+            TagImpl tag = tags.getByKey( key );
+
+            EAtomicType tagType = tag.valueType();
+            Variant vValue = dValues.get( i ).getValue();
+
+            IAtomicValue atomicVal = OpcUaUtils.convertFromOpc( vValue, tagType );
+            // logger.debug( "Initial async read tag '%s' val= %s", key,
+            // atomicVal.asString() + (vValue.isNull() ? ", null" : "") + (atomicVal.isAssigned() ? "" : "NULL") );
+            tag.updateVal( atomicVal );
+          }
+          logger.debug( "Initial async read of %s tags", String.valueOf( asynchNodeIds.size() ) );
+        }
+        catch( Exception ex ) {
+          logger.error( ex );
         }
       }
       catch( Exception uaEx ) {
-        logger.error( "Tag '%s' subscriptionEx '%s'", nodeId.toParseableString(), uaEx.getMessage() );
+        logger.error( "SubscriptionEx '%s'", uaEx.getMessage() );
       }
-
     }
 
     logger.info( "Async group: successfully added %s nodes from %s", String.valueOf( successAdded ),
         String.valueOf( aAsynchNodeIds.size() ) );
 
+    subscription.addDataChangeListener( ( items, values ) -> {
+      onDataChanged( items, values );
+    } );
+
     return subscription;
   }
 
   private synchronized void readValuesFromAsyncBuffer() {
+    // if( bufferAsynchVal.size() > 0 ) {
+    // logger.debug( "readValuesFromAsyncBuffer (size): %s", String.valueOf( bufferAsynchVal ) );
+    // }
     readValuesFromBuffer( bufferAsynchVal );
     bufferAsynchVal.clear();
   }
