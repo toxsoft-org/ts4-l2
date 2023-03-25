@@ -227,6 +227,8 @@ public class NodesWriter {
           BufferedUaTag bTag = new BufferedUaTag( tag, nodeId );
           bufferedTags.add( bTag );
         }
+        logger.info( "Output group: successfully added %s nodes from %s", String.valueOf( tags.size() ),
+            String.valueOf( outputTagsCfgItems.size() ) );
       }
     }
   }

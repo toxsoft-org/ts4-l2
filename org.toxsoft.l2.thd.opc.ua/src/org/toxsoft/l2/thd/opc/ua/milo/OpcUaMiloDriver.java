@@ -108,6 +108,8 @@ public class OpcUaMiloDriver
           TagImpl wTagImpl = writeTags.getByKey( writeTagKey );
           // если идентификаторы тегов чтения и записи совпадают - поменять тип тега и заменить тег на чтение
           wTagImpl.setKind( EKind.RW );
+          // не забыть выставить первоначальное значение
+          wTagImpl.updateVal( readTags.getByKey( writeTagKey ).get() );
           readTags.put( writeTagKey, wTagImpl );
         }
 
@@ -124,7 +126,19 @@ public class OpcUaMiloDriver
       // список тегов печать
       IList<String> tagsKeys = tags.keys();
       for( String tagKey : tagsKeys ) {
-        logger.info( "Tag '%s' of type %s", tagKey, tags.getByKey( tagKey ).kind().getName() );
+        ITag tag = tags.getByKey( tagKey );
+        EKind tagKind = tag.kind();
+
+        boolean isRead = (tagKind == EKind.R || tagKind == EKind.RW);
+        String value = isRead ? "null" : new String();
+        if( isRead && tag.get() != null ) {
+          value = "Not assigned";
+          if( tag.get().isAssigned() ) {
+            value = tag.get().asString();
+          }
+        }
+
+        logger.info( "Tag '%s' of type %s, value = %s", tagKey, tagKind.getName(), value );
       }
     }
     catch( Exception ex ) {
