@@ -17,8 +17,8 @@ Require-Bundle: ru.toxsoft.l2.sysdescr.constants,
  org.toxsoft.core.pas,
  org.toxsoft.uskat.s5,
  org.toxsoft.extlibs.wildfly,
- org.toxsoft.uskat.dataquality.lib,
- org.toxsoft.uskat.dataquality.s5
+ org.toxsoft.skf.dq.lib;bundle-version="1.0.0",
+ org.toxsoft.skf.dq.s5;bundle-version="1.0.0"
 Export-Package: gnu.io,
  ru.toxsoft.l2.core.app,
  ru.toxsoft.l2.core.app.impl,

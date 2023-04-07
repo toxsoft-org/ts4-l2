@@ -5,12 +5,12 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.skf.dq.lib.*;
+import org.toxsoft.skf.dq.s5.concurrent.*;
 import org.toxsoft.uskat.concurrent.*;
 import org.toxsoft.uskat.core.*;
 import org.toxsoft.uskat.core.api.rtdserv.*;
 import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.dataquality.lib.*;
-import org.toxsoft.uskat.dataquality.s5.concurrent.*;
 
 import ru.toxsoft.l2.core.main.impl.*;
 import ru.toxsoft.l2.core.net.impl.*;
