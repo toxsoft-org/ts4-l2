@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <category-def name="org.toxsoft.l2.releng.category" label="org.toxsoft.l2.releng Category">
+      <description>
+         org.toxsoft.l2.releng Category
+      </description>
+   </category-def>
+   <bundle id="ru.toxsoft.l2.core"/>
+   <bundle id="ru.toxsoft.l2.dlm.tags.common"/>
+   <bundle id="ru.toxsoft.l2.sysdescr.constants"/>
+   <bundle id="ru.toxsoft.l2.thd.opc.da"/>
+   <bundle id="org.toxsoft.l2.thd.opc.ua"/>
+
+   <!-- sources -->
+   <bundle id="ru.toxsoft.l2.core.source"/>
+   <bundle id="ru.toxsoft.l2.dlm.tags.common.source"/>
+   <bundle id="ru.toxsoft.l2.dlm.tags.common.source"/>
+   <bundle id="ru.toxsoft.l2.thd.opc.da.source"/>
+   <bundle id="org.toxsoft.l2.thd.opc.ua.source"/>
+
+</site>
