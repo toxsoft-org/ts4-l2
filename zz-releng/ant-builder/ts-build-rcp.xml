@@ -30,6 +30,9 @@
     <delete>
       <fileset dir="${ts-dest-dir-plugins}/plugins" includes="org.toxsoft.l2.*" />   
     </delete>
+    <delete>
+      <fileset dir="${ts-dest-dir-plugins}/plugins" includes="ru.toxsoft.l2.*" />   
+    </delete>
   </target>
 
 </project>

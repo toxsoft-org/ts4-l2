@@ -17,7 +17,9 @@
   <!-- TODO: -->
   <target name="build-lib-jar" depends="clean" description="Сборка общих плагинов">
     <ant dir="../../ru.toxsoft.l2.core" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
-    <ant dir="../../ru.toxsoft.l2.dlm.tags.common" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
+    <ant dir="../../ru.toxsoft.l2.dlm.tags.common" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar">
+      <property name="lib.jar" value="ru.toxsoft.l2.dlm.tags.common-dlm.jar" />
+    </ant>
     <ant dir="../../ru.toxsoft.l2.sysdescr.constants" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
     <ant dir="../../ru.toxsoft.l2.thd.opc.da" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
     <ant dir="../../org.toxsoft.l2.thd.opc.ua" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
@@ -46,6 +48,8 @@
     <delete>
       <fileset dir="${ts-dest-dir-libs}" includes="org.toxsoft.l2.*" />
       <fileset dir="${ts-dest-dir-plugins}/plugins" includes="org.toxsoft.l2.*" />   
+      <fileset dir="${ts-dest-dir-libs}" includes="ru.toxsoft.l2.*" />
+      <fileset dir="${ts-dest-dir-plugins}/plugins" includes="ru.toxsoft.l2.*" />   
     </delete>
   </target>
 

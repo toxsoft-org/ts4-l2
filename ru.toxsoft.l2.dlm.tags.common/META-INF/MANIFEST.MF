@@ -5,7 +5,7 @@ Bundle-SymbolicName: ru.toxsoft.l2.dlm.tags.common
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: ToxSoft
 Automatic-Module-Name: ru.toxsoft.l2.dlm.tags.common
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: ru.toxsoft.l2.core,
  org.toxsoft.uskat.core,
  org.toxsoft.core.log4j,
@@ -16,3 +16,11 @@ Export-Package: ru.toxsoft.l2.dlm.opc_bridge,
  ru.toxsoft.l2.dlm.opc_bridge.submodules.commands,
  ru.toxsoft.l2.dlm.opc_bridge.submodules.data,
  ru.toxsoft.l2.dlm.opc_bridge.submodules.events
+TsPluginContainerVersion: 2
+TsPluginVersion: {2,1,2023-03-21_19:33:52}
+TsPluginType: DLM
+TsPluginClassName: ru.toxsoft.l2.dlm.opc_bridge.DlmFactory
+DlmId: ru.toxsoft.l2.dlm.tags.common.OpcBridgeDlm
+DlmName: Подгружаемый модуль НУ - мост opc
+DeveloperPersons: Max
+DeveloperCompany: ТоксСофт
