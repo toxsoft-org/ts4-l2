@@ -1,6 +1,8 @@
 package org.toxsoft.l2.thd.opc.ua.milo;
 
+import org.eclipse.milo.opcua.stack.core.types.builtin.*;
 import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.impl.*;
 
 /**
  * Конфигурация тега
@@ -8,6 +10,8 @@ import org.toxsoft.core.tslib.av.*;
  * @author max
  */
 public class TagCfgItem {
+
+  private NodeId nodeId;
 
   private int          namespaceId;
   private IAtomicValue tagId;
@@ -30,6 +34,28 @@ public class TagCfgItem {
     super();
     namespaceId = aNamespaceId;
     tagId = aTagId;
+    tagType = aTagType;
+
+    tagTypeExtra = aTagTypeExtra;
+    isControlWord = aIsControlWord;
+  }
+
+  /**
+   * Конструктор конфигурации тега по идентификатору узла и типу.
+   *
+   * @param aNodeId - идентификатор узла
+   * @param aTagType EAtomicType - тип значения тега
+   * @param aTagTypeExtra String - подтип значения тега, по умолчанию - пустое
+   * @param aIsControlWord boolean - тег является контрольным словом
+   */
+  public TagCfgItem( NodeId aNodeId, EAtomicType aTagType, String aTagTypeExtra, boolean aIsControlWord ) {
+    super();
+    nodeId = aNodeId;
+    namespaceId = nodeId.getNamespaceIndex().intValue();
+
+    // TODO - это неправильно!!!! может быть int!!! переделать
+    tagId = AvUtils.avStr( nodeId.getIdentifier().toString() );
+
     tagType = aTagType;
 
     tagTypeExtra = aTagTypeExtra;
@@ -79,6 +105,15 @@ public class TagCfgItem {
    */
   public boolean isControlWord() {
     return isControlWord;
+  }
+
+  /**
+   * Возвращает идентификатор узла - может быть null!!!
+   *
+   * @return NodeId - идентификатор узла - может быть null!!!
+   */
+  public NodeId getNodeId() {
+    return nodeId;
   }
 
 }

@@ -152,20 +152,21 @@ public class OpcUaUtils {
 
     IAtomicValue tagId = aTagConfig.fields().getByKey( OPC_TAG_PARAM_NAME );
 
+    String tagTypeExtra = aTagConfig.fields().getStr( PIN_TYPE_EXTRA_PARAM_NAME, TsLibUtils.EMPTY_STRING );
+
+    boolean isControlWord = aTagConfig.fields().getBool( PIN_CONTROL_WORD_PARAM_NAME, false );
+
     int namespace = 0;
 
     if( !aTagConfig.fields().hasKey( OPC_TAG_NAMESPACE_PARAM_NAME ) ) {
       NodeId nodeId = NodeId.parse( tagId.asString() );
-      namespace = nodeId.getNamespaceIndex().intValue();
-      tagId = AvUtils.avStr( nodeId.getIdentifier().toString() );
+      // namespace = nodeId.getNamespaceIndex().intValue();
+      // tagId = AvUtils.avStr( nodeId.getIdentifier().toString() );
+      return new TagCfgItem( nodeId, tagType, tagTypeExtra, isControlWord );
     }
-    else {
-      namespace = aTagConfig.fields().getInt( OPC_TAG_NAMESPACE_PARAM_NAME );
-    }
-
-    String tagTypeExtra = aTagConfig.fields().getStr( PIN_TYPE_EXTRA_PARAM_NAME, TsLibUtils.EMPTY_STRING );
-
-    boolean isControlWord = aTagConfig.fields().getBool( PIN_CONTROL_WORD_PARAM_NAME, false );
+    // else {
+    namespace = aTagConfig.fields().getInt( OPC_TAG_NAMESPACE_PARAM_NAME );
+    // }
 
     return new TagCfgItem( namespace, tagId, tagType, tagTypeExtra, isControlWord );
   }
@@ -177,6 +178,10 @@ public class OpcUaUtils {
    * @return NodeId - идентификатор узла (тега)
    */
   public static NodeId createNodeFromCfg( TagCfgItem aItemCfg ) {
+    if( aItemCfg.getNodeId() != null ) {
+      return aItemCfg.getNodeId();
+    }
+
     int namespaceId = aItemCfg.getNamespaceId();
     IAtomicValue tagId = aItemCfg.getTagId();
 
