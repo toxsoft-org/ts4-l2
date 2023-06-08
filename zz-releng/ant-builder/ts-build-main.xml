@@ -22,8 +22,8 @@
     </ant>
     <ant dir="../../ru.toxsoft.l2.sysdescr.constants" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
     <ant dir="../../ru.toxsoft.l2.thd.opc.da" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
+    <ant dir="../../ru.toxsoft.l2.utils.opc.cfg.exe" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
     <ant dir="../../org.toxsoft.l2.thd.opc.ua" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
-
   </target>
 
   <!-- ЦЕЛЬ: сборка plugin-ов -->
@@ -38,6 +38,7 @@
 				ru.toxsoft.l2.dlm.tags.common,
 				ru.toxsoft.l2.sysdescr.constants,
                                 ru.toxsoft.l2.thd.opc.da,
+                                ru.toxsoft.l2.utils.opc.cfg.exe,
                                 org.toxsoft.l2.thd.opc.ua"
                        useworkspacecompiledclasses="true"
                        useJARFormat="true" />

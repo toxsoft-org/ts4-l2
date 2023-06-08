@@ -569,6 +569,7 @@
     <module>ru.toxsoft.l2.sysdescr.constants</module>
     <module>ru.toxsoft.l2.thd.opc.da</module>
     <module>org.toxsoft.l2.thd.opc.ua</module>
+    <module>ru.toxsoft.l2.utils.opc.cfg.exe</module>
  
     <module>zz-releng/p2.main</module>
     <module>zz-releng/ant.main</module>
