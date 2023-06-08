@@ -112,9 +112,9 @@ public class OpcOdsToOpcThdConvertor {
     String objSheetName = "Объекты";
     String classSheetName = "Классы";
     ClassTabsOdsFileReader classTabsOdsFileReader =
-        new ClassTabsOdsFileReader( new File( aSourceOdsFile ), objSheetName );
+        new ClassTabsOdsFileReader( new File( aSourceOdsFile ), classSheetName );
     TwoTabsOdsFileReader reader =
-        new TwoTabsOdsFileReader( new File( aSourceOdsFile ), classSheetName, classTabsOdsFileReader );
+        new TwoTabsOdsFileReader( new File( aSourceOdsFile ), objSheetName, classTabsOdsFileReader );
 
     IListEdit<StringData> result;
     try {

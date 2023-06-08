@@ -21,7 +21,13 @@ public interface ISysClassRowDef {
   IDataDef CLASS_ID_PARAM = create( "class.id", STRING, TSID_DESCRIPTION, "Class Identificator", TSID_NAME, "class id",
       TSID_DEFAULT_VALUE, IAtomicValue.NULL, TSID_IS_MANDATORY, avBool( true ) );
 
+  IDataDef OBJ_NAME_PARAM = create( "obj.name", STRING, TSID_DESCRIPTION, "Object Identificator", TSID_NAME, "obj name",
+      TSID_DEFAULT_VALUE, IAtomicValue.NULL, TSID_IS_MANDATORY, avBool( true ) );
+
   IDataDef TAG_NAME_PARAM = create( "tag.name", STRING, TSID_DESCRIPTION, "Tag Name", TSID_NAME, "tag name",
+      TSID_DEFAULT_VALUE, IAtomicValue.NULL, TSID_IS_MANDATORY, avBool( true ) );
+
+  IDataDef TAG_PATH_PARAM = create( "tag.path", STRING, TSID_DESCRIPTION, "Tag Path", TSID_NAME, "tag path",
       TSID_DEFAULT_VALUE, IAtomicValue.NULL, TSID_IS_MANDATORY, avBool( true ) );
 
   IDataDef BIT_INDEX_PARAM = create( "bit.index", INTEGER, TSID_DESCRIPTION, "Bit Index", TSID_NAME, "bit index",

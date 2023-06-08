@@ -130,9 +130,9 @@ public class OpcOdsToBaseDlmsConvertor {
     String objSheetName = "Объекты";
     String classSheetName = "Классы";
     ClassTabsOdsFileReader classTabsOdsFileReader =
-        new ClassTabsOdsFileReader( new File( aSourceOdsFile ), objSheetName );
+        new ClassTabsOdsFileReader( new File( aSourceOdsFile ), classSheetName );
     TwoTabsOdsFileReader reader =
-        new TwoTabsOdsFileReader( new File( aSourceOdsFile ), classSheetName, classTabsOdsFileReader );
+        new TwoTabsOdsFileReader( new File( aSourceOdsFile ), objSheetName, classTabsOdsFileReader );
 
     try {
       reader.read();
@@ -803,9 +803,9 @@ public class OpcOdsToBaseDlmsConvertor {
     for( int i = 0; i < stringDatas.size(); i++ ) {
       StringData tagData = stringDatas.get( i );
 
-      //if( tagData.getTagFullName().equals( "ns=3;s=\"BHB\".\"CW\"" ) ) {
-      //  System.out.println();
-      //}
+      // if( tagData.getTagFullName().equals( "ns=3;s=\"BHB\".\"CW\"" ) ) {
+      // System.out.println();
+      // }
 
       // if( alreadyAddedTags.contains( tagData.getTagFullName() ) ||
       if( tagData.getDataId() == null || tagData.getDataId().length() == 0 ) {

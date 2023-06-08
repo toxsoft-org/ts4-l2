@@ -41,7 +41,12 @@ public class IntegerFieldValueGetter
       if( aCell.getValue() instanceof String ) {
         String strValue = ((String)aCell.getValue()).trim();
         if( strValue.trim().length() > 0 ) {
-          return Integer.valueOf( strValue );
+          try {
+            return Integer.valueOf( strValue );
+          }
+          catch( Exception e ) {
+            return defaultValue;
+          }
         }
       }
     return null;
