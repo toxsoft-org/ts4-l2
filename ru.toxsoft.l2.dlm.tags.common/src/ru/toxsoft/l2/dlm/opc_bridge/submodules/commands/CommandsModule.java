@@ -358,9 +358,9 @@ public class CommandsModule
 
     try {
       connection.coreApi().cmdService().changeCommandState( cmdStateChangeInfo );
+      logger.debug( "State of command ( %s ) changed  on: %s", aExecCmdId, aCmdState.state().id() );
     }
     catch( Exception e ) {
-
       logger.error( "Cant change command ( %s ) state: %s", aExecCmdId, e.getMessage() );
       logger.error( e );
     }

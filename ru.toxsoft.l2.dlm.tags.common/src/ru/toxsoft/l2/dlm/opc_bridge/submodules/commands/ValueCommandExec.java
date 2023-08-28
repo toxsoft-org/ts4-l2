@@ -110,9 +110,9 @@ public class ValueCommandExec
 
     try {
       commandStateEditor.changeCommandState( cmdStateChangeInfo );
+      logger.debug( "State of command ( %s ) changed  on: %s", aCmd.instanceId(), ESkCommandState.SUCCESS.id() );
     }
     catch( Exception e ) {
-
       logger.error( "Cant change command ( %s ) state: %s", aCmd.instanceId(), e.getMessage() );
       logger.error( e );
     }

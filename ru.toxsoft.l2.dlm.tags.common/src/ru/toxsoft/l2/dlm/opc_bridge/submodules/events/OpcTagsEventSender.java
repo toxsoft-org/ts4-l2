@@ -84,7 +84,7 @@ public class OpcTagsEventSender
     SkEvent ev = new SkEvent( aTime, evenGwid, paramValues );
     connection.coreApi().eventService().fireEvent( ev );// TODO
 
-    logger.debug( "Event sent: %s", evenGwid.asString() );
+    logger.debug( "Event sent: %s", ev.toString() );
     if( paramValues.hasKey( "oldVal" ) && paramValues.hasKey( "newVal" ) ) {
       IAtomicValue oldVal = paramValues.getByKey( "oldVal" );
       IAtomicValue newVal = paramValues.getByKey( "newVal" );
