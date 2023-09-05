@@ -74,6 +74,8 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
 
   private GwidList currGwids;
 
+  private IListEdit<String> tagsDevices = new ElemArrayList<>( false );
+
   @Override
   public void addDataConfigParamsForTransmitter( IAvTree aTransConfig )
       throws TsIllegalStateRtException {
@@ -365,7 +367,7 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
     // перечислить гвиды, по которым не были сформированы каналы
     for( Gwid currGwid : currGwids ) {
       if( !wDataSet.hasKey( currGwid ) ) {
-        logger.error( "For gwid '%s' curdata channel was not created",currGwid.asString() );
+        logger.error( "For gwid '%s' curdata channel was not created", currGwid.asString() );
       }
     }
 
@@ -461,6 +463,8 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
 
     String tagId = aTransTagsParams.getStr( TAG_ID );
     ITag tag = tagsDevice.tag( tagId );
+
+    tagsDevices.add( tagsSpecDev );
     return tag;
   }
 
@@ -473,6 +477,11 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
   public IList<IDataTransmitter<T>> getDataTransmitters()
       throws TsIllegalStateRtException {
     return startedDataTransmitters;
+  }
+
+  @Override
+  public IList<String> getTagsDevices() {
+    return tagsDevices;
   }
 
   /**

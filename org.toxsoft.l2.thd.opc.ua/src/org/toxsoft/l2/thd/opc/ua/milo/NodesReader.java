@@ -76,6 +76,10 @@ public class NodesReader {
    */
   private ManagedSubscription currSubscription;
 
+  private int health = 100;
+
+  private int healthBuffer = 100;
+
   /**
    * @param aClient
    */
@@ -117,6 +121,10 @@ public class NodesReader {
     } );
   }
 
+  int getHealth() {
+    return health;
+  }
+
   /**
    * Возвращает тег по иду
    *
@@ -145,6 +153,8 @@ public class NodesReader {
 
       }
 
+      healthBuffer = 100;
+
       // for( UaVariableNode dNode : syncGroup ) {
       //
       // // .getVariableNode( new NodeId( 2, "TEST SERVER.PLC TAGS FOR OPC SERVER.COMPRESSOR ON" ) );
@@ -166,6 +176,7 @@ public class NodesReader {
       // }
     }
     catch( Exception ex ) {
+      healthBuffer = 0;
       logger.error( ex );
     }
     // logger.debug( "End readValuesFromNodes" );
@@ -173,6 +184,7 @@ public class NodesReader {
   }
 
   public void readValuesFromBuffer() {
+    health = healthBuffer;
     readValuesFromBuffer( bufferSynchVal );
     readValuesFromAsyncBuffer();
   }

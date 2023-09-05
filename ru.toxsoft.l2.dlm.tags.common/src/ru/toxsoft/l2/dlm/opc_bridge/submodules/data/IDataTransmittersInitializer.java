@@ -57,4 +57,12 @@ public interface IDataTransmittersInitializer<T extends ISkRtdataChannel> {
    */
   IList<IDataTransmitter<T>> getDataTransmitters()
       throws TsIllegalStateRtException;
+
+  /**
+   * Возвращает список идентификаторов устройств, являющихся источниками данных. TODO - логика подсказывает, что лучше
+   * разбить gwid на группы по устройствам, но пока - так
+   *
+   * @return IList<String> - список идентификаторов устройств.
+   */
+  IList<String> getTagsDevices();
 }

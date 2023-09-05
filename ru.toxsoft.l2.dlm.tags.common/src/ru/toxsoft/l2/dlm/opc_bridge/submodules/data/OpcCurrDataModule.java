@@ -17,6 +17,7 @@ import org.toxsoft.uskat.core.connection.*;
 import ru.toxsoft.l2.core.cfg.*;
 import ru.toxsoft.l2.core.dlm.*;
 import ru.toxsoft.l2.core.net.*;
+import ru.toxsoft.l2.core.reserve.*;
 import ru.toxsoft.l2.dlm.opc_bridge.*;
 import ru.toxsoft.l2.thd.opc.*;
 
@@ -57,6 +58,16 @@ public class OpcCurrDataModule
    * Набор выходных текущих данных.
    */
   IMap<Gwid, IDataSetter> wCurrDataSet;
+
+  /**
+   * Признак того, что данные зарегистрированы в сервисе качества
+   */
+  private boolean qualityRegistered = false;
+
+  /**
+   * Входные устройства в аспекте их здоровья.
+   */
+  private IHealthMeasurable[] healthMeasDevices = {};
 
   /**
    * Конструктор по DLM контексту
@@ -129,23 +140,68 @@ public class OpcCurrDataModule
       }
     }
 
+    IList<String> tagsDevicesIds = initializer.getTagsDevices();
+
+    healthMeasDevices = new IHealthMeasurable[tagsDevicesIds.size()];
+
+    for( int i = 0; i < tagsDevicesIds.size(); i++ ) {
+      IHealthMeasurable tagsDevice =
+          (IHealthMeasurable)context.hal().listSpecificDevices().getByKey( tagsDevicesIds.get( i ) );
+      healthMeasDevices[i] = tagsDevice;
+    }
+
     // Обнуление за ненадобностью
     initializer = null;
 
     // добавление данных в сервис качества
-    try {
-      NetworkUtils.addToDataQualityService( context.network().getSkConnection(), formEmptyChannelsMap( wCurrDataSet ) );
-    }
-    catch( Exception e ) {
-      logger.error( e, "Exception during curr data params registering in Quality service" ); //$NON-NLS-1$
-    }
-    context.network().getSkConnection().addConnectionListener( connectionListener );
+    // try {
+    // NetworkUtils.addToDataQualityService( context.network().getSkConnection(), formEmptyChannelsMap( wCurrDataSet )
+    // );
+    // }
+    // catch( Exception e ) {
+    // logger.error( e, "Exception during curr data params registering in Quality service" ); //$NON-NLS-1$
+    // }
+    // context.network().getSkConnection().addConnectionListener( connectionListener );
 
     logger.info( MSG_CURR_DATA_MODULE_IS_STARTED_FORMAT, dlmInfo.moduleId() );
   }
 
   @Override
   protected void doDoJob() {
+
+    // String tagsSpecDev = "aTransTagsParams.getStr( TAG_DEVICE_ID )";// TODO list
+    // IHealthMeasurable tagsDevice = (IHealthMeasurable)context.hal().listSpecificDevices().getByKey( tagsSpecDev );
+
+    if( !isDevicesWell() ) {
+      if( qualityRegistered && context.network().getSkConnection().state() == ESkConnState.ACTIVE ) {
+        try {
+          // удаление данных из сервиса качества
+          NetworkUtils.removeDataFromQualityService( context.network().getSkConnection(),
+              formEmptyChannelsMap( wCurrDataSet ) );
+
+          qualityRegistered = false;
+        }
+        catch( Exception e ) {
+          logger.error( e );
+        }
+      }
+      return;
+    }
+
+    if( !qualityRegistered && context.network().getSkConnection().state() == ESkConnState.ACTIVE ) {
+      try {
+        NetworkUtils.addToDataQualityService( context.network().getSkConnection(),
+            formEmptyChannelsMap( wCurrDataSet ) );
+        qualityRegistered = true;
+      }
+      catch( Exception e ) {
+        logger.error( e, "Exception during curr data params registering in Quality service" ); //$NON-NLS-1$
+      }
+    }
+
+    if( !qualityRegistered ) {
+      return;
+    }
 
     // текущее время - чтоб у всех данных было одно время
     long currTime = System.currentTimeMillis();
@@ -175,14 +231,17 @@ public class OpcCurrDataModule
 
   @Override
   protected boolean doQueryStop() {
-    try {
-      // удаление данных из сервиса качества
-      NetworkUtils.removeDataFromQualityService( context.network().getSkConnection(),
-          formEmptyChannelsMap( wCurrDataSet ) );
-      context.network().getSkConnection().removeConnectionListener( connectionListener );
-    }
-    catch( Exception e ) {
-      logger.error( e );
+    if( qualityRegistered ) {
+      try {
+        // удаление данных из сервиса качества
+        NetworkUtils.removeDataFromQualityService( context.network().getSkConnection(),
+            formEmptyChannelsMap( wCurrDataSet ) );
+        qualityRegistered = false;
+        // context.network().getSkConnection().removeConnectionListener( connectionListener );
+      }
+      catch( Exception e ) {
+        logger.error( e );
+      }
     }
     if( wCurrDataSet != null ) {
       for( IDataSetter c : wCurrDataSet.values() ) {
@@ -223,6 +282,22 @@ public class OpcCurrDataModule
     }
 
     return result;
+  }
+
+  /**
+   * Возвращает признак, что устройства работают нормально (определяется здоровьем). Если устройства не удаётся найти -
+   * считается, что они работают хорошо!
+   *
+   * @return true - устройства работают нормально, false - иначе.
+   */
+  private boolean isDevicesWell() {
+    for( IHealthMeasurable tagsDevice : healthMeasDevices ) {
+      if( tagsDevice.getHealth() < 50 ) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   static ISkWriteCurrDataChannel EMPTY_CHANNEL = new EmptySkWriteCurrDataChannel();

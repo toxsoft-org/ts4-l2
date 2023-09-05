@@ -250,4 +250,9 @@ public class OpcUaMiloDriver
     return new AnonymousProvider();
   }
 
+  @Override
+  public int getHealth() {
+    return opcUaNodesReader.getHealth();
+  }
+
 }
