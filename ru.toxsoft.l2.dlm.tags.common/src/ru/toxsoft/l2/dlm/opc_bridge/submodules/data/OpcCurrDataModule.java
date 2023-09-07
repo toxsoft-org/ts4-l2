@@ -62,7 +62,7 @@ public class OpcCurrDataModule
   /**
    * Признак того, что данные зарегистрированы в сервисе качества
    */
-  private boolean qualityRegistered = false;
+  private volatile boolean qualityRegistered = false;
 
   /**
    * Входные устройства в аспекте их здоровья.
@@ -161,7 +161,9 @@ public class OpcCurrDataModule
     // catch( Exception e ) {
     // logger.error( e, "Exception during curr data params registering in Quality service" ); //$NON-NLS-1$
     // }
-    // context.network().getSkConnection().addConnectionListener( connectionListener );
+
+    // регистрация слушателя состояния соединеня с целью обозначения данных в сервисе качества
+    context.network().getSkConnection().addConnectionListener( connectionListener );
 
     logger.info( MSG_CURR_DATA_MODULE_IS_STARTED_FORMAT, dlmInfo.moduleId() );
   }
@@ -237,7 +239,9 @@ public class OpcCurrDataModule
         NetworkUtils.removeDataFromQualityService( context.network().getSkConnection(),
             formEmptyChannelsMap( wCurrDataSet ) );
         qualityRegistered = false;
-        // context.network().getSkConnection().removeConnectionListener( connectionListener );
+
+        // удаление слушателя состояния соединеня с целью обозначения данных в сервисе качества
+        context.network().getSkConnection().removeConnectionListener( connectionListener );
       }
       catch( Exception e ) {
         logger.error( e );
@@ -259,6 +263,7 @@ public class OpcCurrDataModule
         // добавление данных в сервис качества
         try {
           NetworkUtils.addToDataQualityService( aSource, formEmptyChannelsMap( wCurrDataSet ) );
+          qualityRegistered = true;
         }
         catch( Exception e ) {
           logger.error( e, "Exception during curr data params registering in Quality service" ); //$NON-NLS-1$
