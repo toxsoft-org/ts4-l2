@@ -131,6 +131,16 @@ public interface IDlmsBaseConstants {
   String CMD_ID = "cmd.id";
 
   /**
+   * Имя параметра - идентификатор команды на OPC сервере.
+   */
+  String CMD_OPC_ID = "cmd.opc.id";
+
+  /**
+   * Имя параметра - идентификатор команды на OPC сервере.
+   */
+  String CMD_VALUE_PARAM_ID = "value.param.id";
+
+  /**
    * Разделитель имён объектов в списке объектов, предназначенных для выполнения команд (а также в списке команд)
    */
   String LIST_DELIM = ",";
