@@ -110,7 +110,7 @@ public class ValCommandByOneTagWithParamExec
       logger.debug( "in do job isDirty = %s", String.valueOf( cmdIdTag.isDirty() ) ); //$NON-NLS-1$
 
       if( !cmdIdTag.isDirty() && !cmdFeedbackTag.isDirty() && cmdFeedbackTag.get().asInt() == cmdId ) {
-        cmdFeedbackTag.set( AvUtils.avInt( 0 ) );
+        cmdIdTag.set( AvUtils.avInt( 0 ) );
         setCmdStateSuccess( currentCmd );
         clearCommand();
       }
