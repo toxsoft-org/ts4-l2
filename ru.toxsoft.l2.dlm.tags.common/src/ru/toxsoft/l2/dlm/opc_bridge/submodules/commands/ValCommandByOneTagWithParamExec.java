@@ -9,6 +9,7 @@ import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
@@ -60,14 +61,15 @@ public class ValCommandByOneTagWithParamExec
     super.config( aParams );
 
     cmdId = aParams.fields().getInt( CMD_OPC_ID );
-    valueParamId = aParams.fields().getStr( CMD_VALUE_PARAM_ID );
+    valueParamId = aParams.fields().hasKey( CMD_VALUE_PARAM_ID ) ? aParams.fields().getStr( CMD_VALUE_PARAM_ID )
+        : TsLibUtils.EMPTY_STRING;
   }
 
   @Override
   public void start( IStringMap<ITag> aTags, ISkCommandService aCommandStateEditor ) {
     super.start( aTags, aCommandStateEditor );
 
-    TsIllegalArgumentRtException.checkFalse( aTags.size() > 2, "min count of tags is 2" ); //$NON-NLS-1$
+    TsIllegalArgumentRtException.checkFalse( aTags.size() > 1, "min count of tags is 2" ); //$NON-NLS-1$
 
     Iterator<ITag> iterator = aTags.iterator();
 
@@ -81,7 +83,6 @@ public class ValCommandByOneTagWithParamExec
 
   @Override
   public boolean isBusy() {
-
     boolean result = super.isBusy();
 
     if( result ) {
@@ -94,7 +95,7 @@ public class ValCommandByOneTagWithParamExec
   @Override
   protected void doExecCommand( IDtoCommand aCmd, long aTime ) {
     cmdIdTag.set( AvUtils.avInt( cmdId ) );
-    if( aCmd.argValues().hasValue( valueParamId ) ) {
+    if( valueParamId.length() > 0 && aCmd.argValues().hasValue( valueParamId ) ) {
       IAtomicValue value = aCmd.argValues().getValue( valueParamId );
       cmdArgTag.set( value );
       logger.debug( "Value = %s", value.asString() ); //$NON-NLS-1$
