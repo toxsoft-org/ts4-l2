@@ -3,18 +3,21 @@ package ru.toxsoft.l2.thd.opc.da;
 import static ru.toxsoft.l2.thd.opc.IOpcConstants.*;
 import static ru.toxsoft.l2.thd.opc.da.IL2Resources.*;
 
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.avtree.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.av.EAtomicType;
+import org.toxsoft.core.tslib.av.avtree.IAvTree;
+import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.StridablesList;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
+import org.toxsoft.core.tslib.utils.errors.TsIllegalArgumentRtException;
+import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
 
-import ru.toxsoft.l2.core.cfg.*;
-import ru.toxsoft.l2.core.hal.*;
-import ru.toxsoft.l2.core.hal.devices.*;
-import ru.toxsoft.l2.core.hal.devices.impl.*;
+import ru.toxsoft.l2.core.cfg.IUnitConfig;
+import ru.toxsoft.l2.core.hal.IHalErrorProcessor;
+import ru.toxsoft.l2.core.hal.devices.AbstractPinsDevice;
+import ru.toxsoft.l2.core.hal.devices.IDevicesProducer;
+import ru.toxsoft.l2.core.hal.devices.impl.AbstractSpecificDevice;
 
 /**
  * Создает коллекцию мостов opc2S5
@@ -202,7 +205,7 @@ public class Opc2S5CollectionProducer
    */
   private static OpcTagPinDefinition createOpcTagPinDefinition( IAvTree aPinConfig ) {
     String pinTypeId = aPinConfig.fields().getStr( PIN_TYPE_PARAM_NAME );
-    EAtomicType pinType = EAtomicType.findById( pinTypeId );
+    EAtomicType pinType = EAtomicType.getById( pinTypeId );
     String id = aPinConfig.fields().getStr( PIN_ID_PARAM_NAME );
     String tagId = aPinConfig.fields().getStr( OPC_TAG_PARAM_NAME );
 

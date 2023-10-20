@@ -7,29 +7,34 @@ import static ru.toxsoft.l2.core.hal.IHalHardConstants.*;
 import static ru.toxsoft.l2.thd.opc.IOpcConstants.*;
 import static ru.toxsoft.l2.thd.opc.da.IL2Resources.*;
 
-import java.io.*;
+import java.io.File;
 import java.util.*;
 
-import org.toxsoft.core.log4j.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.avtree.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.core.log4j.LoggerWrapper;
+import org.toxsoft.core.tslib.av.EAtomicType;
+import org.toxsoft.core.tslib.av.avtree.IAvTree;
+import org.toxsoft.core.tslib.bricks.strid.coll.IStridablesList;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringMap;
+import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
+import org.toxsoft.core.tslib.utils.errors.TsIoRtException;
+import org.toxsoft.core.tslib.utils.logs.ILogger;
 
-import ru.toxsoft.l2.core.cfg.*;
-import ru.toxsoft.l2.core.cfg.impl.*;
-import ru.toxsoft.l2.core.hal.devices.*;
+import ru.toxsoft.l2.core.cfg.IUnitConfig;
+import ru.toxsoft.l2.core.cfg.impl.DefaultUnitConfigLoader;
+import ru.toxsoft.l2.core.hal.devices.TsMultipleApparatRtException;
 import ru.toxsoft.l2.thd.opc.*;
 
-import javafish.clients.opc.*;
-import javafish.clients.opc.asynch.*;
-import javafish.clients.opc.component.*;
-import javafish.clients.opc.exception.*;
-import javafish.clients.opc.variant.*;
+import javafish.clients.opc.JCustomOpc;
+import javafish.clients.opc.JEasyOpc;
+import javafish.clients.opc.asynch.AsynchEvent;
+import javafish.clients.opc.asynch.OpcAsynchGroupListener;
+import javafish.clients.opc.component.OpcGroup;
+import javafish.clients.opc.component.OpcItem;
+import javafish.clients.opc.exception.CoInitializeException;
+import javafish.clients.opc.variant.Variant;
 
 /**
  * тест движка JEasyOpc
@@ -398,7 +403,7 @@ public class JEasyOpcTest
    */
   private static OpcTagPinDefinition createOpcTagPinDefinition( IAvTree aPinConfig ) {
     String pinTypeId = aPinConfig.fields().getStr( PIN_TYPE_PARAM_NAME );
-    EAtomicType pinType = EAtomicType.findById( pinTypeId );
+    EAtomicType pinType = EAtomicType.getById( pinTypeId );
     String id = aPinConfig.fields().getStr( PIN_ID_PARAM_NAME );
     String tagId = aPinConfig.fields().getStr( OPC_TAG_PARAM_NAME );
 
