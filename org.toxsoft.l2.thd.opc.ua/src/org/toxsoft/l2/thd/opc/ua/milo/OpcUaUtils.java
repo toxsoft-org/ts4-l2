@@ -2,16 +2,20 @@ package org.toxsoft.l2.thd.opc.ua.milo;
 
 import static ru.toxsoft.l2.thd.opc.IOpcConstants.*;
 
-import org.eclipse.milo.opcua.stack.core.types.builtin.*;
-import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.*;
-import org.toxsoft.core.log4j.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.avtree.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.utils.*;
-import org.toxsoft.core.tslib.utils.logs.*;
+import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
+import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
+import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UByte;
+import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UShort;
+import org.toxsoft.core.log4j.LoggerWrapper;
+import org.toxsoft.core.tslib.av.EAtomicType;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.avtree.IAvTree;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
+import org.toxsoft.core.tslib.utils.TsLibUtils;
+import org.toxsoft.core.tslib.utils.logs.ILogger;
 
 /**
  * Утилитный класс для работы с OPC
@@ -148,7 +152,7 @@ public class OpcUaUtils {
    */
   public static TagCfgItem createOpcTagCfgItem( IAvTree aTagConfig ) {
     String pinTypeId = aTagConfig.fields().getStr( PIN_TYPE_PARAM_NAME );
-    EAtomicType tagType = EAtomicType.findById( pinTypeId );
+    EAtomicType tagType = EAtomicType.getById( pinTypeId );
 
     IAtomicValue tagId = aTagConfig.fields().getByKey( OPC_TAG_PARAM_NAME );
 
