@@ -70,10 +70,14 @@ public class EventModule
       for( int i = 0; i < eventDefs.arrayLength(); i++ ) {
         IAvTree eventDef = eventDefs.arrayElement( i );
 
-        IEventSender eventSender = createSender( eventDef );
-        eventSender.config( eventDef );
-
-        senders.add( eventSender );
+        try {
+          IEventSender eventSender = createSender( eventDef );
+          eventSender.config( eventDef );
+          senders.add( eventSender );
+        }
+        catch( Exception e ) {
+          logger.error( e, "Create or Config of event sender error" );
+        }
 
       }
     }
@@ -94,7 +98,12 @@ public class EventModule
       // запуск локальных отправителей
       for( int i = 0; i < senders.size(); i++ ) {
         IEventSender sender = senders.get( i );
-        sender.start( context );
+        try {
+          sender.start( context );
+        }
+        catch( Exception e ) {
+          logger.error( e, "Start of event sender error" );
+        }
       }
     }
     catch( TsItemNotFoundRtException e ) {

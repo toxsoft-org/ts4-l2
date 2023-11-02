@@ -31,7 +31,7 @@
 
 	<manifest file="dist/temp_META_INF_dir/MANIFEST.MF">
 		<attribute name="TsPluginContainerVersion" value="2" />
-		<section name="ru.toxsoft.l2.dlm.tags.common.OpcBridgeDlm">
+		<section name="ru.toxsoft.l2.dlm.tags.common">
 			<attribute name="TsPluginVersion" value="{${plugin.version},${TODAY}}" />
 			<attribute name="TsPluginType" value="DLM" />
 			
