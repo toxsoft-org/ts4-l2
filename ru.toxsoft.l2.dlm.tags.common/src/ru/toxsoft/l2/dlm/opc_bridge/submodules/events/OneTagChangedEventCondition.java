@@ -2,10 +2,12 @@ package ru.toxsoft.l2.dlm.opc_bridge.submodules.events;
 
 import static ru.toxsoft.l2.dlm.opc_bridge.IDlmsBaseConstants.*;
 
+import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.*;
 
 import ru.toxsoft.l2.thd.opc.*;
 
@@ -16,6 +18,11 @@ import ru.toxsoft.l2.thd.opc.*;
  */
 public class OneTagChangedEventCondition
     implements IOpcTagsCondition {
+
+  /**
+   * Журнал работы
+   */
+  private static ILogger logger = LoggerWrapper.getLogger( OneTagChangedEventCondition.class.getName() );
 
   private float minChangePercant = 0.1f;
 
@@ -41,6 +48,8 @@ public class OneTagChangedEventCondition
     TsIllegalArgumentRtException.checkFalse( aTags.size() == 1 );
 
     tag = aTags.values().get( 0 );
+
+    logger.info( "Event Condition OneTagChanged for: '%s' - started", tag.id() );
   }
 
   @Override
@@ -68,6 +77,11 @@ public class OneTagChangedEventCondition
         if( type == EAtomicType.BOOLEAN ) {
           isHappend = prevValue != null && prevValue.asBool() != value.asBool();
         }
+
+    if( isHappend ) {
+      logger.info( "Event Condition triggered: tag= '%s', old= '%s', new= '%s'", tag.id(), prevValue.asString(),
+          value.asString() );
+    }
 
     prevValue = value;
     return isHappend;
