@@ -137,7 +137,9 @@ public class NodesReader {
 
   public void readValuesFromNodes() {
     // logger.debug( "Start readValuesFromNodes" );
-
+    if( syncGroup.size() == 0 ) {
+      return;
+    }
     try {
       CompletableFuture<List<DataValue>> dValuesF = client.readValues( 0, TimestampsToReturn.Source, syncGroup );
 
