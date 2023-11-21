@@ -42,6 +42,11 @@ public interface INetworkConstants {
   String CGF_PARAM_CURR_DATA_TIMEOUT = "currDataTimeout";
 
   /**
+   * Признак запуска без сервера (в тестовых целях).
+   */
+  String CGF_PARAM_START_WITHOUT_S5_SERVER = "startWithoutS5";
+
+  /**
    * Идентификатор команды завершения работы НУ.
    */
   String CGF_PARAM_QUIT_CMD_ID = "quitCmdId";

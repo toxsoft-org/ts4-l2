@@ -144,6 +144,15 @@ public class NetworkImpl
 
   @Override
   protected void processStart() {
+    boolean startWithoutS5Server =
+        netOps.hasKey( CGF_PARAM_START_WITHOUT_S5_SERVER ) ? netOps.getBool( CGF_PARAM_START_WITHOUT_S5_SERVER )
+            : false;
+
+    if( startWithoutS5Server ) {
+      // тест без соединения с S5
+      logger.info( "Start whithout server by cfg param 'startWithoutS5=true'" ); //$NON-NLS-1$
+      return;
+    }
     connection = S5SynchronizedConnection.createSynchronizedConnection( SkCoreUtils.createConnection() );
 
     String login = netOps.getStr( CGF_PARAM_LOGIN );
