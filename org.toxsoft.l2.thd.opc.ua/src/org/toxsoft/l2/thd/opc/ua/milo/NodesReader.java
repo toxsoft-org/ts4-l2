@@ -92,33 +92,40 @@ public class NodesReader {
       public void onSubscriptionTransferFailed( UaSubscription subscription, StatusCode statusCode ) {
         logger.info( "* onSubscriptionTransferFailed" );
 
-        if( currSubscription == null ) {
-          return;
-        }
-
-        // повторная регистрация асинхронных тегов
-
-        List<ManagedDataItem> dataItems = currSubscription.getDataItems();
-        IListEdit<NodeId> newNodeIds = new ElemArrayList<>();
-        for( ManagedDataItem mDataItem : dataItems ) {
-          newNodeIds.add( mDataItem.getNodeId() );
-        }
-
-        try {
-          currSubscription.delete();
-        }
-        catch( UaException e1 ) {
-          logger.error( e1 );
-        }
-
-        try {
-          currSubscription = createSubscriptionAndRegAsynchNodes( newNodeIds );
-        }
-        catch( UaException e ) {
-          logger.error( e.getMessage() );
-        }
+        // reinitSubscription();
       }
+
     } );
+  }
+
+  private void reinitSubscription() {
+    if( currSubscription == null ) {
+      return;
+    }
+
+    logger.info( "Try to reinit Subscription" );
+
+    // повторная регистрация асинхронных тегов
+
+    List<ManagedDataItem> dataItems = currSubscription.getDataItems();
+    IListEdit<NodeId> newNodeIds = new ElemArrayList<>();
+    for( ManagedDataItem mDataItem : dataItems ) {
+      newNodeIds.add( mDataItem.getNodeId() );
+    }
+
+    try {
+      currSubscription.delete();
+    }
+    catch( UaException e1 ) {
+      logger.error( e1 );
+    }
+
+    try {
+      currSubscription = createSubscriptionAndRegAsynchNodes( newNodeIds );
+    }
+    catch( UaException e ) {
+      logger.error( e.getMessage() );
+    }
   }
 
   int getHealth() {
@@ -137,9 +144,9 @@ public class NodesReader {
 
   public void readValuesFromNodes() {
     // logger.debug( "Start readValuesFromNodes" );
-    if( syncGroup.size() == 0 ) {
-      return;
-    }
+    // if( syncGroup.size() == 0 ) {
+    // return;
+    // }
     try {
       CompletableFuture<List<DataValue>> dValuesF = client.readValues( 0, TimestampsToReturn.Source, syncGroup );
 
@@ -153,6 +160,10 @@ public class NodesReader {
         // dValues.get( i ).getValue().toString() );
         // }
 
+      }
+
+      if( healthBuffer == 0 ) {
+        reinitSubscription();
       }
 
       healthBuffer = 100;
