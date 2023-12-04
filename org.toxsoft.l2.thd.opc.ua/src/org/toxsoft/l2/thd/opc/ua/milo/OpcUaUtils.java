@@ -2,20 +2,16 @@ package org.toxsoft.l2.thd.opc.ua.milo;
 
 import static ru.toxsoft.l2.thd.opc.IOpcConstants.*;
 
-import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
-import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
-import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UByte;
-import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.UShort;
-import org.toxsoft.core.log4j.LoggerWrapper;
-import org.toxsoft.core.tslib.av.EAtomicType;
-import org.toxsoft.core.tslib.av.IAtomicValue;
-import org.toxsoft.core.tslib.av.avtree.IAvTree;
-import org.toxsoft.core.tslib.av.impl.AvUtils;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.coll.IListEdit;
-import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
-import org.toxsoft.core.tslib.utils.TsLibUtils;
-import org.toxsoft.core.tslib.utils.logs.ILogger;
+import org.eclipse.milo.opcua.stack.core.types.builtin.*;
+import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.*;
+import org.toxsoft.core.log4j.*;
+import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.core.tslib.av.impl.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.utils.*;
+import org.toxsoft.core.tslib.utils.logs.*;
 
 /**
  * Утилитный класс для работы с OPC
@@ -125,6 +121,88 @@ public class OpcUaUtils {
       }
     }
     return result;
+  }
+
+  public static Variant convertToOpc( IAtomicValue aValue, EAtomicType aTagType, Class<?> aTagTypeExtra ) {
+    Variant result;
+    switch( aTagType ) {
+      case BOOLEAN:
+        result = new Variant( Boolean.valueOf( aValue.asBool() ) );
+        break;
+      case FLOATING:
+        result = new Variant( Float.valueOf( aValue.asFloat() ) );
+        break;
+      case INTEGER: {
+        if( aTagTypeExtra != null ) {
+          result = getVariant( aTagTypeExtra, aValue.asString() );
+        }
+        else {
+          result = new Variant( Integer.valueOf( aValue.asInt() ) );
+        }
+        break;
+      }
+      case NONE: {
+        result = Variant.NULL_VALUE;
+        break;
+      }
+      case STRING: {
+        result = new Variant( aValue.asString() );
+        break;
+      }
+      case TIMESTAMP: {
+        result = new Variant( Long.valueOf( aValue.asLong() ) );
+        break;
+      }
+      case VALOBJ: {
+        result = new Variant( aValue.asValobj() );
+        break;
+      }
+      default: {
+        result = new Variant( aValue.asString() );
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Получить Variant из текстового значения
+   *
+   * @param aClazz класс переменной
+   * @param aVal текстовое значение
+   * @return значение {@link Variant } применяемое в milo для передачи/записи значений тегов
+   */
+  public static Variant getVariant( Class<?> aClazz, String aVal ) {
+    if( aClazz.equals( Boolean.class ) ) {
+      return new Variant( Boolean.valueOf( aVal ) );
+    }
+    if( aClazz.equals( Byte.class ) ) {
+      return new Variant( Byte.valueOf( aVal ) );
+    }
+    if( aClazz.equals( UByte.class ) ) {
+      return new Variant( UByte.valueOf( aVal ) );
+    }
+    if( aClazz.equals( Short.class ) ) {
+      return new Variant( Short.valueOf( aVal ) );
+    }
+    if( aClazz.equals( UShort.class ) ) {
+      return new Variant( UShort.valueOf( aVal ) );
+    }
+    if( aClazz.equals( Integer.class ) ) {
+      return new Variant( Integer.valueOf( aVal ) );
+    }
+    if( aClazz.equals( UInteger.class ) ) {
+      return new Variant( UInteger.valueOf( aVal ) );
+    }
+    if( aClazz.equals( Long.class ) ) {
+      return new Variant( Long.valueOf( aVal ) );
+    }
+    if( aClazz.equals( ULong.class ) ) {
+      return new Variant( ULong.valueOf( aVal ) );
+    }
+    if( aClazz.equals( Float.class ) ) {
+      return new Variant( Float.valueOf( aVal ) );
+    }
+    return Variant.NULL_VALUE;
   }
 
   /**

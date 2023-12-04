@@ -6,8 +6,12 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import org.eclipse.milo.opcua.sdk.client.*;
+import org.eclipse.milo.opcua.sdk.client.nodes.*;
 import org.eclipse.milo.opcua.stack.core.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.*;
+import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.*;
+import org.eclipse.milo.opcua.stack.core.types.enumerated.*;
+import org.eclipse.milo.opcua.stack.core.util.*;
 import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
@@ -211,16 +215,22 @@ public class NodesWriter {
         for( int j = 0; j < outputTagsCfgItems.size(); j++ ) {
           TagCfgItem item = outputTagsCfgItems.get( j );
           NodeId nodeId = OpcUaUtils.createNodeFromCfg( item );
-
+          Class<?> dataTypeClass = null;
           try {
-            client.getAddressSpace().getVariableNode( nodeId );
+            UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
+            // TODO - определение дополнительного типа (extraType)
+
+            NodeId dataType = dNode.getDataType();
+            dataTypeClass = TypeUtil.getBackingClass( dataType );
+
+            // Class<?> dataTypeClass = getNodeDataTypeClassByValue( dNode );
           }
           catch( UaException uaEx ) {
             logger.error( "Write tag '%s' creation faild '%s'", nodeId.toParseableString(), uaEx.getMessage() );
             continue;
           }
 
-          TagImpl tag = new TagImpl( nodeId.toParseableString(), EKind.W, item.getTagType(), item.getTagTypeExtra(),
+          TagImpl tag = new TagImpl( nodeId.toParseableString(), EKind.W, item.getTagType(), dataTypeClass,
               item.isControlWord() );
           tags.put( tag.id(), tag );
 
@@ -236,4 +246,34 @@ public class NodesWriter {
   IMap<String, TagImpl> getTags() {
     return tags;
   }
+
+  /**
+   * Возвращает java тип узла opc ua по значению, получаемому от узла.
+   *
+   * @param aEntity узел значения переменной
+   * @return класс типа данных значения узла
+   */
+  public static Class<?> getNodeDataTypeClassByValue( UaVariableNode aEntity ) {
+    Class<?> retVal = null;
+    // получение значения узла
+    DataValue dataValue = aEntity.getValue();
+    // тут получаем Variant
+    Variant variant = dataValue.getValue();
+    Optional<ExpandedNodeId> dataTypeNode = variant.getDataType();
+    if( dataTypeNode.isPresent() ) {
+      //
+      // aEntity.getTypeDefinition().
+      //
+      ExpandedNodeId expNodeId = dataTypeNode.get();
+      // TODO разобраться с отображением не числовых типов
+      if( expNodeId.getType() == IdType.Numeric ) {
+        UInteger id = (UInteger)expNodeId.getIdentifier();
+        NodeId nodeId = new NodeId( expNodeId.getNamespaceIndex(), id );
+        Class<?> clazz = TypeUtil.getBackingClass( nodeId );
+        retVal = clazz;
+      }
+    }
+    return retVal;
+  }
+
 }

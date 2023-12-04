@@ -5,7 +5,6 @@ import org.toxsoft.core.log4j.*;
 //import static ru.toxsoft.l2.thd.opc.da.IL2Resources.*;
 
 import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 
@@ -42,7 +41,7 @@ public class TagImpl
   /**
    * Подтип
    */
-  private String valTypeExtra = TsLibUtils.EMPTY_STRING;
+  private Class<?> valTypeExtra = null;
 
   /**
    * Текущее значение тега
@@ -78,14 +77,14 @@ public class TagImpl
    * @param aTagId id тега на OPC
    * @param aKind тип тега (на чтение/запись/туда-сюда)
    * @param aValType тип значения
-   * @param aValTypeExtra String- подтип
+   * @param aDataTypeClass Class<?>- подтип
    * @param aIsControlWord boolean - тег является контрольным словом
    */
-  public TagImpl( String aTagId, EKind aKind, EAtomicType aValType, String aValTypeExtra, boolean aIsControlWord ) {
+  public TagImpl( String aTagId, EKind aKind, EAtomicType aValType, Class<?> aDataTypeClass, boolean aIsControlWord ) {
     tagId = aTagId;
     kind = aKind;
     valType = aValType;
-    valTypeExtra = aValTypeExtra;
+    valTypeExtra = aDataTypeClass;
     isControlWord = aIsControlWord;
 
     if( isControlWord ) {
@@ -99,7 +98,7 @@ public class TagImpl
    * @return Подтип
    */
   @Override
-  public String valueTypeExtra() {
+  public Class<?> valueTypeExtra() {
     return valTypeExtra;
   }
 

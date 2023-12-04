@@ -5,7 +5,6 @@ package ru.toxsoft.l2.thd.opc;
 
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.bricks.strid.*;
-import org.toxsoft.core.tslib.utils.*;
 
 /**
  * API тега OPC сервера
@@ -48,8 +47,8 @@ public interface ITag
    *
    * @return подтип основного типа
    */
-  default String valueTypeExtra() {
-    return TsLibUtils.EMPTY_STRING;
+  default Class<?> valueTypeExtra() {
+    return null;
   }
 
   /**
