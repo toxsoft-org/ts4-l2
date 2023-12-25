@@ -11,6 +11,7 @@ import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
 
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
@@ -44,36 +45,51 @@ public class ValueCommandExec
     IAtomicValue value =
         aCmd.argValues().hasValue( valueParamId ) ? aCmd.argValues().getValue( valueParamId ) : AvUtils.avInt( 0 );
     logger.debug( "ValueCmd tag = %s", tag.id() ); //$NON-NLS-1$
-    if( bitIndex > 0 ) {
+    setTagBit( tag, bitIndex, value, logger );
+  }
 
-      int newBitValue = value.asBool() ? 1 : 0;
+  /**
+   * dima 25.12.23 вынес в отдельны метод чтобы использовать повторно в коде класса
+   * {@link SingleIntToSingleBoolRriDataTransmitter}
+   *
+   * @param aTag {@link ITag} узел куда пишем новое значение
+   * @param aBitIndex индекс значения в слове
+   * @param aValue новое значение
+   * @param aLogger логгер для вывода отладочной инфы
+   */
+  public static void setTagBit( ITag aTag, int aBitIndex, IAtomicValue aValue, ILogger aLogger ) {
+    // dima 25.12.23 похоже тут опечатка
+    if( aBitIndex >= 0 ) {
+      // if( aBitIndex > 0 ) {
 
-      IAtomicValue currTagValue = tag.get();
+      int newBitValue = aValue.asBool() ? 1 : 0;
+
+      IAtomicValue currTagValue = aTag.get();
       int currTagValueInt = currTagValue.asInt();
 
-      logger.debug( "bitIndex = %d, newBitVal = %d, carTagvalue = %d", bitIndex, newBitValue, currTagValueInt ); //$NON-NLS-1$
+      aLogger.debug( "bitIndex = %d, newBitVal = %d, currTagValue = %d", aBitIndex, newBitValue, currTagValueInt ); //$NON-NLS-1$
 
       if( currTagValueInt < 0 ) {
         currTagValueInt = Short.toUnsignedInt( (short)currTagValueInt );
-        logger.debug( "unsign carTagvalue = %d", currTagValueInt );
+        aLogger.debug( "unsigned currTagValue = %d", currTagValueInt );
       }
 
-      int currBitValue = (currTagValueInt >> bitIndex) % 2;
+      int currBitValue = (currTagValueInt >> aBitIndex) % 2;
 
       int sign = newBitValue - currBitValue;
 
-      int newTagValueInt = currTagValueInt + sign * (1 << bitIndex);
+      int newTagValueInt = currTagValueInt + sign * (1 << aBitIndex);
 
-      logger.debug( "currBitValue = %d, sign = %d, newTagValueInt = %d", currBitValue, sign, newTagValueInt ); //$NON-NLS-1$
+      aLogger.debug( "currBitValue = %d, sign = %d, newTagValueInt = %d", currBitValue, sign, newTagValueInt ); //$NON-NLS-1$
 
-      value = AvUtils.avInt( newTagValueInt );
+      aValue = AvUtils.avInt( newTagValueInt );
     }
 
-    logger.debug( "Value = %s", value.asString() );
+    aLogger.debug( "Value = %s", aValue.asString() );
 
-    tag.set( value );
+    aTag.set( aValue );
 
-    logger.debug( "in do exec isDirty = %s", String.valueOf( tag.isDirty() ) ); //$NON-NLS-1$
+    aLogger.debug( "in do exec isDirty = %s", String.valueOf( aTag.isDirty() ) ); //$NON-NLS-1$
   }
 
   @Override

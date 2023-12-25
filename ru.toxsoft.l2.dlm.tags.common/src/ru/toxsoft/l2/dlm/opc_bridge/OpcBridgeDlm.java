@@ -13,6 +13,7 @@ import ru.toxsoft.l2.core.dlm.impl.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.events.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.*;
 
 /**
  * Модуль opc-моста.
@@ -57,6 +58,11 @@ public class OpcBridgeDlm
 
     IConfigurableWorkerModule commandsModule = new CommandsModule( aContext, info() );
     modules.add( commandsModule );
+
+    // dima 25.12.23 add rriModule
+    IConfigurableWorkerModule rriModule =
+        new OpcRriDataModule( aContext, info(), new RriDataTransmittersInitializer() );
+    modules.add( rriModule );
 
     //
     // IConfigurableWorkerModule fcModule = new FreqCounterModule( aContext );

@@ -22,6 +22,11 @@ public interface IDlmsBaseConstants {
   String DATA_DEFS = "dataDefs";
 
   /**
+   * Начало блока, отвечающего за конфигурацию НСИ данных.
+   */
+  String RRI_DEFS = "rriDefs";
+
+  /**
    * Имя параметра - является ли данное историческим.
    */
   String IS_HIST = "is.hist";
@@ -60,6 +65,16 @@ public interface IDlmsBaseConstants {
    * Имя параметра - идентификатор данного.
    */
   String DATA_ID = "data.id";
+
+  /**
+   * ID НСИ атрибута - идентификатор данного.
+   */
+  String RRI_ATTR_ID = "rri.attr.id";
+
+  /**
+   * id секции НСИ.
+   */
+  String RRI_SECTION_ID = "rri.section.id";
 
   /**
    * Имя параметра - идентификатор инверсионного данного.
@@ -199,6 +214,38 @@ public interface IDlmsBaseConstants {
    * Имя параметра значения пина обратной связи (отключения команды)
    */
   String FB_DURATION = "fb.duration";
+
+  //
+  // -----------------------------------------
+  // Работа с НСИ
+  /**
+   * Раздел конфигурации с описанием параметров канала USkat -> OPC
+   */
+  String RRI_USKAT_2_OPC_DEFS       = "rri.uskat.to.opc.Defs";
+  /**
+   * Раздел конфигурации с описанием индекса НСИ на запись
+   */
+  String RRI_PARAM_INDEX_INPUT_DEFS = "rri.param.index.input.defs";
+
+  /**
+   * Раздел конфигурации с описанием параметров канала OPC -> USkat
+   */
+  String RRI_OPC_2_USKAT_DEFS = "rri.opc.to.uskat.Defs";
+
+  /**
+   * Раздел конфигурации с описанием карты Gwid <-> index of param in RRI array OPC
+   */
+  String RRI_GWID_INDEX_OPC_DEFS = "rri.gwid.opc.index.Defs";
+
+  /**
+   * Gwid в связке Gwid <-> index of param in RRI array OPC
+   */
+  String RRI_GWID = "rri.gwid";
+
+  /**
+   * Index в связке Gwid <-> index of param in RRI array OPC
+   */
+  String RRI_INDEX = "rri.index";
 
   //
   // -----------------------------------------
@@ -350,6 +397,7 @@ public interface IDlmsBaseConstants {
   /**
    * Имя параметра - java-класс исполнителя команды.
    */
+
   String COMMAND_EXEC_JAVA_CLASS = "command.exec.java.class";
 
   /**

@@ -1,23 +1,21 @@
-package ru.toxsoft.l2.dlm.opc_bridge.submodules.data;
+package ru.toxsoft.l2.dlm.opc_bridge.submodules.rri;
 
 import org.toxsoft.core.tslib.av.avtree.*;
-import org.toxsoft.uskat.core.api.rtdserv.*;
 
 /**
- * Абстрактная фабрика передатчиков, предназначенная для создания передатчиков и для выдачи метаинформации
+ * Абстрактнася фабрика передатчиков, предназначенная для создания передатчиков и для выдачи метаинформации
  * конфигурационной информации.
  *
- * @author max
- * @param <T> - класс дата-сета.
+ * @author dima
  */
-public abstract class AbstractTransmitterFactory<T extends ISkRtdataChannel> {
+public abstract class AbstractRriTransmitterFactory {
 
   private static IAvTreeInfo configInfo;
 
   /**
    * Открытый конструктор - для создания методами рефлексии.
    */
-  public AbstractTransmitterFactory() {
+  public AbstractRriTransmitterFactory() {
     // nop
   }
 
@@ -40,7 +38,7 @@ public abstract class AbstractTransmitterFactory<T extends ISkRtdataChannel> {
    * @param aConfig IAvTree - конфигурационная информация.
    * @return IDataTransmitter - передатчик.
    */
-  public abstract IDataTransmitter<T> createTransmitter( IAvTree aConfig );
+  public abstract IRriDataTransmitter createTransmitter( IAvTree aConfig );
 
   /**
    * Возвращает метаинформацию (описание) конфигурационной информации, необходимой для инициализации передатчика.
