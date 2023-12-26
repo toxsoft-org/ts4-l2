@@ -104,6 +104,7 @@ public class SingleIntToSingleBoolRriDataTransmitter
   public void start( IDataSetter[] aDataSetters, IList<ITag> aTags, IMap<Gwid, ISkRriSection> aGwid2SectionMap ) {
     dataSetter = aDataSetters[0];
     tag = aTags.get( 0 );
+    gwid2SectionMap = aGwid2SectionMap;
 
     if( aDataSetters.length > 1 ) {
       invDataSetter = aDataSetters[1];

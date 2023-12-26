@@ -10,8 +10,10 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.skf.legacy.*;
 import org.toxsoft.skf.rri.lib.*;
 import org.toxsoft.skf.rri.lib.impl.*;
+import org.toxsoft.uskat.concurrent.*;
 import org.toxsoft.uskat.core.api.evserv.*;
 
 import ru.toxsoft.l2.core.cfg.*;
@@ -97,6 +99,11 @@ public class OpcRriDataModule
     TsIllegalStateRtException.checkFalse( isConfigured(), ERR_MSG_RRI_MODULE_CANT_BE_STARTED_FORMAT,
         dlmInfo.moduleId() );
 
+    // регистрируем службу НСИ
+    S5SynchronizedRegRefInfoService rriService =
+        new S5SynchronizedRegRefInfoService( (S5SynchronizedConnection)context.network().getSkConnection() );
+    logger.info( "%s", rriService );
+
     // инициализирует с помощью конфигуратора основные сущности (на данном этапе идёт выборка информации с сервера)
     initializer.initialize( context );
 
@@ -120,7 +127,6 @@ public class OpcRriDataModule
 
     // Обнуление за ненадобностью
     initializer = null;
-
     logger.info( MSG_RRI_DATA_MODULE_IS_STARTED_FORMAT, dlmInfo.moduleId() );
   }
 

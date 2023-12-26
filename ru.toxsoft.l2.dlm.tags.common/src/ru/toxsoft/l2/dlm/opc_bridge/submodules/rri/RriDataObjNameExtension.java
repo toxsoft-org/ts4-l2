@@ -3,6 +3,7 @@ package ru.toxsoft.l2.dlm.opc_bridge.submodules.rri;
 import static ru.toxsoft.l2.dlm.opc_bridge.IDlmsBaseConstants.*;
 
 import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
 
 import ru.toxsoft.l2.core.util.*;
 
@@ -31,6 +32,13 @@ public class RriDataObjNameExtension
    */
   public String rriSectionId() {
     return rriSectionId;
+  }
+
+  /**
+   * @return Gwid НСИ`шного атрибута
+   */
+  public Gwid convertToRriGwid() {
+    return Gwid.createAttr( getClassId(), getObjName(), getDataId() );
   }
 
 }

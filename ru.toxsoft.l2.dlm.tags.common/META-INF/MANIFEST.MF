@@ -12,7 +12,8 @@ Require-Bundle: ru.toxsoft.l2.core,
  org.toxsoft.extlibs.log4j,
  org.toxsoft.core.tslib,
  ru.toxsoft.l2.thd.opc.da,
- org.toxsoft.skf.rri.lib
+ org.toxsoft.skf.rri.lib,
+ org.toxsoft.uskat.s5
 Export-Package: ru.toxsoft.l2.dlm.opc_bridge,
  ru.toxsoft.l2.dlm.opc_bridge.submodules.commands,
  ru.toxsoft.l2.dlm.opc_bridge.submodules.data,

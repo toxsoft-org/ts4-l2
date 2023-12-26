@@ -22,6 +22,8 @@ import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.skf.rri.lib.impl.*;
+import org.toxsoft.uskat.core.impl.*;
 
 import ru.toxsoft.l2.core.app.*;
 import ru.toxsoft.l2.core.dlm.*;
@@ -289,6 +291,9 @@ public class L2CoreMain {
     // инициализация глобального логера
     globalLogger = LoggerWrapper.getLogger( L2CoreMain.class.getName() );
     LoggerUtils.setErrorLogger( globalLogger ); // to Goga scandir 2015.09.17 by Max
+
+    // регистрируем службу НСИ
+    SkCoreUtils.registerSkServiceCreator( SkRegRefInfoService.CREATOR );
 
     sayHello();
 

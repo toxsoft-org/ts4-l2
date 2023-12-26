@@ -18,7 +18,8 @@ Require-Bundle: ru.toxsoft.l2.sysdescr.constants,
  org.toxsoft.core.pas,
  org.toxsoft.uskat.s5,
  org.toxsoft.skf.dq.lib,
- org.toxsoft.skf.dq.s5
+ org.toxsoft.skf.dq.s5,
+ org.toxsoft.skf.rri.lib
 Export-Package: gnu.io,
  ru.toxsoft.l2.core.app,
  ru.toxsoft.l2.core.app.impl,

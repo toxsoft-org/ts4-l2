@@ -10,9 +10,6 @@ import org.toxsoft.core.tslib.utils.logs.*;
 import ru.toxsoft.l2.core.cfg.*;
 import ru.toxsoft.l2.core.dlm.*;
 import ru.toxsoft.l2.core.dlm.impl.*;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.*;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.*;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.events.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.*;
 
 /**
@@ -43,21 +40,21 @@ public class OpcBridgeDlm
     super( aInfo, aContext );
 
     modules = new ElemArrayList<>();
-
+    // for debug
     // подмодуль текущих данных
-    IConfigurableWorkerModule currDataModule =
-        new OpcCurrDataModule( aContext, info(), new CurrDataTransmittersInitializer() );
-    modules.add( currDataModule );
-
-    IConfigurableWorkerModule histModule =
-        new OpcHistDataModule( aContext, info(), new HistDataTransmittersInitializer() );
-    modules.add( histModule );
-
-    IConfigurableWorkerModule eventModule = new EventModule( aContext, info() );
-    modules.add( eventModule );
-
-    IConfigurableWorkerModule commandsModule = new CommandsModule( aContext, info() );
-    modules.add( commandsModule );
+    // IConfigurableWorkerModule currDataModule =
+    // new OpcCurrDataModule( aContext, info(), new CurrDataTransmittersInitializer() );
+    // modules.add( currDataModule );
+    //
+    // IConfigurableWorkerModule histModule =
+    // new OpcHistDataModule( aContext, info(), new HistDataTransmittersInitializer() );
+    // modules.add( histModule );
+    //
+    // IConfigurableWorkerModule eventModule = new EventModule( aContext, info() );
+    // modules.add( eventModule );
+    //
+    // IConfigurableWorkerModule commandsModule = new CommandsModule( aContext, info() );
+    // modules.add( commandsModule );
 
     // dima 25.12.23 add rriModule
     IConfigurableWorkerModule rriModule =

@@ -269,7 +269,7 @@ public class RriDataTransmittersInitializer
 
     int[][] dataIndexes = new int[rriDefs.size()][];
     int codIndex = 0;
-    // перебираем все данные и при встрече исторического получаем Cod и ставим в соответствие индекс в общем списке
+    // перебираем все данные
     for( int j = 0; j < rriDefs.size(); j++ ) {
       IListEdit<RriDataObjNameExtension> transDataDefs = rriDefs.get( j );
       dataIndexes[j] = new int[transDataDefs.size()];
@@ -295,17 +295,18 @@ public class RriDataTransmittersInitializer
             // Продолжаем цикл, чтобы получить все ошибки за один проход
             continue;
           }
-          if( !clsInfo.rtdata().list().hasKey( dataObjName.getDataId() ) ) {
-            logger.error( ERR_MSG_INVALID_DATA_ID, dataObjName.getClassId(), dataObjName.getDataId() );
-            // Продолжаем цикл, чтобы получить все ошибки за один проход
-            continue;
-          }
+          // TODO как проверить что НСИ атрибут описан в классе
+          // if( !clsInfo.rtdata().list().hasKey( dataObjName.getDataId() ) ) {
+          // logger.error( ERR_MSG_INVALID_DATA_ID, dataObjName.getClassId(), dataObjName.getDataId() );
+          // // Продолжаем цикл, чтобы получить все ошибки за один проход
+          // continue;
+          // }
         }
         catch( TsIllegalArgumentRtException ex ) {
           logger.error( ex );
           return;
         }
-        Gwid gwid = dataObjName.convertToGwid();
+        Gwid gwid = dataObjName.convertToRriGwid();
         currGwids.add( gwid );
         // добавляем в карту
         ISkRriSection section = getRriSection( aContext, dataObjName );
