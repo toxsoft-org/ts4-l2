@@ -181,6 +181,11 @@ public interface IDlmsBaseConstants {
   String CMD_CLASS_DEFS = "cmdClassDefs";
 
   /**
+   * Начало блока, отвечающего за конфигурацию команд блока НСИ для регистрации в качестве слушателя.
+   */
+  String RRI_CMD_CLASS_DEFS = "rriCmdClassDefs";
+
+  /**
    * Начало имени параметра триггера события.
    */
   String EVENT_TRIGGER_START = "event.trigger";
@@ -499,4 +504,9 @@ public interface IDlmsBaseConstants {
   String DATA_SETTER_NAME_FOR_SCRIPT_FORMAT = "data%d";
 
   String TAG_NAME_FOR_SCRIPT_FORMAT = "tag%d";
+
+  String RRI_OPC_2_USKAT_CMD_ID = "cmdRriTransferOpc2Uskat";
+
+  String RRI_USKAT_2_OPC_CMD_ID = "cmdRriTransferUskat2Opc";
+
 }

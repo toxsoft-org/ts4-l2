@@ -60,4 +60,9 @@ public interface IRriDataTransmitter {
    *         нужна.
    */
   boolean write2Node( Gwid aRriGwid, IAtomicValue aNewValue );
+
+  /**
+   * Передает данные с OPC на USkat сервер безусловно
+   */
+  void transmitAnyWay();
 }

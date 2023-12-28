@@ -13,6 +13,7 @@ import org.toxsoft.skf.rri.lib.*;
 
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.RriDataTransmittersInitializer.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
@@ -128,8 +129,47 @@ public class SingleIntToSingleBoolRriDataTransmitter
     if( bitIndex < 0 || tagValue == null || tagValue.equals( IAtomicValue.NULL ) || !tagValue.isAssigned() ) {
       return false;
     }
+    // проверяем что это мой Gwid
+    Gwid myGwid = gwid2SectionMap.keys().first();
+    if( !myGwid.equals( aRriGwid ) ) {
+      return false;
+    }
+
     ValueCommandExec.setTagBit( tag, bitIndex, tagValue, logger );
     return true;
+  }
+
+  @Override
+  public void transmitAnyWay() {
+    IAtomicValue tagValue = tag.get();
+
+    if( bitIndex < 0 || tagValue == null || tagValue.equals( IAtomicValue.NULL ) || !tagValue.isAssigned() ) {
+      return;
+    }
+
+    int value = tagValue.asInt();
+
+    boolean val = ((value >> bitIndex) & 1) == 1;
+
+    boolean result = false;
+    try {
+      result = ((RriSetter)dataSetter).setDataValueAnyway( AvUtils.avBool( val ), System.currentTimeMillis() );
+    }
+    catch( Exception e ) {
+      logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", dataSetter.toString(), tag.tagId(),
+          e.getMessage() );
+    }
+
+    if( invDataSetter != null ) {
+      try {
+        result = result || invDataSetter.setDataValue( AvUtils.avBool( !val ), System.currentTimeMillis() );
+      }
+      catch( Exception e ) {
+        logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", invDataSetter.toString(), tag.tagId(),
+            e.getMessage() );
+      }
+    }
+
   }
 
 }

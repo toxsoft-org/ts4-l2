@@ -124,7 +124,7 @@ public class CommandsModule
    * @param cmdDefs - {@link IAvTree} - конфигурационные данные.
    * @return {@link IList} - список определяющий команды, классы, объекты исполнителя.
    */
-  private IList<ProcessedCommandsDefByObjNames> createCmdDefs( IAvTree cmdDefs ) {
+  public static IList<ProcessedCommandsDefByObjNames> createCmdDefs( IAvTree cmdDefs ) {
 
     IListEdit<ProcessedCommandsDefByObjNames> result = new ElemArrayList<>();
 
@@ -155,7 +155,7 @@ public class CommandsModule
    * @throws TsUnsupportedFeatureRtException
    * @throws DvTypeCastRtException
    */
-  private ProcessedCommandsDefByObjNames creatClassCmdDefs( IAvTree aClassCmdDefs )
+  public static ProcessedCommandsDefByObjNames creatClassCmdDefs( IAvTree aClassCmdDefs )
       throws TsItemNotFoundRtException,
       TsUnsupportedFeatureRtException {
     String classId = aClassCmdDefs.fields().getStr( CLASS_ID );
@@ -560,7 +560,7 @@ public class CommandsModule
    *
    * @author max
    */
-  static class ProcessedCommandsDefByObjNames {
+  public static class ProcessedCommandsDefByObjNames {
 
     private String classId;
 
@@ -568,6 +568,13 @@ public class CommandsModule
 
     private IStringList cmdIds;
 
+    /**
+     * Контейнер для описания команд одного класса обрабатываемых данным модулем
+     *
+     * @param aClassId - id класса
+     * @param aObjNames - strid объектов этого класса
+     * @param aCmdIds - id команд
+     */
     public ProcessedCommandsDefByObjNames( String aClassId, IStringList aObjNames, IStringList aCmdIds ) {
       super();
       classId = aClassId;
@@ -575,7 +582,10 @@ public class CommandsModule
       cmdIds = aCmdIds;
     }
 
-    IList<Gwid> convert() {
+    /**
+     * @return создает {@link Gwid} id команды
+     */
+    public IList<Gwid> convert() {
       IListEdit<Gwid> result = new ElemArrayList<>();
       // ILongListEdit objIdsList = new LongArrayList();
       for( String objName : objNames ) {

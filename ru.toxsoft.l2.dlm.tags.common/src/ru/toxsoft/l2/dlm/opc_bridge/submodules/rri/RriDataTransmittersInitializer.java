@@ -426,7 +426,7 @@ public class RriDataTransmittersInitializer
    *
    * @author dima
    */
-  private class RriSetter
+  class RriSetter
       implements IDataSetter {
 
     private ISkRriSection channel;
@@ -449,6 +449,24 @@ public class RriDataTransmittersInitializer
         return false;
       }
       boolean result = value == null || !value.equals( aValue );
+
+      if( result ) {
+        // просто устанавливается значение
+        channel.setAttrParamValue( rriGwid.skid(), rriGwid.propId(), aValue, "" );
+        value = aValue;
+
+        logger.debug( "rri data: %s - change value on: %s", rriGwid.asString(),
+            (aValue.isAssigned() ? aValue.asString() : "Not Assigned") );
+      }
+
+      return result;
+    }
+
+    public boolean setDataValueAnyway( IAtomicValue aValue, long aTime ) {
+      if( !aValue.isAssigned() ) {
+        return false;
+      }
+      boolean result = value == null;
 
       if( result ) {
         // просто устанавливается значение

@@ -9,6 +9,7 @@ import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.skf.rri.lib.*;
 
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.RriDataTransmittersInitializer.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
@@ -95,8 +96,31 @@ public class OneToOneRriDataTransmitter
     if( aNewValue == null || aNewValue.equals( IAtomicValue.NULL ) || !aNewValue.isAssigned() ) {
       return false;
     }
+    // проверяем что это мой Gwid
+    Gwid myGwid = gwid2SectionMap.keys().first();
+    if( !myGwid.equals( aRriGwid ) ) {
+      return false;
+    }
     tag.set( aNewValue );
     return true;
+  }
+
+  @Override
+  public void transmitAnyWay() {
+    IAtomicValue newVal = tag.get();
+
+    if( newVal == null || newVal.equals( IAtomicValue.NULL ) || !newVal.isAssigned() ) {
+      return;
+    }
+
+    try {
+      ((RriSetter)dataSetter).setDataValueAnyway( newVal, System.currentTimeMillis() );
+    }
+    catch( Exception e ) {
+      logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", dataSetter.toString(), tag.tagId(),
+          e.getMessage() );
+    }
+
   }
 
 }
