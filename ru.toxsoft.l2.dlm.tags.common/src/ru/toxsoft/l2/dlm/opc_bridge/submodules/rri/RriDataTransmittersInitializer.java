@@ -260,6 +260,8 @@ public class RriDataTransmittersInitializer
 
   }
 
+  // TODO тут нужен глубокий рефакторинг, щас сделано просто чтобы заработало и без понимания как это работает и как
+  // должно
   @Override
   public void initialize( IDlmContext aContext )
       throws TsIllegalStateRtException {

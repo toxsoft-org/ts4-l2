@@ -147,8 +147,6 @@ public class OpcRriDataModule
       }
     }
 
-    // Обнуление за ненадобностью
-    initializer = null;
     // инициализация работы с командами
     // создание синхронизованной очереди получаемых команд команд
     commandsQueue = new SynchronizedQueueWrapper<>( new Queue<>() );
