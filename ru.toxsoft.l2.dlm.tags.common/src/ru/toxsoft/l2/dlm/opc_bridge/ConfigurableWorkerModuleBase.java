@@ -17,7 +17,7 @@ public class ConfigurableWorkerModuleBase
   /**
    * Признак сконфигурированного состояния модуля.
    * <p>
-   * Сконфигурированное сосотяние компоненты это строго после вызова {@link #configYourself()}.
+   * Сконфигурированное состояние компоненты это строго после вызова {@link #configYourself()}.
    */
   private volatile boolean configured = false;
 

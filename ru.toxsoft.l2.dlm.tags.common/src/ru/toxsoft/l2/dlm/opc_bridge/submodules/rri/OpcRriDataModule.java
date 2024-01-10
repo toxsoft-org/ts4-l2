@@ -6,6 +6,8 @@ import static ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IL2Resources.*;
 import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.core.tslib.bricks.validator.*;
+import org.toxsoft.core.tslib.bricks.validator.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.derivative.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
@@ -23,7 +25,6 @@ import ru.toxsoft.l2.core.dlm.*;
 import ru.toxsoft.l2.dlm.opc_bridge.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.CommandsModule.*;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
@@ -59,11 +60,6 @@ public class OpcRriDataModule
    * Набор описаний данных, полученный из конфиг информации.
    */
   private IList<IRriDataTransmitter> pinRriDataTransmitters;
-
-  /**
-   * Карта Gwid -> IDataSetter.
-   */
-  IMap<Gwid, IDataSetter> gwid2DataSetterMap;
 
   /**
    * Описание команд в терминах сервиса команд, обрабатываемых данным исполнителем.
@@ -128,9 +124,6 @@ public class OpcRriDataModule
     // инициализирует с помощью конфигуратора основные сущности (на данном этапе идёт выборка информации с сервера)
     initializer.initialize( context );
 
-    // получение карты Gwid -> IDataSetter
-    gwid2DataSetterMap = initializer.getDataSetters();
-
     // получение объектов, отвечающих за передачу сигнала с единичного пина на единичное данное
     pinRriDataTransmitters = initializer.getDataTransmitters();
     logger.debug( "PinRriDataTransmitters: %s ", String.valueOf( pinRriDataTransmitters.size() ) );
@@ -142,8 +135,8 @@ public class OpcRriDataModule
       }
       if( transmitter instanceof OneToOneRriDataTransmitter ) {
         ITag tag = ((OneToOneRriDataTransmitter)transmitter).getTag();
-        IDataSetter dataSetter = ((OneToOneRriDataTransmitter)transmitter).getDataSetter();
-        logger.debug( "Tag: %s, IDataSetter: %s", tag.id(), dataSetter.toString() );
+        IRriSetter dataSetter = ((OneToOneRriDataTransmitter)transmitter).getRriSetter();
+        logger.debug( "Tag: %s, OneToOneRriDataTransmitter: %s", tag.id(), dataSetter.toString() );
       }
     }
 
@@ -166,7 +159,7 @@ public class OpcRriDataModule
       logger.info( "*** Handler registered on RRI Module command: %s", gd );
     }
 
-    // регистраци модуля в качестве исполнителя команд
+    // регистрация модуля в качестве исполнителя команд
     context.network().getSkConnection().coreApi().cmdService().registerExecutor( this, commandsDef );
 
     logger.info( MSG_RRI_DATA_MODULE_IS_STARTED_FORMAT, dlmInfo.moduleId() );
@@ -178,35 +171,35 @@ public class OpcRriDataModule
     // текущее время - чтоб у всех данных было одно время
     long currTime = System.currentTimeMillis();
 
-    boolean doCurrWrite = false;
-    // выполнение работы с каждым передатчиком с проверкой изменения данных
+    boolean doRriWrite = false;
+    // выполнение работы с каждым передатчиком с проверкой изменения значений НСИ
     for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
       try {
-        doCurrWrite |= transmitter.transmit( currTime );
+        doRriWrite |= transmitter.transmit( currTime );
       }
       catch( Exception e ) {
         logger.error( e.getMessage() );
       }
     }
-    if( doCurrWrite ) {
-      // wCurrDataSet.write(); //TODO
-
-      // try {
-      // context.network().getSkConnection().coreApi().rtdService().writeCurrValues();
-      // }
-      // catch( Exception e ) {
-      // logger.error( e, "Cant transfer curr data to server" ); //$NON-NLS-1$
-      // }
+    if( doRriWrite ) {
+      // nop оставлено на случай если потребуется принудительно записать новые НСИ значения
     }
     // обрабатываем полученные команды
     IDtoCommand cmd = commandsQueue.peekHeadOrNull();
 
     if( cmd != null ) {
-      if( cmd.cmdGwid().propId().compareTo( RRI_OPC_2_USKAT_CMD_ID ) == 0 ) {
+      String cmdId = cmd.cmdGwid().propId();
+      if( cmdId.compareTo( RRI_OPC_2_USKAT_CMD_ID ) == 0 ) {
         transferRriOPC2Uskat();
+        setCmdState( cmd, MSG_COMMAND_COMPLETE_RRI_MODULE, ESkCommandState.SUCCESS );
       }
-      if( cmd.cmdGwid().propId().compareTo( RRI_USKAT_2_OPC_CMD_ID ) == 0 ) {
+      if( cmdId.compareTo( RRI_USKAT_2_OPC_CMD_ID ) == 0 ) {
         transferRriUskat2OPC();
+        setCmdState( cmd, MSG_COMMAND_COMPLETE_RRI_MODULE, ESkCommandState.SUCCESS );
+      }
+      // последним идет проверка на то что обработка подписаной команды сделана
+      if( cmdId.compareTo( RRI_OPC_2_USKAT_CMD_ID ) != 0 && cmdId.compareTo( RRI_USKAT_2_OPC_CMD_ID ) != 0 ) {
+        setCmdState( cmd, MSG_COMMAND_UNDER_DEVELOPMENT_RRI_MODULE, ESkCommandState.FAILED );
       }
     }
 
@@ -220,7 +213,7 @@ public class OpcRriDataModule
       for( Gwid rriGwid : gwid2Section.keys() ) {
         ISkRriSection section = gwid2Section.getByKey( rriGwid );
         IAtomicValue rriVal = section.getAttrParamValue( rriGwid.skid(), rriGwid.propId() );
-        transmitter.write2Node( rriGwid, rriVal );
+        transmitter.writeBack2OpcNode( rriGwid, rriVal );
       }
     }
   }
@@ -237,13 +230,6 @@ public class OpcRriDataModule
 
   @Override
   protected boolean doQueryStop() {
-    if( gwid2DataSetterMap != null ) {
-      for( IDataSetter c : gwid2DataSetterMap.values() ) {
-        c.close();
-      }
-      logger.info( "RRI data setters are closed, size = %d", Integer.valueOf( gwid2DataSetterMap.size() ) ); //$NON-NLS-1$
-      gwid2DataSetterMap = null;
-    }
     // отписываемся от нотификаций
     pinRriDataTransmitters = initializer.getDataTransmitters();
     for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
@@ -275,8 +261,10 @@ public class OpcRriDataModule
         if( section.equals( aSource ) ) {
           for( SkEvent event : aEvents ) {
             Gwid parGwid = event.eventGwid();
-            IAtomicValue newVal = event.paramValues().findByKey( ISkRegRefServiceHardConstants.EVPRMID_NEW_VAL_ATTR );
-            transmitter.write2Node( parGwid, newVal );
+            if( transmitter.gwid2Section().hasKey( parGwid ) ) {
+              IAtomicValue newVal = event.paramValues().findByKey( ISkRegRefServiceHardConstants.EVPRMID_NEW_VAL_ATTR );
+              transmitter.writeBack2OpcNode( parGwid, newVal );
+            }
           }
         }
       }
@@ -285,10 +273,35 @@ public class OpcRriDataModule
 
   @Override
   public void executeCommand( IDtoCommand aCmd ) {
-    // Dima, for debug
     commandsQueue.putTail( aCmd );
+    // change cmd state - EXECUTING
+    setCmdState( aCmd, MSG_COMMAND_COME_FOR_RRI_MODULE, ESkCommandState.EXECUTING );
     logger.debug( "Get command %s, and put into queue ", aCmd.instanceId() ); //$NON-NLS-1$
 
+  }
+
+  private void setCmdState( IDtoCommand aCmd, String aMsg, ESkCommandState aNewState ) {
+    // Изменяем состояние команды
+    ValidationResult vr = ValidationResult.info( aMsg, aCmd.instanceId() );
+    ValResList result = new ValResList();
+    result.add( vr );
+
+    SkCommandState state = new SkCommandState( System.currentTimeMillis(), aNewState );
+
+    changeCommandState( aCmd.instanceId(), state );
+  }
+
+  private void changeCommandState( String aExecCmdId, SkCommandState aCmdState ) {
+
+    DtoCommandStateChangeInfo cmdStateChangeInfo = new DtoCommandStateChangeInfo( aExecCmdId, aCmdState );
+
+    try {
+      context.network().getSkConnection().coreApi().cmdService().changeCommandState( cmdStateChangeInfo );
+      logger.debug( MSG_COMMAND_STATE_CHANGED_FOR_RRI_MODULE, aExecCmdId, aCmdState.state().id() );
+    }
+    catch( Exception e ) {
+      logger.error( MSG_COMMAND_STATE_CANT_CHANGE_FOR_RRI_MODULE, aExecCmdId, e.getMessage() );
+    }
   }
 
 }

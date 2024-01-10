@@ -8,7 +8,6 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.skf.rri.lib.*;
 
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.RriDataTransmittersInitializer.*;
 import ru.toxsoft.l2.thd.opc.*;
 
@@ -31,9 +30,9 @@ public class OneToOneRriDataTransmitter
   protected ITag tag;
 
   /**
-   * Установщик нового значения данного
+   * Установщик нового значения НСИ
    */
-  protected IDataSetter dataSetter;
+  protected IRriSetter rriSetter;
 
   /**
    * Карта привязки Gwid к НСИ секциям
@@ -50,10 +49,10 @@ public class OneToOneRriDataTransmitter
 
     boolean result = false;
     try {
-      result = dataSetter.setDataValue( newVal, aTime );
+      result = rriSetter.setRriValue( newVal, aTime );
     }
     catch( Exception e ) {
-      logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", dataSetter.toString(), tag.tagId(),
+      logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", rriSetter.toString(), tag.tagId(),
           e.getMessage() );
     }
     return result;
@@ -66,10 +65,10 @@ public class OneToOneRriDataTransmitter
   }
 
   @Override
-  public void start( IDataSetter[] aDataSetters, IList<ITag> aTags, IMap<Gwid, ISkRriSection> aGwid2SectionMap ) {
-    dataSetter = aDataSetters[0];
+  public void start( IRriSetter[] aRriSetters, IList<ITag> aTags ) {
+    rriSetter = aRriSetters[0];
     tag = aTags.get( 0 );
-    gwid2SectionMap = aGwid2SectionMap;
+    gwid2SectionMap = rriSetter.gwid2Section();
   }
 
   /**
@@ -82,8 +81,8 @@ public class OneToOneRriDataTransmitter
   /**
    * @return dataSetter
    */
-  public IDataSetter getDataSetter() {
-    return dataSetter;
+  public IRriSetter getRriSetter() {
+    return rriSetter;
   }
 
   @Override
@@ -92,7 +91,7 @@ public class OneToOneRriDataTransmitter
   }
 
   @Override
-  public boolean write2Node( Gwid aRriGwid, IAtomicValue aNewValue ) {
+  public boolean writeBack2OpcNode( Gwid aRriGwid, IAtomicValue aNewValue ) {
     if( aNewValue == null || aNewValue.equals( IAtomicValue.NULL ) || !aNewValue.isAssigned() ) {
       return false;
     }
@@ -114,10 +113,10 @@ public class OneToOneRriDataTransmitter
     }
 
     try {
-      ((RriSetter)dataSetter).setDataValueAnyway( newVal, System.currentTimeMillis() );
+      ((RriSetter)rriSetter).setDataValueAnyway( newVal, System.currentTimeMillis() );
     }
     catch( Exception e ) {
-      logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", dataSetter.toString(), tag.tagId(),
+      logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", rriSetter.toString(), tag.tagId(),
           e.getMessage() );
     }
 

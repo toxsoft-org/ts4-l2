@@ -58,9 +58,7 @@ public class ValueCommandExec
    * @param aLogger логгер для вывода отладочной инфы
    */
   public static void setTagBit( ITag aTag, int aBitIndex, IAtomicValue aValue, ILogger aLogger ) {
-    // dima 25.12.23 похоже тут опечатка
     if( aBitIndex >= 0 ) {
-      // if( aBitIndex > 0 ) {
 
       int newBitValue = aValue.asBool() ? 1 : 0;
 

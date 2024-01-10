@@ -20,7 +20,6 @@ import org.toxsoft.uskat.core.api.sysdescr.*;
 import org.toxsoft.uskat.core.connection.*;
 
 import ru.toxsoft.l2.core.dlm.*;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
@@ -49,11 +48,6 @@ public class RriDataTransmittersInitializer
   private IListEdit<IListEdit<IOptionSet>> tagsIds = new ElemArrayList<>();
 
   /**
-   * Карта Gwid -> НСИ секция где "лежит" данный атрибут.
-   */
-  private IMapEdit<Gwid, ISkRriSection> gwid2RriSectionMap = new ElemMap<>();
-
-  /**
    * Список передатчиков.
    */
   private IListEdit<IRriDataTransmitter> dataTransmitters = new ElemArrayList<>();
@@ -65,7 +59,7 @@ public class RriDataTransmittersInitializer
    */
   private boolean initialized = false;
 
-  private IMapEdit<Gwid, IDataSetter> dataSetters = new ElemMap<>();
+  private IMapEdit<Gwid, IRriSetter> dataSetters = new ElemMap<>();
 
   // Заплатка от повторяющихся COD-ов
   private IListEdit<String> codStrs = new ElemArrayList<>();
@@ -181,7 +175,7 @@ public class RriDataTransmittersInitializer
       defaultObjName = transmitterParams.getValue( OBJ_NAME );
     }
 
-    // если есть несколько данных
+    // если есть несколько данных TODO MAX зачем массив данных?
     if( aTransConfig.nodes().hasKey( TRANSMITTER_DATA_ARRAY ) ) {
       IListEdit<RriDataObjNameExtension> result = new ElemArrayList<>();
       IAvTree dataTree = aTransConfig.nodes().getByKey( TRANSMITTER_DATA_ARRAY );
@@ -237,7 +231,7 @@ public class RriDataTransmittersInitializer
    * Создаёт передатчик по конфигурационной информации
    *
    * @param aTransConfig дерево описания конфигурации
-   * @return {@link IRriDataTransmitter} передатчик НСИ параметров
+   * @return {@link IRriDataTransmitter} передатчик НСИ параметровdataSetter
    */
   @SuppressWarnings( "unchecked" )
   private static IRriDataTransmitter createTransmitter( IAvTree aTransConfig ) {
@@ -310,9 +304,6 @@ public class RriDataTransmittersInitializer
         }
         Gwid gwid = dataObjName.convertToRriGwid();
         currGwids.add( gwid );
-        // добавляем в карту
-        ISkRriSection section = getRriSection( aContext, dataObjName );
-        gwid2RriSectionMap.put( gwid, section );
         dataIndexes[j][i] = codIndex;
         codIndex++;
       }
@@ -324,15 +315,17 @@ public class RriDataTransmittersInitializer
 
       int[] transDataIndexes = dataIndexes[j];
       IListEdit<RriDataObjNameExtension> transDataDefs = rriDefs.get( j );
-      IDataSetter[] realDataSetters = new IDataSetter[transDataIndexes.length];
+      IRriSetter[] realDataSetters = new IRriSetter[transDataIndexes.length];
       for( int i = 0; i < transDataIndexes.length; i++ ) {
         RriDataObjNameExtension dataObjName = transDataDefs.get( i );
         int index = transDataIndexes[i];
 
-        IDataSetter setter = IDataSetter.NULL;
+        IRriSetter setter = IRriSetter.NULL;
         if( index >= 0 ) {
           Gwid setterGwid = currGwids.get( index );
-          setter = transDataIndexes[i] < 0 ? IDataSetter.NULL : createSetter( setterGwid, gwid2RriSectionMap );
+          IMapEdit<Gwid, ISkRriSection> setterMap = new ElemMap<>();
+          setterMap.put( setterGwid, getRriSection( aContext, dataObjName ) );
+          setter = transDataIndexes[i] < 0 ? IRriSetter.NULL : createSetter( setterGwid, setterMap );
           dataSetters.put( setterGwid, setter );
         }
         realDataSetters[i] = setter;
@@ -364,7 +357,7 @@ public class RriDataTransmittersInitializer
       // запуск передатчика
       try {
         long t1 = System.currentTimeMillis();
-        transmitter.start( realDataSetters, tags, gwid2RriSectionMap );
+        transmitter.start( realDataSetters, tags );
         long t2 = System.currentTimeMillis();
         System.out.printf( "j = %d, transmitter.start() : %d \n", j, (t2 - t1) );
         startedDataTransmitters.add( transmitter );
@@ -384,7 +377,7 @@ public class RriDataTransmittersInitializer
     return rriService.getSection( sectId );
   }
 
-  protected IDataSetter createSetter( Gwid aRriGwid, IMap<Gwid, ISkRriSection> aGwid2SectionMap ) {
+  protected IRriSetter createSetter( Gwid aRriGwid, IMap<Gwid, ISkRriSection> aGwid2SectionMap ) {
     return new RriSetter( aGwid2SectionMap, aRriGwid );
   }
 
@@ -408,7 +401,7 @@ public class RriDataTransmittersInitializer
   }
 
   @Override
-  public IMap<Gwid, IDataSetter> getDataSetters() {
+  public IMap<Gwid, IRriSetter> getDataSetters() {
     return dataSetters;
   }
 
@@ -429,7 +422,7 @@ public class RriDataTransmittersInitializer
    * @author dima
    */
   class RriSetter
-      implements IDataSetter {
+      implements IRriSetter {
 
     private ISkRriSection channel;
 
@@ -437,16 +430,18 @@ public class RriDataTransmittersInitializer
 
     private Gwid rriGwid;
 
+    private IMap<Gwid, ISkRriSection> gwid2SectMap;
+
     public RriSetter( IMap<Gwid, ISkRriSection> aDataSet, Gwid aRriGwid ) {
       super();
       TsIllegalArgumentRtException.checkFalse( aDataSet.hasKey( aRriGwid ) );
       channel = aDataSet.getByKey( aRriGwid );
       rriGwid = aRriGwid;
-
+      gwid2SectMap = aDataSet;
     }
 
     @Override
-    public boolean setDataValue( IAtomicValue aValue, long aTime ) {
+    public boolean setRriValue( IAtomicValue aValue, long aTime ) {
       if( !aValue.isAssigned() ) {
         return false;
       }
@@ -483,18 +478,13 @@ public class RriDataTransmittersInitializer
     }
 
     @Override
-    public void sendOnServer() {
-      // реализация не требуется
-    }
-
-    @Override
-    public void close() {
-      // nop
-    }
-
-    @Override
     public String toString() {
       return rriGwid.asString();
+    }
+
+    @Override
+    public IMap<Gwid, ISkRriSection> gwid2Section() {
+      return gwid2SectMap;
     }
 
   }

@@ -45,7 +45,7 @@ public interface IRriDataTransmittersInitializer {
    * @throws TsIllegalStateRtException - выбрасывается, если метод вызывается до {@link #initialize(IDlmContext)} или
    *           если во время инициализации произошла ошибка (т.е. конфигурация закончилась ошибкой)
    */
-  IMap<Gwid, IDataSetter> getDataSetters()
+  IMap<Gwid, IRriSetter> getDataSetters()
       throws TsIllegalStateRtException;
 
   /**

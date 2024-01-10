@@ -6,7 +6,6 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.skf.rri.lib.*;
 
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
@@ -40,9 +39,8 @@ public interface IRriDataTransmitter {
    * @param aDataSetters - массив установщиков данных
    * @param aTags IList - список тегов, из которых поступают данные, необходимые для преобразования и передачи на
    *          сервер.
-   * @param aGwid2SectMap - карта Gwid -> секция НСИ
    */
-  void start( IDataSetter[] aDataSetters, IList<ITag> aTags, IMap<Gwid, ISkRriSection> aGwid2SectMap );
+  void start( IRriSetter[] aDataSetters, IList<ITag> aTags );
 
   /**
    * Карта описания привязок Gwid параметра НСИ -> НСИ секция где он описан
@@ -59,7 +57,7 @@ public interface IRriDataTransmitter {
    * @return boolean - true - данные поменялись и должны быть в OPC, false - данные не изменились и их передача не
    *         нужна.
    */
-  boolean write2Node( Gwid aRriGwid, IAtomicValue aNewValue );
+  boolean writeBack2OpcNode( Gwid aRriGwid, IAtomicValue aNewValue );
 
   /**
    * Передает данные с OPC на USkat сервер безусловно

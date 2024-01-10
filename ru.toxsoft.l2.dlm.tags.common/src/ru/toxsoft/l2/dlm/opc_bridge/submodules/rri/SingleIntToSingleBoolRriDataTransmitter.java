@@ -12,7 +12,6 @@ import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.skf.rri.lib.*;
 
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.*;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.RriDataTransmittersInitializer.*;
 import ru.toxsoft.l2.thd.opc.*;
 
@@ -37,12 +36,12 @@ public class SingleIntToSingleBoolRriDataTransmitter
   /**
    * Установщик значений в секцию НСИ
    */
-  protected IDataSetter dataSetter;
+  protected IRriSetter rriSetter;
 
   /**
    * Установщик инверсного значения в секцию НСИ
    */
-  protected IDataSetter invDataSetter;
+  protected IRriSetter invRriSetter;
 
   /**
    * Карта привязки Gwid к НСИ секциям
@@ -68,19 +67,19 @@ public class SingleIntToSingleBoolRriDataTransmitter
 
     boolean result = false;
     try {
-      result = dataSetter.setDataValue( AvUtils.avBool( val ), aTime );
+      result = rriSetter.setRriValue( AvUtils.avBool( val ), aTime );
     }
     catch( Exception e ) {
-      logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", dataSetter.toString(), tag.tagId(),
+      logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", rriSetter.toString(), tag.tagId(),
           e.getMessage() );
     }
 
-    if( invDataSetter != null ) {
+    if( invRriSetter != null ) {
       try {
-        result = result || invDataSetter.setDataValue( AvUtils.avBool( !val ), aTime );
+        result = result || invRriSetter.setRriValue( AvUtils.avBool( !val ), aTime );
       }
       catch( Exception e ) {
-        logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", invDataSetter.toString(), tag.tagId(),
+        logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", invRriSetter.toString(), tag.tagId(),
             e.getMessage() );
       }
     }
@@ -102,14 +101,14 @@ public class SingleIntToSingleBoolRriDataTransmitter
   }
 
   @Override
-  public void start( IDataSetter[] aDataSetters, IList<ITag> aTags, IMap<Gwid, ISkRriSection> aGwid2SectionMap ) {
-    dataSetter = aDataSetters[0];
+  public void start( IRriSetter[] aRriSetters, IList<ITag> aTags ) {
+    rriSetter = aRriSetters[0];
     tag = aTags.get( 0 );
-    gwid2SectionMap = aGwid2SectionMap;
+    gwid2SectionMap = rriSetter.gwid2Section();
 
-    if( aDataSetters.length > 1 ) {
-      invDataSetter = aDataSetters[1];
-      logger.info( "ADD INVERSE RRI DATA: %s", invDataSetter.toString() );
+    if( aRriSetters.length > 1 ) {
+      invRriSetter = aRriSetters[1];
+      logger.info( "ADD INVERSE RRI SETTER: %s", invRriSetter.toString() );
     }
   }
 
@@ -123,10 +122,9 @@ public class SingleIntToSingleBoolRriDataTransmitter
   }
 
   @Override
-  public boolean write2Node( Gwid aRriGwid, IAtomicValue aNewValue ) {
-    IAtomicValue tagValue = tag.get();
+  public boolean writeBack2OpcNode( Gwid aRriGwid, IAtomicValue aNewValue ) {
 
-    if( bitIndex < 0 || tagValue == null || tagValue.equals( IAtomicValue.NULL ) || !tagValue.isAssigned() ) {
+    if( bitIndex < 0 || aNewValue == null || aNewValue.equals( IAtomicValue.NULL ) || !aNewValue.isAssigned() ) {
       return false;
     }
     // проверяем что это мой Gwid
@@ -135,7 +133,7 @@ public class SingleIntToSingleBoolRriDataTransmitter
       return false;
     }
 
-    ValueCommandExec.setTagBit( tag, bitIndex, tagValue, logger );
+    ValueCommandExec.setTagBit( tag, bitIndex, aNewValue, logger );
     return true;
   }
 
@@ -153,19 +151,19 @@ public class SingleIntToSingleBoolRriDataTransmitter
 
     boolean result = false;
     try {
-      result = ((RriSetter)dataSetter).setDataValueAnyway( AvUtils.avBool( val ), System.currentTimeMillis() );
+      result = ((RriSetter)rriSetter).setDataValueAnyway( AvUtils.avBool( val ), System.currentTimeMillis() );
     }
     catch( Exception e ) {
-      logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", dataSetter.toString(), tag.tagId(),
+      logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", rriSetter.toString(), tag.tagId(),
           e.getMessage() );
     }
 
-    if( invDataSetter != null ) {
+    if( invRriSetter != null ) {
       try {
-        result = result || invDataSetter.setDataValue( AvUtils.avBool( !val ), System.currentTimeMillis() );
+        result = result || invRriSetter.setRriValue( AvUtils.avBool( !val ), System.currentTimeMillis() );
       }
       catch( Exception e ) {
-        logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", invDataSetter.toString(), tag.tagId(),
+        logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", invRriSetter.toString(), tag.tagId(),
             e.getMessage() );
       }
     }
