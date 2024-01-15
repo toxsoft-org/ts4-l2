@@ -185,7 +185,7 @@ public class OpcRriDataModule
       // nop оставлено на случай если потребуется принудительно записать новые НСИ значения
     }
     // обрабатываем полученные команды
-    IDtoCommand cmd = commandsQueue.peekHeadOrNull();
+    IDtoCommand cmd = commandsQueue.getHeadOrNull();
 
     if( cmd != null ) {
       String cmdId = cmd.cmdGwid().propId();
@@ -219,13 +219,11 @@ public class OpcRriDataModule
   }
 
   private void transferRriOPC2Uskat() {
-
     // Читаем с OPC сервера и пишем в USkat
     for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
       // читаем из своей секции и пишем в свой node
       transmitter.transmitAnyWay();
     }
-
   }
 
   @Override
@@ -254,7 +252,7 @@ public class OpcRriDataModule
 
   @Override
   public void onParamValuesChanged( ISkRriSection aSource, IList<SkEvent> aEvents ) {
-    // находим свой tracmitter и пишем в него новое значение
+    // находим свой transmitter и пишем в него новое значение
     pinRriDataTransmitters = initializer.getDataTransmitters();
     for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
       for( ISkRriSection section : transmitter.gwid2Section().values() ) {
