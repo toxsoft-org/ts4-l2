@@ -8,6 +8,7 @@ import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 
 import ru.toxsoft.l2.core.dlm.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**

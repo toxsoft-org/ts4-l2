@@ -25,6 +25,7 @@ import ru.toxsoft.l2.core.dlm.*;
 import ru.toxsoft.l2.dlm.opc_bridge.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.CommandsModule.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IStatusRriMonitor.*;
 import ru.toxsoft.l2.thd.opc.*;
 

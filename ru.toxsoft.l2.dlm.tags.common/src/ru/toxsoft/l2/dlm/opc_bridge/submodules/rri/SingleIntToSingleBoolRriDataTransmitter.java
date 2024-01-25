@@ -11,7 +11,7 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.skf.rri.lib.*;
 
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IComplexTag.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.IComplexTag.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
