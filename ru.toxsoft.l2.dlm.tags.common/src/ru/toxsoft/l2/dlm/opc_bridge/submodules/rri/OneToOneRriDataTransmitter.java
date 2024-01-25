@@ -8,7 +8,7 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.skf.rri.lib.*;
 
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.RriDataTransmittersInitializer.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IComplexTag.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
@@ -52,7 +52,7 @@ public class OneToOneRriDataTransmitter
       result = rriSetter.setRriValue( newVal, aTime );
     }
     catch( Exception e ) {
-      logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", rriSetter.toString(), tag.tagId(),
+      logger.error( e, "Set RRI attribute error: gwid: %s, tag: %s, error: %s", rriSetter.toString(), tag.tagId(),
           e.getMessage() );
     }
     return result;
@@ -91,35 +91,14 @@ public class OneToOneRriDataTransmitter
   }
 
   @Override
-  public boolean writeBack2OpcNode( Gwid aRriGwid, IAtomicValue aNewValue ) {
-    if( aNewValue == null || aNewValue.equals( IAtomicValue.NULL ) || !aNewValue.isAssigned() ) {
-      return false;
-    }
-    // проверяем что это мой Gwid
-    Gwid myGwid = gwid2SectionMap.keys().first();
-    if( !myGwid.equals( aRriGwid ) ) {
-      return false;
-    }
-    tag.set( aNewValue );
-    return true;
+  public void transmitUskat2OPC() {
+    // TODO
   }
 
   @Override
-  public void transmitAnyWay() {
-    IAtomicValue newVal = tag.get();
-
-    if( newVal == null || newVal.equals( IAtomicValue.NULL ) || !newVal.isAssigned() ) {
-      return;
-    }
-
-    try {
-      ((RriSetter)rriSetter).setDataValueAnyway( newVal, System.currentTimeMillis() );
-    }
-    catch( Exception e ) {
-      logger.error( e, "Set rri data error: gwid: %s, tag: %s, error: %s", rriSetter.toString(), tag.tagId(),
-          e.getMessage() );
-    }
-
+  public EComplexTagState getOpcCmdState() {
+    // TODO
+    return EComplexTagState.UNKNOWN;
   }
 
 }

@@ -25,6 +25,7 @@ import ru.toxsoft.l2.core.dlm.*;
 import ru.toxsoft.l2.dlm.opc_bridge.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.CommandsModule.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IStatusRriMonitor.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
@@ -34,7 +35,7 @@ import ru.toxsoft.l2.thd.opc.*;
  */
 public class OpcRriDataModule
     extends ConfigurableWorkerModuleBase
-    implements ISkRriSectionListener, ISkCommandExecutor {
+    implements ISkCommandExecutor, ISkEventHandler {
 
   /**
    * Журнал работы
@@ -77,6 +78,16 @@ public class OpcRriDataModule
   private IQueue<IDtoCommand> commandsQueue;
 
   /**
+   * Монитор статуса НСИ контроллера.
+   */
+  private IStatusRriMonitor statusRriMonitor = new StatusRriMonitor();
+
+  /**
+   * индекс текущего передатчика в процессе USkat -> OPC UA
+   */
+  private int currTransmitterIndex;
+
+  /**
    * Конструктор по DLM контексту
    *
    * @param aContext {@link IDlmContext} - контекст.
@@ -94,14 +105,26 @@ public class OpcRriDataModule
       throws TsIllegalArgumentRtException {
 
     IAvTree rriDefs = aConfig.params().nodes().findByKey( RRI_DEFS );
+    // читаем описание конфигурации самого модуля
+    statusRriMonitor.config( rriDefs );
+
+    // IAtomicValue statusReadTag = AvUtils.avStr( "status.rri.read.tag.id" );
+    //
+    // IOptionSet rriCommonParams = rriDefs.fields();
+    // if( rriCommonParams.hasValue( "status.rri.read.tag.id" ) ) {
+    // statusReadTag = rriCommonParams.getValue( "status.rri.read.tag.id" );
+    // }
+    // System.out.print( statusReadTag.asString() );
+
+    IAvTree rriNodes = rriDefs.nodes().findByKey( RRI_NODES );
 
     // наполнение конфигуратора данными (для данных НСИ)
-    if( rriDefs != null && rriDefs.isArray() ) {
-      for( int i = 0; i < rriDefs.arrayLength(); i++ ) {
+    if( rriNodes != null && rriNodes.isArray() ) {
+      for( int i = 0; i < rriNodes.arrayLength(); i++ ) {
         // описание одного НСИ даннного
-        IAvTree oneDataDef = rriDefs.arrayElement( i );
+        IAvTree oneRriAttrDef = rriNodes.arrayElement( i );
 
-        initializer.addDataConfigParamsForTransmitter( oneDataDef );
+        initializer.addDataConfigParamsForTransmitter( oneRriAttrDef );
       }
     }
     // создание по конфигурации описаний для регистрации в сервисе
@@ -115,6 +138,8 @@ public class OpcRriDataModule
     // если модуль не сконфигурирован - выбросить исключение
     TsIllegalStateRtException.checkFalse( isConfigured(), ERR_MSG_RRI_MODULE_CANT_BE_STARTED_FORMAT,
         dlmInfo.moduleId() );
+    // запускаем монитор статуса состояния НСИ контроллера
+    statusRriMonitor.start( context );
 
     // регистрируем службу НСИ
     S5SynchronizedRegRefInfoService rriService =
@@ -128,11 +153,6 @@ public class OpcRriDataModule
     pinRriDataTransmitters = initializer.getDataTransmitters();
     logger.debug( "PinRriDataTransmitters: %s ", String.valueOf( pinRriDataTransmitters.size() ) );
     for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
-      // подписываемся под изменения в своих секциях НСИ
-      for( ISkRriSection section : transmitter.gwid2Section().values() ) {
-        // NB многократная подписка под одно и тоже игнорируется в самом section.eventer().addListener
-        section.eventer().addListener( this );
-      }
       if( transmitter instanceof OneToOneRriDataTransmitter ) {
         ITag tag = ((OneToOneRriDataTransmitter)transmitter).getTag();
         IRriSetter dataSetter = ((OneToOneRriDataTransmitter)transmitter).getRriSetter();
@@ -161,6 +181,12 @@ public class OpcRriDataModule
 
     // регистрация модуля в качестве исполнителя команд
     context.network().getSkConnection().coreApi().cmdService().registerExecutor( this, commandsDef );
+    // регистрируемся слушателем событий изменения значений НСИ
+    context.network().getSkConnection().coreApi().eventService()
+        // work version
+        // new GwidList( Gwid.createEvent( "sk.service.sysext.regref.Section", "rri.section.id", "RriParamsChange" )
+        .registerHandler( new GwidList( Gwid.createEvent( ISkRriServiceHardConstants.CLASSID_RRI_SECTION,
+            ISkRriServiceHardConstants.EVID_RRI_PARAM_CHANGE ) ), this );
 
     logger.info( MSG_RRI_DATA_MODULE_IS_STARTED_FORMAT, dlmInfo.moduleId() );
   }
@@ -170,39 +196,97 @@ public class OpcRriDataModule
 
     // текущее время - чтоб у всех данных было одно время
     long currTime = System.currentTimeMillis();
+    // получаем текущий статус блока НСИ контроллера
+    ERriControllerState controllerRriState = statusRriMonitor.getState();
+    switch( controllerRriState ) {
+      case NEED_DOWNLOAD_USKAT_RRI: {
+        // контроллер сигнализирует "залейте НСИ с сервера USkat"
+        // запускаем процесс передачи
+        currTransmitterIndex = 0;
+        IRriDataTransmitter transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
+        transmitter.transmitUskat2OPC();
+      }
+        break;
+      case RRI_CONTROLLER_OK:
+        routine( currTime );
+        break;
+      case UNKNOWN:
+        break;
+      case USKAT_RRI_LOADING: {
+        // мы в стадии передачи значений с USkat сервера на OPC UA
+        // проверяем состояние передачи
+        IRriDataTransmitter transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
+        IComplexTag.EComplexTagState transferState = transmitter.getOpcCmdState();
+        switch( transferState ) {
+          case DONE:
+            // все записалось успешно
+            ++currTransmitterIndex;
+            if( currTransmitterIndex >= pinRriDataTransmitters.size() ) {
+              // все записали, гасим флаг "контроллеру нужен НСИ сверху"
+              statusRriMonitor.setStatus( Integer.valueOf( 1 ) );
+              // переходим в режим нормальной работы
+            }
+            else {
+              // пишем следующий параметр НСИ
+              transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
+              transmitter.transmitUskat2OPC();
+            }
 
-    boolean doRriWrite = false;
-    // выполнение работы с каждым передатчиком с проверкой изменения значений НСИ
-    for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
-      try {
-        doRriWrite |= transmitter.transmit( currTime );
+            break;
+          case ERROR:
+            // произошла ошибка записи, повторяем
+            transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
+            transmitter.transmitUskat2OPC();
+            break;
+          case PROCESS:
+            // запись в процессе выполнения, ничего не делаем, ждем следующего цикла
+            // nop
+            break;
+          case TIMEOUT:
+            break;
+          case UNKNOWN:
+            break;
+          default:
+            break;
+        }
       }
-      catch( Exception e ) {
-        logger.error( e.getMessage() );
-      }
+        break;
+      default:
+        break;
     }
-    if( doRriWrite ) {
-      // nop оставлено на случай если потребуется принудительно записать новые НСИ значения
-    }
+
     // обрабатываем полученные команды
     IDtoCommand cmd = commandsQueue.getHeadOrNull();
 
     if( cmd != null ) {
       String cmdId = cmd.cmdGwid().propId();
-      if( cmdId.compareTo( RRI_OPC_2_USKAT_CMD_ID ) == 0 ) {
-        transferRriOPC2Uskat();
-        setCmdState( cmd, MSG_COMMAND_COMPLETE_RRI_MODULE, ESkCommandState.SUCCESS );
-      }
       if( cmdId.compareTo( RRI_USKAT_2_OPC_CMD_ID ) == 0 ) {
         transferRriUskat2OPC();
         setCmdState( cmd, MSG_COMMAND_COMPLETE_RRI_MODULE, ESkCommandState.SUCCESS );
       }
       // последним идет проверка на то что обработка подписаной команды сделана
-      if( cmdId.compareTo( RRI_OPC_2_USKAT_CMD_ID ) != 0 && cmdId.compareTo( RRI_USKAT_2_OPC_CMD_ID ) != 0 ) {
+      if( cmdId.compareTo( RRI_USKAT_2_OPC_CMD_ID ) != 0 ) {
         setCmdState( cmd, MSG_COMMAND_UNDER_DEVELOPMENT_RRI_MODULE, ESkCommandState.FAILED );
       }
     }
 
+  }
+
+  /**
+   * Рутина - слушаем изменения тегов и передаем их на сервер USkat
+   *
+   * @param currTime
+   */
+  public void routine( long currTime ) {
+    // выполнение работы с каждым передатчиком с проверкой изменения значений НСИ
+    for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
+      try {
+        transmitter.transmit( currTime );
+      }
+      catch( Exception e ) {
+        logger.error( e.getMessage() );
+      }
+    }
   }
 
   private void transferRriUskat2OPC() {
@@ -213,60 +297,18 @@ public class OpcRriDataModule
       for( Gwid rriGwid : gwid2Section.keys() ) {
         ISkRriSection section = gwid2Section.getByKey( rriGwid );
         IAtomicValue rriVal = section.getAttrParamValue( rriGwid.skid(), rriGwid.propId() );
-        transmitter.writeBack2OpcNode( rriGwid, rriVal );
+        // TODO написать код установки своего значения НСИ в контроллер
+        // transmitter.writeBack2OpcNode( rriGwid, rriVal );
       }
-    }
-  }
-
-  private void transferRriOPC2Uskat() {
-    // Читаем с OPC сервера и пишем в USkat
-    for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
-      // читаем из своей секции и пишем в свой node
-      transmitter.transmitAnyWay();
     }
   }
 
   @Override
   protected boolean doQueryStop() {
-    // отписываемся от нотификаций
-    pinRriDataTransmitters = initializer.getDataTransmitters();
-    for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
-      // подписываемся по изменения в своих секциях НСИ
-      for( ISkRriSection section : transmitter.gwid2Section().values() ) {
-        section.eventer().removeListener( this );
-      }
-    }
-
+    // отписываемся от всего под что подписались
+    context.network().getSkConnection().coreApi().cmdService().unregisterExecutor( this );
+    context.network().getSkConnection().coreApi().eventService().unregisterHandler( this );
     return true;
-  }
-
-  @Override
-  public void onSectionPropsChanged( ISkRriSection aSource ) {
-    // nop
-  }
-
-  @Override
-  public void onClassParamInfosChanged( ISkRriSection aSource, String aClassId ) {
-    // nop
-  }
-
-  @Override
-  public void onParamValuesChanged( ISkRriSection aSource, IList<SkEvent> aEvents ) {
-    // находим свой transmitter и пишем в него новое значение
-    pinRriDataTransmitters = initializer.getDataTransmitters();
-    for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
-      for( ISkRriSection section : transmitter.gwid2Section().values() ) {
-        if( section.equals( aSource ) ) {
-          for( SkEvent event : aEvents ) {
-            Gwid parGwid = event.eventGwid();
-            if( transmitter.gwid2Section().hasKey( parGwid ) ) {
-              IAtomicValue newVal = event.paramValues().findByKey( ISkRegRefServiceHardConstants.EVPRMID_NEW_VAL_ATTR );
-              transmitter.writeBack2OpcNode( parGwid, newVal );
-            }
-          }
-        }
-      }
-    }
   }
 
   @Override
@@ -300,6 +342,28 @@ public class OpcRriDataModule
     catch( Exception e ) {
       logger.error( MSG_COMMAND_STATE_CANT_CHANGE_FOR_RRI_MODULE, aExecCmdId, e.getMessage() );
     }
+  }
+
+  @Override
+  public void onEvents( ISkEventList aEvents ) {
+    // TODO тут проверяем что это наши события
+    pinRriDataTransmitters = initializer.getDataTransmitters();
+    for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
+      // for( ISkRriSection section : transmitter.gwid2Section().values() ) {
+      // if( section.equals( aSource ) ) {
+      for( SkEvent event : aEvents ) {
+        Gwid parGwid = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_PARAM_GWID ).asValobj();
+        if( transmitter.gwid2Section().hasKey( parGwid ) ) {
+          IAtomicValue newVal = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_NEW_VAL_ATTR );
+          System.out.printf( "New val: %s", newVal.asString() );
+          // FIXME реализация передачи на контроллер новго значения НСИ
+          // transmitter.writeBack2OpcNode( parGwid, newVal );
+        }
+        // }
+        // }
+      }
+    }
+
   }
 
 }

@@ -1,15 +1,15 @@
 package ru.toxsoft.l2.dlm.opc_bridge.submodules.rri;
 
-import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.skf.rri.lib.*;
 
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IComplexTag.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
- * Преобразователь сигналов с железа на данные сервера и в обратную сторону (OPC UA node <-> USkat server Gwid).
+ * Преобразователь сигналов с железа на НСИ атрибуты USkat сервера (OPC UA node -> USkat server RRI Gwid).
  *
  * @author dima
  */
@@ -50,17 +50,15 @@ public interface IRriDataTransmitter {
   IMap<Gwid, ISkRriSection> gwid2Section();
 
   /**
-   * Записать новое значение с USkat сервер в OPC UA node
-   *
-   * @param aRriGwid {@link Gwid } - id изменившегося параметра НСИ
-   * @param aNewValue {@link IAtomicValue } - новое значение
-   * @return boolean - true - данные поменялись и должны быть в OPC, false - данные не изменились и их передача не
-   *         нужна.
+   * Передача значений с сервера USkat на OPC UA
    */
-  boolean writeBack2OpcNode( Gwid aRriGwid, IAtomicValue aNewValue );
+  void transmitUskat2OPC();
 
   /**
-   * Передает данные с OPC на USkat сервер безусловно
+   * Текущее состояние процесса выполнения команды по записи НСИ значения в OPC UA дерево
+   *
+   * @return { {@link EComplexTagState} состояние выполнения команды
    */
-  void transmitAnyWay();
+  EComplexTagState getOpcCmdState();
+
 }

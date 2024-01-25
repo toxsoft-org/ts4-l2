@@ -455,7 +455,6 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
    * @param aTransTagsParams IOptionSet - параметры получения тега.
    * @return ITag - тег.
    */
-  @SuppressWarnings( "static-method" )
   private ITag getTag( IDlmContext aContext, IOptionSet aTransTagsParams ) {
     // получение спец устройства
     String tagsSpecDev = aTransTagsParams.getStr( TAG_DEVICE_ID );

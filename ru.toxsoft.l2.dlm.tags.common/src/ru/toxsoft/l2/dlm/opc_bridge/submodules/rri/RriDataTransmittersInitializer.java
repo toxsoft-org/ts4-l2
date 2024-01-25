@@ -6,6 +6,7 @@ import static ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IL2Resources.*;
 import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.coll.*;
@@ -159,8 +160,8 @@ public class RriDataTransmittersInitializer
    * @return IListEdit - список конфигураций для данных сервера.
    */
   private static IListEdit<RriDataObjNameExtension> getTransDataDefs( IAvTree aTransConfig ) {
-
-    IAtomicValue defaultRriSection = IAtomicValue.NULL;
+    // FIXME продумать как работать через default секцию или как-то еще
+    IAtomicValue defaultRriSection = AvUtils.avStr( "rri.section.id" );
     IAtomicValue defaultClassId = IAtomicValue.NULL;
     IAtomicValue defaultObjName = IAtomicValue.NULL;
 

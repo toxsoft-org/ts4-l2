@@ -27,6 +27,11 @@ public interface IDlmsBaseConstants {
   String RRI_DEFS = "rriDefs";
 
   /**
+   * Начало массива описания нодов НСИ.
+   */
+  String RRI_NODES = "rriNodes";
+
+  /**
    * Имя параметра - является ли данное историческим.
    */
   String IS_HIST = "is.hist";
@@ -504,8 +509,6 @@ public interface IDlmsBaseConstants {
   String DATA_SETTER_NAME_FOR_SCRIPT_FORMAT = "data%d";
 
   String TAG_NAME_FOR_SCRIPT_FORMAT = "tag%d";
-
-  String RRI_OPC_2_USKAT_CMD_ID = "cmdRriTransferOpc2Uskat";
 
   String RRI_USKAT_2_OPC_CMD_ID = "cmdRriTransferUskat2Opc";
 

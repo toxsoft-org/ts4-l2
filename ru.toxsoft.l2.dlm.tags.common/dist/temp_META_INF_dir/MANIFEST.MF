@@ -4,11 +4,11 @@ Created-By: 11.0.21+9-post-Ubuntu-0ubuntu120.04 (Ubuntu)
 TsPluginContainerVersion: 2
 
 Name: ru.toxsoft.l2.dlm.tags.common
-TsPluginVersion: {2,1,2023-12-26_16:13:35}
+TsPluginVersion: {2,1,2024-01-23_13:33:55}
 TsPluginType: DLM
 TsPluginClassName: ru.toxsoft.l2.dlm.opc_bridge.DlmFactory
 DlmName: Подгружаемый модуль НУ - мост opc
 DeveloperPersons: Max
 DeveloperCompany: ТоксСофт
-Built-Date: 2023-12-26_16:13:35
+Built-Date: 2024-01-23_13:33:55
 
