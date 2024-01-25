@@ -206,7 +206,7 @@ public class NodesWriter {
 
     for( int i = 0; i < aCfgInfo.arrayLength(); i++ ) {
       IAvTree groupConfig = aCfgInfo.arrayElement( i );
-      if( groupConfig.structId().endsWith( ".output.group.def" ) ) {
+      if( groupConfig.structId().endsWith( OUTPUT_GROUP_DEF_POSTFIX ) ) {
 
         // output
         IAvTree tagsConfig = groupConfig.nodes().findByKey( OUTPUT_TAGS_PARAM_NAME );

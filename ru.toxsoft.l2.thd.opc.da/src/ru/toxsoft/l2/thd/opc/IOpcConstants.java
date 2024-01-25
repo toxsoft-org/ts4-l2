@@ -178,7 +178,11 @@ public interface IOpcConstants {
    * Постфикс описания группы асинхронных данных
    */
   String ASYNC_GROUP_DEF_POSTFIX        = ".async.group.def";
-
+  /**
+   * Постфикс описания группы выходных данных
+   */
+  String OUTPUT_GROUP_DEF_POSTFIX       = ".output.group.def";
+  
   /**
    * Мост на движке openScada
    */
