@@ -1,12 +1,18 @@
 package ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags;
 
+import static ru.toxsoft.l2.dlm.opc_bridge.IDlmsBaseConstants.*;
+
 import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 
+import ru.toxsoft.l2.core.dlm.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
@@ -15,17 +21,17 @@ import ru.toxsoft.l2.thd.opc.*;
  * @author max
  */
 public class ComplexTagImpl
-    implements IComplexTag {
+    extends AbstractComplexTag {
 
   /**
    * Журнал работы
    */
   static ILogger logger = LoggerWrapper.getLogger( ComplexTagImpl.class );
 
-  /**
-   * Идентификатор тега
-   */
-  private String id;
+  public static final String СT_WRITE_ID_TAG         = "write.id.tag";
+  public static final String СT_WRITE_VAL_TAG_PREFIX = "write.param.";
+  public static final String СT_WRITE_VAL_TAG_FORMAT = СT_WRITE_VAL_TAG_PREFIX + "%s.tag";
+  public static final String СT_READ_FEEDBACK_TAG    = "read.feedback.tag";
 
   /**
    * Текущий адрес
@@ -57,19 +63,17 @@ public class ComplexTagImpl
    */
   private ITag feedbackTag;
 
+  private IAvTree cfgData;
+
   /**
    * Конструктор по вдресному тегу (для передачи адреса или идентификатора) и тегу обратной связи
    *
    * @param aId String - идентификатор
-   * @param aAddressTag - Адресный тег
-   * @param aFeedbackTag - Тег обратной связи
    */
 
-  public ComplexTagImpl( String aId, ITag aAddressTag, ITag aFeedbackTag ) {
-    super();
-    id = aId;
-    addressTag = aAddressTag;
-    feedbackTag = aFeedbackTag;
+  public ComplexTagImpl( String aId ) {
+    super( aId );
+
   }
 
   @Override
@@ -112,6 +116,7 @@ public class ComplexTagImpl
     return EComplexTagState.UNKNOWN;
   }
 
+  @Override
   protected void doJob() {
     if( address != 0 ) {
       logger.debug( "DoJob  currentCmd != null" ); //$NON-NLS-1$
@@ -127,12 +132,62 @@ public class ComplexTagImpl
 
   }
 
-  protected void setValueTypeTag( EAtomicType aType, ITag aValTag ) {
+  /**
+   * @param aFeedbackTag - Тег обратной связи
+   */
+  private void setFeedbackTag( ITag aFeedbackTag ) {
+    feedbackTag = aFeedbackTag;
+  }
+
+  /**
+   * @param aAddressTag - Адресный тег
+   */
+  private void setAddressTag( ITag aAddressTag ) {
+    addressTag = aAddressTag;
+  }
+
+  private void setValueTypeTag( EAtomicType aType, ITag aValTag ) {
     valTags.put( aType, aValTag );
   }
 
   @Override
-  public String id() {
-    return id;
+  protected void config( IAvTree aCfg ) {
+    cfgData = aCfg;
   }
+
+  @Override
+  protected void start( IDlmContext aContext ) {
+    // Search Device
+    String deviceId = cfgData.fields().getStr( TAG_DEVICE_ID );
+    ITsOpc tagsDevice = (ITsOpc)aContext.hal().listSpecificDevices().getByKey( deviceId );
+
+    // tag for address write
+    ITag wIdTag = tagsDevice.tag( cfgData.fields().getStr( СT_WRITE_ID_TAG ) );
+    setAddressTag( wIdTag );
+
+    // feedback tag
+    ITag fbTag = tagsDevice.tag( cfgData.fields().getStr( СT_READ_FEEDBACK_TAG ) );
+    setFeedbackTag( fbTag );
+
+    IStringList cfgKeys = cfgData.fields().keys();
+
+    for( String cfgkey : cfgKeys ) {
+      if( cfgkey.startsWith( СT_WRITE_VAL_TAG_PREFIX ) ) {
+        EAtomicType atomType = null;
+        for( EAtomicType aType : EAtomicType.values() ) {
+          if( cfgkey.equals( String.format( СT_WRITE_VAL_TAG_FORMAT, aType.id().toLowerCase() ) ) ) {
+            atomType = aType;
+            break;
+          }
+        }
+        TsIllegalArgumentRtException.checkNull( atomType, "cant find any type for : " + cfgkey );
+
+        // atomic type tag
+        ITag wAtomTypeValTag = tagsDevice.tag( cfgData.fields().getStr( cfgkey ) );
+        setValueTypeTag( atomType, wAtomTypeValTag );
+      }
+    }
+
+  }
+
 }

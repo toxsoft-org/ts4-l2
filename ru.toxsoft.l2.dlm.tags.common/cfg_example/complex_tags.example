@@ -1,0 +1,79 @@
+complexTagsDefs=
+  {
+    true,
+    [
+      {
+          false,
+          "tag.syntetic1.def",
+          {
+            complex.tag.id = "tag.syntetic1",                         # идентификатор комплексного тега
+            complex.tag.type = "node.with.address.params.feedback",   # тип реализации комплексного тега (сейчас один)
+            tag.dev.id = "opc2s5.bridge.collection.id",               # идентификатор драйвера
+            
+            write.id.tag = "ns=32770;i=30",                           # тег, в который пишется ид команды (адрес)
+            write.param.integer.tag = "ns=32770;i=31",                # тег для записи параметра типа int
+            write.param.float.tag = "ns=32770;i=32",                  # тег для записи параметра типа float
+                                                                      # можно добавить тегов для записи параметра других типов EAtomicType
+            read.feedback.tag = "ns=32770;i=33"                       # тег для чтения обратной связи (ида выполненой команды)
+          },
+          {
+          }
+      },
+      {
+          false,
+          "tag.syntetic2.def",
+          {
+            complex.tag.id = "tag.syntetic2",                         # идентификатор комплексного тега
+            complex.tag.type = "node.with.address.params.feedback",   # тип реализации комплексного тега (сейчас один)
+            tag.dev.id = "opc2s5.bridge.collection.id",               # идентификатор драйвера
+            
+            write.id.tag = "ns=32771;i=30",                           # тег, в который пишется ид команды (адрес)
+            write.param.integer.tag = "ns=32771;i=31",                # тег для записи параметра типа int
+            write.param.float.tag = "ns=32771;i=32",                  # тег для записи параметра типа float
+                                                                      # можно добавить тегов для записи параметра других типов EAtomicType
+            read.feedback.tag = "ns=32771;i=33"                       # тег для чтения обратной связи (ида выполненой команды)
+          },
+          {
+          }
+      }   
+    ]
+  }
+  cmdDefs=
+    {
+      true,
+      [
+        {
+          false,
+          "cmd.cmdChannelAddress.def",
+          {
+            class.id="ci.AnalogInput",
+            obj.name="ci1_AI_BHB",
+            cmd.id="cmdChannelAddress",
+            value.param.id="value",
+            command.exec.java.class="ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.ValCommandByComplexTagExec",  # обработчик сложного тега
+            complex.tag.id="tag.syntetic1",                                                                         # ид сложного тега
+            cmd.opc.id = 5                                                                                          # номер команды в opc сервере (адрес)
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "cmd.cmdFilterConst.def",
+          {
+            class.id="ci.AnalogInput",
+            obj.name="ci1_AI_BHB",
+            cmd.id="cmdFilterConst",
+            value.param.id="value",
+            command.exec.java.class="ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.ValCommandByComplexTagExec",  # обработчик сложного тега
+            complex.tag.id="tag.syntetic2"                                                                          # ид сложного тега
+            cmd.opc.id = 7                                                                                          # номер команды в opc сервере (адрес)
+          }
+          ,
+          {
+          }
+        }
+      ]
+    }

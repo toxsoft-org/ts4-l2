@@ -18,14 +18,21 @@ import ru.toxsoft.l2.dlm.opc_bridge.*;
  * @author max
  */
 public class ComplexTagsModule
-    extends ConfigurableWorkerModuleBase {
+    extends ConfigurableWorkerModuleBase
+    implements IComplexTagsContainer {
 
   private static final String СOMPLEX_TAGS_DEFS = "complexTagsDefs";
 
+  public static final String СOMPLEX_TAG_ID   = "complex.tag.id";
+  public static final String СOMPLEX_TAG_TYPE = "complex.tag.type";
+
   private static final String ERR_MSG_COMPLEX_TAGS_MODULE_CANT_BE_STARTED_FORMAT =
-      "Модуль сложных тегов в %s не может быть запущен, так как не сконфигурирован";
+      "Подмодуль сложных тегов в %s не может быть запущен, так как не сконфигурирован";
 
   private static final String MSG_EVENTS_MODULE_IS_STARTED_FORMAT = "Работа с событиями в модуле %s стартовала";
+
+  private static final String MSG_COMPLEX_TAGS_MODULE_IS_STARTED_FORMAT =
+      "Работа подмодуля сложных тегов в модуле %s стартовала";
 
   private static final String ERR_MSG_EVENT_MODULE_IS_NOT_STARTED_FORMAT =
       "Подмодуль событий в %s не стартовал:\n Некорректно указаны пины";
@@ -46,6 +53,11 @@ public class ComplexTagsModule
   private IDlmInfo dlmInfo;
 
   /**
+   * Configuration info
+   */
+  private IAvTree complexTagsDefs;
+
+  /**
    * Соединение с сервером.
    */
   ISkConnection connection;
@@ -53,7 +65,7 @@ public class ComplexTagsModule
   /**
    * СЛожные синтетические теги
    */
-  private StringMap<ComplexTagImpl> complexTags = new StringMap<>();
+  private StringMap<AbstractComplexTag> complexTags = new StringMap<>();
 
   /**
    * Конструктор по контексту.
@@ -69,22 +81,10 @@ public class ComplexTagsModule
   @Override
   protected void doConfigYourself( IUnitConfig aConfig )
       throws TsIllegalArgumentRtException {
-    IAvTree complexTagsDefs = aConfig.params().nodes().findByKey( СOMPLEX_TAGS_DEFS );
-
-    if( complexTagsDefs != null && complexTagsDefs.isArray() ) {
-      for( int i = 0; i < complexTagsDefs.arrayLength(); i++ ) {
-        IAvTree tagDef = complexTagsDefs.arrayElement( i );
-
-        try {
-          ComplexTagImpl complexTag = createComplexTag( tagDef );
-          complexTags.put( complexTag.id(), complexTag );
-        }
-        catch( Exception e ) {
-          logger.error( e, "Create or Config of Complex Tag error" );
-        }
-
-      }
+    if( !aConfig.params().nodes().hasKey( СOMPLEX_TAGS_DEFS ) ) {
+      return;
     }
+    complexTagsDefs = aConfig.params().nodes().findByKey( СOMPLEX_TAGS_DEFS );
 
   }
 
@@ -94,22 +94,32 @@ public class ComplexTagsModule
     TsIllegalStateRtException.checkFalse( isConfigured(), ERR_MSG_COMPLEX_TAGS_MODULE_CANT_BE_STARTED_FORMAT,
         dlmInfo.moduleId() );
 
+    if( complexTagsDefs == null || !complexTagsDefs.isArray() || complexTagsDefs.arrayLength() == 0 ) {
+      logger.warning( "Complex tag of dlm %s not started - couldnt find cfg info", dlmInfo.moduleId() );
+      return;
+    }
+
     connection = context.network().getSkConnection();
     // TsIllegalStateRtException.checkFalse( connection.isConnected(), ERR_MSG_CONNECTION_TO_SERVER_IS_NOT_ESTABLISHED
     // );
 
-    try {
-      // запуск сложных тегов
-      for( String tagId : complexTags.keys() ) {
-        // TODO - старт каждого тега если потребуется
-        // complexTags.getByKey( tagId ).doJob();
+    // создание и запуск сложных тегов
+
+    for( int i = 0; i < complexTagsDefs.arrayLength(); i++ ) {
+      IAvTree tagDef = complexTagsDefs.arrayElement( i );
+
+      try {
+        AbstractComplexTag complexTag = createComplexTag( tagDef );
+        complexTags.put( complexTag.id(), complexTag );
+        complexTag.start( context );
       }
+      catch( Exception e ) {
+        logger.error( e, "Create or start of Complex Tag error" );
+      }
+
     }
-    catch( TsItemNotFoundRtException e ) {
-      logger.error( e, ERR_MSG_EVENT_MODULE_IS_NOT_STARTED_FORMAT, dlmInfo.moduleId() );
-      throw e;
-    }
-    logger.info( MSG_EVENTS_MODULE_IS_STARTED_FORMAT, dlmInfo.moduleId() );
+
+    logger.info( MSG_COMPLEX_TAGS_MODULE_IS_STARTED_FORMAT, dlmInfo.moduleId() );
   }
 
   @Override
@@ -125,22 +135,41 @@ public class ComplexTagsModule
    * @param aConfig IAvTree - конфигурационная информация
    * @return IComplexTag - сложный синтетический тег
    */
-  @SuppressWarnings( "unchecked" )
-  private static ComplexTagImpl createComplexTag( IAvTree aConfig ) {
-    // TODO
-    ComplexTagImpl result = new ComplexTagImpl( "id.from.cfg", null, null );
-    return result;
-  }
+  private static AbstractComplexTag createComplexTag( IAvTree aConfig ) {
+    TsIllegalArgumentRtException.checkFalse( aConfig.fields().hasKey( СOMPLEX_TAG_TYPE ) );
 
-  public IComplexTag complexTag( String aTagId ) {
-    return complexTags.findByKey( aTagId );
-  }
-
-  public IStringMap<IComplexTag> complexTags() {
-    IStringMapEdit<IComplexTag> result = new StringMap<>();
-    for( String tagId : complexTags.keys() ) {
-      result.put( tagId, complexTags.getByKey( tagId ) );
+    String tagType = aConfig.fields().getStr( СOMPLEX_TAG_TYPE );
+    String tagId = aConfig.fields().getStr( СOMPLEX_TAG_ID );
+    try {
+      return EComplexTagType.createComplexTag( tagType, tagId, true );
     }
-    return result;
+    catch( Exception ex ) {
+      throw new TsIllegalArgumentRtException( ex );
+    }
+
   }
+
+  @Override
+  public IStringList complexTagIds() {
+    return complexTags.keys();
+  }
+
+  @Override
+  public IComplexTag getComplexTagById( String aId ) {
+    TsNullArgumentRtException.checkNull( aId );
+    return complexTags.getByKey( aId );
+  }
+
+  // "pin.tag.syntetic1.def",
+  // {
+  // complex.tag.id ="syntetic1",
+  // complex.tag.type="node.with.address.params.feedback",
+  // tag.dev.id="opc2s5.bridge.collection.id"
+  // write.id.tag = "ns=32770;i=30" ,
+  // write.int.param.tag = "ns=32770;i=31" ,
+  // write.float.param.tag = "ns=32770;i=32" ,
+  // write.str.param.tag = "ns=32770;i=33" ,
+  // read.feedback.tag = "ns=32770;i=34" ,
+  // }
+
 }
