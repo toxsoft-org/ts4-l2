@@ -277,6 +277,11 @@ public interface IDlmsBaseConstants {
   String TAG_ID = "tag.id";
 
   /**
+   * Имя параметра - идентификатор сложного тега
+   */
+  String COMPLEX_TAG_ID = "complex.tag.id";
+
+  /**
    * Имя параметра - идентификатор специального устройства с тегами
    */
   String TAG_DEVICE_ID = "tag.dev.id";
