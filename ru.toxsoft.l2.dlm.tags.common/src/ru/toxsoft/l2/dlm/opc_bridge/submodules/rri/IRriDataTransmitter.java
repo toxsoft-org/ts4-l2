@@ -50,7 +50,7 @@ public interface IRriDataTransmitter {
   IMap<Gwid, ISkRriSection> gwid2Section();
 
   /**
-   * Передача значений с сервера USkat на OPC UA
+   * Установить значение с сервера USkat на node OPC UA
    */
   void transmitUskat2OPC();
 

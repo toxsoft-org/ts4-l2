@@ -11,6 +11,7 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.skf.rri.lib.*;
 
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.IComplexTag.*;
 import ru.toxsoft.l2.thd.opc.*;
 
@@ -51,6 +52,16 @@ public class SingleIntToSingleBoolRriDataTransmitter
    * Номер значащего бита (от 0)
    */
   protected int bitIndex = -1;
+
+  /**
+   * Универсальный тег для записи значений в OPC UA
+   */
+  protected IComplexTag сomplexTag;
+
+  /**
+   * index of OPC command
+   */
+  protected int opcCmdIndex = -1;
 
   @Override
   public boolean transmit( long aTime ) {
@@ -122,13 +133,11 @@ public class SingleIntToSingleBoolRriDataTransmitter
 
   @Override
   public void transmitUskat2OPC() {
-    // TODO
-
+    // записываем значение в OPC UA
   }
 
   @Override
   public EComplexTagState getOpcCmdState() {
-    // TODO
     return EComplexTagState.UNKNOWN;
   }
 

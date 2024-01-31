@@ -8,6 +8,7 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.skf.rri.lib.*;
 
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.IComplexTag.*;
 import ru.toxsoft.l2.thd.opc.*;
 
@@ -38,6 +39,21 @@ public class OneToOneRriDataTransmitter
    * Карта привязки Gwid к НСИ секциям
    */
   protected IMap<Gwid, ISkRriSection> gwid2SectionMap;
+
+  /**
+   * Универсальный тег для записи значений в OPC UA
+   */
+  protected IComplexTag сomplexTag;
+
+  /**
+   * index of OPC command
+   */
+  protected int opcCmdIndex = -1;
+
+  /**
+   * timestamp of last OPC command
+   */
+  protected long lastOPCCmdTimestamp = -1;
 
   @Override
   public boolean transmit( long aTime ) {
@@ -92,13 +108,21 @@ public class OneToOneRriDataTransmitter
 
   @Override
   public void transmitUskat2OPC() {
-    // TODO
+    // читаем актуальное значение с сервера uSkat
+    Gwid gwid = gwid2SectionMap.keys().first();
+    ISkRriSection section = gwid2SectionMap.getByKey( gwid );
+    IAtomicValue val = section.getAttrParamValue( gwid.skid(), gwid.propId() );
+    // пишем его в OPC
+    lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndex, val );
   }
 
   @Override
   public EComplexTagState getOpcCmdState() {
-    // TODO
-    return EComplexTagState.UNKNOWN;
+    if( сomplexTag == null ) {
+      return EComplexTagState.ERROR;
+    }
+    // FIXME Max aDelIfCan ?
+    return сomplexTag.getState( lastOPCCmdTimestamp, false );
   }
 
 }
