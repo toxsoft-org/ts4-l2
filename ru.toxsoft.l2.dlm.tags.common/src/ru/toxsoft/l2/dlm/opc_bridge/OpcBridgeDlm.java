@@ -66,7 +66,7 @@ public class OpcBridgeDlm
 
     // dima 25.12.23 add rriModule
     IConfigurableWorkerModule rriModule =
-        new OpcRriDataModule( aContext, info(), new RriDataTransmittersInitializer() );
+        new OpcRriDataModule( aContext, info(), new RriDataTransmittersInitializer(), complexTagsModule );
     modules.add( rriModule );
 
     //

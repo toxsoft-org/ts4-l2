@@ -5,6 +5,7 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.skf.rri.lib.*;
 
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.IComplexTag.*;
 import ru.toxsoft.l2.thd.opc.*;
 
@@ -39,8 +40,9 @@ public interface IRriDataTransmitter {
    * @param aDataSetters - массив установщиков данных
    * @param aTags IList - список тегов, из которых поступают данные, необходимые для преобразования и передачи на
    *          сервер.
+   * @param aComplexTag - комплексны тег на запись
    */
-  void start( IRriSetter[] aDataSetters, IList<ITag> aTags );
+  void start( IRriSetter[] aDataSetters, IList<ITag> aTags, IComplexTag aComplexTag );
 
   /**
    * Карта описания привязок Gwid параметра НСИ -> НСИ секция где он описан

@@ -277,7 +277,7 @@ public interface IDlmsBaseConstants {
   String TAG_ID = "tag.id";
 
   /**
-   * <<<<<<< HEAD Имя параметра - идентификатор тега для записи значения в OPC UA
+   * Имя параметра - идентификатор тега для записи значения в OPC UA
    */
   String COMPLEX_TAG_ID = "complex.tag.id";
 
@@ -285,6 +285,16 @@ public interface IDlmsBaseConstants {
    * Имя параметра - индекс команды в OPC UA
    */
   String OPC_CMD_INDEX = "opc.cmd.index";
+
+  /**
+   * Имя параметра - индекс команды в OPC UA
+   */
+  String OPC_CMD_INDEX_ON = "opc.cmd.index.on";
+
+  /**
+   * Имя параметра - индекс команды в OPC UA
+   */
+  String OPC_CMD_INDEX_OFF = "opc.cmd.index.off";
 
   /**
    * Имя параметра - идентификатор специального устройства с тегами

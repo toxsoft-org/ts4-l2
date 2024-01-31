@@ -21,6 +21,7 @@ import org.toxsoft.uskat.core.api.sysdescr.*;
 import org.toxsoft.uskat.core.connection.*;
 
 import ru.toxsoft.l2.core.dlm.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
@@ -69,12 +70,15 @@ public class RriDataTransmittersInitializer
 
   private IListEdit<String> tagsDevices = new ElemArrayList<>( false );
 
+  private IComplexTagsContainer complexTagsContainer;
+
   @Override
-  public void addDataConfigParamsForTransmitter( IAvTree aTransConfig )
+  public void addDataConfigParamsForTransmitter( IAvTree aTransConfig, IComplexTagsContainer aComplexTagsContainer )
       throws TsIllegalStateRtException {
     TsIllegalStateRtException.checkTrue( initialized, ERR_MSG_ADD_PARAM_METHOD_AFTER_CONFIG_FORMAT,
         getClass().getName() );
 
+    complexTagsContainer = aComplexTagsContainer;
     // создание и инициализация всех передатчиков
 
     // Список данных сервера, участвующих в передатчике - получение из конфигурации единообразно
@@ -116,10 +120,14 @@ public class RriDataTransmittersInitializer
    */
   private static IListEdit<IOptionSet> getTransTagsParams( IAvTree aTransConfig ) {
     IAtomicValue defaultDevId = IAtomicValue.NULL;
+    String defaultComlexTag = "";
 
     IOptionSet transmitterParams = aTransConfig.fields();
     if( transmitterParams.hasValue( TAG_DEVICE_ID ) ) {
       defaultDevId = transmitterParams.getValue( TAG_DEVICE_ID );
+    }
+    if( transmitterParams.hasValue( COMPLEX_TAG_ID ) ) {
+      defaultComlexTag = transmitterParams.getStr( COMPLEX_TAG_ID );
     }
 
     // если есть несколько тегов
@@ -149,6 +157,7 @@ public class RriDataTransmittersInitializer
     IOptionSetEdit result = new OptionSet();
     result.setValue( TAG_DEVICE_ID, defaultDevId );
     result.setStr( TAG_ID, transmitterParams.getStr( TAG_ID ) );
+    result.setStr( COMPLEX_TAG_ID, defaultComlexTag );
     return new ElemArrayList<>( result );
 
   }
@@ -354,11 +363,14 @@ public class RriDataTransmittersInitializer
       if( transTagsParams.size() != tags.size() ) {
         continue;
       }
-
+      // тут комплексны тег
+      IOptionSet tagOptSet = transTagsParams.get( 0 );
+      String complextTagId = tagOptSet.getStr( COMPLEX_TAG_ID );
+      IComplexTag complexTag = complexTagsContainer.getComplexTagById( complextTagId );
       // запуск передатчика
       try {
         long t1 = System.currentTimeMillis();
-        transmitter.start( realDataSetters, tags );
+        transmitter.start( realDataSetters, tags, complexTag );
         long t2 = System.currentTimeMillis();
         System.out.printf( "j = %d, transmitter.start() : %d \n", j, (t2 - t1) );
         startedDataTransmitters.add( transmitter );
