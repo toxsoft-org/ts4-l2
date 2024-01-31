@@ -89,16 +89,24 @@ public class OpcRriDataModule
   private int currTransmitterIndex;
 
   /**
+   * контейнер комплексных тегов
+   */
+  private final IComplexTagsContainer complexTagsContainer;
+
+  /**
    * Конструктор по DLM контексту
    *
    * @param aContext {@link IDlmContext} - контекст.
    * @param aDlmInfo {@link IDlmInfo} - информация о DLM
    * @param aInitializer {@link IRriDataTransmittersInitializer} - инициализатор пинов.
+   * @param aComplexTagsContainer IComplexTagsContainer - контейнер сложных тегов.
    */
-  public OpcRriDataModule( IDlmContext aContext, IDlmInfo aDlmInfo, IRriDataTransmittersInitializer aInitializer ) {
+  public OpcRriDataModule( IDlmContext aContext, IDlmInfo aDlmInfo, IRriDataTransmittersInitializer aInitializer,
+      IComplexTagsContainer aComplexTagsContainer ) {
     dlmInfo = aDlmInfo;
     context = aContext;
     initializer = aInitializer;
+    complexTagsContainer = aComplexTagsContainer;
   }
 
   @Override
@@ -125,7 +133,7 @@ public class OpcRriDataModule
         // описание одного НСИ даннного
         IAvTree oneRriAttrDef = rriNodes.arrayElement( i );
 
-        initializer.addDataConfigParamsForTransmitter( oneRriAttrDef );
+        initializer.addDataConfigParamsForTransmitter( oneRriAttrDef, complexTagsContainer );
       }
     }
     // создание по конфигурации описаний для регистрации в сервисе

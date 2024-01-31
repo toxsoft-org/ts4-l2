@@ -6,7 +6,7 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 
 import ru.toxsoft.l2.core.dlm.*;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
 
 /**
  * Класс инициализации передатчиков данных от железа на сервер, призванный по конфиг информации сопоставить каналу НУ
@@ -20,13 +20,14 @@ public interface IRriDataTransmittersInitializer {
 
   /**
    * Добавляет конфигурационную информацию для одного передатчика, метод нужно вызывать до вызова метода
-   * {@link #initialize(IDlmContext)}, инче ошибка состояния.
+   * {@link #initialize(IDlmContext)}, иначе ошибка состояния.
    *
    * @param aDataConfig IAvTree - конфигурационная информация для передатчика в виде дерева.
+   * @param aComplexTagsContainer IComplexTagsContainer - контейнер сложных тегов.
    * @throws TsIllegalStateRtException - выбрасывается если метод вызывается после вызова
    *           {@link #initialize(IDlmContext)} .
    */
-  void addDataConfigParamsForTransmitter( IAvTree aDataConfig )
+  void addDataConfigParamsForTransmitter( IAvTree aDataConfig, IComplexTagsContainer aComplexTagsContainer )
       throws TsIllegalStateRtException;
 
   /**

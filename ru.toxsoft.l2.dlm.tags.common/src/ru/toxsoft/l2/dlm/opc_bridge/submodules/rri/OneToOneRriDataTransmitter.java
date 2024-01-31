@@ -1,5 +1,7 @@
 package ru.toxsoft.l2.dlm.opc_bridge.submodules.rri;
 
+import static ru.toxsoft.l2.dlm.opc_bridge.IDlmsBaseConstants.*;
+
 import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
@@ -13,7 +15,8 @@ import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.IComplexTag.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
- * Реализация простейшего передатчика - один тег на одно rri данное.
+ * Реализация простейшего передатчика - один тег на одно rri данное. <br>
+ * FIXME сделать базовый класс BaseRriDataTransmitter
  *
  * @author dima
  */
@@ -76,15 +79,24 @@ public class OneToOneRriDataTransmitter
 
   @Override
   public void config( IAvTree aParams ) {
-    // без реализации
-
+    // читаем код команды OPC
+    if( aParams.fields().hasKey( OPC_CMD_INDEX )
+        && aParams.fields().getValue( OPC_CMD_INDEX ).atomicType() == EAtomicType.INTEGER ) {
+      opcCmdIndex = aParams.fields().getInt( OPC_CMD_INDEX );
+    }
+    else {
+      logger.error(
+          "Structure '%s': if tag processor is SingleIntToSingleBoolRriDataTransmitter, then the integer field '%s' must be filled", //$NON-NLS-1$
+          aParams.structId(), OPC_CMD_INDEX );
+    }
   }
 
   @Override
-  public void start( IRriSetter[] aRriSetters, IList<ITag> aTags ) {
+  public void start( IRriSetter[] aRriSetters, IList<ITag> aTags, IComplexTag aComplexTag ) {
     rriSetter = aRriSetters[0];
     tag = aTags.get( 0 );
     gwid2SectionMap = rriSetter.gwid2Section();
+    сomplexTag = aComplexTag;
   }
 
   /**

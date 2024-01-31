@@ -59,9 +59,19 @@ public class SingleIntToSingleBoolRriDataTransmitter
   protected IComplexTag сomplexTag;
 
   /**
-   * index of OPC command
+   * index of OPC command to turn bit ON
    */
-  protected int opcCmdIndex = -1;
+  protected int opcCmdIndexOn = -1;
+
+  /**
+   * index of OPC command to turn bit OFF
+   */
+  protected int opcCmdIndexOff = -1;
+
+  /**
+   * timestamp of last OPC command
+   */
+  protected long lastOPCCmdTimestamp = -1;
 
   @Override
   public boolean transmit( long aTime ) {
@@ -107,15 +117,36 @@ public class SingleIntToSingleBoolRriDataTransmitter
           "Structure '%s': if tag processor is SingleIntToSingleBoolRriDataTransmitter, then the integer field '%s' must be filled", //$NON-NLS-1$
           aParams.structId(), BIT_INDEX );
     }
+    // читаем коды команды OPC
+    if( aParams.fields().hasKey( OPC_CMD_INDEX_ON )
+        && aParams.fields().getValue( OPC_CMD_INDEX_ON ).atomicType() == EAtomicType.INTEGER ) {
+      opcCmdIndexOn = aParams.fields().getInt( OPC_CMD_INDEX_ON );
+    }
+    else {
+      logger.error(
+          "Structure '%s': if tag processor is SingleIntToSingleBoolRriDataTransmitter, then the integer field '%s' must be filled", //$NON-NLS-1$
+          aParams.structId(), OPC_CMD_INDEX_ON );
+    }
+
+    // читаем коды команды OPC
+    if( aParams.fields().hasKey( OPC_CMD_INDEX_OFF )
+        && aParams.fields().getValue( OPC_CMD_INDEX_OFF ).atomicType() == EAtomicType.INTEGER ) {
+      opcCmdIndexOff = aParams.fields().getInt( OPC_CMD_INDEX_OFF );
+    }
+    else {
+      logger.error(
+          "Structure '%s': if tag processor is SingleIntToSingleBoolRriDataTransmitter, then the integer field '%s' must be filled", //$NON-NLS-1$
+          aParams.structId(), OPC_CMD_INDEX_OFF );
+    }
 
   }
 
   @Override
-  public void start( IRriSetter[] aRriSetters, IList<ITag> aTags ) {
+  public void start( IRriSetter[] aRriSetters, IList<ITag> aTags, IComplexTag aComplexTag ) {
     rriSetter = aRriSetters[0];
     tag = aTags.get( 0 );
     gwid2SectionMap = rriSetter.gwid2Section();
-
+    сomplexTag = aComplexTag;
     if( aRriSetters.length > 1 ) {
       invRriSetter = aRriSetters[1];
       logger.info( "ADD INVERSE RRI SETTER: %s", invRriSetter.toString() );
@@ -133,12 +164,26 @@ public class SingleIntToSingleBoolRriDataTransmitter
 
   @Override
   public void transmitUskat2OPC() {
-    // записываем значение в OPC UA
+    // читаем актуальное значение с сервера uSkat
+    Gwid gwid = gwid2SectionMap.keys().first();
+    ISkRriSection section = gwid2SectionMap.getByKey( gwid );
+    IAtomicValue val = section.getAttrParamValue( gwid.skid(), gwid.propId() );
+    // пишем его в OPC
+    if( val.asBool() ) {
+      lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndexOn, val );
+    }
+    else {
+      lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndexOff, val );
+    }
   }
 
   @Override
   public EComplexTagState getOpcCmdState() {
-    return EComplexTagState.UNKNOWN;
+    if( сomplexTag == null ) {
+      return EComplexTagState.ERROR;
+    }
+    // FIXME Max aDelIfCan ?
+    return сomplexTag.getState( lastOPCCmdTimestamp, false );
   }
 
 }
