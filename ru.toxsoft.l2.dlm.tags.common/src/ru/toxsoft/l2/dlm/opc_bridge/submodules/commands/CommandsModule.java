@@ -28,6 +28,7 @@ import ru.toxsoft.l2.core.cfg.*;
 import ru.toxsoft.l2.core.dlm.*;
 import ru.toxsoft.l2.core.util.*;
 import ru.toxsoft.l2.dlm.opc_bridge.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
@@ -93,15 +94,19 @@ public class CommandsModule
 
   private IListEdit<IStringMap<TagInfo>> tagInfoes = new ElemArrayList<>();
 
+  private IComplexTagsContainer complexTagsContainer;
+
   /**
    * Конструктор по контексту.
    *
    * @param aContext {@link IDlmContext} - контекст подгружаемых модулей.
    * @param aDlmInfo IDlmInfo - информация о DLM
+   * @param aComplexTagsContainer IComplexTagsContainer - контейнер сложных тегов.
    */
-  public CommandsModule( IDlmContext aContext, IDlmInfo aDlmInfo ) {
+  public CommandsModule( IDlmContext aContext, IDlmInfo aDlmInfo, IComplexTagsContainer aComplexTagsContainer ) {
     context = aContext;
     dlmInfo = aDlmInfo;
+    complexTagsContainer = aComplexTagsContainer;
   }
 
   @Override
@@ -227,11 +232,17 @@ public class CommandsModule
       for( String tcId : execTagsInfoes.keys() ) {
         TagInfo tc = execTagsInfoes.getByKey( tcId );
 
-        ITsOpc tagsDevice = (ITsOpc)context.hal().listSpecificDevices().getByKey( tc.getDeviceId() );
-        ITag tag = tagsDevice.tag( tc.getTagId() );
+        ITag tag = null;
+        if( tc.isComplex() ) {
+          tag = complexTagsContainer.getComplexTagById( tcId );
+        }
+        else {
+          ITsOpc tagsDevice = (ITsOpc)context.hal().listSpecificDevices().getByKey( tc.getDeviceId() );
+          tag = tagsDevice.tag( tc.getTagId() );
+        }
 
         if( tag == null ) {
-          logger.error( "Tag '%s' not found", tc.getDeviceId() + " | " + tc.getTagId() );
+          logger.error( "Tag '%s' not found", tc.getTagId() );
         }
         else {
           execTags.put( tcId, tag );
@@ -477,6 +488,9 @@ public class CommandsModule
   }
 
   private TagInfo createTagConfig( IAvTree aTagParams, IAvTree aDefaultTagParams ) {
+    if( aTagParams.fields().hasValue( COMPLEX_TAG_ID ) ) {
+      return new TagInfo( aTagParams.fields().getStr( COMPLEX_TAG_ID ) );
+    }
     TagInfo result = new TagInfo( getConfigParamField( TAG_DEVICE_ID, aTagParams, aDefaultTagParams, null ),
         getConfigParamField( TAG_ID, aTagParams, aDefaultTagParams, null ) );
 
@@ -531,10 +545,23 @@ public class CommandsModule
 
     private String tagId;
 
+    private boolean isComplex;
+
+    /**
+     * Конструктор описания комплексного тега
+     *
+     * @param aComplexTagId String - ид комплексного тега
+     */
+    public TagInfo( String aComplexTagId ) {
+      tagId = aComplexTagId;
+      isComplex = true;
+    }
+
     public TagInfo( String aDeviceId, String aTagId ) {
       super();
       deviceId = aDeviceId;
       tagId = aTagId;
+      isComplex = false;
     }
 
     public String getDeviceId() {
@@ -551,6 +578,14 @@ public class CommandsModule
 
     public void setTagId( String aTagId ) {
       tagId = aTagId;
+    }
+
+    public boolean isComplex() {
+      return isComplex;
+    }
+
+    public void setComplex( boolean aIsComplex ) {
+      isComplex = aIsComplex;
     }
 
   }

@@ -2,19 +2,23 @@ package ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags;
 
 import org.toxsoft.core.tslib.av.*;
 
+import ru.toxsoft.l2.thd.opc.*;
+
 /**
  * Сложный тег, аггрегирующий несколько тегов: адрес значения (идентификатор команды), теги зачений разных типов, тег
  * обратной связи.
  *
  * @author max
  */
-public interface IComplexTag {
+public interface IComplexTag
+    extends ITag {
 
   /**
    * Возвращает идентификатор тега
    *
    * @return String - идентификатор тега
    */
+  @Override
   String id();
 
   /**
