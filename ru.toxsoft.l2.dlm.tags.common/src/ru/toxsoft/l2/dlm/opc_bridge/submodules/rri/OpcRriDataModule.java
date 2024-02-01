@@ -206,7 +206,9 @@ public class OpcRriDataModule
     // текущее время - чтоб у всех данных было одно время
     long currTime = System.currentTimeMillis();
     // получаем текущий статус блока НСИ контроллера
-    ERriControllerState controllerRriState = statusRriMonitor.getState();
+    // TODO need implement
+    // ERriControllerState controllerRriState = statusRriMonitor.getState();
+    ERriControllerState controllerRriState = ERriControllerState.RRI_CONTROLLER_OK;
     switch( controllerRriState ) {
       case NEED_DOWNLOAD_USKAT_RRI: {
         // контроллер сигнализирует "залейте НСИ с сервера USkat"
@@ -217,7 +219,7 @@ public class OpcRriDataModule
       }
         break;
       case RRI_CONTROLLER_OK:
-        routine( currTime );
+        // routine( currTime );
         break;
       case UNKNOWN:
         break;
@@ -365,8 +367,8 @@ public class OpcRriDataModule
         if( transmitter.gwid2Section().hasKey( parGwid ) ) {
           IAtomicValue newVal = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_NEW_VAL_ATTR );
           System.out.printf( "New val: %s", newVal.asString() );
-          // FIXME реализация передачи на контроллер новго значения НСИ
-          // transmitter.writeBack2OpcNode( parGwid, newVal );
+          // реализация передачи на контроллер новго значения НСИ
+          transmitter.transmitUskat2OPC();
         }
         // }
         // }

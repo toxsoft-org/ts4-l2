@@ -111,6 +111,8 @@ public class ComplexTagsModule
       try {
         AbstractComplexTag complexTag = createComplexTag( tagDef );
         complexTags.put( complexTag.id(), complexTag );
+        // конфигурируем
+        complexTag.config( tagDef );
         complexTag.start( context );
       }
       catch( Exception e ) {
