@@ -10,6 +10,7 @@ import org.toxsoft.core.tslib.utils.logs.*;
 import ru.toxsoft.l2.core.cfg.*;
 import ru.toxsoft.l2.core.dlm.*;
 import ru.toxsoft.l2.core.dlm.impl.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.*;
 
@@ -60,8 +61,8 @@ public class OpcBridgeDlm
     // modules.add( eventModule );
 
     // создание модуля команд и установка в него модуля комплексных тегов
-    // IConfigurableWorkerModule commandsModule = new CommandsModule( aContext, info(), complexTagsModule );
-    // modules.add( commandsModule );
+    IConfigurableWorkerModule commandsModule = new CommandsModule( aContext, info(), complexTagsModule );
+    modules.add( commandsModule );
 
     // dima 25.12.23 add rriModule
     IConfigurableWorkerModule rriModule =

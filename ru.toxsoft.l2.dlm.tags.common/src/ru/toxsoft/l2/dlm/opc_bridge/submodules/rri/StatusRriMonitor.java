@@ -79,13 +79,12 @@ public class StatusRriMonitor
   }
 
   @Override
-  public void start( IDlmContext aContext ) {
+  public void start( IDlmContext aContext, IComplexTagsContainer aComplexTagsContainer ) {
     // получаем нужные теги от драйвера OPC UA
     ITsOpc tagsDevice = (ITsOpc)aContext.hal().listSpecificDevices().getByKey( deviceId.asString() );
     rStatusRri = tagsDevice.tag( rStatusRriNodeId.asString() );
-    // FIXME
-    wStatusRri = (IComplexTag)tagsDevice.tag( wStatusRriNodeId.asString() );
-
+    // тут комплексный тег
+    wStatusRri = aComplexTagsContainer.getComplexTagById( wStatusRriNodeId.asString() );
   }
 
   @Override

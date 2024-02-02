@@ -148,7 +148,7 @@ public class OpcRriDataModule
     TsIllegalStateRtException.checkFalse( isConfigured(), ERR_MSG_RRI_MODULE_CANT_BE_STARTED_FORMAT,
         dlmInfo.moduleId() );
     // запускаем монитор статуса состояния НСИ контроллера
-    statusRriMonitor.start( context );
+    statusRriMonitor.start( context, complexTagsContainer );
 
     // регистрируем службу НСИ
     S5SynchronizedRegRefInfoService rriService =
@@ -215,7 +215,7 @@ public class OpcRriDataModule
         // запускаем процесс передачи
         currTransmitterIndex = 0;
         IRriDataTransmitter transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
-        transmitter.transmitUskat2OPC();
+        transmitter.transmitUskat2OPC( IAtomicValue.NULL );
       }
         break;
       case RRI_CONTROLLER_OK:
@@ -240,14 +240,14 @@ public class OpcRriDataModule
             else {
               // пишем следующий параметр НСИ
               transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
-              transmitter.transmitUskat2OPC();
+              transmitter.transmitUskat2OPC( IAtomicValue.NULL );
             }
 
             break;
           case ERROR:
             // произошла ошибка записи, повторяем
             transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
-            transmitter.transmitUskat2OPC();
+            transmitter.transmitUskat2OPC( IAtomicValue.NULL );
             break;
           case PROCESS:
             // запись в процессе выполнения, ничего не делаем, ждем следующего цикла
@@ -368,7 +368,7 @@ public class OpcRriDataModule
           IAtomicValue newVal = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_NEW_VAL_ATTR );
           System.out.printf( "New val: %s", newVal.asString() );
           // реализация передачи на контроллер новго значения НСИ
-          transmitter.transmitUskat2OPC();
+          transmitter.transmitUskat2OPC( newVal );
         }
         // }
         // }

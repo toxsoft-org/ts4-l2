@@ -3,6 +3,7 @@ package ru.toxsoft.l2.dlm.opc_bridge.submodules.rri;
 import org.toxsoft.core.tslib.av.avtree.*;
 
 import ru.toxsoft.l2.core.dlm.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
 
 /**
  * Монитор статуса НСИ OPC UA сервер.<br>
@@ -45,8 +46,9 @@ public interface IStatusRriMonitor {
    * Запускает монитор.
    *
    * @param aContext IDlmContext - контекст модулей, необходимый для получения тегов.
+   * @param aComplexTagsContainer
    */
-  void start( IDlmContext aContext );
+  void start( IDlmContext aContext, IComplexTagsContainer aComplexTagsContainer );
 
   /**
    * Устанавливает значение тега статуса НСИ контроллера

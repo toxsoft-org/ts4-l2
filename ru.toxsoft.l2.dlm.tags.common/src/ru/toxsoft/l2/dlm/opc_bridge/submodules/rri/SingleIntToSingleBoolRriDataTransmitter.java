@@ -163,17 +163,21 @@ public class SingleIntToSingleBoolRriDataTransmitter
   }
 
   @Override
-  public void transmitUskat2OPC() {
-    // читаем актуальное значение с сервера uSkat
-    Gwid gwid = gwid2SectionMap.keys().first();
-    ISkRriSection section = gwid2SectionMap.getByKey( gwid );
-    IAtomicValue val = section.getAttrParamValue( gwid.skid(), gwid.propId() );
-    // пишем его в OPC
-    if( val.asBool() ) {
-      lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndexOn, val );
-    }
-    else {
-      lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndexOff, val );
+  public void transmitUskat2OPC( IAtomicValue aNewVal ) {
+    if( !сomplexTag.isBusy() ) {
+      // читаем актуальное значение с сервера uSkat
+      Gwid gwid = gwid2SectionMap.keys().first();
+      ISkRriSection section = gwid2SectionMap.getByKey( gwid );
+      IAtomicValue val =
+          aNewVal.equals( IAtomicValue.NULL ) ? section.getAttrParamValue( gwid.skid(), gwid.propId() ) : aNewVal;
+      // пишем его в OPC
+      if( val.asBool() ) {
+        lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndexOn, val );
+
+      }
+      else {
+        lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndexOff, val );
+      }
     }
   }
 
@@ -182,8 +186,11 @@ public class SingleIntToSingleBoolRriDataTransmitter
     if( сomplexTag == null ) {
       return EComplexTagState.ERROR;
     }
-    // FIXME Max aDelIfCan ?
-    return сomplexTag.getState( lastOPCCmdTimestamp, false );
+    if( сomplexTag.isBusy() ) {
+      return EComplexTagState.PROCESS;
+    }
+
+    return lastOPCCmdTimestamp < 0 ? EComplexTagState.UNKNOWN : сomplexTag.getState( lastOPCCmdTimestamp, true );
   }
 
 }

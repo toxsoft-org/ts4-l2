@@ -234,7 +234,7 @@ public class CommandsModule
 
         ITag tag = null;
         if( tc.isComplex() ) {
-          tag = complexTagsContainer.getComplexTagById( tcId );
+          tag = complexTagsContainer.getComplexTagById( tc.tagId );
         }
         else {
           ITsOpc tagsDevice = (ITsOpc)context.hal().listSpecificDevices().getByKey( tc.getDeviceId() );

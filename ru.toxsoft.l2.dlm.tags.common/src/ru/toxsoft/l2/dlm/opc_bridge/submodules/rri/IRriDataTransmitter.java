@@ -1,5 +1,6 @@
 package ru.toxsoft.l2.dlm.opc_bridge.submodules.rri;
 
+import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
@@ -53,8 +54,10 @@ public interface IRriDataTransmitter {
 
   /**
    * Установить значение с сервера USkat на node OPC UA
+   *
+   * @param aNewVal
    */
-  void transmitUskat2OPC();
+  void transmitUskat2OPC( IAtomicValue aNewVal );
 
   /**
    * Текущее состояние процесса выполнения команды по записи НСИ значения в OPC UA дерево
