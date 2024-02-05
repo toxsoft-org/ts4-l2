@@ -4,35 +4,44 @@ import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static ru.toxsoft.l2.core.net.impl.IL2Resources.*;
 import static ru.toxsoft.l2.core.net.impl.INetworkConstants.*;
 
-import java.io.*;
+import java.io.File;
 
-import org.toxsoft.core.log4j.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
-import org.toxsoft.core.tslib.bricks.ctx.*;
-import org.toxsoft.core.tslib.bricks.ctx.impl.*;
-import org.toxsoft.core.tslib.bricks.validator.*;
-import org.toxsoft.core.tslib.bricks.validator.impl.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.log4j.LoggerWrapper;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
+import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSetKeeper;
+import org.toxsoft.core.tslib.bricks.ctx.ITsContext;
+import org.toxsoft.core.tslib.bricks.ctx.impl.TsContext;
+import org.toxsoft.core.tslib.bricks.validator.ValidationResult;
+import org.toxsoft.core.tslib.bricks.validator.impl.ValResList;
+import org.toxsoft.core.tslib.coll.primtypes.IIntList;
+import org.toxsoft.core.tslib.coll.primtypes.IStringList;
+import org.toxsoft.core.tslib.coll.primtypes.impl.IntArrayList;
+import org.toxsoft.core.tslib.coll.primtypes.impl.StringArrayList;
 import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.core.tslib.utils.logs.*;
-import org.toxsoft.uskat.concurrent.*;
+import org.toxsoft.core.tslib.gw.skid.Skid;
+import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
+import org.toxsoft.core.tslib.utils.errors.TsItemNotFoundRtException;
+import org.toxsoft.core.tslib.utils.logs.ILogger;
 import org.toxsoft.uskat.core.api.cmdserv.*;
-import org.toxsoft.uskat.core.api.sysdescr.*;
-import org.toxsoft.uskat.core.connection.*;
-import org.toxsoft.uskat.core.impl.*;
-import org.toxsoft.uskat.s5.client.*;
-import org.toxsoft.uskat.s5.client.remote.*;
-import org.toxsoft.uskat.s5.common.*;
-import org.toxsoft.uskat.s5.server.*;
-import org.toxsoft.uskat.s5.utils.threads.impl.*;
+import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
+import org.toxsoft.uskat.core.connection.ESkConnState;
+import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.uskat.core.impl.ISkCoreConfigConstants;
+import org.toxsoft.uskat.core.impl.SkCoreUtils;
+import org.toxsoft.uskat.s5.client.IS5ConnectionParams;
+import org.toxsoft.uskat.s5.client.remote.S5RemoteBackendProvider;
+import org.toxsoft.uskat.s5.common.S5Host;
+import org.toxsoft.uskat.s5.common.S5HostList;
+import org.toxsoft.uskat.s5.server.IS5ServerHardConstants;
 
-import ru.toxsoft.l2.core.main.*;
+import ru.toxsoft.l2.core.main.IL2HardConstants;
+import ru.toxsoft.l2.core.main.IProgramQuitCommand;
 import ru.toxsoft.l2.core.main.impl.*;
-import ru.toxsoft.l2.core.net.*;
+import ru.toxsoft.l2.core.net.INetworkComponent;
+
+import core.tslib.bricks.synchronize.TsThreadExecutor;
 
 /**
  * Реализация слоя работы с сетью, в частности с S3 сервером.
@@ -153,7 +162,7 @@ public class NetworkImpl
       logger.info( "Start whithout server by cfg param 'startWithoutS5=true'" ); //$NON-NLS-1$
       return;
     }
-    connection = S5SynchronizedConnection.createSynchronizedConnection( SkCoreUtils.createConnection() );
+    connection = SkCoreUtils.createConnection();
 
     String login = netOps.getStr( CGF_PARAM_LOGIN );
     String password = netOps.getStr( CGF_PARAM_PASSWORD );
@@ -172,6 +181,8 @@ public class NetworkImpl
     }
     ITsContext ctx = new TsContext();
     ISkCoreConfigConstants.REFDEF_BACKEND_PROVIDER.setRef( ctx, new S5RemoteBackendProvider() );
+    // TODO: main loop thread as param for TsThreadExecutor ???
+    ISkCoreConfigConstants.REFDEF_THREAD_EXECUTOR.setRef( ctx, new TsThreadExecutor() );
     IS5ConnectionParams.OP_USERNAME.setValue( ctx.params(), avStr( login ) );
     IS5ConnectionParams.OP_PASSWORD.setValue( ctx.params(), avStr( password ) );
 
@@ -182,7 +193,6 @@ public class NetworkImpl
     IS5ConnectionParams.OP_FAILURE_TIMEOUT.setValue( ctx.params(), avInt( failureTimeout ) );
     IS5ConnectionParams.OP_CURRDATA_TIMEOUT.setValue( ctx.params(), avInt( currdataTimeout ) );
     IS5ConnectionParams.OP_HISTDATA_TIMEOUT.setValue( ctx.params(), avInt( histdataTimeout ) );
-    IS5ConnectionParams.REF_CONNECTION_LOCK.setRef( ctx, new S5Lockable() );
 
     Thread connectionThread = new Thread( new ConnectionRunnable( ctx ) );
 

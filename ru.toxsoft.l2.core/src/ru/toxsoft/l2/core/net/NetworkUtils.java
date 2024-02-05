@@ -1,19 +1,19 @@
 package ru.toxsoft.l2.core.net;
 
-import org.toxsoft.core.log4j.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.core.tslib.utils.logs.*;
-import org.toxsoft.skf.dq.lib.*;
-import org.toxsoft.skf.dq.s5.concurrent.*;
-import org.toxsoft.uskat.concurrent.*;
-import org.toxsoft.uskat.core.*;
-import org.toxsoft.uskat.core.api.rtdserv.*;
-import org.toxsoft.uskat.core.connection.*;
+import org.toxsoft.core.log4j.LoggerWrapper;
+import org.toxsoft.core.tslib.coll.IMap;
+import org.toxsoft.core.tslib.gw.gwid.Gwid;
+import org.toxsoft.core.tslib.gw.gwid.GwidList;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.core.tslib.utils.logs.ILogger;
+import org.toxsoft.skf.dq.lib.ISkDataQualityService;
+import org.toxsoft.uskat.core.ISkCoreApi;
+import org.toxsoft.uskat.core.api.rtdserv.ISkWriteCurrDataChannel;
+import org.toxsoft.uskat.core.connection.ESkConnState;
+import org.toxsoft.uskat.core.connection.ISkConnection;
 
-import ru.toxsoft.l2.core.main.impl.*;
-import ru.toxsoft.l2.core.net.impl.*;
+import ru.toxsoft.l2.core.main.impl.GlobalContext;
+import ru.toxsoft.l2.core.net.impl.NetworkImpl;
 
 /**
  * Статические и вспомогательные методы работы с сетью.
@@ -119,10 +119,6 @@ public class NetworkUtils {
     TsNullArgumentRtException.checkNull( aCoreApi );
     ISkDataQualityService service =
         (ISkDataQualityService)aCoreApi.services().findByKey( ISkDataQualityService.SERVICE_ID );
-    if( service == null ) {
-      service = new S5SynchronizedDataQualityService( (S5SynchronizedCoreApi)aCoreApi );
-      ((S5SynchronizedCoreApi)aCoreApi).services().put( ISkDataQualityService.SERVICE_ID, service );
-    }
     return service;
   }
 
