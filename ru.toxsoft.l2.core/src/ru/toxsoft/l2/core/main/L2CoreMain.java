@@ -371,6 +371,7 @@ public class L2CoreMain {
 
       // запустить главный цикл / поток
       globalLogger.info( MSG_START_HAL );
+      // TODO: 2024-02-10 mvkd 
       startComponent2( "HAL", hal );
 
       globalLogger.info( MSG_START_NETWORK );

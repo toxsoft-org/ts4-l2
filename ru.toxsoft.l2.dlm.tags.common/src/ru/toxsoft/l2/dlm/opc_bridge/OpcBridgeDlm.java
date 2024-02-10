@@ -12,6 +12,11 @@ import ru.toxsoft.l2.core.dlm.*;
 import ru.toxsoft.l2.core.dlm.impl.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.CurrDataTransmittersInitializer;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.HistDataTransmittersInitializer;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcHistDataModule;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.events.EventModule;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.*;
 
 /**
@@ -49,25 +54,25 @@ public class OpcBridgeDlm
 
     // for debug
     // подмодуль текущих данных
-    // IConfigurableWorkerModule currDataModule =
-    // new OpcCurrDataModule( aContext, info(), new CurrDataTransmittersInitializer() );
-    // modules.add( currDataModule );
-    //
-    // IConfigurableWorkerModule histModule =
-    // new OpcHistDataModule( aContext, info(), new HistDataTransmittersInitializer() );
-    // modules.add( histModule );
-    //
-    // IConfigurableWorkerModule eventModule = new EventModule( aContext, info() );
-    // modules.add( eventModule );
+     IConfigurableWorkerModule currDataModule =
+     new OpcCurrDataModule( aContext, info(), new CurrDataTransmittersInitializer() );
+     modules.add( currDataModule );
+    
+     IConfigurableWorkerModule histModule =
+     new OpcHistDataModule( aContext, info(), new HistDataTransmittersInitializer() );
+     modules.add( histModule );
+    
+     IConfigurableWorkerModule eventModule = new EventModule( aContext, info() );
+     modules.add( eventModule );
 
     // создание модуля команд и установка в него модуля комплексных тегов
     IConfigurableWorkerModule commandsModule = new CommandsModule( aContext, info(), complexTagsModule );
     modules.add( commandsModule );
 
     // dima 25.12.23 add rriModule
-    IConfigurableWorkerModule rriModule =
-        new OpcRriDataModule( aContext, info(), new RriDataTransmittersInitializer(), complexTagsModule );
-    modules.add( rriModule );
+//    IConfigurableWorkerModule rriModule =
+//        new OpcRriDataModule( aContext, info(), new RriDataTransmittersInitializer(), complexTagsModule );
+//    modules.add( rriModule );
 
     //
     // IConfigurableWorkerModule fcModule = new FreqCounterModule( aContext );
