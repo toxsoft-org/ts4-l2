@@ -41,7 +41,7 @@ public class OpcRriDataModule
     implements ISkCommandExecutor, ISkEventHandler {
 
   /**
-   * Журнал работы
+   * Журнал работы.
    */
   ILogger logger = LoggerWrapper.getLogger( this.getClass().getName() );
 
