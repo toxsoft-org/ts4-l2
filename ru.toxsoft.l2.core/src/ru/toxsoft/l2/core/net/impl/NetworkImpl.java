@@ -28,8 +28,7 @@ import org.toxsoft.uskat.core.api.cmdserv.*;
 import org.toxsoft.uskat.core.api.sysdescr.ISkClassInfo;
 import org.toxsoft.uskat.core.connection.ESkConnState;
 import org.toxsoft.uskat.core.connection.ISkConnection;
-import org.toxsoft.uskat.core.impl.ISkCoreConfigConstants;
-import org.toxsoft.uskat.core.impl.SkCoreUtils;
+import org.toxsoft.uskat.core.impl.*;
 import org.toxsoft.uskat.s5.client.IS5ConnectionParams;
 import org.toxsoft.uskat.s5.client.remote.S5RemoteBackendProvider;
 import org.toxsoft.uskat.s5.common.S5Host;
@@ -41,7 +40,7 @@ import ru.toxsoft.l2.core.main.IProgramQuitCommand;
 import ru.toxsoft.l2.core.main.impl.*;
 import ru.toxsoft.l2.core.net.INetworkComponent;
 
-import core.tslib.bricks.synchronize.TsThreadExecutor;
+import core.tslib.bricks.threadexecutor.TsThreadExecutor;
 
 /**
  * Реализация слоя работы с сетью, в частности с S3 сервером.
@@ -182,7 +181,8 @@ public class NetworkImpl
     ITsContext ctx = new TsContext();
     ISkCoreConfigConstants.REFDEF_BACKEND_PROVIDER.setRef( ctx, new S5RemoteBackendProvider() );
     // TODO: main loop thread as param for TsThreadExecutor ???
-    ISkCoreConfigConstants.REFDEF_THREAD_EXECUTOR.setRef( ctx, new TsThreadExecutor() );
+    Thread thread = Thread.currentThread();
+    ISkCoreConfigConstants.REFDEF_THREAD_EXECUTOR.setRef( ctx, new TsThreadExecutor( thread ) );
     IS5ConnectionParams.OP_USERNAME.setValue( ctx.params(), avStr( login ) );
     IS5ConnectionParams.OP_PASSWORD.setValue( ctx.params(), avStr( password ) );
 
@@ -264,6 +264,9 @@ public class NetworkImpl
   @Override
   protected void processRunStep() {
     // skConnectionSeparator.doJob();
+    if( connection != null && connection.state() != ESkConnState.CLOSED ) {
+      SkThreadExecutorService.getExecutor( connection.coreApi() ).doJob();
+    }
   }
 
   @Override

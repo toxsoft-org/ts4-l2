@@ -3,35 +3,44 @@ package ru.toxsoft.l2.core.main;
 import static ru.toxsoft.l2.core.main.IL2HardConstants.*;
 import static ru.toxsoft.l2.core.main.IL2Resources.*;
 
-import java.io.*;
+import java.io.File;
 import java.lang.management.*;
-import java.util.*;
+import java.util.Map;
 
-import org.toxsoft.core.log4j.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.av.misc.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
-import org.toxsoft.core.tslib.bricks.*;
-import org.toxsoft.core.tslib.bricks.strid.impl.*;
-import org.toxsoft.core.tslib.bricks.strio.*;
-import org.toxsoft.core.tslib.bricks.strio.chario.impl.*;
-import org.toxsoft.core.tslib.bricks.strio.impl.*;
-import org.toxsoft.core.tslib.utils.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.core.tslib.utils.logs.*;
-import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.skf.rri.lib.impl.*;
-import org.toxsoft.uskat.core.impl.*;
+import org.toxsoft.core.log4j.LoggerWrapper;
+import org.toxsoft.core.tslib.av.EAtomicType;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.impl.AvUtils;
+import org.toxsoft.core.tslib.av.misc.AvTextParser;
+import org.toxsoft.core.tslib.av.opset.IOptionSet;
+import org.toxsoft.core.tslib.av.opset.IOptionSetEdit;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
+import org.toxsoft.core.tslib.av.opset.impl.OptionSetKeeper;
+import org.toxsoft.core.tslib.bricks.ICooperativeWorkerComponent;
+import org.toxsoft.core.tslib.bricks.strid.impl.StridUtils;
+import org.toxsoft.core.tslib.bricks.strio.IStrioReader;
+import org.toxsoft.core.tslib.bricks.strio.chario.impl.CharInputStreamString;
+import org.toxsoft.core.tslib.bricks.strio.impl.StrioReader;
+import org.toxsoft.core.tslib.utils.TsVersion;
+import org.toxsoft.core.tslib.utils.errors.TsIllegalArgumentRtException;
+import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
+import org.toxsoft.core.tslib.utils.logs.ILogger;
+import org.toxsoft.core.tslib.utils.logs.impl.LoggerUtils;
+import org.toxsoft.skf.dq.lib.impl.SkDataQualityService;
+import org.toxsoft.skf.rri.lib.impl.SkRegRefInfoService;
+import org.toxsoft.uskat.core.impl.SkCoreUtils;
 
-import ru.toxsoft.l2.core.app.*;
-import ru.toxsoft.l2.core.dlm.*;
-import ru.toxsoft.l2.core.dlm.impl.*;
+import ru.toxsoft.l2.core.app.AppUtils;
+import ru.toxsoft.l2.core.app.IAppComponent;
+import ru.toxsoft.l2.core.dlm.IDlmManagerComponent;
+import ru.toxsoft.l2.core.dlm.impl.DlmManagerUtils;
 import ru.toxsoft.l2.core.hal.*;
-import ru.toxsoft.l2.core.main.impl.*;
-import ru.toxsoft.l2.core.net.*;
-import ru.toxsoft.l2.core.reserve.*;
+import ru.toxsoft.l2.core.main.impl.GlobalContext;
+import ru.toxsoft.l2.core.main.impl.ProgramQuitCommand;
+import ru.toxsoft.l2.core.net.INetworkComponent;
+import ru.toxsoft.l2.core.net.NetworkUtils;
+import ru.toxsoft.l2.core.reserve.IReserveComponent;
+import ru.toxsoft.l2.core.reserve.ReserveUtils;
 
 /**
  * Начало выполнения программы нижнего уровня.
@@ -294,6 +303,7 @@ public class L2CoreMain {
 
     // регистрируем службу НСИ
     SkCoreUtils.registerSkServiceCreator( SkRegRefInfoService.CREATOR );
+    SkCoreUtils.registerSkServiceCreator( SkDataQualityService.CREATOR );
 
     sayHello();
 
