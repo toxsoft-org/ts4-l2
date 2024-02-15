@@ -3,33 +3,29 @@ package ru.toxsoft.l2.dlm.opc_bridge.submodules.rri;
 import static ru.toxsoft.l2.dlm.opc_bridge.IDlmsBaseConstants.*;
 import static ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IL2Resources.*;
 
-import org.toxsoft.core.log4j.LoggerWrapper;
-import org.toxsoft.core.tslib.av.IAtomicValue;
-import org.toxsoft.core.tslib.av.avtree.IAvTree;
-import org.toxsoft.core.tslib.bricks.validator.ValidationResult;
-import org.toxsoft.core.tslib.bricks.validator.impl.ValResList;
-import org.toxsoft.core.tslib.coll.IList;
-import org.toxsoft.core.tslib.coll.IMap;
+import org.toxsoft.core.log4j.*;
+import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.core.tslib.bricks.validator.*;
+import org.toxsoft.core.tslib.bricks.validator.impl.*;
+import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.derivative.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.utils.errors.TsIllegalArgumentRtException;
-import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
-import org.toxsoft.core.tslib.utils.logs.ILogger;
-import org.toxsoft.skf.rri.lib.ISkRriSection;
-import org.toxsoft.skf.rri.lib.impl.ISkRriServiceHardConstants;
+import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.skf.rri.lib.*;
+import org.toxsoft.skf.rri.lib.impl.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
 import org.toxsoft.uskat.core.api.evserv.*;
 
-import ru.toxsoft.l2.core.cfg.IUnitConfig;
-import ru.toxsoft.l2.core.dlm.IDlmContext;
-import ru.toxsoft.l2.core.dlm.IDlmInfo;
-import ru.toxsoft.l2.dlm.opc_bridge.ConfigurableWorkerModuleBase;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.CommandsModule;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.CommandsModule.ProcessedCommandsDefByObjNames;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.IComplexTag;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.IComplexTagsContainer;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IStatusRriMonitor.ERriControllerState;
-import ru.toxsoft.l2.thd.opc.ITag;
+import ru.toxsoft.l2.core.cfg.*;
+import ru.toxsoft.l2.core.dlm.*;
+import ru.toxsoft.l2.dlm.opc_bridge.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.CommandsModule.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IStatusRriMonitor.*;
+import ru.toxsoft.l2.thd.opc.*;
 
 /**
  * Модуль работы с RRI данными.
@@ -117,7 +113,7 @@ public class OpcRriDataModule
 
     IAvTree rriDefs = aConfig.params().nodes().findByKey( RRI_DEFS );
     // читаем описание конфигурации самого модуля
-    statusRriMonitor.config( rriDefs );
+    // statusRriMonitor.config( rriDefs );
 
     // IAtomicValue statusReadTag = AvUtils.avStr( "status.rri.read.tag.id" );
     //
@@ -150,7 +146,7 @@ public class OpcRriDataModule
     TsIllegalStateRtException.checkFalse( isConfigured(), ERR_MSG_RRI_MODULE_CANT_BE_STARTED_FORMAT,
         dlmInfo.moduleId() );
     // запускаем монитор статуса состояния НСИ контроллера
-    statusRriMonitor.start( context, complexTagsContainer );
+    // statusRriMonitor.start( context, complexTagsContainer );
 
     // инициализирует с помощью конфигуратора основные сущности (на данном этапе идёт выборка информации с сервера)
     initializer.initialize( context );
@@ -216,7 +212,7 @@ public class OpcRriDataModule
       }
         break;
       case RRI_CONTROLLER_OK:
-        // routine( currTime );
+        routine( currTime );
         break;
       case UNKNOWN:
         break;
@@ -364,7 +360,7 @@ public class OpcRriDataModule
         if( transmitter.gwid2Section().hasKey( parGwid ) ) {
           IAtomicValue newVal = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_NEW_VAL_ATTR );
           System.out.printf( "New val: %s", newVal.asString() );
-          // реализация передачи на контроллер новго значения НСИ
+          // реализация передачи на контроллер нового значения НСИ
           transmitter.transmitUskat2OPC( newVal );
         }
         // }
