@@ -82,11 +82,6 @@ public class OpcRriDataModule
   private IStatusRriMonitor statusRriMonitor = new StatusRriMonitor();
 
   /**
-   * индекс текущего передатчика в процессе USkat -> OPC UA
-   */
-  private int currTransmitterIndex;
-
-  /**
    * контейнер комплексных тегов
    */
   private final IComplexTagsContainer complexTagsContainer;
@@ -113,7 +108,7 @@ public class OpcRriDataModule
 
     IAvTree rriDefs = aConfig.params().nodes().findByKey( RRI_DEFS );
     // читаем описание конфигурации самого модуля
-    // statusRriMonitor.config( rriDefs );
+    statusRriMonitor.config( rriDefs );
 
     // IAtomicValue statusReadTag = AvUtils.avStr( "status.rri.read.tag.id" );
     //
@@ -145,8 +140,6 @@ public class OpcRriDataModule
     // если модуль не сконфигурирован - выбросить исключение
     TsIllegalStateRtException.checkFalse( isConfigured(), ERR_MSG_RRI_MODULE_CANT_BE_STARTED_FORMAT,
         dlmInfo.moduleId() );
-    // запускаем монитор статуса состояния НСИ контроллера
-    // statusRriMonitor.start( context, complexTagsContainer );
 
     // инициализирует с помощью конфигуратора основные сущности (на данном этапе идёт выборка информации с сервера)
     initializer.initialize( context );
@@ -161,6 +154,8 @@ public class OpcRriDataModule
         logger.debug( "Tag: %s, OneToOneRriDataTransmitter: %s", tag.id(), dataSetter.toString() );
       }
     }
+    // запускаем монитор статуса состояния НСИ контроллера
+    statusRriMonitor.start( context, complexTagsContainer, pinRriDataTransmitters );
 
     // инициализация работы с командами
     // создание синхронизованной очереди получаемых команд команд
@@ -185,8 +180,6 @@ public class OpcRriDataModule
     context.network().getSkConnection().coreApi().cmdService().registerExecutor( this, commandsDef );
     // регистрируемся слушателем событий изменения значений НСИ
     context.network().getSkConnection().coreApi().eventService()
-        // work version
-        // new GwidList( Gwid.createEvent( "sk.service.sysext.regref.Section", "rri.section.id", "RriParamsChange" )
         .registerHandler( new GwidList( Gwid.createEvent( ISkRriServiceHardConstants.CLASSID_RRI_SECTION,
             ISkRriServiceHardConstants.EVID_RRI_PARAM_CHANGE ) ), this );
 
@@ -199,16 +192,14 @@ public class OpcRriDataModule
     // текущее время - чтоб у всех данных было одно время
     long currTime = System.currentTimeMillis();
     // получаем текущий статус блока НСИ контроллера
-    // TODO need implement
-    // ERriControllerState controllerRriState = statusRriMonitor.getState();
-    ERriControllerState controllerRriState = ERriControllerState.RRI_CONTROLLER_OK;
+    ERriControllerState controllerRriState = statusRriMonitor.getState();
+    // for debug
+    // ERriControllerState controllerRriState = ERriControllerState.RRI_CONTROLLER_OK;
     switch( controllerRriState ) {
       case NEED_DOWNLOAD_USKAT_RRI: {
         // контроллер сигнализирует "залейте НСИ с сервера USkat"
         // запускаем процесс передачи
-        currTransmitterIndex = 0;
-        IRriDataTransmitter transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
-        transmitter.transmitUskat2OPC( IAtomicValue.NULL );
+        statusRriMonitor.startDownload();
       }
         break;
       case RRI_CONTROLLER_OK:
@@ -216,44 +207,9 @@ public class OpcRriDataModule
         break;
       case UNKNOWN:
         break;
-      case USKAT_RRI_LOADING: {
+      case USKAT_RRI_LOADING:
         // мы в стадии передачи значений с USkat сервера на OPC UA
-        // проверяем состояние передачи
-        IRriDataTransmitter transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
-        IComplexTag.EComplexTagState transferState = transmitter.getOpcCmdState();
-        switch( transferState ) {
-          case DONE:
-            // все записалось успешно
-            ++currTransmitterIndex;
-            if( currTransmitterIndex >= pinRriDataTransmitters.size() ) {
-              // все записали, гасим флаг "контроллеру нужен НСИ сверху"
-              statusRriMonitor.setStatus( Integer.valueOf( 1 ) );
-              // переходим в режим нормальной работы
-            }
-            else {
-              // пишем следующий параметр НСИ
-              transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
-              transmitter.transmitUskat2OPC( IAtomicValue.NULL );
-            }
-
-            break;
-          case ERROR:
-            // произошла ошибка записи, повторяем
-            transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
-            transmitter.transmitUskat2OPC( IAtomicValue.NULL );
-            break;
-          case PROCESS:
-            // запись в процессе выполнения, ничего не делаем, ждем следующего цикла
-            // nop
-            break;
-          case TIMEOUT:
-            break;
-          case UNKNOWN:
-            break;
-          default:
-            break;
-        }
-      }
+        statusRriMonitor.processDownload();
         break;
       default:
         break;
@@ -279,13 +235,13 @@ public class OpcRriDataModule
   /**
    * Рутина - слушаем изменения тегов и передаем их на сервер USkat
    *
-   * @param currTime
+   * @param aCurrTime текущее время
    */
-  public void routine( long currTime ) {
+  public void routine( long aCurrTime ) {
     // выполнение работы с каждым передатчиком с проверкой изменения значений НСИ
     for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
       try {
-        transmitter.transmit( currTime );
+        transmitter.transmit( aCurrTime );
       }
       catch( Exception e ) {
         logger.error( e.getMessage() );
@@ -353,18 +309,14 @@ public class OpcRriDataModule
     // TODO тут проверяем что это наши события
     pinRriDataTransmitters = initializer.getDataTransmitters();
     for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
-      // for( ISkRriSection section : transmitter.gwid2Section().values() ) {
-      // if( section.equals( aSource ) ) {
       for( SkEvent event : aEvents ) {
         Gwid parGwid = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_PARAM_GWID ).asValobj();
         if( transmitter.gwid2Section().hasKey( parGwid ) ) {
-          IAtomicValue newVal = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_NEW_VAL_ATTR );
-          System.out.printf( "New val: %s", newVal.asString() );
+          // IAtomicValue newVal = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_NEW_VAL_ATTR );
+          // System.out.printf( "New val: %s", newVal.asString() );
           // реализация передачи на контроллер нового значения НСИ
-          transmitter.transmitUskat2OPC( newVal );
+          transmitter.transmitUskat2OPC();
         }
-        // }
-        // }
       }
     }
 

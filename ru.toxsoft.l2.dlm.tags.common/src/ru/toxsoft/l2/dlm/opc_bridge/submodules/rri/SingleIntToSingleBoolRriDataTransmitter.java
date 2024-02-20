@@ -163,13 +163,12 @@ public class SingleIntToSingleBoolRriDataTransmitter
   }
 
   @Override
-  public void transmitUskat2OPC( IAtomicValue aNewVal ) {
+  public void transmitUskat2OPC() {
     if( !сomplexTag.isBusy() ) {
       // читаем актуальное значение с сервера uSkat
       Gwid gwid = gwid2SectionMap.keys().first();
       ISkRriSection section = gwid2SectionMap.getByKey( gwid );
-      IAtomicValue val =
-          aNewVal.equals( IAtomicValue.NULL ) ? section.getAttrParamValue( gwid.skid(), gwid.propId() ) : aNewVal;
+      IAtomicValue val = section.getAttrParamValue( gwid.skid(), gwid.propId() );
       // пишем его в OPC
       if( val.asBool() ) {
         lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndexOn, val );

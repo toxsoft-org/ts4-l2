@@ -3,6 +3,9 @@ package ru.toxsoft.l2.dlm.opc_bridge.submodules.rri;
 import static ru.toxsoft.l2.dlm.opc_bridge.IDlmsBaseConstants.*;
 import static ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IL2Resources.*;
 
+import java.math.*;
+import java.text.*;
+
 import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
@@ -71,6 +74,14 @@ public class RriDataTransmittersInitializer
   private IListEdit<String> tagsDevices = new ElemArrayList<>( false );
 
   private IComplexTagsContainer complexTagsContainer;
+  /**
+   * Для округления плавающих
+   */
+  private static DecimalFormat  decimalFormat = new DecimalFormat( "#.#####" ); //$NON-NLS-1$
+
+  static {
+    decimalFormat.setRoundingMode( RoundingMode.CEILING );
+  }
 
   @Override
   public void addDataConfigParamsForTransmitter( IAvTree aTransConfig, IComplexTagsContainer aComplexTagsContainer )
@@ -372,7 +383,7 @@ public class RriDataTransmittersInitializer
         long t1 = System.currentTimeMillis();
         transmitter.start( realDataSetters, tags, complexTag );
         long t2 = System.currentTimeMillis();
-        System.out.printf( "j = %d, transmitter.start() : %d \n", j, (t2 - t1) );
+        logger.debug( "j = %d, transmitter.start() : %d \n", j, (t2 - t1) );
         startedDataTransmitters.add( transmitter );
       }
       catch( Exception startEx ) {
@@ -459,10 +470,11 @@ public class RriDataTransmittersInitializer
         return false;
       }
       boolean result = value == null || !value.equals( aValue );
-
-      if( result ) {
+      // добавляем проверку на то, что на сервере такое же значение
+      boolean differFromServer = isDifferFromServer( aValue );
+      if( result && differFromServer ) {
         // просто устанавливается значение
-        channel.setAttrParamValue( rriGwid.skid(), rriGwid.propId(), aValue, "" );
+        channel.setAttrParamValue( rriGwid.skid(), rriGwid.propId(), aValue, "automatic update OPC UA -> USkat" );
         value = aValue;
 
         logger.debug( "rri data: %s - change value on: %s", rriGwid.asString(),
@@ -472,22 +484,32 @@ public class RriDataTransmittersInitializer
       return result;
     }
 
-    public boolean setDataValueAnyway( IAtomicValue aValue, long aTime ) {
-      if( !aValue.isAssigned() ) {
-        return false;
+    private boolean isDifferFromServer( IAtomicValue aValue ) {
+      ISkRriSection rriSection = gwid2SectMap.getByKey( rriGwid );
+      IAtomicValue serverCurrVal = rriSection.getAttrParamValue( rriGwid.skid(), rriGwid.propId() );
+      boolean retVal = true;
+      switch( serverCurrVal.atomicType() ) {
+        case BOOLEAN:
+          retVal = serverCurrVal.asBool() != aValue.asBool();
+          break;
+        case FLOATING:
+          // для плавающих округляем до пятого знака и сравниваем
+          String serverValStr = decimalFormat.format( serverCurrVal.asDouble() );
+          String currValStr = decimalFormat.format( aValue.asDouble() );
+          retVal = serverValStr.compareTo( currValStr ) != 0;
+          break;
+        case INTEGER:
+          retVal = serverCurrVal.asLong() != aValue.asLong();
+          break;
+        case NONE:
+        case STRING:
+        case TIMESTAMP:
+        case VALOBJ:
+          break;
+        default:
+          break;
       }
-      boolean result = value == null;
-
-      if( result ) {
-        // просто устанавливается значение
-        channel.setAttrParamValue( rriGwid.skid(), rriGwid.propId(), aValue, "" );
-        value = aValue;
-
-        logger.debug( "rri data: %s - change value on: %s", rriGwid.asString(),
-            (aValue.isAssigned() ? aValue.asString() : "Not Assigned") );
-      }
-
-      return result;
+      return retVal;
     }
 
     @Override

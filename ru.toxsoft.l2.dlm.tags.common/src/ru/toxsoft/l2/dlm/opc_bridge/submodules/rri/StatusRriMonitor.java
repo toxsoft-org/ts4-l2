@@ -5,6 +5,7 @@ import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 
 import ru.toxsoft.l2.core.dlm.*;
@@ -43,22 +44,36 @@ public class StatusRriMonitor
   /**
    * id device
    */
-  protected IAtomicValue deviceId = AvUtils.avStr( "status.rri.read.tag.id" );
+  protected IAtomicValue deviceId = AvUtils.avStr( "opc2s5.bridge.collection.id" ); //$NON-NLS-1$
 
   /**
    * id тега на чтение
    */
-  protected IAtomicValue rStatusRriNodeId = AvUtils.avStr( "status.rri.read.tag.id" );
+  protected IAtomicValue rStatusRriNodeId = AvUtils.avStr( "ns=32769;i=4955" ); //$NON-NLS-1$
 
   /**
    * id тега на запись
    */
-  protected IAtomicValue wStatusRriNodeId = AvUtils.avStr( "syntetic1" );
+  protected IAtomicValue complextStatusRriNodeId = AvUtils.avStr( "syntetic_ns_2_i_1832" ); //$NON-NLS-1$
 
   /**
-   * cmd address
+   * cmd set
    */
-  protected IAtomicValue cmdIndex = AvUtils.avInt( 13 );
+  protected IAtomicValue cmdSetStatus = AvUtils.avInt( 24 );
+
+  /**
+   * cmd reset
+   */
+  protected IAtomicValue cmdResetStatus = AvUtils.avInt( 23 );
+
+  /**
+   * индекс текущего передатчика в процессе USkat -> OPC UA
+   */
+  private int                        currTransmitterIndex = 0;
+  /**
+   * Набор описаний данных, полученный из конфиг информации.
+   */
+  private IList<IRriDataTransmitter> pinRriDataTransmitters;
 
   @Override
   public void config( IAvTree aParams ) {
@@ -70,26 +85,36 @@ public class StatusRriMonitor
     if( rriMonitorParams.hasValue( RRI_STATUS_READ_NODE_ID ) ) {
       rStatusRriNodeId = rriMonitorParams.getValue( RRI_STATUS_READ_NODE_ID );
     }
-    if( rriMonitorParams.hasValue( RRI_STATUS_WRITE_NODE_ID ) ) {
-      wStatusRriNodeId = rriMonitorParams.getValue( RRI_STATUS_WRITE_NODE_ID );
+    if( rriMonitorParams.hasValue( RRI_STATUS_COMPLEX_NODE_ID ) ) {
+      complextStatusRriNodeId = rriMonitorParams.getValue( RRI_STATUS_COMPLEX_NODE_ID );
     }
-    if( rriMonitorParams.hasValue( RRI_STATUS_CMD_ID ) ) {
-      cmdIndex = rriMonitorParams.getValue( RRI_STATUS_CMD_ID );
+    if( rriMonitorParams.hasValue( RRI_STATUS_CMD_SET_ID ) ) {
+      cmdSetStatus = rriMonitorParams.getValue( RRI_STATUS_CMD_SET_ID );
+    }
+    if( rriMonitorParams.hasValue( RRI_STATUS_CMD_RESET_ID ) ) {
+      cmdResetStatus = rriMonitorParams.getValue( RRI_STATUS_CMD_RESET_ID );
     }
   }
 
   @Override
-  public void start( IDlmContext aContext, IComplexTagsContainer aComplexTagsContainer ) {
+  public void start( IDlmContext aContext, IComplexTagsContainer aComplexTagsContainer,
+      IList<IRriDataTransmitter> aPinRriDataTransmitters ) {
     // получаем нужные теги от драйвера OPC UA
     ITsOpc tagsDevice = (ITsOpc)aContext.hal().listSpecificDevices().getByKey( deviceId.asString() );
     rStatusRri = tagsDevice.tag( rStatusRriNodeId.asString() );
     // тут комплексный тег
-    wStatusRri = aComplexTagsContainer.getComplexTagById( wStatusRriNodeId.asString() );
+    wStatusRri = aComplexTagsContainer.getComplexTagById( complextStatusRriNodeId.asString() );
+    pinRriDataTransmitters = aPinRriDataTransmitters;
   }
 
   @Override
-  public void setStatus( Integer aValue ) {
-    wStatusRri.setValue( cmdIndex.asInt(), AvUtils.avInt( aValue.intValue() ) );
+  public void setStatus() {
+    wStatusRri.setValue( cmdSetStatus.asInt(), IAtomicValue.NULL );
+  }
+
+  @Override
+  public void resetStatus() {
+    wStatusRri.setValue( cmdResetStatus.asInt(), IAtomicValue.NULL );
   }
 
   @Override
@@ -137,6 +162,55 @@ public class StatusRriMonitor
         break;
     }
     return currState;
+  }
+
+  @Override
+  public void startDownload() {
+    currTransmitterIndex = 0;
+    IRriDataTransmitter transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
+    transmitter.transmitUskat2OPC();
+  }
+
+  @Override
+  public void processDownload() {
+    // проверяем состояние передачи
+    IRriDataTransmitter transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
+    IComplexTag.EComplexTagState transferState = transmitter.getOpcCmdState();
+    switch( transferState ) {
+      case DONE:
+        // очередное значение записалось успешно
+        if( currTransmitterIndex + 1 >= pinRriDataTransmitters.size() ) {
+          // все записали, гасим флаг "контроллеру нужен НСИ сверху"
+          if( !wStatusRri.isDirty() ) {
+            // в случае если флаг установили, то ставим
+            setStatus();
+          }
+          // тут ничего не делаем, просто ждем
+        }
+        else {
+          // пишем следующий параметр НСИ
+          currTransmitterIndex++;
+          transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
+          transmitter.transmitUskat2OPC();
+        }
+
+        break;
+      case ERROR:
+        // произошла ошибка записи, повторяем
+        transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
+        transmitter.transmitUskat2OPC();
+        break;
+      case PROCESS:
+        // запись в процессе выполнения, ничего не делаем, ждем следующего цикла
+        // nop
+        break;
+      case TIMEOUT:
+        break;
+      case UNKNOWN:
+        break;
+      default:
+        break;
+    }
   }
 
 }

@@ -119,15 +119,14 @@ public class OneToOneRriDataTransmitter
   }
 
   @Override
-  public void transmitUskat2OPC( IAtomicValue aNewVal ) {
+  public void transmitUskat2OPC() {
     if( !сomplexTag.isBusy() ) {
       // читаем актуальное значение с сервера uSkat
       Gwid gwid = gwid2SectionMap.keys().first();
       ISkRriSection section = gwid2SectionMap.getByKey( gwid );
       IAtomicValue val = section.getAttrParamValue( gwid.skid(), gwid.propId() );
       // пишем его в OPC
-      lastOPCCmdTimestamp = aNewVal.equals( IAtomicValue.NULL ) ? сomplexTag.setValue( opcCmdIndex, val )
-          : сomplexTag.setValue( opcCmdIndex, aNewVal );
+      lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndex, val );
     }
   }
 

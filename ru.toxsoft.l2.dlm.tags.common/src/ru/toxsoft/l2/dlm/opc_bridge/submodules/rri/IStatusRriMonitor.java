@@ -1,6 +1,7 @@
 package ru.toxsoft.l2.dlm.opc_bridge.submodules.rri;
 
 import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.core.tslib.coll.*;
 
 import ru.toxsoft.l2.core.dlm.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
@@ -12,6 +13,7 @@ import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
  *
  * @author dima
  */
+@SuppressWarnings( "nls" )
 public interface IStatusRriMonitor {
 
   /**
@@ -26,14 +28,19 @@ public interface IStatusRriMonitor {
   String RRI_STATUS_READ_NODE_ID = "status.rri.read.tag.id";
 
   /**
-   * аргумент aAddress в IComplexTag::setValue( int aAddress, IAtomicValue aValue ) для смены статуса НСИ.
+   * аргумент aAddress в IComplexTag::setValue( int aAddress, IAtomicValue aValue ) для установки статуса НСИ.
    */
-  String RRI_STATUS_CMD_ID = "status.rri.cmd.opc.id";
+  String RRI_STATUS_CMD_SET_ID = "status.rri.cmd.set.id";
+
+  /**
+   * аргумент aAddress в IComplexTag::setValue( int aAddress, IAtomicValue aValue ) для сброса статуса НСИ.
+   */
+  String RRI_STATUS_CMD_RESET_ID = "status.rri.cmd.reset.id";
 
   /**
    * Complex node id записи статуса НСИ.
    */
-  String RRI_STATUS_WRITE_NODE_ID = "status.rri.write.tag.id";
+  String RRI_STATUS_COMPLEX_NODE_ID = "status.rri.complex.tag.id";
 
   /**
    * Проводит конфигурацию монитора по конфигурационным параметрам.
@@ -46,17 +53,31 @@ public interface IStatusRriMonitor {
    * Запускает монитор.
    *
    * @param aContext IDlmContext - контекст модулей, необходимый для получения тегов.
-   * @param aComplexTagsContainer
+   * @param aComplexTagsContainer - контейнер комплексных тегов
+   * @param aPinRriDataTransmitters - список передечтчиков значений атрибутов НСИ
    */
-  void start( IDlmContext aContext, IComplexTagsContainer aComplexTagsContainer );
+  void start( IDlmContext aContext, IComplexTagsContainer aComplexTagsContainer,
+      IList<IRriDataTransmitter> aPinRriDataTransmitters );
 
   /**
    * Устанавливает значение тега статуса НСИ контроллера
-   *
-   * @param aValue Integer - устанавливаемое значение, где 0 - "загрузи НСИ с USkat сервер", 1 - нормальные значения НСИ
-   *          на контроллере
    */
-  void setStatus( Integer aValue );
+  void setStatus();
+
+  /**
+   * Сбрасывает значение тега статуса НСИ контроллера
+   */
+  void resetStatus();
+
+  /**
+   * Начинает процесс загрузки НСИ с верхнего уровня
+   */
+  void startDownload();
+
+  /**
+   * Осуществляет процесс загрузки НСИ с верхнего уровня
+   */
+  void processDownload();
 
   /**
    * Возвращает текущий статус состояния НСИ на контроллере.
