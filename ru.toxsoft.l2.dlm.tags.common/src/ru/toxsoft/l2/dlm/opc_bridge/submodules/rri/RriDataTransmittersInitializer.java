@@ -402,7 +402,10 @@ public class RriDataTransmittersInitializer
   }
 
   protected IRriSetter createSetter( Gwid aRriGwid, IMap<Gwid, ISkRriSection> aGwid2SectionMap ) {
-    return new RriSetter( aGwid2SectionMap, aRriGwid );
+    ISkRriSection rriSection = aGwid2SectionMap.getByKey( aRriGwid );
+    IAtomicValue serverCurrVal = rriSection.getAttrParamValue( aRriGwid.skid(), aRriGwid.propId() );
+
+    return new RriSetter( aGwid2SectionMap, aRriGwid, serverCurrVal );
   }
 
   /**
@@ -456,12 +459,13 @@ public class RriDataTransmittersInitializer
 
     private IMap<Gwid, ISkRriSection> gwid2SectMap;
 
-    public RriSetter( IMap<Gwid, ISkRriSection> aDataSet, Gwid aRriGwid ) {
+    public RriSetter( IMap<Gwid, ISkRriSection> aDataSet, Gwid aRriGwid, IAtomicValue aCurrServerValue ) {
       super();
       TsIllegalArgumentRtException.checkFalse( aDataSet.hasKey( aRriGwid ) );
       channel = aDataSet.getByKey( aRriGwid );
       rriGwid = aRriGwid;
       gwid2SectMap = aDataSet;
+      value = aCurrServerValue;
     }
 
     @Override
@@ -469,10 +473,8 @@ public class RriDataTransmittersInitializer
       if( !aValue.isAssigned() ) {
         return false;
       }
-      boolean result = value == null || !value.equals( aValue );
-      // добавляем проверку на то, что на сервере такое же значение
-      boolean differFromServer = isDifferFromServer( aValue );
-      if( result && differFromServer ) {
+      boolean result = !value.equals( aValue );
+      if( result ) {
         // просто устанавливается значение
         channel.setAttrParamValue( rriGwid.skid(), rriGwid.propId(), aValue, "automatic update OPC UA -> USkat" );
         value = aValue;
@@ -482,34 +484,6 @@ public class RriDataTransmittersInitializer
       }
 
       return result;
-    }
-
-    private boolean isDifferFromServer( IAtomicValue aValue ) {
-      ISkRriSection rriSection = gwid2SectMap.getByKey( rriGwid );
-      IAtomicValue serverCurrVal = rriSection.getAttrParamValue( rriGwid.skid(), rriGwid.propId() );
-      boolean retVal = true;
-      switch( serverCurrVal.atomicType() ) {
-        case BOOLEAN:
-          retVal = serverCurrVal.asBool() != aValue.asBool();
-          break;
-        case FLOATING:
-          // для плавающих округляем до пятого знака и сравниваем
-          String serverValStr = decimalFormat.format( serverCurrVal.asDouble() );
-          String currValStr = decimalFormat.format( aValue.asDouble() );
-          retVal = serverValStr.compareTo( currValStr ) != 0;
-          break;
-        case INTEGER:
-          retVal = serverCurrVal.asLong() != aValue.asLong();
-          break;
-        case NONE:
-        case STRING:
-        case TIMESTAMP:
-        case VALOBJ:
-          break;
-        default:
-          break;
-      }
-      return retVal;
     }
 
     @Override

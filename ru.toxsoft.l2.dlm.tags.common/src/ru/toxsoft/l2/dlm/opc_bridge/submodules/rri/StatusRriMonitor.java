@@ -10,6 +10,7 @@ import org.toxsoft.core.tslib.utils.logs.*;
 
 import ru.toxsoft.l2.core.dlm.*;
 import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.IComplexTag.*;
 import ru.toxsoft.l2.thd.opc.*;
 
 /**
@@ -20,6 +21,8 @@ import ru.toxsoft.l2.thd.opc.*;
  */
 public class StatusRriMonitor
     implements IStatusRriMonitor {
+
+  private static final int ERR_COUNTER = 3;
 
   /**
    * Журнал работы
@@ -54,7 +57,7 @@ public class StatusRriMonitor
   /**
    * id тега на запись
    */
-  protected IAtomicValue complextStatusRriNodeId = AvUtils.avStr( "syntetic_ns_2_i_1832" ); //$NON-NLS-1$
+  protected IAtomicValue complextStatusRriNodeId = AvUtils.avStr( "synthetic_ns_2_i_1832" ); //$NON-NLS-1$
 
   /**
    * cmd set
@@ -69,11 +72,41 @@ public class StatusRriMonitor
   /**
    * индекс текущего передатчика в процессе USkat -> OPC UA
    */
-  private int                        currTransmitterIndex = 0;
+  private int currTransmitterIndex = 0;
+
   /**
    * Набор описаний данных, полученный из конфиг информации.
    */
   private IList<IRriDataTransmitter> pinRriDataTransmitters;
+
+  /**
+   * кол-во ошибок при передаче текуще записи USkat -> OPC UA
+   */
+  private int transferErrorCounter = 0;
+
+  /**
+   * метка времени установки статуса
+   */
+  private long setStatusTimestamp = 0;
+
+  /**
+   * Этапы загрузки НСИ с сервера USkat
+   *
+   * @author max
+   */
+  public enum EUskatDownloadStage {
+
+    /**
+     * считывание перенос значений USkat -> OPC UA
+     */
+    TRANSFERING_USKAT_OPC_UA(),
+
+    /**
+     * установка флага НСИ Ok
+     */
+    SETTING_RRI_OK();
+
+  }
 
   @Override
   public void config( IAvTree aParams ) {
@@ -108,13 +141,13 @@ public class StatusRriMonitor
   }
 
   @Override
-  public void setStatus() {
-    wStatusRri.setValue( cmdSetStatus.asInt(), IAtomicValue.NULL );
+  public long setStatus() {
+    return wStatusRri.setValue( cmdSetStatus.asInt(), IAtomicValue.NULL );
   }
 
   @Override
-  public void resetStatus() {
-    wStatusRri.setValue( cmdResetStatus.asInt(), IAtomicValue.NULL );
+  public long resetStatus() {
+    return wStatusRri.setValue( cmdResetStatus.asInt(), IAtomicValue.NULL );
   }
 
   @Override
@@ -173,44 +206,146 @@ public class StatusRriMonitor
 
   @Override
   public void processDownload() {
-    // проверяем состояние передачи
-    IRriDataTransmitter transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
-    IComplexTag.EComplexTagState transferState = transmitter.getOpcCmdState();
-    switch( transferState ) {
-      case DONE:
-        // очередное значение записалось успешно
-        if( currTransmitterIndex + 1 >= pinRriDataTransmitters.size() ) {
-          // все записали, гасим флаг "контроллеру нужен НСИ сверху"
-          if( !wStatusRri.isDirty() ) {
-            // в случае если флаг установили, то ставим
-            setStatus();
-          }
-          // тут ничего не делаем, просто ждем
-        }
-        else {
-          // пишем следующий параметр НСИ
-          currTransmitterIndex++;
-          transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
-          transmitter.transmitUskat2OPC();
-        }
-
+    // процесс передачи состоит из этап загрузки НСИ и этапа установки флага "НСИ OK"
+    EUskatDownloadStage processStage = processStage();
+    switch( processStage ) {
+      case SETTING_RRI_OK:
+        finishTransfer();
         break;
-      case ERROR:
-        // произошла ошибка записи, повторяем
-        transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
-        transmitter.transmitUskat2OPC();
-        break;
-      case PROCESS:
-        // запись в процессе выполнения, ничего не делаем, ждем следующего цикла
-        // nop
-        break;
-      case TIMEOUT:
-        break;
-      case UNKNOWN:
+      case TRANSFERING_USKAT_OPC_UA:
+        transferUskat2OPC_UA();
         break;
       default:
         break;
     }
   }
 
+  private EUskatDownloadStage processStage() {
+    if( hasMoreDownload() ) {
+      return EUskatDownloadStage.TRANSFERING_USKAT_OPC_UA;
+    }
+    return EUskatDownloadStage.SETTING_RRI_OK;
+  }
+
+  private boolean hasMoreDownload() {
+    // return currTransmitterIndex < pinRriDataTransmitters.size();
+    // for debug
+    return currTransmitterIndex + 1 < 3;
+  }
+
+  @SuppressWarnings( "nls" )
+  private void transferUskat2OPC_UA() {
+    // проверяем состояние передачи
+    IRriDataTransmitter transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
+    IComplexTag.EComplexTagState transferState = transmitter.getOpcCmdState();
+    switch( transferState ) {
+      case DONE: {
+        // очередное значение записалось успешно, переходим к следующему
+        logger.debug( "Done to writing %s, index %d,  go next", transmitter.gwid2Section().keys().first(),
+            Integer.valueOf( currTransmitterIndex ) );
+        transferErrorCounter = 0;
+        processNext();
+        break;
+      }
+      case ERROR:
+        // произошла ошибка записи, повторяем
+        logger.error( "Error in writing %s", transmitter.gwid2Section().keys().first() );
+        transferErrorCounter++;
+        if( transferErrorCounter > ERR_COUNTER ) {
+          logger.error( "Fail to writing %s, go next", transmitter.gwid2Section().keys().first() );
+          transferErrorCounter = 0;
+          processNext();
+        }
+        else {
+          transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
+          transmitter.transmitUskat2OPC();
+        }
+        break;
+      case PROCESS:
+        // запись в процессе выполнения, ничего не делаем, ждем следующего цикла
+        // nop
+        break;
+      case TIMEOUT:
+        // возник таймаут при записи, логируем и пробуем еще 2 раза
+        logger.warning( "Timeout in writing %s", transmitter.gwid2Section().keys().first() );
+        transferErrorCounter++;
+        if( transferErrorCounter > ERR_COUNTER ) {
+          logger.error( "Fail to writing %s, go next", transmitter.gwid2Section().keys().first() );
+          transferErrorCounter = 0;
+          processNext();
+        }
+        break;
+      case UNKNOWN:
+        logger.error( "UNKNOWN state in writing %s, , index %d, go next", transmitter.gwid2Section().keys().first(),
+            Integer.valueOf( currTransmitterIndex ) );
+        processNext();
+        break;
+      default:
+        break;
+    }
+  }
+
+  private void processNext() {
+    if( hasMoreDownload() ) {
+      // пишем следующий параметр НСИ
+      currTransmitterIndex++;
+      IRriDataTransmitter transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
+      transmitter.transmitUskat2OPC();
+    }
+  }
+
+  @SuppressWarnings( "nls" )
+  private void finishTransfer() {
+    // все НСИ записали, ставим флаг "НСИ Ok"
+    if( !wStatusRri.isBusy() ) {
+      // только в случае если флаг еще не пытались установить
+      setStatusTimestamp = setStatus();
+    }
+    else {
+      // здесь мы в процессе установки флага "НСИ контроллера OK"
+      EComplexTagState flagState = wStatusRri.getState( setStatusTimestamp, false );
+      switch( flagState ) {
+        case DONE:
+          logger.debug( "Process dowloading RRI Uskat -> OPC UA completed." );
+          setStatusTimestamp = 0;
+          break;
+        case ERROR:
+          // произошла ошибка записи, повторяем
+          logger.error( "Error dowloading RRI Uskat -> OPC UA" );
+          transferErrorCounter++;
+          if( transferErrorCounter > ERR_COUNTER ) {
+            logger.error( "Fail dowloading RRI Uskat -> OPC UA. There were %d try",
+                Integer.valueOf( currTransmitterIndex ) );
+            transferErrorCounter = 0;
+            setStatusTimestamp = 0;
+          }
+          else {
+            setStatusTimestamp = setStatus();
+          }
+          break;
+        case PROCESS:
+          // nop
+          break;
+        case TIMEOUT:
+          // возник таймаут при записи, логируем и пробуем еще 2 раза
+          logger.warning( "Timeout dowloading RRI Uskat -> OPC UA" );
+          transferErrorCounter++;
+          if( transferErrorCounter > ERR_COUNTER ) {
+            logger.error( "Fail dowloading RRI Uskat -> OPC UA. There were %d try",
+                Integer.valueOf( currTransmitterIndex ) );
+            transferErrorCounter = 0;
+            setStatusTimestamp = 0;
+          }
+          else {
+            setStatusTimestamp = setStatus();
+          }
+          break;
+        case UNKNOWN:
+          logger.error( "UNKNOWN state in process set StatusRRI" );
+          break;
+        default:
+          break;
+      }
+    }
+  }
 }

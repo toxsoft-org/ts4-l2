@@ -13,7 +13,6 @@ import org.toxsoft.core.tslib.coll.derivative.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
-import org.toxsoft.skf.rri.lib.*;
 import org.toxsoft.skf.rri.lib.impl.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
 import org.toxsoft.uskat.core.api.evserv.*;
@@ -72,9 +71,14 @@ public class OpcRriDataModule
   private IList<ProcessedCommandsDefByObjNames> commandsDefByObjNames;
 
   /**
-   * Очередь команд, пришедших на обработку.
+   * Очередь команд пришедших на обработку.
    */
   private IQueue<IDtoCommand> commandsQueue;
+
+  /**
+   * Очередь событий изменения значений НСИ требующих обработки.
+   */
+  private IQueue<SkEvent> eventsQueue;
 
   /**
    * Монитор статуса НСИ контроллера.
@@ -109,14 +113,6 @@ public class OpcRriDataModule
     IAvTree rriDefs = aConfig.params().nodes().findByKey( RRI_DEFS );
     // читаем описание конфигурации самого модуля
     statusRriMonitor.config( rriDefs );
-
-    // IAtomicValue statusReadTag = AvUtils.avStr( "status.rri.read.tag.id" );
-    //
-    // IOptionSet rriCommonParams = rriDefs.fields();
-    // if( rriCommonParams.hasValue( "status.rri.read.tag.id" ) ) {
-    // statusReadTag = rriCommonParams.getValue( "status.rri.read.tag.id" );
-    // }
-    // System.out.print( statusReadTag.asString() );
 
     IAvTree rriNodes = rriDefs.nodes().findByKey( RRI_NODES );
 
@@ -156,6 +152,8 @@ public class OpcRriDataModule
     }
     // запускаем монитор статуса состояния НСИ контроллера
     statusRriMonitor.start( context, complexTagsContainer, pinRriDataTransmitters );
+    // инициализация работы с событиями
+    eventsQueue = new SynchronizedQueueWrapper<>( new Queue<>() );
 
     // инициализация работы с командами
     // создание синхронизованной очереди получаемых команд команд
@@ -214,8 +212,14 @@ public class OpcRriDataModule
       default:
         break;
     }
-
+    // обрабатываем полученные события
+    processNextEvent();
     // обрабатываем полученные команды
+    processNextCommand();
+
+  }
+
+  private void processNextCommand() {
     IDtoCommand cmd = commandsQueue.getHeadOrNull();
 
     if( cmd != null ) {
@@ -229,7 +233,21 @@ public class OpcRriDataModule
         setCmdState( cmd, MSG_COMMAND_UNDER_DEVELOPMENT_RRI_MODULE, ESkCommandState.FAILED );
       }
     }
+  }
 
+  private void processNextEvent() {
+    SkEvent event = eventsQueue.getHeadOrNull();
+
+    if( event != null ) {
+      pinRriDataTransmitters = initializer.getDataTransmitters();
+      for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
+        Gwid parGwid = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_PARAM_GWID ).asValobj();
+        // тут проверяем что это наши события
+        if( transmitter.gwid2Section().hasKey( parGwid ) ) {
+          transmitter.transmitUskat2OPC();
+        }
+      }
+    }
   }
 
   /**
@@ -252,14 +270,7 @@ public class OpcRriDataModule
   private void transferRriUskat2OPC() {
     // Читаем с USkat сервера и пишем в OPC
     for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
-      // читаем из своей секции и пишем в свой node
-      IMap<Gwid, ISkRriSection> gwid2Section = transmitter.gwid2Section();
-      for( Gwid rriGwid : gwid2Section.keys() ) {
-        ISkRriSection section = gwid2Section.getByKey( rriGwid );
-        IAtomicValue rriVal = section.getAttrParamValue( rriGwid.skid(), rriGwid.propId() );
-        // TODO написать код установки своего значения НСИ в контроллер
-        // transmitter.writeBack2OpcNode( rriGwid, rriVal );
-      }
+      transmitter.transmitUskat2OPC();
     }
   }
 
@@ -306,20 +317,15 @@ public class OpcRriDataModule
 
   @Override
   public void onEvents( ISkEventList aEvents ) {
-    // TODO тут проверяем что это наши события
-    pinRriDataTransmitters = initializer.getDataTransmitters();
-    for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
-      for( SkEvent event : aEvents ) {
-        Gwid parGwid = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_PARAM_GWID ).asValobj();
-        if( transmitter.gwid2Section().hasKey( parGwid ) ) {
-          // IAtomicValue newVal = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_NEW_VAL_ATTR );
-          // System.out.printf( "New val: %s", newVal.asString() );
-          // реализация передачи на контроллер нового значения НСИ
-          transmitter.transmitUskat2OPC();
-        }
-      }
+    // просто помещаем в буфер, обрабатывать будем в doJob
+    for( SkEvent event : aEvents ) {
+      eventsQueue.putTail( event );
+      Gwid parGwid = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_PARAM_GWID ).asValobj();
+      IAtomicValue oldVal = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_OLD_VAL_ATTR );
+      IAtomicValue newVal = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_NEW_VAL_ATTR );
+      logger.debug( "Event param %s change. oldVal = %s newVal = %s", parGwid.asString(), oldVal.asString(), //$NON-NLS-1$
+          newVal.asString() );
     }
-
   }
 
 }
