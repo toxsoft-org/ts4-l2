@@ -475,12 +475,15 @@ public class RriDataTransmittersInitializer
       }
       boolean result = !value.equals( aValue );
       if( result ) {
-        // просто устанавливается значение
-        channel.setAttrParamValue( rriGwid.skid(), rriGwid.propId(), aValue, "automatic update OPC UA -> USkat" );
-        value = aValue;
+        IAtomicValue uskatVal = channel.getAttrParamValue(rriGwid.skid(), rriGwid.propId());
+        if(uskatVal.compareTo(aValue) != 0) {
+            // устанавливаем новое значение только если оно не совпадает с тем что уже на сервере
+           channel.setAttrParamValue( rriGwid.skid(), rriGwid.propId(), aValue, "automatic update OPC UA -> USkat" );
+           value = aValue;
 
-        logger.debug( "rri data: %s - change value on: %s", rriGwid.asString(),
+           logger.debug( "rri data: %s - update on USkat server. New value = %s", rriGwid.asString(),
             (aValue.isAssigned() ? aValue.asString() : "Not Assigned") );
+        }
       }
 
       return result;
