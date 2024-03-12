@@ -147,6 +147,10 @@ public class NodesReader {
     // if( syncGroup.size() == 0 ) {
     // return;
     // }
+    // dima 12.03.24 пустая группа синхронных данных не должна "мешать жить"
+    if( syncGroup.isEmpty() ) {
+      return;
+    }
     try {
       CompletableFuture<List<DataValue>> dValuesF = client.readValues( 0, TimestampsToReturn.Source, syncGroup );
 
