@@ -90,6 +90,11 @@ public class StatusRriMonitor
   private long setStatusTimestamp = 0;
 
   /**
+   * флаг корректной конфигурации
+   */
+  private boolean configured = false;
+
+  /**
    * Этапы загрузки НСИ с сервера USkat
    *
    * @author max
@@ -114,30 +119,33 @@ public class StatusRriMonitor
     IOptionSet rriMonitorParams = aParams.fields();
     if( rriMonitorParams.hasValue( RRI_STATUS_DEVICE_ID ) ) {
       deviceId = rriMonitorParams.getValue( RRI_STATUS_DEVICE_ID );
-    }
-    if( rriMonitorParams.hasValue( RRI_STATUS_READ_NODE_ID ) ) {
-      rStatusRriNodeId = rriMonitorParams.getValue( RRI_STATUS_READ_NODE_ID );
-    }
-    if( rriMonitorParams.hasValue( RRI_STATUS_COMPLEX_NODE_ID ) ) {
-      complextStatusRriNodeId = rriMonitorParams.getValue( RRI_STATUS_COMPLEX_NODE_ID );
-    }
-    if( rriMonitorParams.hasValue( RRI_STATUS_CMD_SET_ID ) ) {
-      cmdSetStatus = rriMonitorParams.getValue( RRI_STATUS_CMD_SET_ID );
-    }
-    if( rriMonitorParams.hasValue( RRI_STATUS_CMD_RESET_ID ) ) {
-      cmdResetStatus = rriMonitorParams.getValue( RRI_STATUS_CMD_RESET_ID );
+      if( rriMonitorParams.hasValue( RRI_STATUS_READ_NODE_ID ) ) {
+        rStatusRriNodeId = rriMonitorParams.getValue( RRI_STATUS_READ_NODE_ID );
+        if( rriMonitorParams.hasValue( RRI_STATUS_COMPLEX_NODE_ID ) ) {
+          complextStatusRriNodeId = rriMonitorParams.getValue( RRI_STATUS_COMPLEX_NODE_ID );
+          if( rriMonitorParams.hasValue( RRI_STATUS_CMD_SET_ID ) ) {
+            cmdSetStatus = rriMonitorParams.getValue( RRI_STATUS_CMD_SET_ID );
+            if( rriMonitorParams.hasValue( RRI_STATUS_CMD_RESET_ID ) ) {
+              cmdResetStatus = rriMonitorParams.getValue( RRI_STATUS_CMD_RESET_ID );
+              configured = true;
+            }
+          }
+        }
+      }
     }
   }
 
   @Override
   public void start( IDlmContext aContext, IComplexTagsContainer aComplexTagsContainer,
       IList<IRriDataTransmitter> aPinRriDataTransmitters ) {
-    // получаем нужные теги от драйвера OPC UA
-    ITsOpc tagsDevice = (ITsOpc)aContext.hal().listSpecificDevices().getByKey( deviceId.asString() );
-    rStatusRri = tagsDevice.tag( rStatusRriNodeId.asString() );
-    // тут комплексный тег
-    wStatusRri = aComplexTagsContainer.getComplexTagById( complextStatusRriNodeId.asString() );
-    pinRriDataTransmitters = aPinRriDataTransmitters;
+    if( isConfigured() ) {
+      // получаем нужные теги от драйвера OPC UA
+      ITsOpc tagsDevice = (ITsOpc)aContext.hal().listSpecificDevices().getByKey( deviceId.asString() );
+      rStatusRri = tagsDevice.tag( rStatusRriNodeId.asString() );
+      // тут комплексный тег
+      wStatusRri = aComplexTagsContainer.getComplexTagById( complextStatusRriNodeId.asString() );
+      pinRriDataTransmitters = aPinRriDataTransmitters;
+    }
   }
 
   @Override
@@ -347,5 +355,10 @@ public class StatusRriMonitor
           break;
       }
     }
+  }
+
+  @Override
+  public boolean isConfigured() {
+    return configured;
   }
 }

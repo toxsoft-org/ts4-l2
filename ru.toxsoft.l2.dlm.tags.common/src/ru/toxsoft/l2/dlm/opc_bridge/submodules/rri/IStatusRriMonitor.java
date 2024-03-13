@@ -84,6 +84,11 @@ public interface IStatusRriMonitor {
   void processDownload();
 
   /**
+   * @return true - блок сконфигурирован корректно
+   */
+  boolean isConfigured();
+
+  /**
    * Возвращает текущий статус состояния НСИ на контроллере.
    *
    * @return ERriControllerState - текущее состояние НСИ на контроллере, {@link ERriControllerState#UNKNOWN} - в случае
