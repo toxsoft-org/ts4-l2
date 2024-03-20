@@ -119,7 +119,7 @@ public class OneToOneRriDataTransmitter
   }
 
   @Override
-  public void transmitUskat2OPC() {
+  public boolean transmitUskat2OPC() {
     if( !сomplexTag.isBusy() ) {
       // читаем актуальное значение с сервера uSkat
       Gwid gwid = gwid2SectionMap.keys().first();
@@ -128,7 +128,9 @@ public class OneToOneRriDataTransmitter
       logger.debug( "Value of %s read from section: %s", gwid.asString(), val.asString() );
       // пишем его в OPC
       lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndex, val );
+      return true;
     }
+    return false;
   }
 
   @Override

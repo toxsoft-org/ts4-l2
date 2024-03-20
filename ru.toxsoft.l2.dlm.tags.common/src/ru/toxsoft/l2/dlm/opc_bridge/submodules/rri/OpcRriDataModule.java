@@ -224,28 +224,28 @@ public class OpcRriDataModule
     // обрабатываем полученные события
     processNextEvent();
     // обрабатываем полученные команды
-    processNextCommand();
+    // processNextCommand();
 
   }
 
-  private void processNextCommand() {
-    IDtoCommand cmd = commandsQueue.getHeadOrNull();
-
-    if( cmd != null ) {
-      String cmdId = cmd.cmdGwid().propId();
-      if( cmdId.compareTo( RRI_USKAT_2_OPC_CMD_ID ) == 0 ) {
-        transferRriUskat2OPC();
-        setCmdState( cmd, MSG_COMMAND_COMPLETE_RRI_MODULE, ESkCommandState.SUCCESS );
-      }
-      // последним идет проверка на то что обработка подписаной команды сделана
-      if( cmdId.compareTo( RRI_USKAT_2_OPC_CMD_ID ) != 0 ) {
-        setCmdState( cmd, MSG_COMMAND_UNDER_DEVELOPMENT_RRI_MODULE, ESkCommandState.FAILED );
-      }
-    }
-  }
+  // private void processNextCommand() {
+  // IDtoCommand cmd = commandsQueue.getHeadOrNull();
+  //
+  // if( cmd != null ) {
+  // String cmdId = cmd.cmdGwid().propId();
+  // if( cmdId.compareTo( RRI_USKAT_2_OPC_CMD_ID ) == 0 ) {
+  // transferRriUskat2OPC();
+  // setCmdState( cmd, MSG_COMMAND_COMPLETE_RRI_MODULE, ESkCommandState.SUCCESS );
+  // }
+  // // последним идет проверка на то что обработка подписаной команды сделана
+  // if( cmdId.compareTo( RRI_USKAT_2_OPC_CMD_ID ) != 0 ) {
+  // setCmdState( cmd, MSG_COMMAND_UNDER_DEVELOPMENT_RRI_MODULE, ESkCommandState.FAILED );
+  // }
+  // }
+  // }
 
   private void processNextEvent() {
-    SkEvent event = eventsQueue.getHeadOrNull();
+    SkEvent event = eventsQueue.peekHeadOrNull();
 
     if( event != null ) {
       pinRriDataTransmitters = initializer.getDataTransmitters();
@@ -253,7 +253,11 @@ public class OpcRriDataModule
         Gwid parGwid = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_PARAM_GWID ).asValobj();
         // тут проверяем что это наши события
         if( transmitter.gwid2Section().hasKey( parGwid ) ) {
-          transmitter.transmitUskat2OPC();
+          if( transmitter.transmitUskat2OPC() ) {
+            // событие обработано, удаляем его
+            eventsQueue.getHead();
+          }
+          return;
         }
       }
     }
@@ -276,12 +280,12 @@ public class OpcRriDataModule
     }
   }
 
-  private void transferRriUskat2OPC() {
-    // Читаем с USkat сервера и пишем в OPC
-    for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
-      transmitter.transmitUskat2OPC();
-    }
-  }
+  // private void transferRriUskat2OPC() {
+  // // Читаем с USkat сервера и пишем в OPC
+  // for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
+  // transmitter.transmitUskat2OPC();
+  // }
+  // }
 
   @Override
   protected boolean doQueryStop() {

@@ -163,7 +163,7 @@ public class SingleIntToSingleBoolRriDataTransmitter
   }
 
   @Override
-  public void transmitUskat2OPC() {
+  public boolean transmitUskat2OPC() {
     if( !сomplexTag.isBusy() ) {
       // читаем актуальное значение с сервера uSkat
       Gwid gwid = gwid2SectionMap.keys().first();
@@ -177,7 +177,9 @@ public class SingleIntToSingleBoolRriDataTransmitter
       else {
         lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndexOff, val );
       }
+      return true;
     }
+    return false;
   }
 
   @Override

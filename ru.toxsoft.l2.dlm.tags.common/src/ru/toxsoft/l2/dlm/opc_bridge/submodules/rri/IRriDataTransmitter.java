@@ -53,8 +53,10 @@ public interface IRriDataTransmitter {
 
   /**
    * Считать текущее значение с сервера USkat и установить его на node OPC UA
+   *
+   * @return true - передача успешана, иначе false
    */
-  void transmitUskat2OPC();
+  boolean transmitUskat2OPC();
 
   /**
    * Текущее состояние процесса выполнения команды по записи НСИ значения в OPC UA дерево

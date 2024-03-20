@@ -236,9 +236,9 @@ public class StatusRriMonitor
   }
 
   private boolean hasMoreDownload() {
-    // return currTransmitterIndex < pinRriDataTransmitters.size();
+    return currTransmitterIndex < pinRriDataTransmitters.size();
     // for debug
-    return currTransmitterIndex + 1 < 3;
+    // return currTransmitterIndex + 1 < 3;
   }
 
   @SuppressWarnings( "nls" )

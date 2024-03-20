@@ -164,6 +164,8 @@ public class ComplexTagImpl
     // tag for address write
     ITag wIdTag = tagsDevice.tag( cfgData.fields().getStr( СT_WRITE_ID_TAG ) );
     setAddressTag( wIdTag );
+    // dima 19.03.24 обнуляем чтобы избежать возможного ступора
+    addressTag.set( AvUtils.avInt( 0 ) );
 
     // feedback tag
     ITag fbTag = tagsDevice.tag( cfgData.fields().getStr( СT_READ_FEEDBACK_TAG ) );
