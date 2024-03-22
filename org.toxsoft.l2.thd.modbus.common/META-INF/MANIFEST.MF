@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Modbus Common Driver
+Bundle-SymbolicName: org.toxsoft.l2.thd.modbus.common
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Toxsoft
+Automatic-Module-Name: org.toxsoft.l2.thd.modbus.common
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Require-Bundle: org.toxsoft.core.tslib,
+ org.toxsoft.core.log4j,
+ org.toxsoft.extlibs.log4j,
+ org.toxsoft.uskat.core,
+ ru.toxsoft.l2.core,
+ org.toxsoft.extlibs.modbus;bundle-version="1.0.0",
+ ru.toxsoft.l2.thd.opc.da;bundle-version="1.0.0"
+Export-Package: org.toxsoft.l2.thd.modbus.common,
+ org.toxsoft.l2.thd.modbus.common.connections,
+ org.toxsoft.l2.thd.modbus.common.test,
+ org.toxsoft.l2.thd.modbus.common.translators
