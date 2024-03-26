@@ -1,0 +1,841 @@
+DeviceConfig = 
+{
+  false,
+  "modbus.rtu.sfere.cfg",
+  {
+    javaClassName="ru.toxsoft.l2.core.hal.devices.impl.modbus.rtu.ModbusRtuCollectionProducer",
+    id="modbus.rtu.sfere.sm2",
+    description="modbus.rtu.sfere pins apparat producer",
+    #далее параметры драйвера в целом (периоды обновления, макс и мин время чтения и т.д.)
+    period=1000
+  }
+  ,
+  {
+    #массив соединений (tcp соединений или адрес шины) - каждое соединение - отдельный объект драйвера
+    connections =
+    {
+      true,
+      [
+        {
+          false,
+          "connection1.def",
+          {
+          	type = "tcp" # rtu
+          	#параметры соединения
+            port.name="/dev/ttyUSB116",
+            baud.rate=9600
+            # address.ip="192.168.0.1",
+            # address.port=502
+          }
+          ,
+          {
+          	#массив устройств сидящих на одном соединении (для tcp - это будет только одно устройство)
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "device1.def",
+                  {
+                  	#параметры устройства (номер modbus)
+                    dev.address=1
+                  }
+                  ,
+                  {
+                  	#массив тегов, каналов, пинов, сидящих на одном устройстве
+                    tags=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "tag1.def",
+                          {
+                            id="bus.dev.ttyUSB116.device1.pin.alive.id", #может генерироваться автоматически, используется в dlm
+                            descr="....", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "DO,AO,DI,AI", #тип запроса
+                            register = 1, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = ""  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device1.pin.ia.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device1.pin.ia.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ia"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device1.pin.ib.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device1.pin.ib.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ib"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device1.pin.ic.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device1.pin.ic.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ic"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "device2.def",
+                  {
+                    dev.address=2
+                  }
+                  ,
+                  {
+                    channels=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device2.pin.alive.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device2.pin.alive.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="ALIVE"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device2.pin.ia.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device2.pin.ia.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ia"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device2.pin.ib.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device2.pin.ib.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ib"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device2.pin.ic.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device2.pin.ic.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ic"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "device3.def",
+                  {
+                    dev.address=3
+                  }
+                  ,
+                  {
+                    channels=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device3.pin.alive.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device3.pin.alive.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="ALIVE"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device3.pin.uab.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device3.pin.uab.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Uab"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device3.pin.ubc.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device3.pin.ubc.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ubc"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device3.pin.uca.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device3.pin.uca.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Uca"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device3.pin.f.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device3.pin.f.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="F"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "device4.def",
+                  {
+                    dev.address=4
+                  }
+                  ,
+                  {
+                    channels=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device4.pin.alive.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device4.pin.alive.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="ALIVE"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device4.pin.uab.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device4.pin.uab.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Uab"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device4.pin.ubc.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device4.pin.ubc.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ubc"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device4.pin.uca.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device4.pin.uca.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Uca"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device4.pin.f.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device4.pin.f.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="F"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "device5.def",
+                  {
+                    dev.address=5
+                  }
+                  ,
+                  {
+                    channels=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device5.pin.alive.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device5.pin.alive.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="ALIVE"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device5.pin.ia.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device5.pin.ia.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ia"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "device6.def",
+                  {
+                    dev.address=6
+                  }
+                  ,
+                  {
+                    channels=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device6.pin.alive.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device6.pin.alive.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="ALIVE"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device6.pin.uab.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device6.pin.uab.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Uab"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device6.pin.ubc.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device6.pin.ubc.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ubc"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device6.pin.uca.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device6.pin.uca.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Uca"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device6.pin.f.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device6.pin.f.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="F"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "device7.def",
+                  {
+                    dev.address=7
+                  }
+                  ,
+                  {
+                    channels=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device7.pin.alive.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device7.pin.alive.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="ALIVE"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device7.pin.ia.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device7.pin.ia.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ia"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device7.pin.ib.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device7.pin.ib.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ib"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device7.pin.ic.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device7.pin.ic.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ic"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "device8.def",
+                  {
+                    dev.address=8
+                  }
+                  ,
+                  {
+                    channels=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device8.pin.alive.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device8.pin.alive.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="ALIVE"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device8.pin.ua.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device8.pin.ua.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ua"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "device9.def",
+                  {
+                    dev.address=9
+                  }
+                  ,
+                  {
+                    channels=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device9.pin.alive.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device9.pin.alive.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="ALIVE"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device9.pin.ia.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device9.pin.ia.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ia"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "device10.def",
+                  {
+                    dev.address=10
+                  }
+                  ,
+                  {
+                    channels=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device10.pin.alive.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device10.pin.alive.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="ALIVE"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device10.pin.ia.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device10.pin.ia.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ia"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "device11.def",
+                  {
+                    dev.address=11
+                  }
+                  ,
+                  {
+                    channels=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device11.pin.alive.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device11.pin.alive.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="ALIVE"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device11.pin.ia.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device11.pin.ia.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ia"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device11.pin.ib.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device11.pin.ib.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ib"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device11.pin.ic.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device11.pin.ic.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ic"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "device12.def",
+                  {
+                    dev.address=12
+                  }
+                  ,
+                  {
+                    channels=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device12.pin.alive.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device12.pin.alive.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="ALIVE"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device12.pin.ia.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device12.pin.ia.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ia"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device12.pin.ib.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device12.pin.ib.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ib"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "def.bus.dev.ttyUSB116.device12.pin.ic.id",
+                          {
+                            pin.id="bus.dev.ttyUSB116.device12.pin.ic.id",
+                            pin.descr="in pin.id coded bus,
+                            device address and channel type",
+                            pin.type="Ic"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

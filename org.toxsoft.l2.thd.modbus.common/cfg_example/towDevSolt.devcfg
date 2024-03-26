@@ -1,0 +1,365 @@
+DeviceConfig = 
+{
+  false,
+  "modbus.rtu.sfere.cfg",
+  {
+    javaClassName="ru.toxsoft.l2.thd.modbus.common.CommonModbusDeviceProducer",
+    id="modbus.rtu.solt",
+    description="modbus.rtu.solt pins apparat producer",
+    #далее параметры драйвера в целом (периоды обновления, макс и мин время чтения и т.д.)
+    period=1000
+  }
+  ,
+  {
+    #массив соединений (tcp соединений или адрес шины) - каждое соединение - отдельный объект драйвера
+    connections =
+    {
+      true,
+      [
+        {
+          false,
+          "connection1.def",
+          {
+          	type = "rtu",
+          	#параметры соединения
+            port.name="/dev/ttyUSB0",
+            baud.rate=9600
+          }
+          ,
+          {
+          	#массив устройств сидящих на одном соединении  
+            devices=
+            {
+              true,
+              [
+              	{
+                  false,
+                  "device2.def",
+                  {
+                  	#параметры устройства (номер modbus)
+                    dev.address=4
+                  }
+                  ,
+                  {
+                  	#массив тегов, каналов, пинов, сидящих на одном устройстве
+                    tags=
+                    {
+                      true,
+                      [
+                      	{
+                          false,
+                          "i1.def",
+                          {
+                            id="i1", #может генерироваться автоматически, используется в dlm
+                            descr="i1", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AO", #тип запроса
+                            register = 8, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,         
+                      	{
+                          false,
+                          "i2.def",
+                          {
+                            id="i2", #может генерироваться автоматически, используется в dlm
+                            descr="i2", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AO", #тип запроса
+                            register = 9, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,                      
+                      	{
+                          false,
+                          "i3.def",
+                          {
+                            id="i3", #может генерироваться автоматически, используется в dlm
+                            descr="i3", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AO", #тип запроса
+                            register = 10, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "i4.def",
+                          {
+                            id="i4", #может генерироваться автоматически, используется в dlm
+                            descr="i4", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AO", #тип запроса
+                            register = 11, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "i5.def",
+                          {
+                            id="i5", #может генерироваться автоматически, используется в dlm
+                            descr="i5", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AO", #тип запроса
+                            register = 12, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "i6.def",
+                          {
+                            id="i6", #может генерироваться автоматически, используется в dlm
+                            descr="i6", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AO", #тип запроса
+                            register = 13, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "i7.def",
+                          {
+                            id="i7", #может генерироваться автоматически, используется в dlm
+                            descr="i7", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AO", #тип запроса
+                            register = 14, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "i8.def",
+                          {
+                            id="i8", #может генерироваться автоматически, используется в dlm
+                            descr="i8", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AO", #тип запроса
+                            register = 15, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }                                            
+                      ]
+                    }
+                  }
+                }
+              	,
+                {
+                  false,
+                  "device1.def",
+                  {
+                  	#параметры устройства (номер modbus)
+                    dev.address=7
+                  }
+                  ,
+                  {
+                  	#массив тегов, каналов, пинов, сидящих на одном устройстве
+                    tags=
+                    {
+                      true,
+                      [
+                      	{
+                          false,
+                          "PT.def",
+                          {
+                            id="PT", #может генерироваться автоматически, используется в dlm
+                            descr="PT", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 3, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,         
+                      	{
+                          false,
+                          "CT.def",
+                          {
+                            id="CT", #может генерироваться автоматически, используется в dlm
+                            descr="CT", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 4, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,                      
+                      	{
+                          false,
+                          "dpt.def",
+                          {
+                            id="dpt", #может генерироваться автоматически, используется в dlm
+                            descr="dpt", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 19, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogLowByteTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "dct.def",
+                          {
+                            id="dct", #может генерироваться автоматически, используется в dlm
+                            descr="dct", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 19, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogHighByteTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "dev1.ua.def",
+                          {
+                            id="dev1.ua", #может генерироваться автоматически, используется в dlm
+                            descr="dev1.ua", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 25, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "dev1.ub.def",
+                          {
+                            id="dev1.ub", #может генерироваться автоматически, используется в dlm
+                            descr="dev1.ub", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 26, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "dev1.ub.def",
+                          {
+                            id="dev1.uc", #может генерироваться автоматически, используется в dlm
+                            descr="dev1.uc", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 27, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "dev1.uab.def",
+                          {
+                            id="dev1.uab", #может генерироваться автоматически, используется в dlm
+                            descr="dev1.uab", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 28, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "dev1.ubc.def",
+                          {
+                            id="dev1.ubc", #может генерироваться автоматически, используется в dlm
+                            descr="dev1.ubc", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 30, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "dev1.uca.def",
+                          {
+                            id="dev1.uca", #может генерироваться автоматически, используется в dlm
+                            descr="dev1.uca", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 31, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }                      
+                      ]
+                    }
+                  }
+                }                
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

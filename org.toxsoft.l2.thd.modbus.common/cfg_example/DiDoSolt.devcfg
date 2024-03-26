@@ -1,0 +1,251 @@
+DeviceConfig = 
+{
+  false,
+  "modbus.rtu.sfere.cfg",
+  {
+    javaClassName="ru.toxsoft.l2.thd.modbus.common.CommonModbusDeviceProducer",
+    id="modbus.rtu.solt",
+    description="modbus.rtu.solt pins apparat producer",
+    #далее параметры драйвера в целом (периоды обновления, макс и мин время чтения и т.д.)
+    period=1000
+  }
+  ,
+  {
+    #массив соединений (tcp соединений или адрес шины) - каждое соединение - отдельный объект драйвера
+    connections =
+    {
+      true,
+      [
+        {
+          false,
+          "connection1.def",
+          {
+          	type = "rtu",
+          	#параметры соединения
+            port.name="/dev/ttyUSB0",
+            baud.rate=9600
+          }
+          ,
+          {
+          	#массив устройств сидящих на одном соединении  
+            devices=
+            {
+              true,
+              [              	
+                {
+                  false,
+                  "device1.def",
+                  {
+                  	#параметры устройства (номер modbus)
+                    dev.address=1
+                  }
+                  ,
+                  {
+                  	#массив тегов, каналов, пинов, сидящих на одном устройстве
+                    tags=
+                    {
+                      true,
+                      [
+                      	{
+                          false,
+                          "do1.def",
+                          {
+                            id="do1", #может генерироваться автоматически, используется в dlm
+                            descr="do1", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "DO", #тип запроса
+                            register = 0, #номер регистра
+                            words.count = 1, #количество слов
+                            is.output = true  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,         
+                      	{
+                          false,
+                          "do2.def",
+                          {
+                            id="do2", #может генерироваться автоматически, используется в dlm
+                            descr="do2", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "DO", #тип запроса
+                            register = 1, #номер регистра
+                            words.count = 1, #количество слов
+                            is.output = true  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,                      
+                      	{
+                          false,
+                          "do3.def",
+                          {
+                            id="do3", #может генерироваться автоматически, используется в dlm
+                            descr="do3", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "DO", #тип запроса
+                            register = 2, #номер регистра
+                            words.count = 1, #количество слов
+                            is.output = true  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "do4.def",
+                          {
+                            id="do4", #может генерироваться автоматически, используется в dlm
+                            descr="do4", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "DO", #тип запроса
+                            register = 3, #номер регистра
+                            words.count = 1, #количество слов
+                            is.output = true  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        } 
+                        ,
+                        {
+                          false,
+                          "di1.def",
+                          {
+                            id="di1", #может генерироваться автоматически, используется в dlm
+                            descr="di1", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "DI", #тип запроса
+                            register = 0, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.OneToOneDiscretTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }   
+                        ,
+                        {
+                          false,
+                          "di2.def",
+                          {
+                            id="di2", #может генерироваться автоматически, используется в dlm
+                            descr="di2", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "DI", #тип запроса
+                            register = 1, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.OneToOneDiscretTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,         
+                      	{
+                          false,
+                          "di3.def",
+                          {
+                            id="di3", #может генерироваться автоматически, используется в dlm
+                            descr="di3", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "DI", #тип запроса
+                            register = 2, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.OneToOneDiscretTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,                      
+                      	{
+                          false,
+                          "di4.def",
+                          {
+                            id="di4", #может генерироваться автоматически, используется в dlm
+                            descr="di4", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "DI", #тип запроса
+                            register = 3, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.OneToOneDiscretTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "di5.def",
+                          {
+                            id="di5", #может генерироваться автоматически, используется в dlm
+                            descr="di5", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "DI", #тип запроса
+                            register = 4, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.OneToOneDiscretTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }    
+                        ,
+                        {
+                          false,
+                          "di6.def",
+                          {
+                            id="di6", #может генерироваться автоматически, используется в dlm
+                            descr="di6", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "DI", #тип запроса
+                            register = 5, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.OneToOneDiscretTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }   
+                        ,
+                        {
+                          false,
+                          "di7.def",
+                          {
+                            id="di7", #может генерироваться автоматически, используется в dlm
+                            descr="di7", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "DI", #тип запроса
+                            register = 6, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.OneToOneDiscretTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }       
+                        ,
+                        {
+                          false,
+                          "di8.def",
+                          {
+                            id="di8", #может генерироваться автоматически, используется в dlm
+                            descr="di8", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "DI", #тип запроса
+                            register = 7, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.OneToOneDiscretTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }                           
+                      ]
+                    }
+                  }
+                }                
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

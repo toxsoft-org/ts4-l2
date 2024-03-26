@@ -1,0 +1,267 @@
+DeviceConfig = 
+{
+  false,
+  "modbus.rtu.sfere.cfg",
+  {
+    javaClassName="ru.toxsoft.l2.thd.modbus.common.CommonModbusDeviceProducer",
+    id="modbus.rtu.solt",
+    description="modbus.rtu.solt pins apparat producer",
+    #далее параметры драйвера в целом (периоды обновления, макс и мин время чтения и т.д.)
+    period=1000
+  }
+  ,
+  {
+    #массив соединений (tcp соединений или адрес шины) - каждое соединение - отдельный объект драйвера
+    connections =
+    {
+      true,
+      [
+        {
+          false,
+          "connection1.def",
+          {
+          	type = "rtu",
+          	#параметры соединения
+            port.name="/dev/ttyUSB0",
+            baud.rate=9600
+          }
+          ,
+          {
+          	#массив устройств сидящих на одном соединении  
+            devices=
+            {
+              true,
+              [              	
+                {
+                  false,
+                  "device1.def",
+                  {
+                  	#параметры устройства (номер modbus)
+                    dev.address=7
+                  }
+                  ,
+                  {
+                  	#массив тегов, каналов, пинов, сидящих на одном устройстве
+                    tags=
+                    {
+                      true,
+                      [
+                      	{
+                          false,
+                          "PT.def", #множитель напряжения
+                          {
+                            id="PT", #идентификатор используется в dlm
+                            descr="PT", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 3, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,         
+                      	{
+                          false,
+                          "CT.def", #множитель тока
+                          {
+                            id="CT", #идентификатор используется в dlm
+                            descr="CT", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 4, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,                      
+                      	{
+                          false,
+                          "dpt.def", #степень множителя напряжения, использующегося при расчёте напряжения (совместно с 10000)
+                          {
+                            id="dpt", #идентификатор используется в dlm
+                            descr="dpt", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 19, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogLowByteTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "dct.def", #степень множителя тока, использующегося при расчёте тока (совместно с 10000)
+                          {
+                            id="dct",  #идентификатор используется в dlm
+                            descr="dct", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 19, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogHighByteTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "dpq.def", #степень множителя мощности, использующегося при расчёте мощности (совместно с 10000)
+                          {
+                            id="dpq",  #идентификатор используется в dlm
+                            descr="dpq", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 20, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogLowByteTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,                       
+                        {
+                          false,
+                          "dev1.ua.def",
+                          {
+                            id="dev1.ua", #может генерироваться автоматически, используется в dlm
+                            descr="dev1.ua", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 21, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "dev1.ub.def",
+                          {
+                            id="dev1.ub", #может генерироваться автоматически, используется в dlm
+                            descr="dev1.ub", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 22, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "dev1.uc.def",
+                          {
+                            id="dev1.uc", #идентификатор используется в dlm
+                            descr="dev1.uc", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 23, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "dev1.ia.def",
+                          {
+                            id="dev1.ia",  #идентификатор используется в dlm
+                            descr="dev1.ia", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 27, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }        
+                         ,
+                        {
+                          false,
+                          "dev1.ib.def",
+                          {
+                            id="dev1.ib",  #идентификатор используется в dlm
+                            descr="dev1.ib", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 28, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                         ,
+                        {
+                          false,
+                          "dev1.ic.def",
+                          {
+                            id="dev1.ic",  #идентификатор используется в dlm
+                            descr="dev1.ic", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 29, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        } 
+                        ,
+                        {
+                          false,
+                          "dev1.ps.def",
+                          {
+                            id="dev1.ps",  #идентификатор используется в dlm
+                            descr="dev1.ps", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 33, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "dev1.qs.def",
+                          {
+                            id="dev1.qs",  #идентификатор используется в dlm
+                            descr="dev1.qs", #вспомогательное описание (чтобы знать откуда ноги растут)
+                            request.type = "AI", #тип запроса
+                            register = 37, #номер регистра
+                            words.count = 1, #количество слов
+                            translator = "ru.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"  #транслятор
+                          }
+                          ,
+                          {
+                          }
+                        }        
+                      ]
+                    }
+                  }
+                }                
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

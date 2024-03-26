@@ -160,8 +160,8 @@ public class CommonModbusDevice
         DOWriteValuesBuffer wBuffer = new DOWriteValuesBuffer( wTag, tagDevAddress, tagRegister );
         // Добавляем созданный тег в общий массив тегов
         tags.put( wTag.tagId(), wTag );
-        // Добавляем созданный буфер в массив буферов а запись
-        buffers.add( wBuffer );
+        // Добавляем созданный буфер в массив буферов на запись
+        writeBuffers.add( wBuffer );
 
         continue;
       }
