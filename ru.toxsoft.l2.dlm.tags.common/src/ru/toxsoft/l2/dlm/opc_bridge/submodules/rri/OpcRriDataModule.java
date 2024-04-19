@@ -3,28 +3,30 @@ package ru.toxsoft.l2.dlm.opc_bridge.submodules.rri;
 import static ru.toxsoft.l2.dlm.opc_bridge.IDlmsBaseConstants.*;
 import static ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IL2Resources.*;
 
-import org.toxsoft.core.log4j.*;
-import org.toxsoft.core.tslib.av.*;
-import org.toxsoft.core.tslib.av.avtree.*;
-import org.toxsoft.core.tslib.bricks.validator.*;
-import org.toxsoft.core.tslib.bricks.validator.impl.*;
-import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.log4j.LoggerWrapper;
+import org.toxsoft.core.tslib.av.IAtomicValue;
+import org.toxsoft.core.tslib.av.avtree.IAvTree;
+import org.toxsoft.core.tslib.bricks.validator.ValidationResult;
+import org.toxsoft.core.tslib.bricks.validator.impl.ValResList;
+import org.toxsoft.core.tslib.coll.IList;
 import org.toxsoft.core.tslib.coll.derivative.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.core.tslib.utils.logs.*;
-import org.toxsoft.skf.rri.lib.impl.*;
+import org.toxsoft.core.tslib.utils.errors.TsIllegalArgumentRtException;
+import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
+import org.toxsoft.core.tslib.utils.logs.ILogger;
+import org.toxsoft.skf.rri.lib.impl.ISkRriServiceHardConstants;
 import org.toxsoft.uskat.core.api.cmdserv.*;
 import org.toxsoft.uskat.core.api.evserv.*;
 
-import ru.toxsoft.l2.core.cfg.*;
-import ru.toxsoft.l2.core.dlm.*;
-import ru.toxsoft.l2.dlm.opc_bridge.*;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.*;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.CommandsModule.*;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IStatusRriMonitor.*;
-import ru.toxsoft.l2.thd.opc.*;
+import ru.toxsoft.l2.core.cfg.IUnitConfig;
+import ru.toxsoft.l2.core.dlm.IDlmContext;
+import ru.toxsoft.l2.core.dlm.IDlmInfo;
+import ru.toxsoft.l2.dlm.opc_bridge.ConfigurableWorkerModuleBase;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.CommandsModule;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.CommandsModule.ProcessedCommandsDefByObjNames;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.IComplexTagsContainer;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IStatusRriMonitor.ERriControllerState;
+import ru.toxsoft.l2.thd.opc.ITag;
 
 /**
  * Модуль работы с RRI данными.
@@ -46,7 +48,7 @@ public class OpcRriDataModule
   IDlmContext context;
 
   /**
-   * Информация о модуле DLM
+   * Информация о модуле DLM.
    */
   private IDlmInfo dlmInfo;
 
