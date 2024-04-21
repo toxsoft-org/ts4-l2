@@ -16,7 +16,12 @@ public enum ETransactionCreators
   /**
    * Rtu соединие modbus
    */
-  RTU_TRANSACTION_CREATOR( RTU_TRANSACTION_CREATOR_ID, RTU_TRANSACTION_CREATOR_DESCR, RtuTransactionCreator.class )
+  RTU_TRANSACTION_CREATOR( RTU_TRANSACTION_CREATOR_ID, RTU_TRANSACTION_CREATOR_DESCR, RtuTransactionCreator.class ),
+
+  /**
+   * Tcp соединие modbus
+   */
+  TCP_TRANSACTION_CREATOR( TCP_TRANSACTION_CREATOR_ID, TCP_TRANSACTION_CREATOR_DESCR, TcpTransactionCreator.class )
 
   ;
 

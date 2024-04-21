@@ -40,6 +40,10 @@ public interface IModbusThdConstants {
 
   String CONNECTIONS_PARAM_ID = "connections";
 
+  String PORT_PARAM_ID = "port";
+
+  String IP_PARAM_ID = "ip";
+
   //
   // ----------------------------------------------------
   // ETransactionCreators
@@ -47,4 +51,8 @@ public interface IModbusThdConstants {
   String RTU_TRANSACTION_CREATOR_ID = "rtu";
 
   String RTU_TRANSACTION_CREATOR_DESCR = "Creator of rtu transactions";
+
+  String TCP_TRANSACTION_CREATOR_ID = "tcp";
+
+  String TCP_TRANSACTION_CREATOR_DESCR = "Creator of tcp transactions";
 }

@@ -46,10 +46,10 @@ public class CommonModbusDevice
   enum EDataType
       implements IStridable {
 
-    DI( "DI", "Discret Inputs", DIReadValuesBufferImpl.class ), //$NON-NLS-1$ //$NON-NLS-2$
-    DO( "DO", "Discret Outputs", DOReadValuesBufferImpl.class ), //$NON-NLS-1$ //$NON-NLS-2$
-    AI( "AI", "Analog Inputs", AIReadValuesBufferImpl.class ), //$NON-NLS-1$ //$NON-NLS-2$
-    AO( "AO", "Analog Outputs", AOReadValuesBufferImpl.class );//$NON-NLS-1$ //$NON-NLS-2$
+    DI( "DI", "Discret Inputs", DIReadValuesBufferImpl.class, null ), //$NON-NLS-1$ //$NON-NLS-2$
+    DO( "DO", "Discret Outputs", DOReadValuesBufferImpl.class, DOWriteValuesBuffer.class ), //$NON-NLS-1$ //$NON-NLS-2$
+    AI( "AI", "Analog Inputs", AIReadValuesBufferImpl.class, null ), //$NON-NLS-1$ //$NON-NLS-2$
+    AO( "AO", "Analog Outputs", AOReadValuesBufferImpl.class, AOWriteValuesBuffer.class );//$NON-NLS-1$ //$NON-NLS-2$
 
     private String id;
 
@@ -57,10 +57,13 @@ public class CommonModbusDevice
 
     private Constructor<?> bufferConstructor;
 
-    EDataType( String aId, String aDescr, Class<?> aBufferClass ) {
+    private Constructor<?> outBufferConstructor;
+
+    EDataType( String aId, String aDescr, Class<?> aBufferClass, Class<?> aOutBufferClass ) {
       this.id = aId;
       this.descr = aDescr;
       this.bufferConstructor = aBufferClass.getConstructors()[0];
+      this.outBufferConstructor = aOutBufferClass.getConstructors()[0];
     }
 
     @Override
@@ -73,12 +76,21 @@ public class CommonModbusDevice
       return descr;
     }
 
-    public ValuesBufferImpl<?> createBuffer( CommonModbusDevice aParent, int aDevice, int aStartReg )
+    public ValuesBufferImpl<?> createInBuffer( CommonModbusDevice aParent, int aDevice, int aStartReg )
         throws InstantiationException,
         IllegalAccessException,
         IllegalArgumentException,
         InvocationTargetException {
       return (ValuesBufferImpl<?>)bufferConstructor.newInstance( aParent, Integer.valueOf( aDevice ),
+          Integer.valueOf( aStartReg ) );
+    }
+
+    public IValuesBuffer createOutBuffer( CommonModbusDevice aParent, WriteTagImpl aTag, int aDevice, int aStartReg )
+        throws InstantiationException,
+        IllegalAccessException,
+        IllegalArgumentException,
+        InvocationTargetException {
+      return (ValuesBufferImpl<?>)outBufferConstructor.newInstance( aParent, aTag, Integer.valueOf( aDevice ),
           Integer.valueOf( aStartReg ) );
     }
 
@@ -128,7 +140,6 @@ public class CommonModbusDevice
    * @param aDefinition {@link IAvTree} - все необходимые для настройки параметры.
    */
   private void configYourself( IAvTree aDefinition ) {
-
     // конфигурация соединения
     configConnection( aDefinition.fields() );
     IAvTree devicesMassiv = aDefinition.nodes().findByKey( DEVICES_PARAM_ID );
@@ -157,11 +168,18 @@ public class CommonModbusDevice
       // втавка для DO
       if( tagParams.fields().hasValue( IS_OUTPUT_PARAM_ID ) && tagParams.fields().getBool( IS_OUTPUT_PARAM_ID ) ) {
         WriteTagImpl wTag = new WriteTagImpl( tagId );
-        DOWriteValuesBuffer wBuffer = new DOWriteValuesBuffer( wTag, tagDevAddress, tagRegister );
-        // Добавляем созданный тег в общий массив тегов
-        tags.put( wTag.tagId(), wTag );
-        // Добавляем созданный буфер в массив буферов на запись
-        writeBuffers.add( wBuffer );
+        try {
+          IValuesBuffer wBuffer =
+              requestType.createOutBuffer( CommonModbusDevice.this, wTag, tagDevAddress, tagRegister );
+          // Добавляем созданный тег в общий массив тегов
+          tags.put( wTag.tagId(), wTag );
+          // Добавляем созданный буфер в массив буферов на запись
+          writeBuffers.add( wBuffer );
+        }
+        catch( Exception e ) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
 
         continue;
       }
@@ -187,7 +205,7 @@ public class CommonModbusDevice
       }
       if( propperBuffer == null ) {
         try {
-          propperBuffer = requestType.createBuffer( CommonModbusDevice.this, tagDevAddress, tagRegister );
+          propperBuffer = requestType.createInBuffer( CommonModbusDevice.this, tagDevAddress, tagRegister );
           typeBuffers.add( propperBuffer );
 
           // Добавляем созданный буфер в общий массив буферов
@@ -408,7 +426,7 @@ public class CommonModbusDevice
         throws ModbusException {
       // запрос и получение ответа в байтах
 
-      // запрос
+      // запрос FC 1
       ReadCoilsRequest request = new ReadCoilsRequest( startReg, wordsCount );
       request.setUnitID( device );
       // транзакция
@@ -461,7 +479,7 @@ public class CommonModbusDevice
         throws ModbusException {
       // запрос и получение ответа в байтах
 
-      // запрос
+      // запрос FC 2
       ReadInputDiscretesRequest request = new ReadInputDiscretesRequest( startReg, wordsCount );
       request.setUnitID( device );
       // транзакция
@@ -512,7 +530,7 @@ public class CommonModbusDevice
         throws ModbusException {
       // запрос и получение ответа в байтах
 
-      // запрос
+      // запрос FC 3
       ReadMultipleRegistersRequest request = new ReadMultipleRegistersRequest( startReg, wordsCount );
       request.setUnitID( device );
       // транзакция
@@ -565,7 +583,7 @@ public class CommonModbusDevice
         throws ModbusException {
       // запрос и получение ответа в байтах
 
-      // запрос
+      // запрос FC 4
       ReadInputRegistersRequest request = new ReadInputRegistersRequest( startReg, wordsCount );
       request.setUnitID( device );
       // транзакция
@@ -883,7 +901,7 @@ public class CommonModbusDevice
 
       if( changed && bufferValue != null ) {
 
-        // запрос
+        // запрос FC 5
         WriteCoilRequest request = new WriteCoilRequest( reg, bufferValue.booleanValue() );
         request.setUnitID( device );
         // транзакция
@@ -916,6 +934,76 @@ public class CommonModbusDevice
         if( bufferValue == null || newVal != bufferValue.booleanValue() ) {
           changed = true;
           bufferValue = Boolean.valueOf( newVal );
+        }
+      }
+
+    }
+
+  }
+
+  /**
+   * Буфер записи единичного AO .
+   *
+   * @author max
+   */
+  class AOWriteValuesBuffer
+      implements IValuesBuffer {
+
+    private WriteTagImpl tag;
+
+    private Integer bufferValue;
+
+    private int device;
+
+    private int reg;
+
+    private boolean changed = true;
+
+    public AOWriteValuesBuffer( WriteTagImpl aTag, int aDevice, int aReg ) {
+      device = aDevice;
+      reg = aReg;
+      tag = aTag;
+    }
+
+    @Override
+    public void doJob() {
+
+      if( changed && bufferValue != null ) {
+
+        // запрос FC 6
+        WriteSingleRegisterRequest request =
+            new WriteSingleRegisterRequest( reg, new SimpleRegister( bufferValue.intValue() ) );
+        request.setUnitID( device );
+        // транзакция
+        ModbusTransaction trans = createModbusTransaction();
+        trans.setRequest( request );
+
+        // исполнение транзакции
+        try {
+          trans.execute();
+
+          // ответ
+          @SuppressWarnings( "unused" )
+          WriteSingleRegisterResponse res = (WriteSingleRegisterResponse)trans.getResponse();
+          changed = false;
+
+        }
+        catch( ModbusException e ) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+
+    }
+
+    @Override
+    public void change() {
+      IAtomicValue val = tag.get();
+      if( val.isAssigned() ) {
+        int newVal = val.asInt();
+        if( bufferValue == null || newVal != bufferValue.intValue() ) {
+          changed = true;
+          bufferValue = Integer.valueOf( newVal );
         }
       }
 
