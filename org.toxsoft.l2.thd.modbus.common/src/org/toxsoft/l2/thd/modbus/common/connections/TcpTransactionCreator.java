@@ -36,17 +36,14 @@ public class TcpTransactionCreator
   private TCPMasterConnection connection;
 
   @Override
-  public ModbusTransaction createModbusTransaction() {
-    TCPMasterConnection currConnection = null;
-    try {
-      currConnection = getConnection();
-    }
-    catch( Exception e ) {
-      e.printStackTrace();
-    }
-    TsIllegalStateRtException.checkFalse( currConnection != null && currConnection.isConnected() );
-    // Возвращает созданную транзакцию
+  public ModbusTransaction createModbusTransaction()
+      throws TsIllegalStateRtException {
+    TCPMasterConnection currConnection = getConnection();
 
+    TsIllegalStateRtException.checkFalse( currConnection != null && currConnection.isConnected(),
+        "Transaction cannot be created due to connection is not established" );
+
+    // Возвращает созданную транзакцию
     return new ModbusTCPTransaction( currConnection );
   }
 
@@ -65,12 +62,15 @@ public class TcpTransactionCreator
    * Возвращает соединение.
    *
    * @return TCPMasterConnection - соединение.
-   * @throws Exception - ошибка, возникшая при получении соединения.
    */
-  TCPMasterConnection getConnection()
-      throws Exception {
+  TCPMasterConnection getConnection() {
     if( connection == null || !connection.isConnected() ) {
-      connection = openConnection();
+      try {
+        connection = openConnection();
+      }
+      catch( Exception ex ) {
+        LoggerUtils.errorLogger().error( ex );
+      }
     }
     return connection;
   }
@@ -83,15 +83,7 @@ public class TcpTransactionCreator
    */
   private TCPMasterConnection openConnection()
       throws Exception {
-    InetAddress addr = null;
-    try {
-      addr = InetAddress.getByName( ipAddress );
-    }
-    catch( UnknownHostException ex ) {
-      // TODO Auto-generated catch block
-      LoggerUtils.errorLogger().error( ex );
-      return null;
-    }
+    InetAddress addr = InetAddress.getByName( ipAddress );
     TCPMasterConnection tcpConnection = new TCPMasterConnection( addr );
 
     tcpConnection.setPort( port );

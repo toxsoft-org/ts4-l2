@@ -1,6 +1,7 @@
 package org.toxsoft.l2.thd.modbus.common;
 
 import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 
 import net.wimpi.modbus.io.*;
 
@@ -15,8 +16,10 @@ public interface ITransactionCreator {
    * Создаёт транзакцию запроса modbus
    *
    * @return ModbusTransaction - объект транзакции.
+   * @throws TsIllegalStateRtException - transaction cannot be created.
    */
-  ModbusTransaction createModbusTransaction();
+  ModbusTransaction createModbusTransaction()
+      throws TsIllegalStateRtException;
 
   /**
    * Конфигурирует создателя транзакций.

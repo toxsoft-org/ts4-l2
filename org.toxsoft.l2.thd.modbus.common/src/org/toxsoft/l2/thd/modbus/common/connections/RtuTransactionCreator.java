@@ -4,6 +4,7 @@ import static org.toxsoft.l2.thd.modbus.common.IModbusThdConstants.*;
 
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.l2.thd.modbus.common.*;
 
 import net.wimpi.modbus.*;
@@ -56,15 +57,13 @@ public class RtuTransactionCreator
   private int modbusReceiveTimeout = 200;
 
   @Override
-  public ModbusTransaction createModbusTransaction() {
-    SerialConnection currConnection = null;
-    try {
-      currConnection = getConnection();
-    }
-    catch( Exception e ) {
-      e.printStackTrace();
-    }
-    TsIllegalStateRtException.checkFalse( currConnection != null && currConnection.isOpen() );
+  public ModbusTransaction createModbusTransaction()
+      throws TsIllegalStateRtException {
+    SerialConnection currConnection = getConnection();
+
+    TsIllegalStateRtException.checkFalse( currConnection != null && currConnection.isOpen(),
+        "Transaction cannot be created due to connection is not established" );
+
     // Возвращает созданную транзакцию
     return new ModbusSerialTransaction( currConnection );
   }
@@ -86,12 +85,15 @@ public class RtuTransactionCreator
    * Возвращает соединение.
    *
    * @return SerialConnection - соединение.
-   * @throws Exception - ошибка, возникшая при получении соединения.
    */
-  SerialConnection getConnection()
-      throws Exception {
+  SerialConnection getConnection() {
     if( connection == null || !connection.isOpen() ) {
-      connection = openConnection();
+      try {
+        connection = openConnection();
+      }
+      catch( Exception ex ) {
+        LoggerUtils.errorLogger().error( ex );
+      }
     }
     return connection;
   }

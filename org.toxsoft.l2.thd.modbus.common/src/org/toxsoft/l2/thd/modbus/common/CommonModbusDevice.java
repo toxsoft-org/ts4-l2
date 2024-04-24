@@ -14,6 +14,7 @@ import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
 
 import ru.toxsoft.l2.core.hal.*;
 import ru.toxsoft.l2.core.hal.devices.*;
@@ -177,8 +178,7 @@ public class CommonModbusDevice
           writeBuffers.add( wBuffer );
         }
         catch( Exception e ) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          LoggerUtils.errorLogger().error( e );
         }
 
         continue;
@@ -212,8 +212,7 @@ public class CommonModbusDevice
           buffers.add( propperBuffer );
         }
         catch( Exception e ) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          LoggerUtils.errorLogger().error( e );
         }
 
       }
@@ -227,8 +226,7 @@ public class CommonModbusDevice
         tags.put( tag.tagId(), tag );
       }
       catch( Exception e ) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        LoggerUtils.errorLogger().error( e );
       }
 
     }
@@ -245,8 +243,7 @@ public class CommonModbusDevice
       transactionCreator.config( aConnectionParams );
     }
     catch( Exception e ) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LoggerUtils.errorLogger().error( e );
     }
 
   }
@@ -270,7 +267,7 @@ public class CommonModbusDevice
         Thread.sleep( REQUESTS_INTERVAL );
       }
       catch( InterruptedException e ) {
-        e.printStackTrace();
+        LoggerUtils.errorLogger().error( e );
       }
     }
 
@@ -305,12 +302,11 @@ public class CommonModbusDevice
     transactionCreator.close();
   }
 
-  ModbusTransaction createModbusTransaction() {
-    // соединение
-    // TCPMasterConnection tcpConnection = getConnection();
-    // new ModbusTCPTransaction( tcpConnection );
+  ModbusTransaction createModbusTransaction()
+      throws TsIllegalStateRtException {
 
-    return transactionCreator.createModbusTransaction();
+    ModbusTransaction trans = transactionCreator.createModbusTransaction();
+    return trans;
   }
 
   /**
@@ -333,6 +329,51 @@ public class CommonModbusDevice
      * Перемещение данных из буфера в тег (или из тега в буфер - в будущем)
      */
     void change();
+  }
+
+  static abstract class WriteValuesBufferImpl
+      implements IValuesBuffer {
+
+    private int writeErrorCount = 0;
+
+    protected WriteTagImpl tag;
+
+    protected int device;
+
+    protected int reg;
+
+    protected boolean changed = true;
+
+    public WriteValuesBufferImpl( WriteTagImpl aTag, int aDevice, int aReg ) {
+      super();
+      tag = aTag;
+      device = aDevice;
+      reg = aReg;
+    }
+
+    @Override
+    public final void doJob() {
+      try {
+        doJobImpl();
+        // если запись ОК - обнулить счётчик ошибок подряд
+        writeErrorCount = 0;
+      }
+      catch( TsIllegalStateRtException | ModbusException e ) {
+        writeErrorCount++;
+        if( writeErrorCount > MAX_PERMIS_READ_ERROR_COUNT ) {
+          // если ошибочных записей подряд больше заданного количества - буферы должны отработать
+          writeError();
+        }
+        else {
+          LoggerUtils.errorLogger().error( e, "Write error count: %s", String.valueOf( writeErrorCount ) );
+        }
+      }
+    }
+
+    public abstract void doJobImpl()
+        throws ModbusException;
+
+    protected abstract void writeError();
   }
 
   /**
@@ -368,7 +409,7 @@ public class CommonModbusDevice
         // если чтение ОК - обнулить счётчик ошибок подряд
         readErrorCount = 0;
       }
-      catch( ModbusException e ) {
+      catch( TsIllegalStateRtException | ModbusException e ) {
         readErrorCount++;
         if( readErrorCount > MAX_PERMIS_READ_ERROR_COUNT ) {
           // если ошибочных чтений подряд больше заданного количества - буферы должны отработать
@@ -376,7 +417,10 @@ public class CommonModbusDevice
             inj.readError();
           }
         }
-        e.printStackTrace();
+        else {
+          LoggerUtils.errorLogger().error( e, "Read error count: %s", String.valueOf( readErrorCount ) );
+        }
+
       }
     }
 
@@ -878,26 +922,17 @@ public class CommonModbusDevice
    * @author max
    */
   class DOWriteValuesBuffer
-      implements IValuesBuffer {
-
-    private WriteTagImpl tag;
+      extends WriteValuesBufferImpl {
 
     private Boolean bufferValue = Boolean.FALSE;
 
-    private int device;
-
-    private int reg;
-
-    private boolean changed = true;
-
     public DOWriteValuesBuffer( WriteTagImpl aTag, int aDevice, int aReg ) {
-      device = aDevice;
-      reg = aReg;
-      tag = aTag;
+      super( aTag, aDevice, aReg );
     }
 
     @Override
-    public void doJob() {
+    public void doJobImpl()
+        throws ModbusException {
 
       if( changed && bufferValue != null ) {
 
@@ -909,19 +944,13 @@ public class CommonModbusDevice
         trans.setRequest( request );
 
         // исполнение транзакции
-        try {
-          trans.execute();
+        trans.execute();
 
-          // ответ
-          @SuppressWarnings( "unused" )
-          WriteCoilResponse res = (WriteCoilResponse)trans.getResponse();
-          changed = false;
+        // ответ
+        @SuppressWarnings( "unused" )
+        WriteCoilResponse res = (WriteCoilResponse)trans.getResponse();
+        changed = false;
 
-        }
-        catch( ModbusException e ) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
       }
 
     }
@@ -939,6 +968,12 @@ public class CommonModbusDevice
 
     }
 
+    @Override
+    protected void writeError() {
+      // TODO Auto-generated method stub
+
+    }
+
   }
 
   /**
@@ -947,26 +982,17 @@ public class CommonModbusDevice
    * @author max
    */
   class AOWriteValuesBuffer
-      implements IValuesBuffer {
-
-    private WriteTagImpl tag;
+      extends WriteValuesBufferImpl {
 
     private Integer bufferValue;
 
-    private int device;
-
-    private int reg;
-
-    private boolean changed = true;
-
     public AOWriteValuesBuffer( WriteTagImpl aTag, int aDevice, int aReg ) {
-      device = aDevice;
-      reg = aReg;
-      tag = aTag;
+      super( aTag, aDevice, aReg );
     }
 
     @Override
-    public void doJob() {
+    public void doJobImpl()
+        throws ModbusException {
 
       if( changed && bufferValue != null ) {
 
@@ -974,24 +1000,18 @@ public class CommonModbusDevice
         WriteSingleRegisterRequest request =
             new WriteSingleRegisterRequest( reg, new SimpleRegister( bufferValue.intValue() ) );
         request.setUnitID( device );
+
         // транзакция
         ModbusTransaction trans = createModbusTransaction();
         trans.setRequest( request );
 
         // исполнение транзакции
-        try {
-          trans.execute();
+        trans.execute();
 
-          // ответ
-          @SuppressWarnings( "unused" )
-          WriteSingleRegisterResponse res = (WriteSingleRegisterResponse)trans.getResponse();
-          changed = false;
-
-        }
-        catch( ModbusException e ) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
+        // ответ
+        @SuppressWarnings( "unused" )
+        WriteSingleRegisterResponse res = (WriteSingleRegisterResponse)trans.getResponse();
+        changed = false;
       }
 
     }
@@ -1006,6 +1026,12 @@ public class CommonModbusDevice
           bufferValue = Integer.valueOf( newVal );
         }
       }
+
+    }
+
+    @Override
+    protected void writeError() {
+      // TODO Auto-generated method stub
 
     }
 
