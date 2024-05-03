@@ -64,7 +64,7 @@ public class CommonModbusDevice
       this.id = aId;
       this.descr = aDescr;
       this.bufferConstructor = aBufferClass.getConstructors()[0];
-      this.outBufferConstructor = aOutBufferClass.getConstructors()[0];
+      this.outBufferConstructor = aOutBufferClass != null ? aOutBufferClass.getConstructors()[0] : null;
     }
 
     @Override
@@ -157,7 +157,7 @@ public class CommonModbusDevice
     IListEdit<ValuesBufferImpl<?>> typeBuffers = null;
 
     IAvTree tagsMassiv = aDeviceParams.nodes().findByKey( TAGS_PARAM_ID );
-    int tagDevAddress = aDeviceParams.fields().getInt( DEV_ADDRESS_PARAM_ID );
+    int tagDevAddress = aDeviceParams.fields().getInt( DEV_ADDRESS_PARAM_ID, 1 );
     for( int i = 0; i < tagsMassiv.arrayLength(); i++ ) {
       IAvTree tagParams = tagsMassiv.arrayElement( i );
       String tagId = tagParams.fields().getStr( ID_PARAM_ID );

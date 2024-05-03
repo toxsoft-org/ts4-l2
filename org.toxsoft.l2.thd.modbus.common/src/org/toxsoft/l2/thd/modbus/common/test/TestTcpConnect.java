@@ -132,7 +132,7 @@ public class TestTcpConnect {
     // формирование запроса
     ReadInputRegistersRequest cr = new ReadInputRegistersRequest( aReg, aCount );
     cr.setUnitID( aAdress );
-    cr.setHeadless();
+    // cr.setHeadless();
 
     // транзакция
     ModbusTransaction trans = transactionCreator.createModbusTransaction();
@@ -140,7 +140,7 @@ public class TestTcpConnect {
 
     // испонение транзакции
     try {
-      System.out.println( "Read " + aAdress + " , count = " + aCount );
+      System.out.println( "Read reg = " + aReg + " , count = " + aCount );
       trans.execute();
 
       ModbusResponse r = trans.getResponse();
