@@ -1,0 +1,116 @@
+DeviceConfig = 
+{
+  false,
+  "modbus.common.cfg",
+  {
+    javaClassName = "org.toxsoft.l2.thd.modbus.common.CommonModbusDeviceProducer",
+    id = "modbus.bridge.common",
+    description = "modbus common apparat producer",
+    period = 1000
+  }
+  ,
+  {
+    connections=
+    {
+      true,
+      [
+        {
+          false,
+          "connection1.def",
+          {
+            type = "tcp",
+            ip = "localhost",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "device.def",
+                  {
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [                        
+                        {
+                          false,
+                          "pin.AI_2_1.def",
+                          {
+                            id = "AI_2_1",
+                            descr = "AI_2_1",
+                            request.type = "AI",
+                            register = 1,
+                            words.count = 1,
+                            translator = "org.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          false,
+          "connection2.def",
+          {
+            type = "tcp",
+            ip = "localhost",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "device.def",
+                  {
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [                        
+                        {
+                          false,
+                          "pin.AI_3_1.def",
+                          {
+                            id = "AI_3_1",
+                            descr = "AI_3_1",
+                            request.type = "AI",
+                            register = 2,
+                            words.count = 1,
+                            translator = "org.toxsoft.l2.thd.modbus.common.translators.AnalogTowBytesTranslator"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
