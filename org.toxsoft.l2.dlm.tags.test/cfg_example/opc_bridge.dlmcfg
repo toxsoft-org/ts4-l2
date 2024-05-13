@@ -1,0 +1,31 @@
+#Конфигурайионный файл загружаемого модуля теста тегов
+DlmConfig = 
+{
+ false,
+ "test_tags.dlm.cfg",
+ {
+  # параметры модуля
+  id="org.toxsoft.l2.dlm.tags.test",
+  description="org.toxsoft.l2.dlm.tags.test",
+  testTag="Для проверки настройки"  
+ },
+ {
+  tags=
+  {
+   true,
+   [
+#    {
+#     false,
+#     "class1.def", # send LlTest llTest testPin
+#     {
+#      class.id = "tm.Clock" ,      # String идентификатор  класса
+#      obj.names.list="tahRelayRoomClock", # список String имён объектов 
+#      cmd.ids.list="brightness"   # список String идентфикаторов команд             
+#     },
+#     {
+#     }
+#    }   
+   ]
+  }
+ }
+}

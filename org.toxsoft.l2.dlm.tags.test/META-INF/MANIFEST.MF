@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tags Test
+Bundle-SymbolicName: org.toxsoft.l2.dlm.tags.test
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.toxsoft.l2.dlm.tags.test
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Require-Bundle: ru.toxsoft.l2.core,
+ org.toxsoft.uskat.core,
+ org.toxsoft.core.log4j,
+ org.toxsoft.extlibs.log4j,
+ org.toxsoft.core.tslib,
+ ru.toxsoft.l2.thd.opc.da
