@@ -17,7 +17,7 @@ public class AnalogTowBytesTranslator
     int result = aBytes[0];
     // (((aBytes[0] & 0xff) << 8) | (aBytes[1] & 0xff));
     // System.out.println("Analog result = "+result);
-    return AvUtils.avFloat( result );
+    return AvUtils.avInt( result );
   }
 
 }

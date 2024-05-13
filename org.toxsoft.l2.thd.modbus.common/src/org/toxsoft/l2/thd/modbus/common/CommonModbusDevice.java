@@ -91,7 +91,7 @@ public class CommonModbusDevice
         IllegalAccessException,
         IllegalArgumentException,
         InvocationTargetException {
-      return (ValuesBufferImpl<?>)outBufferConstructor.newInstance( aParent, aTag, Integer.valueOf( aDevice ),
+      return (IValuesBuffer)outBufferConstructor.newInstance( aParent, aTag, Integer.valueOf( aDevice ),
           Integer.valueOf( aStartReg ) );
     }
 
@@ -261,7 +261,11 @@ public class CommonModbusDevice
   @Override
   protected void readValuesFromLL()
       throws TsMultipleApparatRtException {
+    LoggerUtils.defaultLogger().info( "Buffer size = %s", String.valueOf( buffers.size() ) );
     for( IValuesBuffer b : buffers ) {
+      ValuesBufferImpl vbi = (ValuesBufferImpl)b;
+      LoggerUtils.defaultLogger().info( "Buffer: start = %s, count = %s", String.valueOf( vbi.startReg ),
+          String.valueOf( vbi.wordsCount ) );
       b.doJob();
       try {
         Thread.sleep( REQUESTS_INTERVAL );
