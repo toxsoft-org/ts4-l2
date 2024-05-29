@@ -3,16 +3,39 @@ package org.toxsoft.l2.thd.modbus.common;
 import java.lang.reflect.*;
 
 import org.toxsoft.core.tslib.bricks.strid.*;
+import org.toxsoft.l2.thd.modbus.common.translators.*;
 
 /**
  * Перечень стандартных трансляторов: переводчиков из входных данных modbus в данные типа tslib
  *
  * @author max
  */
+@SuppressWarnings( "nls" )
 public enum ETranslators
     implements IStridable {
 
-  ;
+  /**
+   * Boolean from modbus discrets translator
+   */
+  BOOLEAN_DISCRETS( "BOOLEAN_DISCRETS", "Boolean from modbus discrets translator",
+      BooleanCommonDiscretsTranslator.class ),
+
+  /**
+   * Boolean from modbus registers translator
+   */
+  BOOLEAN_REGISTERS( "BOOLEAN_REGISTERS", "Boolean from modbus registers translator",
+      BooleanCommonRegistersTranslator.class ),
+
+  /**
+   * Integer from modbus registers translator
+   */
+  INTEGER_REGISTERS( "INTEGER_REGISTERS", "Integer from modbus registers translator",
+      IntegerCommonRegistersTranslator.class ),
+
+  /**
+   * Float from modbus registers translator
+   */
+  FLOAT_REGISTERS( "FLOAT_REGISTERS", "Float from modbus registers translator", FloatCommonRegistersTranslator.class );
 
   private String id;
 

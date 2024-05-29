@@ -9,7 +9,7 @@ import org.toxsoft.l2.thd.modbus.common.*;
  *
  * @author Max
  */
-public class OneToOneDiscretTranslator
+public class BooleanCommonDiscretsTranslator
     implements IDiscretTranslator {
 
   @Override
