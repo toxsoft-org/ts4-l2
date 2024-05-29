@@ -13,6 +13,8 @@ import org.toxsoft.core.tslib.av.opset.impl.OptionSet;
 import org.toxsoft.core.tslib.av.opset.impl.OptionSetKeeper;
 import org.toxsoft.core.tslib.bricks.ctx.ITsContext;
 import org.toxsoft.core.tslib.bricks.ctx.impl.TsContext;
+import org.toxsoft.core.tslib.bricks.threadexec.ITsThreadExecutor;
+import org.toxsoft.core.tslib.bricks.threadexec.TsThreadExecutor;
 import org.toxsoft.core.tslib.bricks.validator.ValidationResult;
 import org.toxsoft.core.tslib.bricks.validator.impl.ValResList;
 import org.toxsoft.core.tslib.coll.primtypes.IIntList;
@@ -39,8 +41,6 @@ import ru.toxsoft.l2.core.main.IL2HardConstants;
 import ru.toxsoft.l2.core.main.IProgramQuitCommand;
 import ru.toxsoft.l2.core.main.impl.*;
 import ru.toxsoft.l2.core.net.INetworkComponent;
-import core.tslib.bricks.threadexecutor.ITsThreadExecutor;
-import core.tslib.bricks.threadexecutor.TsThreadExecutor;
 
 /**
  * Реализация слоя работы с сетью, в частности с S3 сервером.
@@ -212,61 +212,62 @@ public class NetworkImpl
    * Инициализирует обработчика команды завершения работы НУ
    */
   private boolean initQuitCommandSuccess = false;
+
   private void initQuitCommandListener() {
-	ITsThreadExecutor threadExecutor = SkThreadExecutorService.getExecutor( getSkConnection().coreApi() );  
+    ITsThreadExecutor threadExecutor = SkThreadExecutorService.getExecutor( getSkConnection().coreApi() );
     quitCommandDef = createQuitCommansDef();
     if( quitCommandDef.size() > 0 ) {
       // количество попыток зарегать обработчики команд
       int regTriesCount = 50;
       long cmdReregInterval = 3000;
-//      threadExecutor.syncExec(new Runnable() {
-//		
-//		@Override
-//		public void run() {
-		      for( int i = 0; i < regTriesCount; i++ ) {
-		          logger.debug( "Quit command registration try number %d from %d", Integer.valueOf( i + 1 ), //$NON-NLS-1$
-		              Integer.valueOf( regTriesCount ) );
+      // threadExecutor.syncExec(new Runnable() {
+      //
+      // @Override
+      // public void run() {
+      for( int i = 0; i < regTriesCount; i++ ) {
+        logger.debug( "Quit command registration try number %d from %d", Integer.valueOf( i + 1 ), //$NON-NLS-1$
+            Integer.valueOf( regTriesCount ) );
 
-		          try {
-		            Gwid quitCmdGwid = quitCommandDef.first();
-		            ISkClassInfo classInfo = getSkConnection().coreApi().sysdescr().findClassInfo( quitCmdGwid.classId() );
-		            if( classInfo == null ) {
-		              logger.debug( "QUIT COMMAND CLASS '%s' doesnt exist", quitCmdGwid.classId() ); //$NON-NLS-1$
-		              return;
-		            }
-		            if( !classInfo.cmds().list().hasKey( quitCmdGwid.propId() ) ) {
-		              logger.debug( "QUIT COMMAND ID '%s' doesnt exist", quitCmdGwid.propId() ); //$NON-NLS-1$
-		              return;
-		            }
-		            if( getSkConnection().coreApi().objService()
-		                .find( new Skid( quitCmdGwid.classId(), quitCmdGwid.strid() ) ) == null ) {
-		              logger.debug( "QUIT COMMAND OBJECT '%s' doesnt exist", quitCmdGwid.strid() ); //$NON-NLS-1$
-		              return;
-		            }
-		            getSkConnection().coreApi().cmdService().registerExecutor( NetworkImpl.this, quitCommandDef );
-		            logger.info( "QUIT COMMAND REGISTERED" ); //$NON-NLS-1$
-
-		            initQuitCommandSuccess = true;
-		            return;
-		          }
-		          catch( Exception e ) {
-		            logger.debug( "Quit command registration error: %s", e.getMessage() ); //$NON-NLS-1$
-		          }
-		        }
-//	    }}
-//		);
-        if( initQuitCommandSuccess == true ) {
-           return;
-        }
-        // перерыв перед следующей попыткой регистрации
         try {
-          Thread.sleep( cmdReregInterval );
+          Gwid quitCmdGwid = quitCommandDef.first();
+          ISkClassInfo classInfo = getSkConnection().coreApi().sysdescr().findClassInfo( quitCmdGwid.classId() );
+          if( classInfo == null ) {
+            logger.debug( "QUIT COMMAND CLASS '%s' doesnt exist", quitCmdGwid.classId() ); //$NON-NLS-1$
+            return;
+          }
+          if( !classInfo.cmds().list().hasKey( quitCmdGwid.propId() ) ) {
+            logger.debug( "QUIT COMMAND ID '%s' doesnt exist", quitCmdGwid.propId() ); //$NON-NLS-1$
+            return;
+          }
+          if( getSkConnection().coreApi().objService()
+              .find( new Skid( quitCmdGwid.classId(), quitCmdGwid.strid() ) ) == null ) {
+            logger.debug( "QUIT COMMAND OBJECT '%s' doesnt exist", quitCmdGwid.strid() ); //$NON-NLS-1$
+            return;
+          }
+          getSkConnection().coreApi().cmdService().registerExecutor( NetworkImpl.this, quitCommandDef );
+          logger.info( "QUIT COMMAND REGISTERED" ); //$NON-NLS-1$
+
+          initQuitCommandSuccess = true;
+          return;
         }
-        catch( InterruptedException e ) {
-          logger.error( e );
+        catch( Exception e ) {
+          logger.debug( "Quit command registration error: %s", e.getMessage() ); //$NON-NLS-1$
         }
       }
-      logger.info( "QUIT COMMAND HAS NOT BEEN REGISTERED" ); //$NON-NLS-1$    
+      // }}
+      // );
+      if( initQuitCommandSuccess ) {
+        return;
+      }
+      // перерыв перед следующей попыткой регистрации
+      try {
+        Thread.sleep( cmdReregInterval );
+      }
+      catch( InterruptedException e ) {
+        logger.error( e );
+      }
+    }
+    logger.info( "QUIT COMMAND HAS NOT BEEN REGISTERED" ); //$NON-NLS-1$
   }
 
   @Override
