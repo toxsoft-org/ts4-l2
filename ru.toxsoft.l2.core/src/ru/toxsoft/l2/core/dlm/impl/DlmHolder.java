@@ -3,24 +3,26 @@ package ru.toxsoft.l2.core.dlm.impl;
 import static ru.toxsoft.l2.core.dlm.impl.IL2Resources.*;
 import static ru.toxsoft.l2.core.main.IL2HardConstants.*;
 
-import java.io.*;
+import java.io.File;
 
-import org.toxsoft.core.log4j.*;
-import org.toxsoft.core.tslib.bricks.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.utils.*;
+import org.toxsoft.core.log4j.LoggerWrapper;
+import org.toxsoft.core.tslib.bricks.ICooperativeWorkerComponent;
+import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.tslib.coll.IListEdit;
+import org.toxsoft.core.tslib.coll.impl.ElemArrayList;
+import org.toxsoft.core.tslib.utils.TsVersion;
 import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.core.tslib.utils.logs.ILogger;
 import org.toxsoft.core.tslib.utils.plugins.*;
-import org.toxsoft.core.tslib.utils.plugins.IChangedPluginsInfo.*;
-import org.toxsoft.core.tslib.utils.plugins.impl.*;
+import org.toxsoft.core.tslib.utils.plugins.IChangedPluginsInfo.IChangedPluginInfo;
+import org.toxsoft.core.tslib.utils.plugins.impl.PluginUtils;
 
-import ru.toxsoft.l2.core.cfg.*;
-import ru.toxsoft.l2.core.cfg.impl.*;
+import ru.toxsoft.l2.core.cfg.IUnitConfig;
+import ru.toxsoft.l2.core.cfg.impl.DefaultUnitConfigLoader;
 import ru.toxsoft.l2.core.dlm.*;
-import ru.toxsoft.l2.core.main.*;
-import ru.toxsoft.l2.core.util.*;
+import ru.toxsoft.l2.core.main.EGlobalOps;
+import ru.toxsoft.l2.core.main.IGlobalContext;
+import ru.toxsoft.l2.core.util.WorkerComponentBase;
 
 /**
  * Внутренный для {@link DlmManager} класс, работающий с динамической загрузкой модулей.
@@ -87,8 +89,7 @@ final class DlmHolder
 
   private IDlm createPlugin( IPluginInfo aPi ) {
     try {
-      Object o = storage.createPluginInstance( aPi.pluginId() );
-      IDlmFactory dlmFactory = (IDlmFactory)o;
+      IDlmFactory dlmFactory = storage.loadPlugin( aPi.pluginId() ).instance( IDlmFactory.class );
       dlmFactory.setPluginIngfo( aPi );
       for( IDlm d : dlms ) {
         if( d.info().moduleId().equals( dlmFactory.info().moduleId() ) ) {
