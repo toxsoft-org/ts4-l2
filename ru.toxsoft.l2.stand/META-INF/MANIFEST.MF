@@ -5,4 +5,4 @@ Bundle-SymbolicName: ru.toxsoft.l2.stand
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: ToxSoft
 Automatic-Module-Name: ru.toxsoft.l2.stand
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
