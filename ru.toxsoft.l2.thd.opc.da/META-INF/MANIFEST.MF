@@ -11,6 +11,6 @@ Require-Bundle: ru.toxsoft.l2.core,
  org.toxsoft.core.log4j,
  org.toxsoft.extlibs.log4j,
  org.toxsoft.extlibs.jeasyopc
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: ru.toxsoft.l2.thd.opc,
  ru.toxsoft.l2.thd.opc.da

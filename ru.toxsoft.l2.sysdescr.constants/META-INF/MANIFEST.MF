@@ -5,5 +5,5 @@ Bundle-SymbolicName: ru.toxsoft.l2.sysdescr.constants
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: ToxSoft
 Automatic-Module-Name: ru.toxsoft.l2.sysdescr.constants
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: ru.toxsoft.l2.sysdescr.constants

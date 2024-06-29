@@ -5,7 +5,7 @@ Bundle-SymbolicName: ru.toxsoft.l2.core
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: ToxSoft
 Automatic-Module-Name: ru.toxsoft.l2.core
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: ru.toxsoft.l2.sysdescr.constants,
  org.toxsoft.extlibs.modbus,
  org.toxsoft.core.tslib,

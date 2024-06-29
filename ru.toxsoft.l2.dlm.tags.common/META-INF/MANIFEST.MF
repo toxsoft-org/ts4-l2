@@ -5,7 +5,7 @@ Bundle-SymbolicName: ru.toxsoft.l2.dlm.tags.common
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: ToxSoft
 Automatic-Module-Name: ru.toxsoft.l2.dlm.tags.common
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: ru.toxsoft.l2.core,
  org.toxsoft.uskat.core,
  org.toxsoft.core.log4j,

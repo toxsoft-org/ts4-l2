@@ -8,7 +8,7 @@ Automatic-Module-Name: ru.toxsoft.l2.utils.opc.cfg.exe
 Require-Bundle: org.toxsoft.core.tslib,
  org.toxsoft.extlibs.opendocument,
  org.toxsoft.uskat.core
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: ru.toxsoft.l2.dlms.pins.base,
  ru.toxsoft.l2.utils.opc.cfg.exe,
  ru.toxsoft.l2.utils.opc.cfg.exe.ods,
