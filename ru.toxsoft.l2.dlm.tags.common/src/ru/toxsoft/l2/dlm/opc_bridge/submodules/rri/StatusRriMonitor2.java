@@ -1,5 +1,6 @@
 package ru.toxsoft.l2.dlm.opc_bridge.submodules.rri;
 
+import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static ru.toxsoft.l2.dlm.opc_bridge.IDlmsBaseConstants.*;
 import static ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IStatusRriMonitorConsts.*;
 
@@ -144,6 +145,11 @@ public class StatusRriMonitor2 {
   private boolean configured = false;
 
   /**
+   * флаг наличия ошибок в процессе загрузки НСИ
+   */
+  private boolean errInProcess = false;
+
+  /**
    * Вызывается на этапе конфигурации
    *
    * @param aParams дерево описания параметров конфигурации модуля
@@ -196,7 +202,11 @@ public class StatusRriMonitor2 {
   }
 
   long setStatus() {
-    return wStatusRri.setValue( cmdSetStatus.asInt(), IAtomicValue.NULL );
+    IAtomicValue newStatus = AV_1;
+    if( errInProcess ) {
+      newStatus = AvUtils.avInt( 2 );
+    }
+    return wStatusRri.setValue( cmdSetStatus.asInt(), newStatus );
   }
 
   long resetStatus() {
@@ -208,6 +218,7 @@ public class StatusRriMonitor2 {
    */
   private void startDownload() {
     currTransmitterIndex = 0;
+    errInProcess = false;
     IRriDataTransmitter transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
     transmitter.transmitUskat2OPC();
   }
@@ -266,7 +277,6 @@ public class StatusRriMonitor2 {
           // логируем проблему и переходим к следующему параметру
           logError( "Fail to writing %s, go to the next one...",
               transmitter.gwid2Section().keys().first().canonicalString() );
-          transferErrorCounter = 0;
         }
         else {
           // делаем еще одну попытку c тем же параметром
@@ -284,20 +294,21 @@ public class StatusRriMonitor2 {
         logger.warning( "Timeout in writing %s", transmitter.gwid2Section().keys().first() );
         transferErrorCounter++;
         if( transferErrorCounter > ERR_COUNTER ) {
-          logger.error( "Fail to writing %s, go next", transmitter.gwid2Section().keys().first().canonicalString() );
-          transferErrorCounter = 0;
+          logError( "Timeout in writing %s, go next", transmitter.gwid2Section().keys().first().canonicalString() );
         }
         break;
       case UNKNOWN:
-        logger.error( "UNKNOWN state in writing %s, index %d, go next",
-            transmitter.gwid2Section().keys().first().canonicalString(), Integer.valueOf( currTransmitterIndex ) );
+        logError( "UNKNOWN state in writing %s, index %d, go next",
+            transmitter.gwid2Section().keys().first().canonicalString() );
         break;
       default:
         break;
     }
+    // переходим к следующему параметру НСИ
+    ++currTransmitterIndex;
     // проверяем что еще есть незаписанные параметры
     if( hasMoreDownload() ) {
-      transmitter = pinRriDataTransmitters.get( ++currTransmitterIndex );
+      transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
       transmitter.transmitUskat2OPC();
     }
     else {
@@ -315,6 +326,8 @@ public class StatusRriMonitor2 {
     params.setStr( EVPRMID_COMMENT, evtStr );
     SkEvent ev = new SkEvent( System.currentTimeMillis(), eventGwid, params );
     context.network().getSkConnection().coreApi().eventService().fireEvent( ev );
+    errInProcess = true;
+    transferErrorCounter = 0;
   }
 
   private boolean hasMoreDownload() {
