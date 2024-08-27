@@ -311,7 +311,7 @@ public class OpcRriDataModule
       Gwid parGwid = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_PARAM_GWID ).asValobj();
       IAtomicValue oldVal = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_OLD_VAL_ATTR );
       IAtomicValue newVal = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_NEW_VAL_ATTR );
-      logger.debug( "Event param %s change. oldVal = %s newVal = %s", parGwid.asString(), oldVal.asString(), //$NON-NLS-1$
+      logger.debug( "Event param %s change. oldVal = %s newVal = %s", parGwid.canonicalString(), oldVal.asString(), //$NON-NLS-1$
           newVal.asString() );
     }
   }

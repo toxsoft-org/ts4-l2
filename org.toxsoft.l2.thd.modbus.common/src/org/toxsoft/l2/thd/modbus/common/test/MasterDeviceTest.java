@@ -1,17 +1,16 @@
 package org.toxsoft.l2.thd.modbus.common.test;
 
-import java.net.InetAddress;
+import java.net.*;
 
-import net.wimpi.modbus.io.ModbusTCPTransaction;
-import net.wimpi.modbus.msg.ReadInputRegistersRequest;
-import net.wimpi.modbus.msg.ReadInputRegistersResponse;
-import net.wimpi.modbus.net.TCPMasterConnection;
+import net.wimpi.modbus.io.*;
+import net.wimpi.modbus.msg.*;
+import net.wimpi.modbus.net.*;
 
 public class MasterDeviceTest {
 
-   private static String address = "192.168.2.101";
+  // private static String address = "192.168.2.101";
 
- // private static String address = "127.0.0.1";
+  private static String address = "127.0.0.1";
 
   public static void main( String[] args )
       throws Exception {
@@ -36,14 +35,14 @@ public class MasterDeviceTest {
         ReadInputRegistersResponse res = (ReadInputRegistersResponse)trans.getResponse();
         int val = res.getRegister( 0 ).getValue();
 
-        System.out.println("* "+ val );
+        System.out.println( i + " - " + val );
 
       }
       catch( Exception e ) {
         e.printStackTrace();
       }
-      
-      Thread.sleep( 7000 );
+
+      Thread.sleep( 1000 );
     }
   }
 
@@ -53,7 +52,7 @@ public class MasterDeviceTest {
 
     TCPMasterConnection retVal = new TCPMasterConnection( addr );
 
-    retVal.setPort( 1500 );
+    retVal.setPort( 502 );
     retVal.connect();
     System.out.println( "Connection established" );
     return retVal;
