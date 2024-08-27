@@ -76,9 +76,9 @@ final class DlmHolder
 
     storage.addPluginJarPath( aPluginsDir, false );
     // загрузим плагины, доступные на данный момент
-    for( IPluginInfo i : storage.listPlugins() ) {
-      dlms.add( createPlugin( i ) );
-    }
+    // for( IPluginInfo i : storage.listPlugins() ) {
+    // dlms.add( createPlugin( i ) );
+    // }
   }
 
   // ------------------------------------------------------------------------------------

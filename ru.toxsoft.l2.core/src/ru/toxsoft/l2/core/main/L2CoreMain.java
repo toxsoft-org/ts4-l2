@@ -372,8 +372,8 @@ public class L2CoreMain {
       globalLogger.info( "Stating reserve module" );
       startComponent2( "RESERVE", reserve );
 
-      globalLogger.info( MSG_START_DLM );
-      dlmMgr.start();
+      // globalLogger.info( MSG_START_DLM );
+      // dlmMgr.start();
 
       globalLogger.info( MSG_START_APP );
       startComponent2( "APP", appComponent );
