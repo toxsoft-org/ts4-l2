@@ -170,12 +170,14 @@ public class SingleIntToSingleBoolRriDataTransmitter
       ISkRriSection section = gwid2SectionMap.getByKey( gwid );
       IAtomicValue val = section.getAttrParamValue( gwid.skid(), gwid.propId() );
       // пишем его в OPC
-      if( val.asBool() ) {
-        lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndexOn, val );
+      if( val.isAssigned() ) {
+        if( val.asBool() ) {
+          lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndexOn, val );
 
-      }
-      else {
-        lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndexOff, val );
+        }
+        else {
+          lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndexOff, val );
+        }
       }
       return true;
     }
