@@ -198,6 +198,11 @@ public class StatusRriMonitor2 {
       // тут комплексный тег
       wStatusRri = aComplexTagsContainer.getComplexTagById( complextStatusRriNodeId.asString() );
       pinRriDataTransmitters = aPinRriDataTransmitters;
+      prevRriOk = rStatusRri.get();
+      // на старте оказалось что контроллер требует НСИ, сразу запускаем процесс
+      if( prevRriOk.asInt() == 0 ) {
+        currState = MonitorRunningStage.STARTING_DOWNLOAD;
+      }
     }
   }
 
@@ -236,9 +241,9 @@ public class StatusRriMonitor2 {
         finishTransfer();
         break;
       case MONITORING:
-        // ловим переход не0 -> 0
+        // ловим переход 1 -> 0
         IAtomicValue currRriOk = rStatusRri.get();
-        if( (prevRriOk.equals( IAtomicValue.NULL ) || prevRriOk.asInt() != 0) && (currRriOk.asInt() == 0) ) {
+        if( prevRriOk.asInt() != 0 && (currRriOk.asInt() == 0) ) {
           // поймали переход из было "НСИ норма", стало "НСИ нужно"
           prevRriOk = currRriOk;
           // переходим в загрузку
