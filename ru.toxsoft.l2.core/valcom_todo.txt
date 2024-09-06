@@ -1,0 +1,11 @@
+Valcom low level todo:
++/-1. проверить все типы каналов Modbus RTU и TCP, не проверено MTU
++2. в конфигураторе внести имя шаблона файла и директорию по примеру OPC UA config editor
++?3. Максу замечания по а) Reserve б) DlmHolder
++4. проверить заливки в НСИ. Проверено, не работает  
++5. найти и исправить в кодах ВЕЗДЕ Gwid.of( ugwi.essence() ); ->  Gwid.createAttr( UgwiKindRriAttr.getClassId( selUgwi ), UgwiKindRriAttr.getObjStrid( selUgwi ),
+            UgwiKindRriAttr.getAttrId( selUgwi ) );
+6. запланировать переход от Gwid -> Ugwi в кодах нижнего уровня и редакторах
+7. автоматически сохранять при изменении конфигурации или делать пометку что изменилась конфигурация
+8. 
+9.           

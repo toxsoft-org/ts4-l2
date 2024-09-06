@@ -431,7 +431,8 @@ public class CommandsModule
     // TODO
     // Dima, for debug
     commandsQueue.putTail( aCmd );
-    logger.debug( "Get command %s, and put into queue ", aCmd.instanceId() ); //$NON-NLS-1$
+    logger.debug( "Get command %s, cmdGwid:%s, and put into queue ", aCmd.instanceId(), //$NON-NLS-1$
+        aCmd.cmdGwid().canonicalString() );
   }
 
   /**
@@ -558,7 +559,6 @@ public class CommandsModule
     }
 
     public TagInfo( String aDeviceId, String aTagId ) {
-      super();
       deviceId = aDeviceId;
       tagId = aTagId;
       isComplex = false;
@@ -611,7 +611,6 @@ public class CommandsModule
      * @param aCmdIds - id команд
      */
     public ProcessedCommandsDefByObjNames( String aClassId, IStringList aObjNames, IStringList aCmdIds ) {
-      super();
       classId = aClassId;
       objNames = aObjNames;
       cmdIds = aCmdIds;
