@@ -118,6 +118,7 @@ public class OneToOneRriDataTransmitter
     return gwid2SectionMap;
   }
 
+  @SuppressWarnings( "nls" )
   @Override
   public boolean transmitUskat2OPC() {
     if( !сomplexTag.isBusy() ) {
@@ -125,7 +126,7 @@ public class OneToOneRriDataTransmitter
       Gwid gwid = gwid2SectionMap.keys().first();
       ISkRriSection section = gwid2SectionMap.getByKey( gwid );
       IAtomicValue val = section.getAttrParamValue( gwid.skid(), gwid.propId() );
-      logger.debug( "Value of %s read from section: %s", gwid.asString(), val.asString() );
+      logger.debug( "Value of %s read from section: %s", gwid.canonicalString(), val.asString() );
       // пишем его в OPC
       lastOPCCmdTimestamp = сomplexTag.setValue( opcCmdIndex, val );
       return true;

@@ -3,30 +3,27 @@ package ru.toxsoft.l2.dlm.opc_bridge.submodules.rri;
 import static ru.toxsoft.l2.dlm.opc_bridge.IDlmsBaseConstants.*;
 import static ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IL2Resources.*;
 
-import org.toxsoft.core.log4j.LoggerWrapper;
-import org.toxsoft.core.tslib.av.IAtomicValue;
-import org.toxsoft.core.tslib.av.avtree.IAvTree;
-import org.toxsoft.core.tslib.bricks.validator.ValidationResult;
-import org.toxsoft.core.tslib.bricks.validator.impl.ValResList;
-import org.toxsoft.core.tslib.coll.IList;
+import org.toxsoft.core.log4j.*;
+import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.core.tslib.bricks.validator.*;
+import org.toxsoft.core.tslib.bricks.validator.impl.*;
+import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.derivative.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.utils.errors.TsIllegalArgumentRtException;
-import org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException;
-import org.toxsoft.core.tslib.utils.logs.ILogger;
-import org.toxsoft.skf.rri.lib.impl.ISkRriServiceHardConstants;
+import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.skf.rri.lib.impl.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
 import org.toxsoft.uskat.core.api.evserv.*;
 
-import ru.toxsoft.l2.core.cfg.IUnitConfig;
-import ru.toxsoft.l2.core.dlm.IDlmContext;
-import ru.toxsoft.l2.core.dlm.IDlmInfo;
-import ru.toxsoft.l2.dlm.opc_bridge.ConfigurableWorkerModuleBase;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.CommandsModule;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.CommandsModule.ProcessedCommandsDefByObjNames;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.IComplexTagsContainer;
-import ru.toxsoft.l2.dlm.opc_bridge.submodules.rri.IStatusRriMonitor.ERriControllerState;
-import ru.toxsoft.l2.thd.opc.ITag;
+import ru.toxsoft.l2.core.cfg.*;
+import ru.toxsoft.l2.core.dlm.*;
+import ru.toxsoft.l2.dlm.opc_bridge.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.commands.CommandsModule.*;
+import ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags.*;
+import ru.toxsoft.l2.thd.opc.*;
 
 /**
  * Модуль работы с RRI данными.
@@ -85,7 +82,8 @@ public class OpcRriDataModule
   /**
    * Монитор статуса НСИ контроллера.
    */
-  private IStatusRriMonitor statusRriMonitor = new StatusRriMonitor();
+  // private IStatusRriMonitor statusRriMonitor = new StatusRriMonitor();
+  private StatusRriMonitor2 statusRriMonitor = new StatusRriMonitor2();
 
   /**
    * контейнер комплексных тегов
@@ -134,6 +132,7 @@ public class OpcRriDataModule
     }
   }
 
+  @SuppressWarnings( "nls" )
   @Override
   protected void doStartComponent() {
 
@@ -200,29 +199,10 @@ public class OpcRriDataModule
 
     // текущее время - чтоб у всех данных было одно время
     long currTime = System.currentTimeMillis();
-    // получаем текущий статус блока НСИ контроллера
-    ERriControllerState controllerRriState = statusRriMonitor.getState();
-    // for debug
-    // ERriControllerState controllerRriState = ERriControllerState.RRI_CONTROLLER_OK;
-    switch( controllerRriState ) {
-      case NEED_DOWNLOAD_USKAT_RRI: {
-        // контроллер сигнализирует "залейте НСИ с сервера USkat"
-        // запускаем процесс передачи
-        statusRriMonitor.startDownload();
-      }
-        break;
-      case RRI_CONTROLLER_OK:
-        routine( currTime );
-        break;
-      case UNKNOWN:
-        break;
-      case USKAT_RRI_LOADING:
-        // мы в стадии передачи значений с USkat сервера на OPC UA
-        statusRriMonitor.processDownload();
-        break;
-      default:
-        break;
-    }
+    // даем подышать блоку следящему за статусом "НСИ Ok"
+    statusRriMonitor.doDoJob();
+    // работаем сами
+    routine( currTime );
     // обрабатываем полученные события
     processNextEvent();
     // обрабатываем полученные команды
@@ -282,13 +262,6 @@ public class OpcRriDataModule
     }
   }
 
-  // private void transferRriUskat2OPC() {
-  // // Читаем с USkat сервера и пишем в OPC
-  // for( IRriDataTransmitter transmitter : pinRriDataTransmitters ) {
-  // transmitter.transmitUskat2OPC();
-  // }
-  // }
-
   @Override
   protected boolean doQueryStop() {
     // отписываемся от всего под что подписались
@@ -338,7 +311,7 @@ public class OpcRriDataModule
       Gwid parGwid = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_PARAM_GWID ).asValobj();
       IAtomicValue oldVal = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_OLD_VAL_ATTR );
       IAtomicValue newVal = event.paramValues().findByKey( ISkRriServiceHardConstants.EVPRMID_NEW_VAL_ATTR );
-      logger.debug( "Event param %s change. oldVal = %s newVal = %s", parGwid.asString(), oldVal.asString(), //$NON-NLS-1$
+      logger.debug( "Event param %s change. oldVal = %s newVal = %s", parGwid.canonicalString(), oldVal.asString(), //$NON-NLS-1$
           newVal.asString() );
     }
   }
