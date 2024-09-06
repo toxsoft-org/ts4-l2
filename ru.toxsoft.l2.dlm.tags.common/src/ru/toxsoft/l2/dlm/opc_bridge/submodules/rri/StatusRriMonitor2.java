@@ -140,6 +140,11 @@ public class StatusRriMonitor2 {
   private long setStatusTimestamp = 0;
 
   /**
+   * метка времени начала текуще операции записи очередно параметра
+   */
+  private long currParamStartWritingTimestamp = 0;
+
+  /**
    * флаг корректной конфигурации
    */
   private boolean configured = false;
@@ -214,10 +219,6 @@ public class StatusRriMonitor2 {
     return wStatusRri.setValue( cmdSetStatus.asInt(), newStatus );
   }
 
-  long resetStatus() {
-    return wStatusRri.setValue( cmdResetStatus.asInt(), IAtomicValue.NULL );
-  }
-
   /**
    * Начало процесса загрузки НСИ с сервера uSkat
    */
@@ -241,7 +242,7 @@ public class StatusRriMonitor2 {
         finishTransfer();
         break;
       case MONITORING:
-        // ловим переход 1 -> 0
+        // ловим переход 1 или 2 -> 0
         IAtomicValue currRriOk = rStatusRri.get();
         if( prevRriOk.asInt() != 0 && (currRriOk.asInt() == 0) ) {
           // поймали переход из было "НСИ норма", стало "НСИ нужно"
@@ -261,7 +262,7 @@ public class StatusRriMonitor2 {
     }
   }
 
-  @SuppressWarnings( "nls" )
+  @SuppressWarnings( { "nls" } )
   private void checkCurrentNdGoNext() {
     // проверяем состояние передачи
     IRriDataTransmitter transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
@@ -271,17 +272,18 @@ public class StatusRriMonitor2 {
         // очередное значение записалось успешно, переходим к следующему
         logger.debug( "Done to writing %s, index %d,  go next", transmitter.gwid2Section().keys().first(),
             Integer.valueOf( currTransmitterIndex ) );
-        transferErrorCounter = 0;
+        anywayProcessNext();
         break;
       }
       case ERROR:
         // произошла ошибка записи
-        logger.error( "Error in writing %s", transmitter.gwid2Section().keys().first() );
+        logger.error( "Error in writing Gwid: %s", transmitter.gwid2Section().keys().first().canonicalString() );
         transferErrorCounter++;
         if( transferErrorCounter > ERR_COUNTER ) {
           // логируем проблему и переходим к следующему параметру
-          logError( "Fail to writing %s, go to the next one...",
+          logError( "Fail to write Gwid: %s, go to the next...",
               transmitter.gwid2Section().keys().first().canonicalString() );
+          anywayProcessNext();
         }
         else {
           // делаем еще одну попытку c тем же параметром
@@ -291,26 +293,41 @@ public class StatusRriMonitor2 {
         }
         break;
       case PROCESS:
-        // запись в процессе выполнения, ничего не делаем, ждем следующего цикла
-        // nop
+        // запись в процессе выполнения
+        logger.debug( "Writing Gwid %s in process, curr index %d",
+            transmitter.gwid2Section().keys().first().canonicalString(), Integer.valueOf( currTransmitterIndex ) );
+        // первый цикл записи этого параметра, запоминаем время начала
+        if( currParamStartWritingTimestamp == 0 ) {
+          currParamStartWritingTimestamp = System.currentTimeMillis();
+          return;
+        }
+        // ставим проверку на зацикливание, если более 3-х секунд то логируем и переходим на следующий параметр
+        if( (System.currentTimeMillis() - currParamStartWritingTimestamp) <= 3000L ) {
+          return;
+        }
+        logError( "Writing operation too long. Fail to write Gwid: %s, go to the next...",
+            transmitter.gwid2Section().keys().first().canonicalString() );
+        anywayProcessNext();
         break;
       case TIMEOUT:
         // возник таймаут при записи, логируем и пробуем еще 2 раза
-        logger.warning( "Timeout in writing %s", transmitter.gwid2Section().keys().first() );
+        logger.warning( "Timeout in process of writing Gwid: %s ",
+            transmitter.gwid2Section().keys().first().canonicalString() );
         transferErrorCounter++;
         if( transferErrorCounter > ERR_COUNTER ) {
-          logError( "Timeout in writing %s, go next", transmitter.gwid2Section().keys().first().canonicalString() );
+          logError( "Timeout in write Gwid: %s, go to the next",
+              transmitter.gwid2Section().keys().first().canonicalString() );
+          anywayProcessNext();
         }
         break;
       case UNKNOWN:
-        logError( "UNKNOWN state in writing %s, index %d, go next",
+        logError( "UNKNOWN state in process of writing Gwid: %s, go to the next",
             transmitter.gwid2Section().keys().first().canonicalString() );
+        anywayProcessNext();
         break;
       default:
         break;
     }
-    // переходим к следующему параметру НСИ
-    ++currTransmitterIndex;
     // проверяем что еще есть незаписанные параметры
     if( hasMoreDownload() ) {
       transmitter = pinRriDataTransmitters.get( currTransmitterIndex );
@@ -320,6 +337,18 @@ public class StatusRriMonitor2 {
       // переходим к окончанию процесса загрузки
       currState = MonitorRunningStage.END_DOWNLOADING;
     }
+  }
+
+  /**
+   * Набор действий при переходе к записи следующего параметра совершаемый в любом случае
+   */
+  private void anywayProcessNext() {
+    // переходим к следующей записи
+    currTransmitterIndex++;
+    // сбрасываем текущий счетчик ошибок
+    transferErrorCounter = 0;
+    // сбрасываем время начала записи очередного параметра
+    currParamStartWritingTimestamp = 0;
   }
 
   private void logError( String aFmtString, String aGwidStr ) {
@@ -336,15 +365,15 @@ public class StatusRriMonitor2 {
   }
 
   private boolean hasMoreDownload() {
-    return currTransmitterIndex < pinRriDataTransmitters.size();
+    // return currTransmitterIndex < pinRriDataTransmitters.size();
     // for debug
-    // return currTransmitterIndex + 1 < 3;
+    return currTransmitterIndex + 1 < 5;
   }
 
   @SuppressWarnings( "nls" )
   private void finishTransfer() {
     // все НСИ записали, ставим флаг "НСИ Ok"
-    if( !wStatusRri.isBusy() ) {
+    if( setStatusTimestamp == 0 && !wStatusRri.isBusy() ) {
       // только в случае если флаг еще не пытались установить
       setStatusTimestamp = setStatus();
     }
@@ -355,6 +384,7 @@ public class StatusRriMonitor2 {
         case DONE:
           logger.debug( "Process dowloading RRI Uskat -> OPC UA completed." );
           setStatusTimestamp = 0;
+          csMonitoring();
           break;
         case ERROR:
           // произошла ошибка записи, повторяем
@@ -365,6 +395,7 @@ public class StatusRriMonitor2 {
                 Integer.valueOf( currTransmitterIndex ) );
             transferErrorCounter = 0;
             setStatusTimestamp = 0;
+            csMonitoring();
           }
           else {
             setStatusTimestamp = setStatus();
@@ -381,6 +412,8 @@ public class StatusRriMonitor2 {
             logger.error( "Fail dowloading RRI Uskat -> OPC UA. There were %d try",
                 Integer.valueOf( currTransmitterIndex ) );
             transferErrorCounter = 0;
+            setStatusTimestamp = 0;
+            csMonitoring();
           }
           else {
             setStatusTimestamp = setStatus();
@@ -388,13 +421,22 @@ public class StatusRriMonitor2 {
           break;
         case UNKNOWN:
           logger.error( "UNKNOWN state in process set StatusRRI" );
+          setStatusTimestamp = 0;
+          csMonitoring();
           break;
         default:
           break;
       }
     }
+  }
+
+  /**
+   * переключения состояния алгоритма в режим мониторинга
+   */
+  private void csMonitoring() {
     // переходим в режим мониторинга
     currState = MonitorRunningStage.MONITORING;
+    prevRriOk = rStatusRri.get();
   }
 
   /**
