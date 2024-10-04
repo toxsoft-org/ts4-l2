@@ -20,14 +20,15 @@ public class TestTcpConnect {
     transactionCreator = new TcpTransactionCreator();
 
     OptionSet optSet = new OptionSet();
-    optSet.setStr( IP_PARAM_ID, "127.0.0.1" );
+    optSet.setStr( IP_PARAM_ID, "192.168.0.3" );
     optSet.setInt( PORT_PARAM_ID, 502 );
 
     transactionCreator.config( optSet );
 
     String cmd = args[0];
     int adress = 1;
-    int reg = Integer.parseInt( args[1] );
+    // int reg = Integer.parseInt( args[1] );
+    int reg = Integer.parseInt( args[1].substring( 2 ), 16 );
     int regVal = Integer.parseInt( args[2] );
 
     try {
@@ -129,31 +130,55 @@ public class TestTcpConnect {
    * @param aReg
    */
   public static void readAIReg( int aAdress, int aReg, int aCount ) {
-    // формирование запроса
-    ReadInputRegistersRequest cr = new ReadInputRegistersRequest( aReg, aCount );
-    cr.setUnitID( aAdress );
-    // cr.setHeadless();
+    for( int ri = 0; ri < 11; ri++ ) {
+      int currReg = aReg + 4 * ri;
+      // формирование запроса
+      ReadInputRegistersRequest cr = new ReadInputRegistersRequest( currReg, aCount );
+      // ReadInputRegistersRequest cr = new ReadInputRegistersRequest( 0x0C, 1 );
+      cr.setUnitID( aAdress );
+      // cr.setHeadless();
 
-    // транзакция
-    ModbusTransaction trans = transactionCreator.createModbusTransaction();
-    trans.setRequest( cr );
+      // транзакция
+      ModbusTransaction trans = transactionCreator.createModbusTransaction();
+      trans.setRequest( cr );
 
-    // испонение транзакции
-    try {
-      System.out.println( "Read reg = " + aReg + " , count = " + aCount );
-      trans.execute();
+      // испонение транзакции
+      try {
+        System.out.println( "Read reg = " + Integer.toHexString( currReg ) + " , count = " + aCount );
+        trans.execute();
 
-      ModbusResponse r = trans.getResponse();
-      for( int i = 0; i < aCount; i++ ) {
-        System.out.println( "Response val: " + ((ReadInputRegistersResponse)r).getRegisterValue( i ) );
+        ModbusResponse r = trans.getResponse();
+        // for( int i = 0; i < aCount; i++ ) {
+        // int resp = ((ReadInputRegistersResponse)r).getRegisterValue( i );
+        // System.out.println( "Response val: " + resp );
+        // }
+        byte[] hiBytes = ((ReadInputRegistersResponse)r).getRegister( 0 ).toBytes();
+        byte[] lowBytes = ((ReadInputRegistersResponse)r).getRegister( 1 ).toBytes();
+        byte[] bytes = new byte[4];
+        bytes[0] = hiBytes[0];
+        bytes[1] = hiBytes[1];
+        bytes[2] = lowBytes[0];
+        bytes[3] = lowBytes[1];
+        float val = registersToFloat( bytes );
+        System.out.println( "Response float val: " + val );
+      }
+      catch( ModbusException e ) {
+        System.out.println( "Havnt read " + aAdress );
+        e.printStackTrace();
       }
     }
-    catch( ModbusException e ) {
-      System.out.println( "Havnt read " + aAdress );
-      e.printStackTrace();
-    }
-
   }
+
+  /**
+   * Converts a byte[4] binary float value to a float primitive.
+   *
+   * @param bytes the byte[4] containing the float value.
+   * @return a float value.
+   */
+  public static final float registersToFloat( byte[] bytes ) {
+    return Float.intBitsToFloat(
+        (((bytes[0] & 0xff) << 24) | ((bytes[1] & 0xff) << 16) | ((bytes[2] & 0xff) << 8) | (bytes[3] & 0xff)) );
+  }// registersToFloat
 
   public static void readDo( int aAdress, int aReg, int aCount ) {
     // формирование запроса

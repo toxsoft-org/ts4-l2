@@ -297,17 +297,17 @@ public class StatusRriMonitor2 {
         logger.debug( "Writing Gwid %s in process, curr index %d",
             transmitter.gwid2Section().keys().first().canonicalString(), Integer.valueOf( currTransmitterIndex ) );
         // первый цикл записи этого параметра, запоминаем время начала
-        if( currParamStartWritingTimestamp == 0 ) {
-          currParamStartWritingTimestamp = System.currentTimeMillis();
-          return;
-        }
+        // if( currParamStartWritingTimestamp == 0 ) {
+        // currParamStartWritingTimestamp = System.currentTimeMillis();
+        // return;
+        // }
         // ставим проверку на зацикливание, если более 3-х секунд то логируем и переходим на следующий параметр
-        if( (System.currentTimeMillis() - currParamStartWritingTimestamp) <= 3000L ) {
-          return;
-        }
-        logError( "Writing operation too long. Fail to write Gwid: %s, go to the next...",
-            transmitter.gwid2Section().keys().first().canonicalString() );
-        anywayProcessNext();
+        // if( (System.currentTimeMillis() - currParamStartWritingTimestamp) <= 3000L ) {
+        // return;
+        // }
+        // logError( "Writing operation too long. Fail to write Gwid: %s, go to the next...",
+        // transmitter.gwid2Section().keys().first().canonicalString() );
+        // anywayProcessNext();
         break;
       case TIMEOUT:
         // возник таймаут при записи, логируем и пробуем еще 2 раза
@@ -365,9 +365,9 @@ public class StatusRriMonitor2 {
   }
 
   private boolean hasMoreDownload() {
-    // return currTransmitterIndex < pinRriDataTransmitters.size();
+    return currTransmitterIndex < pinRriDataTransmitters.size();
     // for debug
-    return currTransmitterIndex + 1 < 5;
+    // return currTransmitterIndex + 1 < 5;
   }
 
   @SuppressWarnings( "nls" )
