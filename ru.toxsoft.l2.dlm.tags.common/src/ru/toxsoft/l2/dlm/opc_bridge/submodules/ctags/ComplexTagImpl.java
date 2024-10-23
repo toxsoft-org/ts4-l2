@@ -128,6 +128,16 @@ public class ComplexTagImpl
         address = 0;
         currSetTime = 0;
       }
+      else {
+        // dima 25.09.2024
+        // Тег в работе, проверяем не пора ли по таймату заканчивать
+        if( System.currentTimeMillis() - currSetTime > 3000 ) {
+          addressTag.set( AvUtils.avInt( 0 ) );
+          states.put( Long.valueOf( currSetTime ), EComplexTagState.TIMEOUT );
+          address = 0;
+          currSetTime = 0;
+        }
+      }
     }
 
   }
