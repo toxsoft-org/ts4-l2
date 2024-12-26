@@ -14,28 +14,74 @@ import org.toxsoft.l2.thd.modbus.common.*;
 public class FloatCommonRegistersTranslator
     implements IAnalogTranslator {
 
+  private boolean isABCD = true;
+
+  /**
+   * Constructor.
+   */
+  public FloatCommonRegistersTranslator() {
+    isABCD = true;
+  }
+
+  /**
+   * Constructor.
+   *
+   * @param aByteOrderABCD - byte order flag
+   */
+  public FloatCommonRegistersTranslator( boolean aByteOrderABCD ) {
+    isABCD = aByteOrderABCD;
+  }
+
   @Override
-  public IAtomicValue translate( int[] aBytes ) {
-    if( aBytes.length == 2 ) {
+  public IAtomicValue translate( int[] aWords ) {
+    if( isABCD ) {
+      return translateABCD( aWords );
+    }
+    return translateCDAB( aWords );
+  }
+
+  private static IAtomicValue translateABCD( int[] aWords ) {
+    if( aWords.length == 2 ) {
       int value = 0;
-      for( int i = 0; i < aBytes.length; i++ ) {
-        value += aBytes[i] << (16 * i);
+      for( int i = 0; i < aWords.length; i++ ) {
+        value += aWords[i] << (16 * (aWords.length - 1 - i));
       }
       return AvUtils.avFloat( Float.intBitsToFloat( value ) );
     }
 
-    if( aBytes.length == 4 ) {
+    if( aWords.length == 4 ) {
       long value = 0;
-      for( int i = 0; i < aBytes.length; i++ ) {
-        value += ((long)aBytes[i]) << (16 * i);
+      for( int i = 0; i < aWords.length; i++ ) {
+        value += ((long)aWords[i]) << (16 * (aWords.length - 1 - i));
       }
-
       return AvUtils.avFloat( Double.longBitsToDouble( value ) );
     }
-    return AvUtils.avFloat( aBytes[0] );
+    return AvUtils.avFloat( aWords[0] );
   }
 
-  public static void main( String[] a ) {
+  private static IAtomicValue translateCDAB( int[] aWords ) {
+    if( aWords.length == 2 ) {
+      int value = 0;
+      for( int i = 0; i < aWords.length; i++ ) {
+        value += aWords[i] << (16 * i);
+      }
+      return AvUtils.avFloat( Float.intBitsToFloat( value ) );
+    }
+
+    if( aWords.length == 4 ) {
+      long value = 0;
+      for( int i = 0; i < aWords.length; i++ ) {
+        value += ((long)aWords[i]) << (16 * i);
+      }
+      return AvUtils.avFloat( Double.longBitsToDouble( value ) );
+    }
+    return AvUtils.avFloat( aWords[0] );
+  }
+
+  /**
+   * @param aArgs
+   */
+  public static void main( String[] aArgs ) {
     long lVal = Double.doubleToLongBits( 0.01d );
     String lValStr = Long.toBinaryString( lVal );
     System.out.println( lValStr );
