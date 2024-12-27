@@ -111,24 +111,26 @@ public class OpcRriDataModule
       throws TsIllegalArgumentRtException {
 
     IAvTree rriDefs = aConfig.params().nodes().findByKey( RRI_DEFS );
-    // читаем описание конфигурации самого модуля
-    statusRriMonitor.config( rriDefs );
-    // далее имеет смысл работать только если
-    if( statusRriMonitor.isConfigured() ) {
-      IAvTree rriNodes = rriDefs.nodes().findByKey( RRI_NODES );
+    if( rriDefs.arrayLength() > 0 ) {
+      // читаем описание конфигурации самого модуля
+      statusRriMonitor.config( rriDefs );
+      // далее имеет смысл работать только если
+      if( statusRriMonitor.isConfigured() ) {
+        IAvTree rriNodes = rriDefs.nodes().findByKey( RRI_NODES );
 
-      // наполнение конфигуратора данными (для данных НСИ)
-      if( rriNodes != null && rriNodes.isArray() ) {
-        for( int i = 0; i < rriNodes.arrayLength(); i++ ) {
-          // описание одного НСИ даннного
-          IAvTree oneRriAttrDef = rriNodes.arrayElement( i );
+        // наполнение конфигуратора данными (для данных НСИ)
+        if( rriNodes != null && rriNodes.isArray() ) {
+          for( int i = 0; i < rriNodes.arrayLength(); i++ ) {
+            // описание одного НСИ даннного
+            IAvTree oneRriAttrDef = rriNodes.arrayElement( i );
 
-          initializer.addDataConfigParamsForTransmitter( oneRriAttrDef, complexTagsContainer );
+            initializer.addDataConfigParamsForTransmitter( oneRriAttrDef, complexTagsContainer );
+          }
         }
+        // создание по конфигурации описаний для регистрации в сервисе
+        IAvTree cmdClassDefs = aConfig.params().nodes().findByKey( RRI_CMD_CLASS_DEFS );
+        commandsDefByObjNames = CommandsModule.createCmdDefs( cmdClassDefs );
       }
-      // создание по конфигурации описаний для регистрации в сервисе
-      IAvTree cmdClassDefs = aConfig.params().nodes().findByKey( RRI_CMD_CLASS_DEFS );
-      commandsDefByObjNames = CommandsModule.createCmdDefs( cmdClassDefs );
     }
   }
 
