@@ -29,7 +29,7 @@ import net.wimpi.modbus.util.*;
 
 /**
  * Универсальное устройство, работающее по протоколу Modbus. // ip+port (tcp) или //port (rtu) - т.е определяется
- * коннектом // один девайс - один коннект (устройства просто рассовывыются по разным буферам, если устройств несколько)
+ * коннектом // один девайс - один коннект (устройства просто рассовываются по разным буферам, если устройств несколько)
  *
  * @author max
  */
@@ -315,10 +315,18 @@ public class CommonModbusDevice
 
   /**
    * Буфер, имеющий непрерывные адреса регистров (т.е. читается одной пачкой). Очевидно, что для разных адресов
-   * устройств - разные объекты буферов. // адрес устройства (номер 0-255) - настроечный параметр // // tags map //
-   * inner tags atomic values // start register number - из настроечных // length - из настроечных // modbus command
-   * type - определяется типом тегов в буфере (DI, DA) // map tag id - translator (translator params) // map tag id -
-   * start word number, words count
+   * устройств - разные объекты буферов. <br>
+   * <ul>
+   * <li><b>адрес устройства (номер 0-255)</b> - настроечный параметр</li>
+   * <li><b>tags map</b> - inner tags atomic values</li>
+   * <li><b>start register number</b> - из настроечных</li>
+   * <li><b>length</b> - из настроечных</li>
+   * <li><b>modbus command type</b> - определяется типом тегов в буфере (DI, DA)</li>
+   * <li><b>map tag id</b> - translator (translator params)</li>
+   * <li><b>map tag id</b> - start word number, words</li>
+   * <li><b>count</b></li>
+   * </ul>
+   * <br>
    *
    * @author max
    */
@@ -349,7 +357,6 @@ public class CommonModbusDevice
     protected boolean changed = true;
 
     public WriteValuesBufferImpl( WriteTagImpl aTag, int aDevice, int aReg ) {
-      super();
       tag = aTag;
       device = aDevice;
       reg = aReg;
@@ -401,7 +408,6 @@ public class CommonModbusDevice
     protected IListEdit<T> injectors = new ElemArrayList<>();
 
     public ValuesBufferImpl( int aDevice, int aStartReg ) {
-      super();
       this.startReg = aStartReg;
       device = aDevice;
     }
@@ -644,15 +650,14 @@ public class CommonModbusDevice
       // ответ
       ReadInputRegistersResponse res = (ReadInputRegistersResponse)trans.getResponse();
       InputRegister[] regs = res.getRegisters();
-      System.out.println( "start reg = " + startReg + ",regs count = " + wordsCount ); //$NON-NLS-1$ //$NON-NLS-2$
+      LoggerUtils.errorLogger().debug( "start reg = %d, regs count = %d", startReg, wordsCount ); //$NON-NLS-1$
       int[] inputMassive = new int[regs.length];
 
       for( int j = 0; j < inputMassive.length; j++ ) {
         inputMassive[j] = regs[j].getValue();
-
-        System.out.print( regs[j].getValue() + "," ); //$NON-NLS-1$
+        LoggerUtils.errorLogger().debug( "%d,", regs[j].getValue() ); //$NON-NLS-1$
       }
-      System.out.println();
+      LoggerUtils.errorLogger().debug( "/n" ); //$NON-NLS-1$
 
       for( AnalogTagValueInjector inj : injectors ) {
         inj.readValue( inputMassive );
@@ -696,7 +701,6 @@ public class CommonModbusDevice
     protected IAtomicValue bufferValue = IAtomicValue.NULL;
 
     public TagValueInjector( TagImpl aTag, int aStartTag, int aLength ) {
-      super();
       this.tag = aTag;
       this.startTag = aStartTag;
       this.length = aLength;
@@ -791,7 +795,6 @@ public class CommonModbusDevice
     private String id;
 
     public TagImpl( String aId ) {
-      super();
       this.id = aId;
     }
 
@@ -864,7 +867,6 @@ public class CommonModbusDevice
     private String id;
 
     public WriteTagImpl( String aId ) {
-      super();
       this.id = aId;
     }
 

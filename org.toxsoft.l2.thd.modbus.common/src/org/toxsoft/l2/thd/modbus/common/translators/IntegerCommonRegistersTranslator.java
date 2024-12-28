@@ -13,16 +13,17 @@ public class IntegerCommonRegistersTranslator
     implements IAnalogTranslator {
 
   @Override
-  public IAtomicValue translate( int[] aBytes ) {
-    if( aBytes.length == 2 ) {
+  // TODO add ABCD bytes order conversion
+  public IAtomicValue translate( int[] aWords ) {
+    if( aWords.length == 2 ) {
       int value = 0;
-      for( int i = 0; i < aBytes.length; i++ ) {
-        value += aBytes[i] << (16 * i);
+      for( int i = 0; i < aWords.length; i++ ) {
+        value += aWords[i] << (16 * i);
       }
       return AvUtils.avInt( value );
     }
 
-    return AvUtils.avInt( aBytes[0] );
+    return AvUtils.avInt( aWords[0] );
   }
 
 }
