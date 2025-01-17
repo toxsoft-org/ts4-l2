@@ -20,7 +20,7 @@ import ru.toxsoft.l2.thd.opc.*;
  * @param <T> - класс дата-сета
  */
 public class SingleIntToSingleBoolDataTransmitter<T extends ISkRtdataChannel>
-    implements IDataTransmitter<T> {
+    implements IDataTransmitter<T>, ITagable {
 
   /**
    * Журнал работы
@@ -106,6 +106,11 @@ public class SingleIntToSingleBoolDataTransmitter<T extends ISkRtdataChannel>
   }
 
   protected ITag getTag() {
+    return tag;
+  }
+
+  @Override
+  public ITag tag() {
     return tag;
   }
 

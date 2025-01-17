@@ -1,19 +1,15 @@
 package ru.toxsoft.l2.core.net;
 
-import org.toxsoft.core.log4j.LoggerWrapper;
-import org.toxsoft.core.tslib.coll.IMap;
-import org.toxsoft.core.tslib.gw.gwid.Gwid;
-import org.toxsoft.core.tslib.gw.gwid.GwidList;
-import org.toxsoft.core.tslib.utils.errors.TsNullArgumentRtException;
-import org.toxsoft.core.tslib.utils.logs.ILogger;
-import org.toxsoft.skf.dq.lib.ISkDataQualityService;
-import org.toxsoft.uskat.core.ISkCoreApi;
-import org.toxsoft.uskat.core.api.rtdserv.ISkWriteCurrDataChannel;
-import org.toxsoft.uskat.core.connection.ESkConnState;
-import org.toxsoft.uskat.core.connection.ISkConnection;
+import org.toxsoft.core.log4j.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.skf.dq.lib.*;
+import org.toxsoft.uskat.core.*;
+import org.toxsoft.uskat.core.connection.*;
 
-import ru.toxsoft.l2.core.main.impl.GlobalContext;
-import ru.toxsoft.l2.core.net.impl.NetworkImpl;
+import ru.toxsoft.l2.core.main.impl.*;
+import ru.toxsoft.l2.core.net.impl.*;
 
 /**
  * Статические и вспомогательные методы работы с сетью.
@@ -48,11 +44,10 @@ public class NetworkUtils {
   /**
    * Добавляет все данные дата-сета в сервис качества для соответствующей сессии (определяемой соединением).
    *
-   * @param aConnection ISkConnection - соединение с сервером.
-   * @param aCurrDataSet IMap - дата-сет.
+   * @param aConnection {@link ISkConnection } - соединение с сервером.
+   * @param aGwidList {@link GwidList} - данные для добавления к сервису качества
    */
-  public static void addToDataQualityService( ISkConnection aConnection,
-      IMap<Gwid, ISkWriteCurrDataChannel> aCurrDataSet ) {
+  public static void addToDataQualityService( ISkConnection aConnection, GwidList aGwidList ) {
     // при отсутствии соединения - сообщить и прекратить регистрацию
     if( aConnection.state() != ESkConnState.ACTIVE ) {
       logger.error( "Data params are not added to quality service due to Connection is not connected" );
@@ -65,31 +60,21 @@ public class NetworkUtils {
     // при отсутствии сервиса качества - выйти
     if( qService == null ) {
 
-      // ((S5SynchronizedCoreApi)aConnection.coreApi()).addService();
-
       logger.error( "Data params are not added to quality service due to Quality service is not available" );
       return;
     }
 
-    GwidList resources = new GwidList();
-    resources.addAll( aCurrDataSet.keys() );
-
-    // (ISkDataQualityService)clientApi.services().getByKey( ISkDataQualityService.SERVICE_ID );
-
-    // Skid sessionID = aConnection.sessionInfo().skid();
-
-    qService.addConnectedResources( resources );
-    logger.info( "IDataQualityService addConnectedResources: size = %d", Integer.valueOf( resources.size() ) );
+    qService.addConnectedResources( aGwidList );
+    logger.info( "IDataQualityService addConnectedResources: size = %d", Integer.valueOf( aGwidList.size() ) );
   }
 
   /**
    * Удаляет все данные дата-сета из сервиса качества для соответствующей сессии (определяемой соединением).
    *
    * @param aConnection ISkConnection - соединение с сервером.
-   * @param aCurrDataSet IMap - дата-сет.
+   * @param aGwidList {@link GwidList} - данные для удаления из сервиса качества
    */
-  public static void removeDataFromQualityService( ISkConnection aConnection,
-      IMap<Gwid, ISkWriteCurrDataChannel> aCurrDataSet ) {
+  public static void removeDataFromQualityService( ISkConnection aConnection, GwidList aGwidList ) {
     // при отсутствии соединения - сообщить и прекратить регистрацию
     if( aConnection.state() != ESkConnState.ACTIVE ) {
       logger.error( "Data params are not removed from quality service due to Connection is not connected" );
@@ -106,13 +91,8 @@ public class NetworkUtils {
       return;
     }
 
-    GwidList resources = new GwidList();
-    resources.addAll( aCurrDataSet.keys() );
-
-    // (ISkDataQualityService)clientApi.services().getByKey( ISkDataQualityService.SERVICE_ID );
-
-    qService.removeConnectedResources( resources );
-    logger.info( "IDataQualityService removeDataFromQualityService: size = %d", Integer.valueOf( resources.size() ) );
+    qService.removeConnectedResources( aGwidList );
+    logger.info( "IDataQualityService removeDataFromQualityService: size = %d", Integer.valueOf( aGwidList.size() ) );
   }
 
   private static ISkDataQualityService getDataQualityService( ISkCoreApi aCoreApi ) {

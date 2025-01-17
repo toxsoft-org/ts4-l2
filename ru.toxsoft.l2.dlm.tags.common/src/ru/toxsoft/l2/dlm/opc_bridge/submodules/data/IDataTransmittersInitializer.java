@@ -65,4 +65,12 @@ public interface IDataTransmittersInitializer<T extends ISkRtdataChannel> {
    * @return IList<String> - список идентификаторов устройств.
    */
   IList<String> getTagsDevices();
+
+  /**
+   * Возвращает список {@link GwidList}, для которых тег является источником данных
+   *
+   * @param aTagId - id тега источником данных
+   * @return {@link GwidList} - список Gwid.
+   */
+  IGwidList tag2GwidList( String aTagId );
 }

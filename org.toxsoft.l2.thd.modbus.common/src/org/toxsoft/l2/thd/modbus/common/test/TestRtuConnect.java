@@ -12,7 +12,7 @@ import net.wimpi.modbus.util.*;
 public class TestRtuConnect {
 
   public static void main( String[] args ) {
-    portName = args[0];
+    portName = "/dev/ttyUSB0"; // args[0];
     String cmd = args[1];
     int adress = Integer.parseInt( args[2] );
     int reg = Integer.parseInt( args[3] );
@@ -262,7 +262,7 @@ public class TestRtuConnect {
   /**
    * Скорость обмена
    */
-  private static int baudRate = 9600;
+  private static int baudRate = 115200;
 
   /**
    * чётность

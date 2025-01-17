@@ -5,27 +5,37 @@ import static ru.toxsoft.l2.thd.opc.IL2Resources.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 
 /**
- * Перечисление типов тегов по чтению/записи.
+ * Состояние здоровья тега.
  *
  * @author Dima
  */
 @SuppressWarnings( "nls" )
-public enum EKind {
+public enum ETagHealth {
 
   /**
-   * Тег только на чтение
+   * unknown state of health (just created)
    */
-  R( 0, "R", E_READ_ONLY ),
+  UNKNOWN( 0, "unknown", E_HEALTH_UNKNOWN ),
 
   /**
-   * Тег только на запись
+   * tag is working
    */
-  W( 1, "W", E_WRITE_ONLY ),
+  WORKING( 1, "working", E_HEALTH_OK ),
 
   /**
-   * Тег на чтение и запись
+   * tag is just broken
    */
-  RW( 2, "RW", E_READ_WRITE );
+  JUST_BROKEN( 2, "just broken", E_JUST_BROKEN ),
+
+  /**
+   * tag is just recovered
+   */
+  JUST_RECOVERED( 3, "just recovered", E_JUST_RECOVERED ),
+
+  /**
+   * tag is dead
+   */
+  DEAD( 4, "dead", E_DEAD );
 
   private int id;
 
@@ -43,7 +53,7 @@ public enum EKind {
    * @param aName - название состояния.
    * @param aDescription - описание состояния команды.
    */
-  EKind( int aId, String aName, String aDescription ) {
+  ETagHealth( int aId, String aName, String aDescription ) {
     id = aId;
     name = aName;
     description = aDescription;
@@ -82,9 +92,9 @@ public enum EKind {
    * @param aId int - идентификатор
    * @return EKind - найденный тип, или null если нет типа с таким идентификатором
    */
-  public static EKind findByIdOrNull( int aId ) {
+  public static ETagHealth findByIdOrNull( int aId ) {
 
-    for( EKind item : values() ) {
+    for( ETagHealth item : values() ) {
       if( item.id == aId ) {
         return item;
       }
@@ -96,10 +106,10 @@ public enum EKind {
    * Возвращает тип тега по идентификатору или выбрасывает исключение.
    *
    * @param aId int - идентификатор
-   * @return {@link EKind} - найденный тип
+   * @return {@link ETagHealth} - найденный тип
    * @throws TsItemNotFoundRtException нет типа с таким идентификатором
    */
-  public static EKind findById( int aId ) {
+  public static ETagHealth findById( int aId ) {
     return TsItemNotFoundRtException.checkNull( findByIdOrNull( aId ) );
   }
 

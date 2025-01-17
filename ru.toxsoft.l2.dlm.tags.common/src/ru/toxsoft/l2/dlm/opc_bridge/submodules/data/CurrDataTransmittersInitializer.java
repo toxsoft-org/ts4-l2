@@ -109,7 +109,6 @@ public class CurrDataTransmittersInitializer
     protected long prevSetTime = 0;
 
     public CurrDataSetter( IMap<Gwid, ISkWriteCurrDataChannel> aDataSet, Gwid aDataGwid, long aMinWritePeriod ) {
-      super();
       TsIllegalArgumentRtException.checkFalse( aDataSet.hasKey( aDataGwid ) );
       channel = aDataSet.getByKey( aDataGwid );
       dataGwid = aDataGwid;
@@ -159,7 +158,6 @@ public class CurrDataTransmittersInitializer
     public String toString() {
       return dataGwid.asString();
     }
-
   }
 
 }

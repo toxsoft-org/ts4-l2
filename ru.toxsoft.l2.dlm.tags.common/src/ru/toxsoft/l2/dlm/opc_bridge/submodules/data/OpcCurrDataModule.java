@@ -179,7 +179,7 @@ public class OpcCurrDataModule
         try {
           // удаление данных из сервиса качества
           NetworkUtils.removeDataFromQualityService( context.network().getSkConnection(),
-              formEmptyChannelsMap( wCurrDataSet ) );
+              new GwidList( wCurrDataSet.keys() ) );
 
           qualityRegistered = false;
         }
@@ -193,7 +193,7 @@ public class OpcCurrDataModule
     if( !qualityRegistered && context.network().getSkConnection().state() == ESkConnState.ACTIVE ) {
       try {
         NetworkUtils.addToDataQualityService( context.network().getSkConnection(),
-            formEmptyChannelsMap( wCurrDataSet ) );
+            new GwidList( wCurrDataSet.keys() ) );
         qualityRegistered = true;
       }
       catch( Exception e ) {
@@ -218,6 +218,36 @@ public class OpcCurrDataModule
         logger.error( e.getMessage() );
       }
     }
+    // dima 17.01.25 transmit tags health to Uskat server
+    GwidList toRemoveQS = new GwidList();
+    GwidList toAddQS = new GwidList();
+    for( IDataTransmitter<ISkWriteCurrDataChannel> transmitter : pinDataTransmitters ) {
+      try {
+        if( transmitter instanceof ITagable tagable ) {
+          ITag tag = tagable.tag();
+          if( tag.health().equals( ETagHealth.JUST_BROKEN ) ) {
+            IGwidList gwidList = initializer.tag2GwidList( tag.id() );
+            toRemoveQS.addAll( gwidList );
+          }
+          if( tag.health().equals( ETagHealth.JUST_RECOVERED ) ) {
+            IGwidList gwidList = initializer.tag2GwidList( tag.id() );
+            toAddQS.addAll( gwidList );
+          }
+        }
+        // notify quality service
+        if( !toRemoveQS.isEmpty() ) {
+          NetworkUtils.removeDataFromQualityService( context.network().getSkConnection(), toRemoveQS );
+        }
+        if( !toAddQS.isEmpty() ) {
+          NetworkUtils.addToDataQualityService( null, toAddQS );
+        }
+      }
+
+      catch( Exception e ) {
+        logger.error( e.getMessage() );
+      }
+    }
+
     if( doCurrWrite ) {
       // wCurrDataSet.write(); //TODO
 
@@ -237,7 +267,7 @@ public class OpcCurrDataModule
       try {
         // удаление данных из сервиса качества
         NetworkUtils.removeDataFromQualityService( context.network().getSkConnection(),
-            formEmptyChannelsMap( wCurrDataSet ) );
+            new GwidList( wCurrDataSet.keys() ) );
         qualityRegistered = false;
 
         // удаление слушателя состояния соединеня с целью обозначения данных в сервисе качества
@@ -262,7 +292,7 @@ public class OpcCurrDataModule
       case ACTIVE:
         // добавление данных в сервис качества
         try {
-          NetworkUtils.addToDataQualityService( aSource, formEmptyChannelsMap( wCurrDataSet ) );
+          NetworkUtils.addToDataQualityService( aSource, new GwidList( wCurrDataSet.keys() ) );
           qualityRegistered = true;
         }
         catch( Exception e ) {

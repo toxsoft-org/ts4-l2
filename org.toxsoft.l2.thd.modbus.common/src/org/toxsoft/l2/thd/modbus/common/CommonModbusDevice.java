@@ -645,7 +645,7 @@ public class CommonModbusDevice
       // транзакция
       ModbusTransaction trans = createModbusTransaction();
       trans.setRequest( request );
-
+      // TODO оборачиваем в try catch, ловим ModbusException и всем injectors выставляем readError
       // исполнение транзакции
       trans.execute();
 
@@ -794,6 +794,8 @@ public class CommonModbusDevice
 
     private IAtomicValue value = IAtomicValue.NULL;
 
+    private ETagHealth health = ETagHealth.UNKNOWN;
+
     private String id;
 
     public TagImpl( String aId ) {
@@ -841,8 +843,63 @@ public class CommonModbusDevice
 
     }
 
+    @Override
+    public ETagHealth health() {
+      return health;
+    }
+
     void setValue( IAtomicValue aValue ) {
+      // dima 17.01.25
+      updateHealthState( aValue );
       value = aValue;
+    }
+
+    private void updateHealthState( IAtomicValue aNewValue ) {
+      // init stage
+      if( health.equals( ETagHealth.UNKNOWN ) && aNewValue.isAssigned() ) {
+        health = ETagHealth.WORKING;
+        return;
+      }
+      if( health.equals( ETagHealth.UNKNOWN ) && !aNewValue.isAssigned() ) {
+        health = ETagHealth.JUST_BROKEN;
+        return;
+      }
+      // normal working stage
+      if( health.equals( ETagHealth.WORKING ) && aNewValue.isAssigned() ) {
+        // nothing to do
+        return;
+      }
+      if( health.equals( ETagHealth.WORKING ) && !aNewValue.isAssigned() ) {
+        health = ETagHealth.JUST_BROKEN;
+        return;
+      }
+      // just broken stage
+      if( health.equals( ETagHealth.JUST_BROKEN ) && !aNewValue.isAssigned() ) {
+        health = ETagHealth.DEAD;
+        return;
+      }
+      if( health.equals( ETagHealth.JUST_BROKEN ) && aNewValue.isAssigned() ) {
+        health = ETagHealth.JUST_RECOVERED;
+        return;
+      }
+      // just recovered stage
+      if( health.equals( ETagHealth.JUST_RECOVERED ) && aNewValue.isAssigned() ) {
+        health = ETagHealth.WORKING;
+        return;
+      }
+      if( health.equals( ETagHealth.JUST_RECOVERED ) && !aNewValue.isAssigned() ) {
+        health = ETagHealth.JUST_BROKEN;
+        return;
+      }
+      // dead stage
+      if( health.equals( ETagHealth.DEAD ) && aNewValue.isAssigned() ) {
+        health = ETagHealth.JUST_RECOVERED;
+        return;
+      }
+      if( health.equals( ETagHealth.DEAD ) && !aNewValue.isAssigned() ) {
+        // nothing to do
+        return;
+      }
     }
 
     @Override

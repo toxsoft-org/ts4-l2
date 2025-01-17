@@ -17,7 +17,7 @@ import ru.toxsoft.l2.thd.opc.*;
  * @param <T> - класс дата-сета
  */
 public class OneToOneDataTransmitter<T extends ISkRtdataChannel>
-    implements IDataTransmitter<T> {
+    implements IDataTransmitter<T>, ITagable {
 
   /**
    * Журнал работы
@@ -82,6 +82,11 @@ public class OneToOneDataTransmitter<T extends ISkRtdataChannel>
 
   protected IDataSetter getInDataSetIndex() {
     return dataSetter;
+  }
+
+  @Override
+  public ITag tag() {
+    return tag;
   }
 
 }

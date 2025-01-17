@@ -36,6 +36,15 @@ public interface ITag
   EKind kind();
 
   /**
+   * health of tag
+   *
+   * @return { {@link ETagHealth} current state of health
+   */
+  default ETagHealth health() {
+    return ETagHealth.UNKNOWN;
+  }
+
+  /**
    * типа значения тега
    *
    * @return тип значения тега

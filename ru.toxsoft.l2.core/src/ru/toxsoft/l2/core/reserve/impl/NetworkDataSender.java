@@ -89,7 +89,6 @@ public class NetworkDataSender
    * @param aReserveOps IOptionSet - параметры резервирования.
    */
   public NetworkDataSender( GlobalContext aGlobalContext, IOptionSet aReserveOps ) {
-    super();
     globalContext = aGlobalContext;
     this.reserveOps = aReserveOps;
   }
@@ -248,7 +247,7 @@ public class NetworkDataSender
       // добавление данных в сервис качества
       try {
         // TODO
-        NetworkUtils.addToDataQualityService( connection, wCurrDataSet );
+        NetworkUtils.addToDataQualityService( connection, new GwidList( wCurrDataSet.keys() ) );
       }
       catch( Exception e ) {
         logger.error( e, "Exception during reserve data params registering in Quality service" );
@@ -284,7 +283,7 @@ public class NetworkDataSender
         // добавление данных в сервис качества
         try {
           // TODO
-          NetworkUtils.addToDataQualityService( aSource, wCurrDataSet );
+          NetworkUtils.addToDataQualityService( aSource, new GwidList( wCurrDataSet.keys() ) );
         }
         catch( Exception e ) {
           logger.error( e, "Exception during reserve data params registering in Quality service" );

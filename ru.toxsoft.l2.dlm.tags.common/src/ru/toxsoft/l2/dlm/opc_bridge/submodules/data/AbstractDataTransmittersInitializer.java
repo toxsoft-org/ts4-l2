@@ -56,6 +56,11 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
   private IMap<Gwid, T> wDataSet;
 
   /**
+   * tag ids 2 Gwids map
+   */
+  private IMapEdit<String, IGwidList> tag2Gwids = new ElemMap<>();
+
+  /**
    * Список передатчиков.
    */
   private IListEdit<IDataTransmitter<T>> dataTransmitters = new ElemArrayList<>();
@@ -388,6 +393,8 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
       // передатчик
       IDataTransmitter<T> transmitter = dataTransmitters.get( j );
 
+      GwidList setterGwids = new GwidList();
+
       int[] transDataIndexes = dataIndexes[j];
       IListEdit<DataObjNameExtension> transDataDefs = dataDefs.get( j );
       IDataSetter[] realDataIndexes = new IDataSetter[transDataIndexes.length];
@@ -400,6 +407,7 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
           Gwid setterGwid = currGwids.get( index );
           setter = transDataIndexes[i] < 0 ? IDataSetter.NULL : createSetter( setterGwid, dataObjName, wDataSet );
           dataSetters.put( setterGwid, setter );
+          setterGwids.add( setterGwid );
         }
         realDataIndexes[i] = setter;
 
@@ -434,6 +442,18 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
         long t2 = System.currentTimeMillis();
         System.out.printf( "j = %d, transmitter.start() : %d \n", j, (t2 - t1) );
         startedDataTransmitters.add( transmitter );
+        // dima 17.01.25
+        // add tags and GwidList 2 map
+        for( ITag tag : tags ) {
+          if( tag2Gwids.hasKey( tag.id() ) ) {
+            GwidList updatedGwids = new GwidList( tag2Gwids.getByKey( tag.id() ) );
+            updatedGwids.addAll( setterGwids );
+            tag2Gwids.put( tag.id(), updatedGwids );
+          }
+          else {
+            tag2Gwids.put( tag.id(), setterGwids );
+          }
+        }
       }
       catch( Exception startEx ) {
         logger.error( "Transmitter not started '%s", startEx.getMessage() );
@@ -492,4 +512,11 @@ public abstract class AbstractDataTransmittersInitializer<T extends ISkRtdataCha
    */
   protected abstract IMap<Gwid, T> createWriteDataSet( ISkConnection aConnection, IGwidList aGwids );
 
+  @Override
+  public IGwidList tag2GwidList( String aTagId ) {
+    if( !tag2Gwids.hasKey( aTagId ) ) {
+      return IGwidList.EMPTY;
+    }
+    return tag2Gwids.findByKey( aTagId );
+  }
 }
