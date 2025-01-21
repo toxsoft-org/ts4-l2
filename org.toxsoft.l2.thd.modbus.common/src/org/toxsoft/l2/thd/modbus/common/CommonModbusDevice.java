@@ -645,7 +645,6 @@ public class CommonModbusDevice
       // транзакция
       ModbusTransaction trans = createModbusTransaction();
       trans.setRequest( request );
-      // TODO оборачиваем в try catch, ловим ModbusException и всем injectors выставляем readError
       // исполнение транзакции
       trans.execute();
 
