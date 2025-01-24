@@ -150,18 +150,6 @@ public class OpcCurrDataModule
       healthMeasDevices[i] = tagsDevice;
     }
 
-    // Обнуление за ненадобностью
-    initializer = null;
-
-    // добавление данных в сервис качества
-    // try {
-    // NetworkUtils.addToDataQualityService( context.network().getSkConnection(), formEmptyChannelsMap( wCurrDataSet )
-    // );
-    // }
-    // catch( Exception e ) {
-    // logger.error( e, "Exception during curr data params registering in Quality service" ); //$NON-NLS-1$
-    // }
-
     // регистрация слушателя состояния соединеня с целью обозначения данных в сервисе качества
     context.network().getSkConnection().addConnectionListener( connectionListener );
 
@@ -234,18 +222,17 @@ public class OpcCurrDataModule
             toAddQS.addAll( gwidList );
           }
         }
-        // notify quality service
-        if( !toRemoveQS.isEmpty() ) {
-          NetworkUtils.removeDataFromQualityService( context.network().getSkConnection(), toRemoveQS );
-        }
-        if( !toAddQS.isEmpty() ) {
-          NetworkUtils.addToDataQualityService( null, toAddQS );
-        }
       }
-
       catch( Exception e ) {
         logger.error( e.getMessage() );
       }
+    }
+    // notify quality service
+    if( !toRemoveQS.isEmpty() ) {
+      NetworkUtils.removeDataFromQualityService( context.network().getSkConnection(), toRemoveQS );
+    }
+    if( !toAddQS.isEmpty() ) {
+      NetworkUtils.addToDataQualityService( context.network().getSkConnection(), toAddQS );
     }
 
     if( doCurrWrite ) {
