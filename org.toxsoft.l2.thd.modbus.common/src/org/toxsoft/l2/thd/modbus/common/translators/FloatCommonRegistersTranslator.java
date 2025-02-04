@@ -14,30 +14,30 @@ import org.toxsoft.l2.thd.modbus.common.*;
 public class FloatCommonRegistersTranslator
     implements IAnalogTranslator {
 
-  private boolean isABCD = true;
+  private boolean isCDAB = false;
 
   /**
    * Constructor.
    */
   public FloatCommonRegistersTranslator() {
-    isABCD = true;
+    // nop
   }
 
   /**
    * Constructor.
    *
-   * @param aByteOrderABCD - byte order flag
+   * @param aByteOrder - byte order string
    */
-  public FloatCommonRegistersTranslator( boolean aByteOrderABCD ) {
-    isABCD = aByteOrderABCD;
+  public FloatCommonRegistersTranslator( String aByteOrder ) {
+    isCDAB = (aByteOrder.compareTo( "CDAB" ) == 0); //$NON-NLS-1$
   }
 
   @Override
   public IAtomicValue translate( int[] aWords ) {
-    if( isABCD ) {
-      return translateABCD( aWords );
+    if( isCDAB ) {
+      return translateCDAB( aWords );
     }
-    return translateCDAB( aWords );
+    return translateABCD( aWords );
   }
 
   private static IAtomicValue translateABCD( int[] aWords ) {
@@ -79,8 +79,9 @@ public class FloatCommonRegistersTranslator
   }
 
   /**
-   * @param aArgs
+   * @param aArgs program args
    */
+  @SuppressWarnings( "nls" )
   public static void main( String[] aArgs ) {
     long lVal = Double.doubleToLongBits( 0.01d );
     String lValStr = Long.toBinaryString( lVal );

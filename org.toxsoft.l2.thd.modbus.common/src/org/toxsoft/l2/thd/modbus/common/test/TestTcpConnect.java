@@ -22,7 +22,7 @@ public class TestTcpConnect {
     transactionCreator = new TcpTransactionCreator();
 
     OptionSet optSet = new OptionSet();
-    optSet.setStr( IP_PARAM_ID, "192.168.12.64" );
+    optSet.setStr( IP_PARAM_ID, "192.168.0.131" );
     optSet.setInt( PORT_PARAM_ID, 502 );
 
     transactionCreator.config( optSet );
@@ -51,7 +51,7 @@ public class TestTcpConnect {
           readAOReg( adress, reg, regVal );
           break;
         case "ai":
-          readAIReg( adress, reg, regVal );
+          elemerReadAIReg( adress, reg, regVal );
           break;
 
         case "di":
@@ -167,6 +167,96 @@ public class TestTcpConnect {
     }
   }
 
+  public static void rmt59ReadAIReg( int aAdress, int aReg, int aCount ) {
+    for( int ri = 0; ri < aCount; ri++ ) {
+      int currReg = aReg + 3 * ri;
+
+      // формирование запроса
+      ReadMultipleRegistersRequest cr = new ReadMultipleRegistersRequest( currReg, 3 );
+      cr.setUnitID( aAdress );
+      // cr.setHeadless();
+
+      // транзакция
+      ModbusTransaction trans = transactionCreator.createModbusTransaction();
+      trans.setRequest( cr );
+
+      // исполнение транзакции
+      try {
+        System.out.println( "Read reg = " + Integer.toHexString( currReg ) + " , count = " + aCount );
+        trans.execute();
+
+        ModbusResponse r = trans.getResponse();
+
+        int[] ints = new int[2];
+        ints[0] = ((ReadInputRegistersResponse)r).getRegisterValue( 0 );
+        ints[1] = ((ReadInputRegistersResponse)r).getRegisterValue( 1 );
+        IAtomicValue fval = translateCDAB( ints );
+        System.out.println( "channel float fval CDAB: " + fval );
+        fval = translateABCD( ints );
+        System.out.println( "channel float fval ABCD: " + fval );
+        // тут печатаем код состояния канала
+        int penErr = ((ReadInputRegistersResponse)r).getRegisterValue( 2 );
+        System.out.println( "penErr : " + penErr );
+      }
+      catch( ModbusException e ) {
+        System.out.println( "Havnt read " + aAdress );
+        e.printStackTrace();
+      }
+    }
+  }
+
+  public static void rmt79ReadAIReg( int aAdress, int aReg, int aCount ) {
+    for( int ri = 0; ri < 11; ri++ ) {
+      int currReg = aReg + 4 * ri;
+      // формирование запроса
+      ReadInputRegistersRequest cr = new ReadInputRegistersRequest( currReg, aCount );
+      cr.setUnitID( aAdress );
+      // cr.setHeadless();
+
+      // транзакция
+      ModbusTransaction trans = transactionCreator.createModbusTransaction();
+      trans.setRequest( cr );
+
+      // исполнение транзакции
+      try {
+        System.out.println( "Read reg = " + Integer.toHexString( currReg ) + " , count = " + aCount );
+        trans.execute();
+
+        ModbusResponse r = trans.getResponse();
+
+        int[] ints = new int[2];
+        ints[0] = ((ReadInputRegistersResponse)r).getRegisterValue( 0 );
+        ints[1] = ((ReadInputRegistersResponse)r).getRegisterValue( 1 );
+        IAtomicValue fval = translateCDAB( ints );
+        System.out.println( "channel float fval CDAB: " + fval );
+        fval = translateABCD( ints );
+        System.out.println( "channel float fval ABCD: " + fval );
+        // тут печатаем код состояния канала
+        int channelState = ((ReadInputRegistersResponse)r).getRegisterValue( 2 );
+        System.out.println( "channelState val: " + channelState );
+        // тут печатаем регистр десятичной точки в десятичном формате
+        int decPointLocation = ((ReadInputRegistersResponse)r).getRegisterValue( 3 );
+        System.out.println( "decimal PointLocation val: " + decPointLocation );
+        ReadInputRegistersResponse res = (ReadInputRegistersResponse)trans.getResponse();
+        InputRegister[] regs = res.getRegisters();
+        System.out.println( "start reg = " + aReg + ",regs count = " + aCount ); //$NON-NLS-1$ //$NON-NLS-2$
+        int[] inputMassive = new int[regs.length];
+
+        for( int j = 0; j < inputMassive.length; j++ ) {
+          inputMassive[j] = regs[j].getValue();
+
+          System.out.print( regs[j].getValue() + "," ); //$NON-NLS-1$
+        }
+        IAtomicValue result = translate( inputMassive );
+        System.out.print( result );
+      }
+      catch( ModbusException e ) {
+        System.out.println( "Havnt read " + aAdress );
+        e.printStackTrace();
+      }
+    }
+  }
+
   /**
    * Чтение выходных аналоговых регистров INPUT REGISTER #4
    *
@@ -174,7 +264,7 @@ public class TestTcpConnect {
    * @param aReg адрес начального регистра
    * @param aCount кол-во регистров для чтения
    */
-  public static void readAIReg( int aAdress, int aReg, int aCount ) {
+  public static void elemerReadAIReg( int aAdress, int aReg, int aCount ) {
     // ReadInputRegistersRequest cr = new ReadInputRegistersRequest( aReg, aCount );
     // // ReadInputRegistersRequest cr = new ReadInputRegistersRequest( 0x0C, 2 );
     // cr.setUnitID( aAdress );
@@ -200,68 +290,124 @@ public class TestTcpConnect {
     // e.printStackTrace();
     // }
 
-    // for( int ri = 0; ri < aCount; ri++ ) {
-    // int currReg = aReg + 2 * ri;
-    // формирование запроса
-    ReadInputRegistersRequest cr = new ReadInputRegistersRequest( aReg, aCount );
-    // ReadInputRegistersRequest cr = new ReadInputRegistersRequest( 0x0C, 1 );
-    // ReadInputRegistersRequest cr = new ReadInputRegistersRequest( 4012, 4 );
-    cr.setUnitID( aAdress );
-    // cr.setHeadless();
+    for( int ri = 0; ri < aCount; ri++ ) {
+      int currReg = aReg + 2 * ri;
+      // формирование запроса
+      ReadInputRegistersRequest cr = new ReadInputRegistersRequest( currReg, 2 );
+      // ReadInputRegistersRequest cr = new ReadInputRegistersRequest( aReg, aCount );
+      // ReadInputRegistersRequest cr = new ReadInputRegistersRequest( 0x0C, 1 );
+      // ReadInputRegistersRequest cr = new ReadInputRegistersRequest( 4012, 4 );
+      cr.setUnitID( aAdress );
+      // cr.setHeadless();
 
-    // транзакция
-    ModbusTransaction trans = transactionCreator.createModbusTransaction();
-    trans.setRequest( cr );
+      // транзакция
+      ModbusTransaction trans = transactionCreator.createModbusTransaction();
+      trans.setRequest( cr );
 
-    // испонение транзакции
-    try {
-      System.out.println( "\nChannel №" + (aReg + 1) + " read reg = " + Integer.toHexString( aReg ) );
-      trans.execute();
+      // испонение транзакции
+      try {
+        System.out.println( "\nChannel №" + (ri + 1) + " read reg = " + Integer.toHexString( currReg ).toUpperCase() );
+        trans.execute();
 
-      ModbusResponse r = trans.getResponse();
-      // for( int i = 0; i < 4; i++ ) {
-      // int resp = ((ReadInputRegistersResponse)r).getRegisterValue( i );
-      // System.out.println( "Response val: " + resp );
-      // }
-      // int status = ((ReadInputRegistersResponse)r).getRegisterValue( 2 );
-      // System.out.println( "channel status: " + status );
-      // int decPointLoc = ((ReadInputRegistersResponse)r).getRegisterValue( 3 );
-      // System.out.println( "channel decimal point location: " + decPointLoc );
+        ModbusResponse r = trans.getResponse();
+        // for( int i = 0; i < 4; i++ ) {
+        // int resp = ((ReadInputRegistersResponse)r).getRegisterValue( i );
+        // System.out.println( "Response val: " + resp );
+        // }
+        // int status = ((ReadInputRegistersResponse)r).getRegisterValue( 2 );
+        // System.out.println( "channel status: " + status );
+        // int decPointLoc = ((ReadInputRegistersResponse)r).getRegisterValue( 3 );
+        // System.out.println( "channel decimal point location: " + decPointLoc );
 
-      // working version
-      byte[] hiBytes = ((ReadInputRegistersResponse)r).getRegister( 0 ).toBytes();
-      byte[] lowBytes = ((ReadInputRegistersResponse)r).getRegister( 1 ).toBytes();
-      byte[] bytes = new byte[4];
-      bytes[0] = hiBytes[0];
-      bytes[1] = hiBytes[1];
-      bytes[2] = lowBytes[0];
-      bytes[3] = lowBytes[1];
-      float val = registersToFloat( bytes );
-      System.out.println( "channel float val: " + val );
-      // тут печатаем код состояния канала
-      int channelState = ((ReadInputRegistersResponse)r).getRegisterValue( 2 );
-      System.out.println( "channelState val: " + channelState );
-      // тут печатаем регистр десятичной точки в десятичном формате
-      int decPointLocation = ((ReadInputRegistersResponse)r).getRegisterValue( 3 );
-      System.out.println( "decimal PointLocation val: " + decPointLocation );
-      // ReadInputRegistersResponse res = (ReadInputRegistersResponse)trans.getResponse();
-      // InputRegister[] regs = res.getRegisters();
-      // System.out.println( "start reg = " + aReg + ",regs count = " + aCount ); //$NON-NLS-1$ //$NON-NLS-2$
-      // int[] inputMassive = new int[regs.length];
-      //
-      // for( int j = 0; j < inputMassive.length; j++ ) {
-      // inputMassive[j] = regs[j].getValue();
-      //
-      // System.out.print( regs[j].getValue() + "," ); //$NON-NLS-1$
-      // }
-      // IAtomicValue result = translate( inputMassive );
-      // System.out.print( result );
+        // working version
+        byte[] hiBytes = ((ReadInputRegistersResponse)r).getRegister( 0 ).toBytes();
+        byte[] lowBytes = ((ReadInputRegistersResponse)r).getRegister( 1 ).toBytes();
+        byte[] bytes = new byte[4];
+        // Elmetro low/hi
+        bytes[2] = hiBytes[0];
+        bytes[3] = hiBytes[1];
+        bytes[0] = lowBytes[0];
+        bytes[1] = lowBytes[1];
+        // classic hi/low
+        // bytes[0] = hiBytes[0];
+        // bytes[1] = hiBytes[1];
+        // bytes[2] = lowBytes[0];
+        // bytes[3] = lowBytes[1];
+        float val = registersToFloat( bytes );
+
+        // IAtomicValue val = translate( bytes );
+        System.out.println( "channel float val: " + val );
+
+        int[] ints = new int[2];
+        ints[0] = ((ReadInputRegistersResponse)r).getRegister( 0 ).getValue();
+        ints[1] = ((ReadInputRegistersResponse)r).getRegister( 1 ).getValue();
+        IAtomicValue fval = translateCDAB( ints );
+        System.out.println( "channel float fval CDAB: " + fval );
+        fval = translateABCD( ints );
+        System.out.println( "channel float fval ABCD: " + fval );
+        // тут печатаем код состояния канала
+        // int channelState = ((ReadInputRegistersResponse)r).getRegisterValue( 2 );
+        // System.out.println( "channelState val: " + channelState );
+        // тут печатаем регистр десятичной точки в десятичном формате
+        // int decPointLocation = ((ReadInputRegistersResponse)r).getRegisterValue( 3 );
+        // System.out.println( "decimal PointLocation val: " + decPointLocation );
+        // ReadInputRegistersResponse res = (ReadInputRegistersResponse)trans.getResponse();
+        // InputRegister[] regs = res.getRegisters();
+        // System.out.println( "start reg = " + aReg + ",regs count = " + aCount ); //$NON-NLS-1$ //$NON-NLS-2$
+        // int[] inputMassive = new int[regs.length];
+        //
+        // for( int j = 0; j < inputMassive.length; j++ ) {
+        // inputMassive[j] = regs[j].getValue();
+        //
+        // System.out.print( regs[j].getValue() + "," ); //$NON-NLS-1$
+        // }
+        // IAtomicValue result = translate( inputMassive );
+        // System.out.print( result );
+
+      }
+      catch( ModbusException e ) {
+        System.out.println( "Havnt read " + aAdress );
+        e.printStackTrace();
+      }
     }
-    catch( ModbusException e ) {
-      System.out.println( "Havnt read " + aAdress );
-      e.printStackTrace();
+  }
+
+  private static IAtomicValue translateCDAB( int[] aWords ) {
+    if( aWords.length == 2 ) {
+      int value = 0;
+      for( int i = 0; i < aWords.length; i++ ) {
+        value += aWords[i] << (16 * i);
+      }
+      return AvUtils.avFloat( Float.intBitsToFloat( value ) );
     }
-    // }
+
+    if( aWords.length == 4 ) {
+      long value = 0;
+      for( int i = 0; i < aWords.length; i++ ) {
+        value += ((long)aWords[i]) << (16 * i);
+      }
+      return AvUtils.avFloat( Double.longBitsToDouble( value ) );
+    }
+    return AvUtils.avFloat( aWords[0] );
+  }
+
+  private static IAtomicValue translateABCD( int[] aWords ) {
+    if( aWords.length == 2 ) {
+      int value = 0;
+      for( int i = 0; i < aWords.length; i++ ) {
+        value += aWords[i] << (16 * (aWords.length - 1 - i));
+      }
+      return AvUtils.avFloat( Float.intBitsToFloat( value ) );
+    }
+
+    if( aWords.length == 4 ) {
+      long value = 0;
+      for( int i = 0; i < aWords.length; i++ ) {
+        value += ((long)aWords[i]) << (16 * (aWords.length - 1 - i));
+      }
+      return AvUtils.avFloat( Double.longBitsToDouble( value ) );
+    }
+    return AvUtils.avFloat( aWords[0] );
   }
 
   public static IAtomicValue translate( int[] aBytes ) {
