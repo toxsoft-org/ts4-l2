@@ -22,15 +22,18 @@ public class TestTcpConnect {
     transactionCreator = new TcpTransactionCreator();
 
     OptionSet optSet = new OptionSet();
-    optSet.setStr( IP_PARAM_ID, "192.168.0.131" );
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.132" ); // ШАРМ2
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.222" ); // БРВ №3 ВКМ 360А ссука!
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.141" ); // АК №11
+    optSet.setStr( IP_PARAM_ID, "192.168.0.142" ); // АК №13
     optSet.setInt( PORT_PARAM_ID, 502 );
 
     transactionCreator.config( optSet );
 
     String cmd = args[0];
     int adress = 1;
-    // int reg = Integer.parseInt( args[1] );
-    int reg = Integer.parseInt( args[1].substring( 2 ), 16 );
+    int reg = Integer.parseInt( args[1] );
+    // int reg = Integer.parseInt( args[1].substring( 2 ), 16 );
     int regVal = Integer.parseInt( args[2] );
 
     try {
@@ -51,7 +54,12 @@ public class TestTcpConnect {
           readAOReg( adress, reg, regVal );
           break;
         case "ai":
-          elemerReadAIReg( adress, reg, regVal );
+          // 56 first register
+          owenReadAIReg( 1, 56, 13 );
+          // rmt59ReadAIReg( 1, 0x500, 9 );
+          // rmt79ReadAIReg( 1, 0x4000, 4 );
+          // vkm360ReadAIReg( 1, 4000, 4 );
+          // elmetroReadAIReg( adress, reg, regVal );
           break;
 
         case "di":
@@ -167,6 +175,53 @@ public class TestTcpConnect {
     }
   }
 
+  /**
+   * Чтение выходных аналоговых регистров ВКМ 360
+   *
+   * @param aAdress
+   * @param aReg
+   */
+  public static void vkm360ReadAIReg( int aAdress, int aReg, int aCount ) {
+
+    for( int ri = 0; ri < aCount; ri++ ) {
+      int currReg = aReg + 4 * ri;
+      // формирование запроса
+      ReadInputRegistersRequest cr = new ReadInputRegistersRequest( currReg, 4 );
+      cr.setUnitID( aAdress );
+      // cr.setHeadless();
+
+      // транзакция
+      ModbusTransaction trans = transactionCreator.createModbusTransaction();
+      trans.setRequest( cr );
+
+      // испоkнение транзакции
+      try {
+        System.out.println( "\nLogical input №" + (ri + 1) + " read reg = " + currReg );
+        trans.execute();
+
+        ModbusResponse r = trans.getResponse();
+        byte[] hiBytes = ((ReadInputRegistersResponse)r).getRegister( 0 ).toBytes();
+        byte[] lowBytes = ((ReadInputRegistersResponse)r).getRegister( 1 ).toBytes();
+        byte[] bytes = new byte[4];
+        bytes[0] = hiBytes[0];
+        bytes[1] = hiBytes[1];
+        bytes[2] = lowBytes[0];
+        bytes[3] = lowBytes[1];
+        float val = registersToFloat( bytes );
+        System.out.println( "Response float val: " + val );
+      }
+      catch( ModbusException e ) {
+        System.out.println( "Havnt read " + aAdress );
+        e.printStackTrace();
+      }
+    }
+  }
+
+  public static void owenReadAIReg( int aAdress, int aReg, int aCount ) {
+    // same as РМТ 59
+    rmt59ReadAIReg( aAdress, aReg, aCount );
+  }
+
   public static void rmt59ReadAIReg( int aAdress, int aReg, int aCount ) {
     for( int ri = 0; ri < aCount; ri++ ) {
       int currReg = aReg + 3 * ri;
@@ -182,20 +237,30 @@ public class TestTcpConnect {
 
       // исполнение транзакции
       try {
-        System.out.println( "Read reg = " + Integer.toHexString( currReg ) + " , count = " + aCount );
+        System.out.println( "Read reg = " + Integer.toHexString( currReg ) + " , count = " + 3 );
         trans.execute();
 
         ModbusResponse r = trans.getResponse();
-
+        byte[] hiBytes = ((ReadMultipleRegistersResponse)r).getRegister( 0 ).toBytes();
+        byte[] lowBytes = ((ReadMultipleRegistersResponse)r).getRegister( 1 ).toBytes();
+        int penError = ((ReadMultipleRegistersResponse)r).getRegister( 2 ).getValue();
+        byte[] bytes = new byte[4];
+        bytes[0] = hiBytes[0];
+        bytes[1] = hiBytes[1];
+        bytes[2] = lowBytes[0];
+        bytes[3] = lowBytes[1];
+        float val = registersToFloat( bytes );
+        System.out.println( "Pen float val: " + val );
+        System.out.println( "Pen error: " + penError );
         int[] ints = new int[2];
-        ints[0] = ((ReadInputRegistersResponse)r).getRegisterValue( 0 );
-        ints[1] = ((ReadInputRegistersResponse)r).getRegisterValue( 1 );
+        ints[0] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 0 );
+        ints[1] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 1 );
         IAtomicValue fval = translateCDAB( ints );
         System.out.println( "channel float fval CDAB: " + fval );
         fval = translateABCD( ints );
         System.out.println( "channel float fval ABCD: " + fval );
         // тут печатаем код состояния канала
-        int penErr = ((ReadInputRegistersResponse)r).getRegisterValue( 2 );
+        int penErr = ((ReadMultipleRegistersResponse)r).getRegisterValue( 2 );
         System.out.println( "penErr : " + penErr );
       }
       catch( ModbusException e ) {
@@ -206,7 +271,7 @@ public class TestTcpConnect {
   }
 
   public static void rmt79ReadAIReg( int aAdress, int aReg, int aCount ) {
-    for( int ri = 0; ri < 11; ri++ ) {
+    for( int ri = 0; ri < 28; ri++ ) {
       int currReg = aReg + 4 * ri;
       // формирование запроса
       ReadInputRegistersRequest cr = new ReadInputRegistersRequest( currReg, aCount );
@@ -237,18 +302,18 @@ public class TestTcpConnect {
         // тут печатаем регистр десятичной точки в десятичном формате
         int decPointLocation = ((ReadInputRegistersResponse)r).getRegisterValue( 3 );
         System.out.println( "decimal PointLocation val: " + decPointLocation );
-        ReadInputRegistersResponse res = (ReadInputRegistersResponse)trans.getResponse();
-        InputRegister[] regs = res.getRegisters();
-        System.out.println( "start reg = " + aReg + ",regs count = " + aCount ); //$NON-NLS-1$ //$NON-NLS-2$
-        int[] inputMassive = new int[regs.length];
-
-        for( int j = 0; j < inputMassive.length; j++ ) {
-          inputMassive[j] = regs[j].getValue();
-
-          System.out.print( regs[j].getValue() + "," ); //$NON-NLS-1$
-        }
-        IAtomicValue result = translate( inputMassive );
-        System.out.print( result );
+        // ReadInputRegistersResponse res = (ReadInputRegistersResponse)trans.getResponse();
+        // InputRegister[] regs = res.getRegisters();
+        // System.out.println( "start reg = " + aReg + ",regs count = " + aCount ); //$NON-NLS-1$ //$NON-NLS-2$
+        // int[] inputMassive = new int[regs.length];
+        //
+        // for( int j = 0; j < inputMassive.length; j++ ) {
+        // inputMassive[j] = regs[j].getValue();
+        //
+        // System.out.print( regs[j].getValue() + "," ); //$NON-NLS-1$
+        // }
+        // IAtomicValue result = translate( inputMassive );
+        // System.out.print( result );
       }
       catch( ModbusException e ) {
         System.out.println( "Havnt read " + aAdress );
@@ -264,7 +329,7 @@ public class TestTcpConnect {
    * @param aReg адрес начального регистра
    * @param aCount кол-во регистров для чтения
    */
-  public static void elemerReadAIReg( int aAdress, int aReg, int aCount ) {
+  public static void elmetroReadAIReg( int aAdress, int aReg, int aCount ) {
     // ReadInputRegistersRequest cr = new ReadInputRegistersRequest( aReg, aCount );
     // // ReadInputRegistersRequest cr = new ReadInputRegistersRequest( 0x0C, 2 );
     // cr.setUnitID( aAdress );
