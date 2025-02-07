@@ -745,6 +745,86 @@ DlmConfig =
           {
           }
         }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1738917116505.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1738917116505",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "payload_Q8",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AI_4000_2",
+            tag.dev.id = "tcp_192_168_0_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1738917182490.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1738917182490",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "payload_Q8",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AI_4002_1",
+            tag.dev.id = "tcp_192_168_0_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1738917292346.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1738917292346",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "payload_Q9",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AI_4004_2",
+            tag.dev.id = "tcp_192_168_0_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1738917319966.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1738917319966",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "payload_Q9",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AI_4006_1",
+            tag.dev.id = "tcp_192_168_0_222_502"
+          }
+          ,
+          {
+          }
+        }
       ]
     }
     ,
