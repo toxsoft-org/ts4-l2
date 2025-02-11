@@ -2388,9 +2388,9 @@ DlmConfig =
         ,
         {
           false,
-          "data.modbus.bridge.cfg.unit.id1738929533191.def",
+          "data.modbus.bridge.cfg.unit.id1739272576059.def",
           {
-            pin.id = "modbus.bridge.cfg.unit.id1738929533191",
+            pin.id = "modbus.bridge.cfg.unit.id1739272576059",
             java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
             synch.period = 1000,
             is.curr = true,
@@ -2398,7 +2398,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "nitroCompressor3S11_Ir",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_141_ip_port_502_AO_1304_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_141_ip_port_502_AO_1310_2",
             tag.dev.id = "tcp_192_168_0_141_502"
           }
           ,
@@ -2408,9 +2408,9 @@ DlmConfig =
         ,
         {
           false,
-          "data.modbus.bridge.cfg.unit.id1738929533192.def",
+          "data.modbus.bridge.cfg.unit.id1739272631921.def",
           {
-            pin.id = "modbus.bridge.cfg.unit.id1738929533192",
+            pin.id = "modbus.bridge.cfg.unit.id1739272631921",
             java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
             synch.period = 1000,
             is.curr = true,
@@ -2418,7 +2418,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "nitroCompressor3S11_Ir",
             data.id = "rtdChannelState",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_141_ip_port_502_AO_1306_1",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_141_ip_port_502_AO_1312_1",
             tag.dev.id = "tcp_192_168_0_141_502"
           }
           ,
@@ -2428,9 +2428,9 @@ DlmConfig =
         ,
         {
           false,
-          "data.modbus.bridge.cfg.unit.id1738929533192.def",
+          "data.modbus.bridge.cfg.unit.id1739272712261.def",
           {
-            pin.id = "modbus.bridge.cfg.unit.id1738929533192",
+            pin.id = "modbus.bridge.cfg.unit.id1739272712261",
             java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
             synch.period = 1000,
             is.curr = true,
@@ -2438,7 +2438,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "nitroCompressor3S11_Is",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_141_ip_port_502_AO_1307_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_141_ip_port_502_AO_1313_2",
             tag.dev.id = "tcp_192_168_0_141_502"
           }
           ,
@@ -2448,9 +2448,9 @@ DlmConfig =
         ,
         {
           false,
-          "data.modbus.bridge.cfg.unit.id1738929533192.def",
+          "data.modbus.bridge.cfg.unit.id1739272759588.def",
           {
-            pin.id = "modbus.bridge.cfg.unit.id1738929533192",
+            pin.id = "modbus.bridge.cfg.unit.id1739272759588",
             java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
             synch.period = 1000,
             is.curr = true,
@@ -2458,7 +2458,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "nitroCompressor3S11_Is",
             data.id = "rtdChannelState",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_141_ip_port_502_AO_1309_1",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_141_ip_port_502_AO_1315_1",
             tag.dev.id = "tcp_192_168_0_141_502"
           }
           ,
@@ -2788,9 +2788,9 @@ DlmConfig =
         ,
         {
           false,
-          "data.modbus.bridge.cfg.unit.id1738930362050.def",
+          "data.modbus.bridge.cfg.unit.id1739272276649.def",
           {
-            pin.id = "modbus.bridge.cfg.unit.id1738930362050",
+            pin.id = "modbus.bridge.cfg.unit.id1739272276649",
             java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
             synch.period = 1000,
             is.curr = true,
@@ -2798,7 +2798,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "nitroCompressor3S13_Ir",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_142_ip_port_502_AO_1304_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_142_ip_port_502_AO_1310_2",
             tag.dev.id = "tcp_192_168_0_142_502"
           }
           ,
@@ -2808,9 +2808,9 @@ DlmConfig =
         ,
         {
           false,
-          "data.modbus.bridge.cfg.unit.id1738930362051.def",
+          "data.modbus.bridge.cfg.unit.id1739272295373.def",
           {
-            pin.id = "modbus.bridge.cfg.unit.id1738930362051",
+            pin.id = "modbus.bridge.cfg.unit.id1739272295373",
             java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
             synch.period = 1000,
             is.curr = true,
@@ -2818,7 +2818,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "nitroCompressor3S13_Ir",
             data.id = "rtdChannelState",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_142_ip_port_502_AO_1306_1",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_142_ip_port_502_AO_1312_1",
             tag.dev.id = "tcp_192_168_0_142_502"
           }
           ,
@@ -2828,9 +2828,9 @@ DlmConfig =
         ,
         {
           false,
-          "data.modbus.bridge.cfg.unit.id1738930362051.def",
+          "data.modbus.bridge.cfg.unit.id1739272378436.def",
           {
-            pin.id = "modbus.bridge.cfg.unit.id1738930362051",
+            pin.id = "modbus.bridge.cfg.unit.id1739272378436",
             java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
             synch.period = 1000,
             is.curr = true,
@@ -2838,7 +2838,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "nitroCompressor3S13_Is",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_142_ip_port_502_AO_1307_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_142_ip_port_502_AO_1313_2",
             tag.dev.id = "tcp_192_168_0_142_502"
           }
           ,
@@ -2848,9 +2848,9 @@ DlmConfig =
         ,
         {
           false,
-          "data.modbus.bridge.cfg.unit.id1738930362051.def",
+          "data.modbus.bridge.cfg.unit.id1739272409368.def",
           {
-            pin.id = "modbus.bridge.cfg.unit.id1738930362051",
+            pin.id = "modbus.bridge.cfg.unit.id1739272409368",
             java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
             synch.period = 1000,
             is.curr = true,
@@ -2858,7 +2858,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "nitroCompressor3S13_Is",
             data.id = "rtdChannelState",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_142_ip_port_502_AO_1309_1",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_142_ip_port_502_AO_1315_1",
             tag.dev.id = "tcp_192_168_0_142_502"
           }
           ,

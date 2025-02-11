@@ -1,0 +1,87 @@
+DeviceConfig = 
+{
+  false,
+  "modbus.common.cfg",
+  {
+    javaClassName = "org.toxsoft.l2.thd.modbus.common.CommonModbusDeviceProducer",
+    id = "modbus.bridge.collection.id",
+    description = "modbus common apparat producer",
+    period = 1000
+  }
+  ,
+  {
+    connections=
+    {
+      true,
+      [
+        {
+          false,
+          "tcp_192_168_0_131_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.131",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_131_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_131_ip_port_502_AI_0_2.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_131_ip_port_502_AI_0_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_131_ip_port_502_AI_0_2",
+                            request.type = "AI",
+                            register = 0,
+                            words.count = 2,
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_131_ip_port_502_AI_2_2.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_131_ip_port_502_AI_2_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_131_ip_port_502_AI_2_2",
+                            request.type = "AI",
+                            register = 2,
+                            words.count = 2,
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
