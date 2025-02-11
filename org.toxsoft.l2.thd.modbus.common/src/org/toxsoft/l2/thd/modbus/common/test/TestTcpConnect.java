@@ -22,10 +22,13 @@ public class TestTcpConnect {
     transactionCreator = new TcpTransactionCreator();
 
     OptionSet optSet = new OptionSet();
-    // optSet.setStr( IP_PARAM_ID, "192.168.0.132" ); // ШАРМ2
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.124" ); // OWEN ВК№2
     // optSet.setStr( IP_PARAM_ID, "192.168.0.222" ); // БРВ №3 ВКМ 360А ссука!
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.139" ); // АК №7
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.140" ); // АК №8
     // optSet.setStr( IP_PARAM_ID, "192.168.0.141" ); // АК №11
     optSet.setStr( IP_PARAM_ID, "192.168.0.142" ); // АК №13
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.129" ); // БРВ №2
     optSet.setInt( PORT_PARAM_ID, 502 );
 
     transactionCreator.config( optSet );
@@ -55,8 +58,8 @@ public class TestTcpConnect {
           break;
         case "ai":
           // 56 first register
-          owenReadAIReg( 1, 56, 13 );
-          // rmt59ReadAIReg( 1, 0x500, 9 );
+          // owenReadAIReg( 1, 56, 13 );
+          rmt59ReadAIReg( 1, 0x500, 12 );
           // rmt79ReadAIReg( 1, 0x4000, 4 );
           // vkm360ReadAIReg( 1, 4000, 4 );
           // elmetroReadAIReg( adress, reg, regVal );
@@ -237,7 +240,8 @@ public class TestTcpConnect {
 
       // исполнение транзакции
       try {
-        System.out.println( "Read reg = " + Integer.toHexString( currReg ) + " , count = " + 3 );
+        System.out
+            .println( "\nPen №" + (ri + 1) + " read reg = " + Integer.toHexString( currReg ) + " , count = " + 3 );
         trans.execute();
 
         ModbusResponse r = trans.getResponse();
@@ -252,16 +256,16 @@ public class TestTcpConnect {
         float val = registersToFloat( bytes );
         System.out.println( "Pen float val: " + val );
         System.out.println( "Pen error: " + penError );
-        int[] ints = new int[2];
-        ints[0] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 0 );
-        ints[1] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 1 );
-        IAtomicValue fval = translateCDAB( ints );
-        System.out.println( "channel float fval CDAB: " + fval );
-        fval = translateABCD( ints );
-        System.out.println( "channel float fval ABCD: " + fval );
-        // тут печатаем код состояния канала
-        int penErr = ((ReadMultipleRegistersResponse)r).getRegisterValue( 2 );
-        System.out.println( "penErr : " + penErr );
+        // int[] ints = new int[2];
+        // ints[0] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 0 );
+        // ints[1] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 1 );
+        // IAtomicValue fval = translateCDAB( ints );
+        // System.out.println( "channel float fval CDAB: " + fval );
+        // fval = translateABCD( ints );
+        // System.out.println( "channel float fval ABCD: " + fval );
+        // // тут печатаем код состояния канала
+        // int penErr = ((ReadMultipleRegistersResponse)r).getRegisterValue( 2 );
+        // System.out.println( "penErr : " + penErr );
       }
       catch( ModbusException e ) {
         System.out.println( "Havnt read " + aAdress );
