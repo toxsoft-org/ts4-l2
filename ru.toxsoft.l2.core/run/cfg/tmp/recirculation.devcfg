@@ -3193,10 +3193,10 @@ DeviceConfig =
         ,
         {
           false,
-          "tcp_192_168_0_124_502",
+          "tcp_192_168_0_123_502",
           {
             type = "tcp",
-            ip = "192.168.0.124",
+            ip = "192.168.0.123",
             port = 502
           }
           ,
@@ -3207,7 +3207,7 @@ DeviceConfig =
               [
                 {
                   false,
-                  "tcp_ip_address_192_168_0_124_ip_port_502.def",
+                  "tcp_ip_address_192_168_0_123_ip_port_502.def",
                   {
                     dev.address = 1
                   }
