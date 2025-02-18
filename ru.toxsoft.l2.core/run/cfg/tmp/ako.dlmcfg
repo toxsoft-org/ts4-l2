@@ -758,7 +758,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "payload_Q8",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AI_4000_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AI_2028_2",
             tag.dev.id = "tcp_192_168_0_222_502"
           }
           ,
@@ -798,7 +798,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "payload_Q9",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AI_4004_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AI_2128_2",
             tag.dev.id = "tcp_192_168_0_222_502"
           }
           ,
