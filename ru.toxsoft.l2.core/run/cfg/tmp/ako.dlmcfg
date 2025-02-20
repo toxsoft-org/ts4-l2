@@ -388,6 +388,46 @@ DlmConfig =
         ,
         {
           false,
+          "data.modbus.bridge.cfg.unit.id1738913634758.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1738913634758",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_L90",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16420_2",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1738913663443.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1738913663443",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_L90",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16422_1",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
           "data.modbus.bridge.cfg.unit.id1738913735596.def",
           {
             pin.id = "modbus.bridge.cfg.unit.id1738913735596",
@@ -1580,6 +1620,526 @@ DlmConfig =
             data.id = "rtdChannelState",
             tag.id = "modbus_node_id_tcp_ip_address_192_168_0_123_ip_port_502_AO_50_1",
             tag.dev.id = "tcp_192_168_0_123_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621380.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621380",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_P1",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_0_2",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621380.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621380",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_P1",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_2_1",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621380.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621380",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_P2",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_4_2",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621380.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621380",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_P2",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_6_1",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621380.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621380",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_P3",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_8_2",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621380.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621380",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_P3",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_10_1",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621380.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621380",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_P4",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_12_2",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621380.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621380",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_P4",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_14_1",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_T1",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_16_2",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_T1",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_18_1",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_T2",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_20_2",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_T2",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_22_1",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_T3",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_24_2",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_T3",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_26_1",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_T4",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_28_2",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_T4",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_30_1",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_P5",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_32_2",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_P5",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_34_1",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_T6",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_36_2",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_T6",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_38_1",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_P6",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_40_2",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621381.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621381",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_P6",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_42_1",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621382.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621382",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_Is",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_44_2",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621382.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621382",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_Is",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_46_1",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621382.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621382",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_Ir",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_48_2",
+            tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740052621382.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740052621382",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airCompr3_Ir",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_50_1",
+            tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
           {
