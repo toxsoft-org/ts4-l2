@@ -236,7 +236,7 @@ DlmConfig =
             is.curr = true,
             is.hist = true,
             class.id = "val.AnalogChannel",
-            obj.name = "airSeparatorBlock2_Q9",
+            obj.name = "airSeparatorBlock2_T6",
             data.id = "rtdCurrValue",
             tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16404_2",
             tag.dev.id = "tcp_192_168_0_129_502"
@@ -256,7 +256,7 @@ DlmConfig =
             is.curr = true,
             is.hist = true,
             class.id = "val.AnalogChannel",
-            obj.name = "airSeparatorBlock2_Q9",
+            obj.name = "airSeparatorBlock2_T6",
             data.id = "rtdChannelState",
             tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16406_1",
             tag.dev.id = "tcp_192_168_0_129_502"
@@ -2140,6 +2140,326 @@ DlmConfig =
             data.id = "rtdChannelState",
             tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_50_1",
             tag.dev.id = "tcp_192_168_0_125_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740128484217.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740128484217",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_A5",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16464_2",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740128551778.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740128551778",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_T12",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16466_1",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740128640304.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740128640304",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_T12",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16468_2",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740128690654.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740128690654",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_T12",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16470_1",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740128893149.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740128893149",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_P8",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16472_2",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740128921480.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740128921480",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_P8",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16474_1",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740129149989.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740129149989",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_T1",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16476_2",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740129199497.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740129199497",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_T1",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16478_1",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740129277955.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740129277955",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_T3",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16480_2",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740129334452.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740129334452",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_T3",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16482_1",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740129414915.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740129414915",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_T4",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16484_2",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740129446522.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740129446522",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_T4",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16486_1",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740129549350.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740129549350",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_T5",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16488_2",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740129565602.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740129565602",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_T5",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16490_1",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740383672731.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740383672731",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AirSeparatorBlock",
+            obj.name = "airSeparatorBlock2",
+            data.id = "rtdDIword",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16492_2",
+            tag.dev.id = "tcp_192_168_0_129_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1740384139101.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740384139101",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AirSeparatorBlock",
+            obj.name = "airSeparatorBlock2",
+            data.id = "rtdDIwordChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16494_1",
+            tag.dev.id = "tcp_192_168_0_129_502"
           }
           ,
           {
