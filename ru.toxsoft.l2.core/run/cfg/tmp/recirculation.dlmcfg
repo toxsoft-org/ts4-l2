@@ -2878,7 +2878,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr4_P1",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AI_0_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_0_2",
             tag.dev.id = "tcp_192_168_0_126_502"
           }
           ,
@@ -2918,7 +2918,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr4_P2",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AI_4_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_4_2",
             tag.dev.id = "tcp_192_168_0_126_502"
           }
           ,
@@ -2958,7 +2958,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr4_P3",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AI_8_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_8_2",
             tag.dev.id = "tcp_192_168_0_126_502"
           }
           ,
@@ -2998,7 +2998,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr4_P4",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AI_12_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_12_2",
             tag.dev.id = "tcp_192_168_0_126_502"
           }
           ,
@@ -3038,7 +3038,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr4_T1",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AI_16_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_16_2",
             tag.dev.id = "tcp_192_168_0_126_502"
           }
           ,
@@ -3078,7 +3078,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr4_T2",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AI_20_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_20_2",
             tag.dev.id = "tcp_192_168_0_126_502"
           }
           ,
@@ -3118,7 +3118,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr4_T3",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AI_24_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_24_2",
             tag.dev.id = "tcp_192_168_0_126_502"
           }
           ,
@@ -3158,7 +3158,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr4_T4",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AI_28_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_28_2",
             tag.dev.id = "tcp_192_168_0_126_502"
           }
           ,
@@ -3198,7 +3198,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr4_P5",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AI_32_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_32_2",
             tag.dev.id = "tcp_192_168_0_126_502"
           }
           ,
@@ -3238,7 +3238,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr4_T6",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AI_36_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_36_2",
             tag.dev.id = "tcp_192_168_0_126_502"
           }
           ,
@@ -3278,7 +3278,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr4_P6",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AI_40_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_40_2",
             tag.dev.id = "tcp_192_168_0_126_502"
           }
           ,
@@ -3318,7 +3318,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr4_Is",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AI_44_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_44_2",
             tag.dev.id = "tcp_192_168_0_126_502"
           }
           ,
@@ -3358,7 +3358,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr4_Ir",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AI_48_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_48_2",
             tag.dev.id = "tcp_192_168_0_126_502"
           }
           ,
