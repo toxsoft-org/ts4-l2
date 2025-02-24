@@ -3306,14 +3306,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_2_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_2_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_2_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_2_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_2_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_2_1",
+                            request.type = "AO",
                             register = 2,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3322,14 +3322,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_3_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_3_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_3_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_3_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_3_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_3_1",
+                            request.type = "AO",
                             register = 3,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3355,14 +3355,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_6_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_6_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_6_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_6_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_6_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_6_1",
+                            request.type = "AO",
                             register = 6,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3371,14 +3371,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_7_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_7_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_7_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_7_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_7_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_7_1",
+                            request.type = "AO",
                             register = 7,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3404,14 +3404,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_10_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_10_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_10_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_10_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_10_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_10_1",
+                            request.type = "AO",
                             register = 10,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3420,14 +3420,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_11_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_11_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_11_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_11_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_11_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_11_1",
+                            request.type = "AO",
                             register = 11,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3453,14 +3453,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_14_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_14_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_14_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_14_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_14_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_14_1",
+                            request.type = "AO",
                             register = 14,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3469,14 +3469,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_15_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_15_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_15_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_15_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_15_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_15_1",
+                            request.type = "AO",
                             register = 15,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3502,14 +3502,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_18_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_18_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_18_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_18_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_18_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_18_1",
+                            request.type = "AO",
                             register = 18,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3518,14 +3518,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_19_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_19_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_19_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_19_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_19_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_19_1",
+                            request.type = "AO",
                             register = 19,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3551,14 +3551,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_22_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_22_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_22_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_22_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_22_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_22_1",
+                            request.type = "AO",
                             register = 22,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3567,14 +3567,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_23_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_23_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_23_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_23_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_23_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_23_1",
+                            request.type = "AO",
                             register = 23,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3600,14 +3600,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_26_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_26_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_26_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_26_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_26_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_26_1",
+                            request.type = "AO",
                             register = 26,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3616,14 +3616,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_27_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_27_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_27_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_27_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_27_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_27_1",
+                            request.type = "AO",
                             register = 27,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3649,14 +3649,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_30_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_30_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_30_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_30_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_30_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_30_1",
+                            request.type = "AO",
                             register = 30,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3665,14 +3665,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_31_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_31_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_31_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_31_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_31_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_31_1",
+                            request.type = "AO",
                             register = 31,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3698,14 +3698,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_34_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_34_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_34_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_34_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_34_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_34_1",
+                            request.type = "AO",
                             register = 34,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3714,14 +3714,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_35_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_35_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_35_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_35_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_35_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_35_1",
+                            request.type = "AO",
                             register = 35,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3747,14 +3747,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_38_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_38_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_38_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_38_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_38_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_38_1",
+                            request.type = "AO",
                             register = 38,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3763,14 +3763,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_39_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_39_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_39_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_39_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_39_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_39_1",
+                            request.type = "AO",
                             register = 39,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3796,14 +3796,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_42_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_42_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_42_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_42_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_42_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_42_1",
+                            request.type = "AO",
                             register = 42,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3812,14 +3812,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_43_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_43_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_43_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_43_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_43_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_43_1",
+                            request.type = "AO",
                             register = 43,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3845,14 +3845,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_46_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_46_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_46_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_46_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_46_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_46_1",
+                            request.type = "AO",
                             register = 46,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3861,14 +3861,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_47_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_47_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_47_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_47_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_47_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_47_1",
+                            request.type = "AO",
                             register = 47,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -3894,14 +3894,14 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_50_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_50_1.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_50_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_DI_50_1",
-                            request.type = "DI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_50_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_126_ip_port_502_AO_50_1",
+                            request.type = "AO",
                             register = 50,
                             words.count = 1,
-                            translator = "BOOLEAN_DISCRETS"
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
