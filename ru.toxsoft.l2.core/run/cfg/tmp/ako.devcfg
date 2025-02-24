@@ -2684,11 +2684,11 @@ DeviceConfig =
                       [
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_0_2.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_0_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_0_2",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_0_2",
-                            request.type = "AI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_0_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_0_2",
+                            request.type = "AO",
                             register = 0,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS",
@@ -2733,11 +2733,11 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_4_2.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_4_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_4_2",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_4_2",
-                            request.type = "AI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_4_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_4_2",
+                            request.type = "AO",
                             register = 4,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS",
@@ -2782,11 +2782,11 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_8_2.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_8_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_8_2",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_8_2",
-                            request.type = "AI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_8_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_8_2",
+                            request.type = "AO",
                             register = 8,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS",
@@ -2831,11 +2831,11 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_12_2.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_12_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_12_2",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_12_2",
-                            request.type = "AI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_12_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_12_2",
+                            request.type = "AO",
                             register = 12,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS",
@@ -2880,11 +2880,11 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_16_2.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_16_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_16_2",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_16_2",
-                            request.type = "AI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_16_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_16_2",
+                            request.type = "AO",
                             register = 16,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS",
@@ -2929,11 +2929,11 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_20_2.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_20_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_20_2",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_20_2",
-                            request.type = "AI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_20_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_20_2",
+                            request.type = "AO",
                             register = 20,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS",
@@ -2978,11 +2978,11 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_24_2.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_24_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_24_2",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_24_2",
-                            request.type = "AI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_24_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_24_2",
+                            request.type = "AO",
                             register = 24,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS",
@@ -3027,11 +3027,11 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_28_2.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_28_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_28_2",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_28_2",
-                            request.type = "AI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_28_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_28_2",
+                            request.type = "AO",
                             register = 28,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS",
@@ -3076,11 +3076,11 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_32_2.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_32_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_32_2",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_32_2",
-                            request.type = "AI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_32_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_32_2",
+                            request.type = "AO",
                             register = 32,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS",
@@ -3125,11 +3125,11 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_36_2.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_36_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_36_2",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_36_2",
-                            request.type = "AI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_36_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_36_2",
+                            request.type = "AO",
                             register = 36,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS",
@@ -3174,11 +3174,11 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_40_2.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_40_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_40_2",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_40_2",
-                            request.type = "AI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_40_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_40_2",
+                            request.type = "AO",
                             register = 40,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS",
@@ -3223,11 +3223,11 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_44_2.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_44_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_44_2",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_44_2",
-                            request.type = "AI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_44_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_44_2",
+                            request.type = "AO",
                             register = 44,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS",
@@ -3272,11 +3272,11 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_48_2.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_48_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_48_2",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_48_2",
-                            request.type = "AI",
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_48_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_48_2",
+                            request.type = "AO",
                             register = 48,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS",
@@ -3416,7 +3416,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 0,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
                           }
                           ,
                           {
@@ -3464,7 +3465,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 4,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
                           }
                           ,
                           {
@@ -3512,7 +3514,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 8,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
                           }
                           ,
                           {
@@ -3560,7 +3563,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 12,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
                           }
                           ,
                           {
@@ -3608,7 +3612,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 16,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
                           }
                           ,
                           {
@@ -3656,7 +3661,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 20,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
                           }
                           ,
                           {
@@ -3704,7 +3710,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 24,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
                           }
                           ,
                           {
@@ -3752,7 +3759,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 28,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
                           }
                           ,
                           {
@@ -3800,7 +3808,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 32,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
                           }
                           ,
                           {
@@ -3848,7 +3857,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 36,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
                           }
                           ,
                           {
@@ -3896,7 +3906,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 40,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
                           }
                           ,
                           {
@@ -3944,7 +3955,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 44,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
                           }
                           ,
                           {
@@ -3992,7 +4004,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 48,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
                           }
                           ,
                           {

@@ -1638,7 +1638,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr3_P1",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_0_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_0_2",
             tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
@@ -1678,7 +1678,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr3_P2",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_4_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_4_2",
             tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
@@ -1718,7 +1718,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr3_P3",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_8_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_8_2",
             tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
@@ -1758,7 +1758,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr3_P4",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_12_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_12_2",
             tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
@@ -1798,7 +1798,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr3_T1",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_16_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_16_2",
             tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
@@ -1838,7 +1838,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr3_T2",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_20_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_20_2",
             tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
@@ -1878,7 +1878,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr3_T3",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_24_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_24_2",
             tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
@@ -1918,7 +1918,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr3_T4",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_28_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_28_2",
             tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
@@ -1958,7 +1958,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr3_P5",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_32_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_32_2",
             tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
@@ -1998,7 +1998,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr3_T6",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_36_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_36_2",
             tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
@@ -2038,7 +2038,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr3_P6",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_40_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_40_2",
             tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
@@ -2078,7 +2078,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr3_Is",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_44_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_44_2",
             tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
@@ -2118,7 +2118,7 @@ DlmConfig =
             class.id = "val.AnalogChannel",
             obj.name = "airCompr3_Ir",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AI_48_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_125_ip_port_502_AO_48_2",
             tag.dev.id = "tcp_192_168_0_125_502"
           }
           ,
@@ -2434,7 +2434,7 @@ DlmConfig =
             java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
             synch.period = 1000,
             is.curr = true,
-            is.hist = true,
+            is.hist = false,
             class.id = "val.AirSeparatorBlock",
             obj.name = "airSeparatorBlock2",
             data.id = "rtdDIword",
@@ -2454,7 +2454,7 @@ DlmConfig =
             java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
             synch.period = 1000,
             is.curr = true,
-            is.hist = true,
+            is.hist = false,
             class.id = "val.AirSeparatorBlock",
             obj.name = "airSeparatorBlock2",
             data.id = "rtdDIwordChannelState",
