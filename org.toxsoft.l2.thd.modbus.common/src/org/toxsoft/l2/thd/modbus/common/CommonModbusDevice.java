@@ -396,7 +396,7 @@ public class CommonModbusDevice
    * @author max
    * @param <T> - класс инжектора.
    */
-  static abstract class ValuesBufferImpl<T extends TagValueInjector>
+  abstract class ValuesBufferImpl<T extends TagValueInjector>
       implements IValuesBuffer {
 
     private int readErrorCount = 0;
@@ -427,6 +427,12 @@ public class CommonModbusDevice
           // если ошибочных чтений подряд больше заданного количества - буферы должны отработать
           for( T inj : injectors ) {
             inj.readError();
+          }
+          try {
+            closeApparatResources();
+          }
+          catch( Exception ex ) {
+            LoggerUtils.errorLogger().error( ex );
           }
         }
         else {

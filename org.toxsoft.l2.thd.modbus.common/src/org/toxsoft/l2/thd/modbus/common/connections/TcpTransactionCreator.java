@@ -94,6 +94,7 @@ public class TcpTransactionCreator
   void closeConnection() {
     if( connection != null && connection.isConnected() ) {
       connection.close();
+      connection = null;
     }
   }
 

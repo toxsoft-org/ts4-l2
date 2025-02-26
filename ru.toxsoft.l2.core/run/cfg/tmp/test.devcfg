@@ -1,0 +1,606 @@
+DeviceConfig = 
+{
+  false,
+  "modbus.common.cfg",
+  {
+    javaClassName = "org.toxsoft.l2.thd.modbus.common.CommonModbusDeviceProducer",
+    id = "modbus.bridge.collection.id",
+    description = "modbus common apparat producer",
+    period = 1000
+  }
+  ,
+  {
+    connections=
+    {
+      true,
+      [
+        {
+          false,
+          "tcp_192_168_0_131_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.131",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_131_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_139_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.139",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_139_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_140_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.140",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_140_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_141_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.141",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_141_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_142_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.142",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_142_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_220_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.220",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_220_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_222_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.222",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_222_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AI_4000_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AI_4000_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AI_4000_1",
+                            request.type = "AI",
+                            register = 4000,
+                            words.count = 1,
+                            translator = "FLOAT_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AO_4002_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AO_4002_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AO_4002_1",
+                            request.type = "AO",
+                            register = 4002,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_221_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.221",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_221_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_132_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.132",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_132_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_129_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.129",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_129_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16456_2.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16456_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16456_2",
+                            request.type = "AI",
+                            register = 16456,
+                            words.count = 2,
+                            translator = "FLOAT_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16458_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16458_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16458_1",
+                            request.type = "AI",
+                            register = 16458,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_123_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.123",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_123_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_125_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.125",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_125_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_126_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.126",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_126_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_147_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.147",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_147_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "tcp_192_168_0_124_502",
+          {
+            type = "tcp",
+            ip = "192.168.0.124",
+            port = 502
+          }
+          ,
+          {
+            devices=
+            {
+              true,
+              [
+                {
+                  false,
+                  "tcp_ip_address_192_168_0_124_ip_port_502.def",
+                  {
+                    dev.address = 1
+                  }
+                  ,
+                  {
+                    tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
