@@ -44,7 +44,7 @@ public class CommonModbusDevice
    */
   private static final long REQUESTS_INTERVAL = 20L;
 
-  private static final int MAX_PERMIS_READ_ERROR_COUNT = 5;
+  private static final int MAX_PERMIS_READ_ERROR_COUNT = 3;
 
   enum EDataType
       implements IStridable {
@@ -345,7 +345,7 @@ public class CommonModbusDevice
     void change();
   }
 
-  static abstract class WriteValuesBufferImpl
+  abstract class WriteValuesBufferImpl
       implements IValuesBuffer {
 
     private int writeErrorCount = 0;
@@ -376,6 +376,13 @@ public class CommonModbusDevice
         if( writeErrorCount > MAX_PERMIS_READ_ERROR_COUNT ) {
           // если ошибочных записей подряд больше заданного количества - буферы должны отработать
           writeError();
+          // dima 26.02.25 It seems connection break, close resources
+          try {
+            closeApparatResources();
+          }
+          catch( Exception ex ) {
+            LoggerUtils.errorLogger().error( ex );
+          }
         }
         else {
           LoggerUtils.errorLogger().error( e, "Write error count: %s", String.valueOf( writeErrorCount ) );
@@ -428,6 +435,7 @@ public class CommonModbusDevice
           for( T inj : injectors ) {
             inj.readError();
           }
+          // dima 26.02.25 It seems connection break, close resources
           try {
             closeApparatResources();
           }
