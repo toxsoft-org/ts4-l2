@@ -36,10 +36,10 @@ DlmConfig =
             is.curr = true,
             is.hist = true,
             class.id = "val.AnalogChannel",
-            obj.name = "payload_Q8",
+            obj.name = "payload_Q7",
             data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AI_4000_1",
-            tag.dev.id = "tcp_192_168_0_222_502"
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_220_ip_port_502_AI_2028_2",
+            tag.dev.id = "tcp_192_168_0_220_502"
           }
           ,
           {
@@ -56,10 +56,10 @@ DlmConfig =
             is.curr = true,
             is.hist = true,
             class.id = "val.AnalogChannel",
-            obj.name = "payload_Q8",
+            obj.name = "payload_Q7",
             data.id = "rtdChannelState",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_222_ip_port_502_AO_4002_1",
-            tag.dev.id = "tcp_192_168_0_222_502"
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_220_ip_port_502_AI_4002_1",
+            tag.dev.id = "tcp_192_168_0_220_502"
           }
           ,
           {
@@ -76,10 +76,10 @@ DlmConfig =
             is.curr = true,
             is.hist = true,
             class.id = "val.AnalogChannel",
-            obj.name = "airSeparatorBlock2_Q9",
-            data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16456_2",
-            tag.dev.id = "tcp_192_168_0_129_502"
+            obj.name = "payload_Q6",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_220_ip_port_502_AI_2128_2",
+            tag.dev.id = "tcp_192_168_0_220_502"
           }
           ,
           {
@@ -88,18 +88,18 @@ DlmConfig =
         ,
         {
           false,
-          "data.modbus.bridge.cfg.unit.id1740486024606.def",
+          "data.modbus.bridge.cfg.unit.id1740719209079.def",
           {
-            pin.id = "modbus.bridge.cfg.unit.id1740486024606",
+            pin.id = "modbus.bridge.cfg.unit.id1740719209079",
             java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
             synch.period = 1000,
             is.curr = true,
             is.hist = true,
             class.id = "val.AnalogChannel",
-            obj.name = "airSeparatorBlock2_Q9",
+            obj.name = "payload_Q6",
             data.id = "rtdChannelState",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16458_1",
-            tag.dev.id = "tcp_192_168_0_129_502"
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_220_ip_port_502_AI_4006_1",
+            tag.dev.id = "tcp_192_168_0_220_502"
           }
           ,
           {
