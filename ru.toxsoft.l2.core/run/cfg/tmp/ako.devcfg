@@ -73,6 +73,23 @@ DeviceConfig =
                           {
                           }
                         }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_131_ip_port_502_AI_4_2.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_131_ip_port_502_AI_4_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_131_ip_port_502_AI_4_2",
+                            request.type = "AI",
+                            register = 4,
+                            words.count = 2,
+                            translator = "FLOAT_REGISTERS",
+                            translator.params = "CDAB"
+                          }
+                          ,
+                          {
+                          }
+                        }
                       ]
                     }
                   }

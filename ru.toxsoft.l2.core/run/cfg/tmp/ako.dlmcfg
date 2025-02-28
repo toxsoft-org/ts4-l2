@@ -68,6 +68,26 @@ DlmConfig =
         ,
         {
           false,
+          "data.modbus.bridge.cfg.unit.id1740741005638.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1740741005638",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "val.AnalogChannel",
+            obj.name = "airSeparatorBlock2_P13",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_131_ip_port_502_AI_4_2",
+            tag.dev.id = "tcp_192_168_0_131_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
           "data.modbus.bridge.cfg.unit.id1738912029508.def",
           {
             pin.id = "modbus.bridge.cfg.unit.id1738912029508",
