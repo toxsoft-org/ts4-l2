@@ -2288,16 +2288,16 @@ DlmConfig =
         ,
         {
           false,
-          "data.modbus.bridge.cfg.unit.id1740383672731.def",
+          "data.modbus.bridge.cfg.unit.id1740982672633.def",
           {
-            pin.id = "modbus.bridge.cfg.unit.id1740383672731",
+            pin.id = "modbus.bridge.cfg.unit.id1740982672633",
             java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
             synch.period = 1000,
             is.curr = true,
             is.hist = false,
             class.id = "val.AirSeparatorBlock",
             obj.name = "airSeparatorBlock2",
-            data.id = "rtdDIword",
+            data.id = "rtdO2Pump",
             tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16492_2",
             tag.dev.id = "tcp_192_168_0_129_502"
           }

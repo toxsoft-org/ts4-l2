@@ -1805,7 +1805,8 @@ DeviceConfig =
                             request.type = "AI",
                             register = 16492,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS"
+                            translator = "org.toxsoft.l2.thd.modbus.common.translators.Float2BitRegistersTranslator",
+                            translator.params = "1"
                           }
                           ,
                           {
