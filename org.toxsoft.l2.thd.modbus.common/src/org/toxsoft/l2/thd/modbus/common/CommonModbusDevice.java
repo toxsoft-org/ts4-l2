@@ -42,7 +42,7 @@ public class CommonModbusDevice
   /**
    * Интервал между запросами.
    */
-  private static final long REQUESTS_INTERVAL = 20L;
+  private static final long REQUESTS_INTERVAL = 100L; // 20L;
 
   private static final int MAX_PERMIS_READ_ERROR_COUNT = 3;
 
