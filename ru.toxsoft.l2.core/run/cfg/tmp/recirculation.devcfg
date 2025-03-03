@@ -1793,41 +1793,6 @@ DeviceConfig =
         ,
         {
           false,
-          "tcp_192_168_0_221_502",
-          {
-            type = "tcp",
-            ip = "192.168.0.221",
-            port = 502
-          }
-          ,
-          {
-            devices=
-            {
-              true,
-              [
-                {
-                  false,
-                  "tcp_ip_address_192_168_0_221_ip_port_502.def",
-                  {
-                    dev.address = 1
-                  }
-                  ,
-                  {
-                    tags=
-                    {
-                      true,
-                      [
-                      ]
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        }
-        ,
-        {
-          false,
           "tcp_192_168_0_132_502",
           {
             type = "tcp",
