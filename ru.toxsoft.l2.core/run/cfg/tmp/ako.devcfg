@@ -3268,8 +3268,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 0,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS",
-                            translator.params = "CDAB"
+                            translator = "org.toxsoft.l2.thd.modbus.common.translators.MPas2Kg_Cm2FloatRegistersTranslator",
+                            translator.params = ""
                           }
                           ,
                           {
@@ -3317,8 +3317,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 4,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS",
-                            translator.params = "CDAB"
+                            translator = "org.toxsoft.l2.thd.modbus.common.translators.MPas2Kg_Cm2FloatRegistersTranslator",
+                            translator.params = ""
                           }
                           ,
                           {
@@ -3366,8 +3366,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 8,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS",
-                            translator.params = "CDAB"
+                            translator = "org.toxsoft.l2.thd.modbus.common.translators.MPas2Kg_Cm2FloatRegistersTranslator",
+                            translator.params = ""
                           }
                           ,
                           {
@@ -3415,8 +3415,8 @@ DeviceConfig =
                             request.type = "AO",
                             register = 12,
                             words.count = 2,
-                            translator = "FLOAT_REGISTERS",
-                            translator.params = "CDAB"
+                            translator = "org.toxsoft.l2.thd.modbus.common.translators.MPas2Kg_Cm2FloatRegistersTranslator",
+                            translator.params = ""
                           }
                           ,
                           {
