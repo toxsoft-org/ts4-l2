@@ -14,7 +14,11 @@ import org.toxsoft.l2.thd.modbus.common.*;
 public class FloatCommonRegistersTranslator
     implements IAnalogTranslator {
 
-  private boolean isCDAB = false;
+  private boolean      isCDAB        = false;
+  /**
+   * Byte order CDAB
+   */
+  public static String byteOrderCDAB = "CDAB"; //$NON-NLS-1$
 
   /**
    * Constructor.
@@ -29,7 +33,7 @@ public class FloatCommonRegistersTranslator
    * @param aByteOrder - byte order string
    */
   public FloatCommonRegistersTranslator( String aByteOrder ) {
-    isCDAB = (aByteOrder.compareTo( "CDAB" ) == 0); //$NON-NLS-1$
+    isCDAB = (aByteOrder.compareTo( byteOrderCDAB ) == 0);
   }
 
   @Override
