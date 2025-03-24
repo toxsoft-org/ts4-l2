@@ -2358,7 +2358,7 @@ DlmConfig =
             class.id = "val.AirSeparatorBlock",
             obj.name = "airSeparatorBlock2",
             data.id = "rtdDIwordChannelState",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16494_1",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16498_1",
             tag.dev.id = "tcp_192_168_0_129_502"
           }
           ,
@@ -2838,7 +2838,7 @@ DlmConfig =
             class.id = "val.AirSeparatorBlock",
             obj.name = "airSeparatorBlock2",
             data.id = "rtdO2Pump",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16492_2",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16496_2",
             tag.dev.id = "tcp_192_168_0_129_502"
           }
           ,

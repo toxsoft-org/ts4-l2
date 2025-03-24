@@ -1805,8 +1805,7 @@ DeviceConfig =
                             request.type = "AI",
                             register = 16492,
                             words.count = 2,
-                            translator = "org.toxsoft.l2.thd.modbus.common.translators.Float2BitRegistersTranslator",
-                            translator.params = "1"
+                            translator = "FLOAT_REGISTERS"
                           }
                           ,
                           {
@@ -1839,6 +1838,39 @@ DeviceConfig =
                             register = 16495,
                             words.count = 1,
                             translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16498_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16498_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16498_1",
+                            request.type = "AI",
+                            register = 16498,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16496_2.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16496_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_0_129_ip_port_502_AI_16496_2",
+                            request.type = "AI",
+                            register = 16496,
+                            words.count = 2,
+                            translator = "org.toxsoft.l2.thd.modbus.common.translators.Float2BitRegistersTranslator",
+                            translator.params = "1"
                           }
                           ,
                           {
