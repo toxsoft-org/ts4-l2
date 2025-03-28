@@ -281,6 +281,14 @@ public class OpcCurrDataModule
         try {
           NetworkUtils.addToDataQualityService( aSource, new GwidList( wCurrDataSet.keys() ) );
           qualityRegistered = true;
+          // dima 28.03.25 re-upload all current data to server uskat
+          if( wCurrDataSet != null ) {
+            for( IDataSetter c : wCurrDataSet.values() ) {
+              c.sendOnServer();
+            }
+            logger.info( "Curr data channels are forced to re-upload curr values, size = %d", //$NON-NLS-1$
+                Integer.valueOf( wCurrDataSet.size() ) );
+          }
         }
         catch( Exception e ) {
           logger.error( e, "Exception during curr data params registering in Quality service" ); //$NON-NLS-1$

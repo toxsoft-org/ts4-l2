@@ -146,7 +146,8 @@ public class CurrDataTransmittersInitializer
 
     @Override
     public void sendOnServer() {
-      // реализация не требуется
+      // dima 28.03.25 force re-upload current value
+      channel.setValue( value );
     }
 
     @Override
