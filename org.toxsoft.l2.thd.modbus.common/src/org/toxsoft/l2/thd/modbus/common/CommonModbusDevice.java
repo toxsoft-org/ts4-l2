@@ -428,7 +428,7 @@ public class CommonModbusDevice
         // если чтение ОК - обнулить счётчик ошибок подряд
         readErrorCount = 0;
       }
-      catch( TsIllegalStateRtException | ModbusException e ) {
+      catch( TsIllegalStateRtException | ModbusException | java.lang.ArrayIndexOutOfBoundsException e ) {
         readErrorCount++;
         if( readErrorCount > MAX_PERMIS_READ_ERROR_COUNT ) {
           // если ошибочных чтений подряд больше заданного количества - буферы должны отработать
@@ -1110,9 +1110,18 @@ public class CommonModbusDevice
     @Override
     protected void writeError() {
       // TODO Auto-generated method stub
-
     }
 
   }
+  // test emalator ArrayIndexOutOfBoundsException
+  // public static void main( String[] a ) {
+  // int startTag = 0;
+  // int length = 2;
+  // int[] aInputMassive = new int[1];
+  // int[] transBytes = length == 1 ? new int[] { aInputMassive[startTag] } : new int[length];
+  // if( length > 1 ) {
+  // System.arraycopy( aInputMassive, startTag, transBytes, 0, length );
+  // }
+  // }
 
 }
