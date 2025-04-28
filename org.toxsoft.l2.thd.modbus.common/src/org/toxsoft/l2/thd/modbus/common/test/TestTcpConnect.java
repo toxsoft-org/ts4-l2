@@ -22,13 +22,20 @@ public class TestTcpConnect {
     transactionCreator = new TcpTransactionCreator();
 
     OptionSet optSet = new OptionSet();
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.123" ); // OWEN ВК№1
     // optSet.setStr( IP_PARAM_ID, "192.168.0.124" ); // OWEN ВК№2
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.125" ); // OWEN ВК№3
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.126" ); // OWEN ВК№4
     // optSet.setStr( IP_PARAM_ID, "192.168.0.222" ); // БРВ №3 ВКМ 360А ссука!
+    optSet.setStr( IP_PARAM_ID, "192.168.0.220" ); // payload
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.132" ); // газодувки, регистратор новый
     // optSet.setStr( IP_PARAM_ID, "192.168.0.139" ); // АК №7
     // optSet.setStr( IP_PARAM_ID, "192.168.0.140" ); // АК №8
     // optSet.setStr( IP_PARAM_ID, "192.168.0.141" ); // АК №11
-    optSet.setStr( IP_PARAM_ID, "192.168.0.142" ); // АК №13
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.142" ); // АК №13
     // optSet.setStr( IP_PARAM_ID, "192.168.0.129" ); // БРВ №2
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.147" ); // рег. № 1225
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.131" ); // рег. № 1240 Элметро в АКО
     optSet.setInt( PORT_PARAM_ID, 502 );
 
     transactionCreator.config( optSet );
@@ -57,12 +64,12 @@ public class TestTcpConnect {
           readAOReg( adress, reg, regVal );
           break;
         case "ai":
-          // 56 first register
-          // owenReadAIReg( 1, 56, 13 );
-          rmt59ReadAIReg( 1, 0x500, 12 );
+          // 0 is first register
+          // owenReadAIReg( 1, 0, 13 );
+          // rmt59ReadAIReg( 1, 0x500, 9 );
           // rmt79ReadAIReg( 1, 0x4000, 4 );
-          // vkm360ReadAIReg( 1, 4000, 4 );
-          // elmetroReadAIReg( adress, reg, regVal );
+          vkm360ReadAIReg( 1, 4000, 2 );
+          // elmetroReadAIReg( 1, 0, 3 );
           break;
 
         case "di":
@@ -185,11 +192,13 @@ public class TestTcpConnect {
    * @param aReg
    */
   public static void vkm360ReadAIReg( int aAdress, int aReg, int aCount ) {
-
+    // aReg = 2028;
+    // aCount = 3;
     for( int ri = 0; ri < aCount; ri++ ) {
       int currReg = aReg + 4 * ri;
-      // формирование запроса
-      ReadInputRegistersRequest cr = new ReadInputRegistersRequest( currReg, 4 );
+      // int currReg = aReg + 100 * ri;
+      // формирование запроса FC4
+      ReadInputRegistersRequest cr = new ReadInputRegistersRequest( currReg, 3 );
       cr.setUnitID( aAdress );
       // cr.setHeadless();
 
@@ -211,7 +220,11 @@ public class TestTcpConnect {
         bytes[2] = lowBytes[0];
         bytes[3] = lowBytes[1];
         float val = registersToFloat( bytes );
+        System.out.println( "Response float val in hour: " + val * 3600 );
         System.out.println( "Response float val: " + val );
+        // тут печатаем код состояния канала
+        int penErr = ((ReadInputRegistersResponse)r).getRegisterValue( 2 );
+        System.out.println( "penErr : " + penErr );
       }
       catch( ModbusException e ) {
         System.out.println( "Havnt read " + aAdress );
@@ -221,15 +234,62 @@ public class TestTcpConnect {
   }
 
   public static void owenReadAIReg( int aAdress, int aReg, int aCount ) {
-    // same as РМТ 59
-    rmt59ReadAIReg( aAdress, aReg, aCount );
+    for( int ri = 0; ri < aCount; ri++ ) {
+      int currReg = aReg + 4 * ri;
+
+      // формирование запроса FC3
+      ReadMultipleRegistersRequest cr = new ReadMultipleRegistersRequest( currReg, 3 );
+      cr.setUnitID( aAdress );
+      // cr.setHeadless();
+
+      // транзакция
+      // long t1 = System.currentTimeMillis();
+      ModbusTransaction trans = transactionCreator.createModbusTransaction();
+      trans.setRequest( cr );
+      // System.out.println( "time1: " + (System.currentTimeMillis() - t1) );
+
+      // исполнение транзакции
+      try {
+        System.out.println( "\nChannel №" + (ri + 1) + " read reg = " + Integer.toHexString( currReg ) );
+        // t1 = System.currentTimeMillis();
+        trans.execute();
+        // System.out.println( "time2: " + (System.currentTimeMillis() - t1) );
+
+        ModbusResponse r = trans.getResponse();
+        // byte[] hiBytes = ((ReadMultipleRegistersResponse)r).getRegister( 0 ).toBytes();
+        // byte[] lowBytes = ((ReadMultipleRegistersResponse)r).getRegister( 1 ).toBytes();
+        // int penError = ((ReadMultipleRegistersResponse)r).getRegister( 2 ).getValue();
+        // byte[] bytes = new byte[4];
+        // bytes[0] = hiBytes[0];
+        // bytes[1] = hiBytes[1];
+        // bytes[2] = lowBytes[0];
+        // bytes[3] = lowBytes[1];
+        // float val = registersToFloat( bytes );
+        // System.out.println( "Pen float val: " + val );
+        // System.out.println( "Pen error: " + penError );
+        int[] ints = new int[2];
+        ints[0] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 0 );
+        ints[1] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 1 );
+        IAtomicValue fval = translateCDAB( ints );
+        System.out.println( "channel float fval CDAB: " + fval );
+        // fval = translateABCD( ints );
+        // System.out.println( "channel float fval ABCD: " + fval );
+        // тут печатаем код состояния канала
+        int penErr = ((ReadMultipleRegistersResponse)r).getRegisterValue( 2 );
+        System.out.println( "penErr : " + penErr );
+      }
+      catch( ModbusException e ) {
+        System.out.println( "Havnt read " + aAdress );
+        e.printStackTrace();
+      }
+    }
   }
 
   public static void rmt59ReadAIReg( int aAdress, int aReg, int aCount ) {
     for( int ri = 0; ri < aCount; ri++ ) {
       int currReg = aReg + 3 * ri;
 
-      // формирование запроса
+      // формирование запроса FC3
       ReadMultipleRegistersRequest cr = new ReadMultipleRegistersRequest( currReg, 3 );
       cr.setUnitID( aAdress );
       // cr.setHeadless();
@@ -245,27 +305,27 @@ public class TestTcpConnect {
         trans.execute();
 
         ModbusResponse r = trans.getResponse();
-        byte[] hiBytes = ((ReadMultipleRegistersResponse)r).getRegister( 0 ).toBytes();
-        byte[] lowBytes = ((ReadMultipleRegistersResponse)r).getRegister( 1 ).toBytes();
-        int penError = ((ReadMultipleRegistersResponse)r).getRegister( 2 ).getValue();
-        byte[] bytes = new byte[4];
-        bytes[0] = hiBytes[0];
-        bytes[1] = hiBytes[1];
-        bytes[2] = lowBytes[0];
-        bytes[3] = lowBytes[1];
-        float val = registersToFloat( bytes );
-        System.out.println( "Pen float val: " + val );
-        System.out.println( "Pen error: " + penError );
-        // int[] ints = new int[2];
-        // ints[0] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 0 );
-        // ints[1] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 1 );
-        // IAtomicValue fval = translateCDAB( ints );
+        // byte[] hiBytes = ((ReadMultipleRegistersResponse)r).getRegister( 0 ).toBytes();
+        // byte[] lowBytes = ((ReadMultipleRegistersResponse)r).getRegister( 1 ).toBytes();
+        // int penError = ((ReadMultipleRegistersResponse)r).getRegister( 2 ).getValue();
+        // byte[] bytes = new byte[4];
+        // bytes[0] = hiBytes[0];
+        // bytes[1] = hiBytes[1];
+        // bytes[2] = lowBytes[0];
+        // bytes[3] = lowBytes[1];
+        // float val = registersToFloat( bytes );
+        // System.out.println( "Pen float val: " + val );
+        // System.out.println( "Pen error: " + penError );
+        int[] ints = new int[2];
+        ints[0] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 0 );
+        ints[1] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 1 );
+        IAtomicValue fval = translateCDAB( ints );
         // System.out.println( "channel float fval CDAB: " + fval );
-        // fval = translateABCD( ints );
-        // System.out.println( "channel float fval ABCD: " + fval );
-        // // тут печатаем код состояния канала
-        // int penErr = ((ReadMultipleRegistersResponse)r).getRegisterValue( 2 );
-        // System.out.println( "penErr : " + penErr );
+        fval = translateABCD( ints );
+        System.out.println( "channel float fval ABCD: " + fval );
+        // тут печатаем код состояния канала
+        int penErr = ((ReadMultipleRegistersResponse)r).getRegisterValue( 2 );
+        System.out.println( "penErr : " + penErr );
       }
       catch( ModbusException e ) {
         System.out.println( "Havnt read " + aAdress );
@@ -275,9 +335,9 @@ public class TestTcpConnect {
   }
 
   public static void rmt79ReadAIReg( int aAdress, int aReg, int aCount ) {
-    for( int ri = 0; ri < 28; ri++ ) {
+    for( int ri = 0; ri < 29; ri++ ) {
       int currReg = aReg + 4 * ri;
-      // формирование запроса
+      // формирование запроса FC4
       ReadInputRegistersRequest cr = new ReadInputRegistersRequest( currReg, aCount );
       cr.setUnitID( aAdress );
       // cr.setHeadless();
@@ -288,7 +348,8 @@ public class TestTcpConnect {
 
       // исполнение транзакции
       try {
-        System.out.println( "Read reg = " + Integer.toHexString( currReg ) + " , count = " + aCount );
+        // System.out.println( "Канал №" + (ri + 1) + " Read reg = " + Integer.toHexString( currReg ) );
+        System.out.println( "Канал №" + (ri + 1) + " Read reg = " + currReg );
         trans.execute();
 
         ModbusResponse r = trans.getResponse();
@@ -296,16 +357,16 @@ public class TestTcpConnect {
         int[] ints = new int[2];
         ints[0] = ((ReadInputRegistersResponse)r).getRegisterValue( 0 );
         ints[1] = ((ReadInputRegistersResponse)r).getRegisterValue( 1 );
-        IAtomicValue fval = translateCDAB( ints );
-        System.out.println( "channel float fval CDAB: " + fval );
-        fval = translateABCD( ints );
+        // IAtomicValue fval = translateCDAB( ints );
+        // System.out.println( "channel float fval CDAB: " + fval );
+        IAtomicValue fval = translateABCD( ints );
         System.out.println( "channel float fval ABCD: " + fval );
         // тут печатаем код состояния канала
         int channelState = ((ReadInputRegistersResponse)r).getRegisterValue( 2 );
         System.out.println( "channelState val: " + channelState );
         // тут печатаем регистр десятичной точки в десятичном формате
-        int decPointLocation = ((ReadInputRegistersResponse)r).getRegisterValue( 3 );
-        System.out.println( "decimal PointLocation val: " + decPointLocation );
+        // int decPointLocation = ((ReadInputRegistersResponse)r).getRegisterValue( 3 );
+        // System.out.println( "decimal PointLocation val: " + decPointLocation );
         // ReadInputRegistersResponse res = (ReadInputRegistersResponse)trans.getResponse();
         // InputRegister[] regs = res.getRegisters();
         // System.out.println( "start reg = " + aReg + ",regs count = " + aCount ); //$NON-NLS-1$ //$NON-NLS-2$

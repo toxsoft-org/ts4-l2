@@ -48,7 +48,7 @@ public class OpcUaMiloDriver
    */
   private ILogger logger = LoggerWrapper.getLogger( this.getClass().getName() );
 
-  private NodesReader opcUaNodesReader;
+  protected NodesReader opcUaNodesReader;
 
   private NodesWriter opcUaNodesWriter;
 
@@ -63,11 +63,7 @@ public class OpcUaMiloDriver
    * @param aId String - строковый идентификатор.
    * @param aDescription String - описание.
    * @param aErrorProcessor {@link IHalErrorProcessor} - обработчик ошибок, возникающих при работе с НУ.
-   * @param aCi - информация о соединении
-   * @param aSyncTags - описание синхронных тегов
-   * @param aUpdatePeriod - период обновления
-   * @param aAsyncTags - описание асинхронных тегов
-   * @param aOutputTags - описание тегов на запись
+   * @param aCfgInfo - configuration tree
    */
   public OpcUaMiloDriver( String aId, String aDescription, IHalErrorProcessor aErrorProcessor, IAvTree aCfgInfo ) {
     super( aId, aDescription, aErrorProcessor );

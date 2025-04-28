@@ -19,7 +19,7 @@ DeviceConfig =
           {
             id = "opc2s5.bridge.collection.id",
             description = "opc 2 s5 pins UA apparat producer",
-            host = "opc.tcp://192.168.12.39",
+            host = "opc.tcp://192.168.12.39:4840",
             user = "",
             password = ""
           }
@@ -41,6 +41,44 @@ DeviceConfig =
                     {
                       true,
                       [
+                        {
+                          false,
+                          "pin.tag.ns_3_s_noLink_TKA1.def",
+                          {
+                            opc.tag = "ns=3;s=\"noLink_TKA1\"",
+                            pin.id = "ns_3_s_noLink_TKA1",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_noLink_TKA2.def",
+                          {
+                            opc.tag = "ns=3;s=\"noLink_TKA2\"",
+                            pin.id = "ns_3_s_noLink_TKA2",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_noLink_TKA3.def",
+                          {
+                            opc.tag = "ns=3;s=\"noLink_TKA3\"",
+                            pin.id = "ns_3_s_noLink_TKA3",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
                       ]
                     }
                   }
