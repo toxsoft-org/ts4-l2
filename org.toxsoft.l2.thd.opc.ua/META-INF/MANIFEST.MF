@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Opcuabridge
 Bundle-SymbolicName: org.toxsoft.l2.thd.opc.ua
 Bundle-Version: 1.0.0.qualifier
+Export-Package: org.toxsoft.l2.thd.opc.ua.milo
 Bundle-Vendor: Toxsoft
 Automatic-Module-Name: org.toxsoft.l2.thd.opc.ua
 Bundle-RequiredExecutionEnvironment: JavaSE-21
