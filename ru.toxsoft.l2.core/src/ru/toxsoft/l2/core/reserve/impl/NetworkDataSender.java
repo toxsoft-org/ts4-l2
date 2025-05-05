@@ -218,8 +218,8 @@ public class NetworkDataSender
       String isOkDataId = RTDID_CLSID_L2_HOTSWAP_IS_OK;// "isOk";
 
       // Добавлено для иникации переходных процессов
-      String transitionMain = "transitionMain"; // transitionMain
-      String transitionReserve = "transitionReserv"; // transitionReserv
+      String transitionMain = RTDID_CLSID_L2_HOTSWAP_TRANSITIONMAIN; // transitionMain
+      String transitionReserve = RTDID_CLSID_L2_HOTSWAP_TRANSITIONRESERV; // transitionReserv
 
       dataGwidsList = new GwidList();
 
