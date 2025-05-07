@@ -6,8 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: ToxSoft
 Automatic-Module-Name: ru.toxsoft.l2.core
 Bundle-RequiredExecutionEnvironment: JavaSE-21
-Require-Bundle: ru.toxsoft.l2.sysdescr.constants,
- org.toxsoft.extlibs.modbus,
+Require-Bundle: org.toxsoft.extlibs.modbus,
  org.toxsoft.core.tslib,
  org.toxsoft.uskat.core,
  org.toxsoft.extlibs.openscada,
@@ -19,7 +18,8 @@ Require-Bundle: ru.toxsoft.l2.sysdescr.constants,
  org.toxsoft.uskat.s5,
  org.toxsoft.skf.dq.lib,
  org.toxsoft.skf.dq.s5,
- org.toxsoft.skf.rri.lib
+ org.toxsoft.skf.rri.lib,
+ ru.toxsoft.bkn.lib;bundle-version="1.0.0"
 Export-Package: gnu.io,
  ru.toxsoft.l2.core.app,
  ru.toxsoft.l2.core.app.impl,

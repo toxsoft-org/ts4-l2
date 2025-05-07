@@ -1,0 +1,10 @@
+[Reserve]
+box.obj.name = "icbHotSwap1"
+LocalAddress = "localhost"
+LocalPort = 15751
+IsTheOnlyBox = false
+
+[Remote]
+RemoteAddress = "localhost"
+RemotePort = 15752
+
