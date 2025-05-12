@@ -1,10 +1,11 @@
 [Reserve]
 box.obj.name = "icbHotSwap1"
-LocalAddress = "localhost"
+LocalAddress = "192.168.1.100"
 LocalPort = 15751
 IsTheOnlyBox = false
+PartnerTimeout = 10000
 
 [Remote]
-RemoteAddress = "localhost"
+RemoteAddress = "192.168.2.100"
 RemotePort = 15752
 
