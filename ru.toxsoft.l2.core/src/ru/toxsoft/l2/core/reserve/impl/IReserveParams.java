@@ -153,4 +153,9 @@ public interface IReserveParams
       TSID_NAME, STR_N_RSRV_CMD_REREG_INTERVAL, TSID_DESCRIPTION, STR_D_RSRV_CMD_REREG_INTERVAL, TSID_DEFAULT_VALUE,
       avInt( 3000 ) );
 
+  /**
+   * Признак того, что шкаф является шкафом по умолчанию.
+   */
+  IDataDef OP_IS_DEFAULT = create( "IsDefault", BOOLEAN, //$NON-NLS-1$
+      TSID_NAME, STR_N_IS_DEFAULT, TSID_DESCRIPTION, STR_D_IS_DEFAULT, TSID_DEFAULT_VALUE, avBool( false ) );
 }

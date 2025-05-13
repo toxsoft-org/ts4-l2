@@ -165,6 +165,7 @@ public class ReserveImpl2
     becomeMainTimeout = OP_BECOME_MAIN_INTERVAL.getValue( ctx.params() ).asInt();
     isTheOnlyBox = OP_IS_ONLY_BOX.getValue( ctx.params() ).asBool();
     mainControlPinId = OP_MAIN_CONTROL_PIN.getValue( ctx.params() ).asString();
+    boolean isDefault = OP_IS_DEFAULT.getValue( ctx.params() ).asBool();
 
     // компоненты резервирования
     boxStateSender = new PasBoxStateSender( ctx );
@@ -215,7 +216,7 @@ public class ReserveImpl2
     ((ElemArrayList<IRule>)rules).add( new MainCmdMainInvalidToMainInvalidRule() );
     ((ElemArrayList<IRule>)rules).add( new MainCmdReserveToReserveAutoRule() );
     ((ElemArrayList<IRule>)rules).add( new MainToReserveRule() );
-    ((ElemArrayList<IRule>)rules).add( new MainPairStateMainToReserveAutoRule() );
+    ((ElemArrayList<IRule>)rules).add( new MainPairStateMainToReserveAutoRule( !isDefault ) );
     ((ElemArrayList<IRule>)rules).add( new MainPairStateInvalidToMainRule() );
 
     ((ElemArrayList<IRule>)rules).add( new MainInvalidCmdMainToMainRule() );
@@ -1227,6 +1228,18 @@ public class ReserveImpl2
   class MainPairStateMainToReserveAutoRule
       extends AbstractRule {
 
+    private boolean strictReserve = false;
+
+    /**
+     * Конструктор с признаком того, что переход строго в состояние резерва (не авто).
+     *
+     * @param aStrictReserve признак того, что переход строго в состояние резерва (не авто)
+     */
+    public MainPairStateMainToReserveAutoRule( boolean aStrictReserve ) {
+      super( EReserveState.MAIN, aStrictReserve ? EReserveState.RESERVE : EReserveState.RESERVE_AUTO );
+      strictReserve = aStrictReserve;
+    }
+
     public MainPairStateMainToReserveAutoRule() {
       super( EReserveState.MAIN, EReserveState.RESERVE_AUTO );
     }
@@ -1247,7 +1260,8 @@ public class ReserveImpl2
       boolean isDone = !dLMsController.isDLMsRun();
       if( isDone ) {
         // boxStateSender.setReserveSignalOwnState( EPartnerBoxReserveState.RESERVE );
-        setCurrState( EReserveState.RESERVE_AUTO, "By alarm main partner state" );
+        setCurrState( strictReserve ? EReserveState.RESERVE : EReserveState.RESERVE_AUTO,
+            "By alarm main partner state" );
       }
       return isDone;
     }
