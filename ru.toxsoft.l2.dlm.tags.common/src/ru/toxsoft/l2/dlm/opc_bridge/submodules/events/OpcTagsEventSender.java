@@ -90,11 +90,14 @@ public class OpcTagsEventSender
       IAtomicValue newVal = paramValues.getByKey( "newVal" );
       StringBuilder mes = new StringBuilder();
       if( oldVal != IAtomicValue.NULL ) {
-        mes.append( "old=" ).append( oldVal.atomicType() == EAtomicType.FLOATING ? oldVal.asFloat() : oldVal.asInt() );
+        // mes.append( "old=" ).append( oldVal.atomicType() == EAtomicType.FLOATING ? oldVal.asFloat() : oldVal.asInt()
+        // );
+        mes.append( "old=" ).append( oldVal.toString() );
       }
       if( newVal != IAtomicValue.NULL ) {
-        mes.append( ", new=" )
-            .append( newVal.atomicType() == EAtomicType.FLOATING ? newVal.asFloat() : newVal.asInt() );
+        // mes.append( ", new=" )
+        // .append( newVal.atomicType() == EAtomicType.FLOATING ? newVal.asFloat() : newVal.asInt() );
+        mes.append( ", new=" ).append( newVal.toString() );
       }
       logger.debug( mes.toString() );
     }
