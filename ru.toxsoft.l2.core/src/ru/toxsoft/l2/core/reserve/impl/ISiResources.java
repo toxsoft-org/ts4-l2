@@ -15,6 +15,9 @@ interface ISiResources {
   String STR_N_IS_ONLY_BOX = "Шкаф является единственным";
   String STR_D_IS_ONLY_BOX = "Шкаф является единственным (без резервного)";
 
+  String STR_N_IS_DEFAULT = "Шкаф является шкафом по умолчанию";
+  String STR_D_IS_DEFAULT = "Шкаф является шкафом по умолчанию";
+
   String STR_N_MAIN_CONTROL_PIN = "Идентификатор пина - мастер";
   String STR_D_MAIN_CONTROL_PIN = "Идентификатор выходного пина, устанавливающего железо в состояние мастер";
 
