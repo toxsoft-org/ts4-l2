@@ -19,7 +19,7 @@ Require-Bundle: org.toxsoft.extlibs.modbus,
  org.toxsoft.skf.dq.lib,
  org.toxsoft.skf.dq.s5,
  org.toxsoft.skf.rri.lib,
- ru.toxsoft.bkn.lib;bundle-version="1.0.0"
+ ru.toxsoft.l2.sysdescr.constants;bundle-version="1.0.0"
 Export-Package: gnu.io,
  ru.toxsoft.l2.core.app,
  ru.toxsoft.l2.core.app.impl,
