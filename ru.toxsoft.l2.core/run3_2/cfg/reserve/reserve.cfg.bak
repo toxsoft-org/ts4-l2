@@ -1,0 +1,10 @@
+[Reserve]
+box.obj.name = "icbHotSwap3_2"
+LocalAddress = "192.168.2.100"
+LocalPort = 15756
+IsTheOnlyBox = false
+
+[Remote]
+RemoteAddress = "192.168.1.100"
+RemotePort = 15755
+

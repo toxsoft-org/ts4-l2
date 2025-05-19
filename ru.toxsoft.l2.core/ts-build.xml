@@ -50,14 +50,14 @@
   </manifest>
 
   <target name="build_plugin" depends="build_jar">
-    <pde.exportPlugins destination="dist"
+    <!-- pde.exportPlugins destination="dist"
                        exportSource="true"
                        exportSourceBundle="false"
                        exportType="directory"
                        plugins="${plugin.id}"
                        useworkspacecompiledclasses="true"
                        qualifier="0"
-                       useJARFormat="true" />
+                       useJARFormat="true" / -->
   </target>
 
     
@@ -77,7 +77,7 @@
         <include name="gnu/io/**/*.java" />
       </fileset>
     </jar>
-    <eclipse.refreshLocal resource="${project.name}/dist" depth="infinite" />
+    <!-- eclipse.refreshLocal resource="${project.name}/dist" depth="infinite" / -->
   </target>
 
   <target name="build" description="Собирает всё" depends="build_plugin">
@@ -87,13 +87,13 @@
   </target>
 
   <target name="make_target_lib" depends="build_jar">
-    <eclipse.refreshLocal resource="${project.name}/dist" depth="infinite" />
+    <!-- eclipse.refreshLocal resource="${project.name}/dist" depth="infinite" / -->
     <copy todir="${libs-target}" file="dist/${jarfile.name}" overwrite="true" />
     <!-- Удаление старой версии плагина в DEPLOY(!) каталоге -->
     <delete>
       <fileset dir="${plugins-target}" includes="${plugin.name}*" />
     </delete>
-    <eclipse.refreshLocal resource="${plugins-target}" depth="infinite" />
+    <!-- eclipse.refreshLocal resource="${plugins-target}" depth="infinite" / -->
   </target>
 
   <target name="make_target_plugin" depends="build_plugin">
@@ -106,7 +106,7 @@
       <fileset dir="dist/temp_META_INF_dir" includes="*" />
       <fileset dir="dist/plugins" includes="*" />
     </delete>
-    <eclipse.refreshLocal resource="${project.name}/dist" depth="infinite" />
+    <!-- eclipse.refreshLocal resource="${project.name}/dist" depth="infinite" / -->
   </target>
 
 </project>
