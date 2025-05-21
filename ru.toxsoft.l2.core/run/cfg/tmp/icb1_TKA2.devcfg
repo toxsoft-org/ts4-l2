@@ -3,7 +3,7 @@ DeviceConfig =
   false,
   "opc2s5.cfg",
   {
-    javaClassName = "org.toxsoft.l2.thd.opc.ua.milo.OpcUaMiloDriverProducer",
+    javaClassName = "ru.toxsoft.bkn.l2.thd.opc.BknOpcUaMiloDriverProducer",
     id = "opc2s5.bridge.collection.id",
     description = "opc 2 s5 pins UA apparat producer"
   }
