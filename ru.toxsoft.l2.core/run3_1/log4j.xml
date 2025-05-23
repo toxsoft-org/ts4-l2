@@ -165,6 +165,10 @@
 		<priority value="ERROR" />	
 	</category>
 
+	<category name="org.toxsoft.uskat.s5.server.backend.addons.rtdata.S5BaRtdataRemote" >
+		<priority value="ERROR" />	
+	</category>
+
 	<category name="ru.toxsoft.l2.dlm.opc_bridge.submodules.data" >
 		<priority value="ERROR" />	
 	</category>
