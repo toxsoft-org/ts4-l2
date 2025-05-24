@@ -1,7 +1,7 @@
 #!/bin/bash
 export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 
-#
+# run configuration ID
 export USKAT_L2CORE_RUN_ID=run1_1
 
 # locale
