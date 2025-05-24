@@ -1,6 +1,9 @@
 #!/bin/bash
 export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 
+#
+export USKAT_L2CORE_RUN_ID=run1_1
+
 # locale
 export USKAT_COUNTRY=EN
 export USKAT_LANG=en
@@ -14,6 +17,7 @@ while true; do
    rm -f /var/lock/LCK..ttyUSB2
 
    ${JAVA_HOME}/bin/java                      \
+     -Dl2.core.run_id=${USKAT_L2CORE_RUN_ID}  \
      -Dlog4j.configuration=log4j.xml          \
      -Djava.library.path=/usr/lib/jni         \
      -cp .:libs/*:libs/wildfly/*:libs-app/*   \
