@@ -4,6 +4,9 @@ export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 # run configuration ID
 export USKAT_L2CORE_RUN_ID=run
 
+# memory
+export USKAT_MEMORY=1024M
+
 # locale
 export USKAT_COUNTRY=EN
 export USKAT_LANG=en
@@ -16,7 +19,8 @@ while true; do
    rm -f /var/lock/LCK..ttyUSB1
    rm -f /var/lock/LCK..ttyUSB2
 
-   ${JAVA_HOME}/bin/java                      \
+   ${JAVA_HOME}/bin/java                                                                     \
+     -Xms${USKAT_MEMORY} -Xmx${USKAT_MEMORY} -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m \
      -Dl2.core.run_id=${USKAT_L2CORE_RUN_ID}  \
      -Dlog4j.configuration=log4j.xml          \
      -Djava.library.path=/usr/lib/jni         \
