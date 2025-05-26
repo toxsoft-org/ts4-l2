@@ -84,8 +84,21 @@ public class OpcUaMiloDriver
     // server = new Server( ci, Executors.newSingleThreadScheduledExecutor() );
     // autoReconnectController.connect();
     try {
-      client = createClient();// new OpcUaClient( null, null );// TODO
-      client.connect().get();
+      // dima 26.05.25
+      // try until got connection to OPC UA server
+      boolean connected = false;
+      while( !connected ) {
+        try {
+          client = createClient();// new OpcUaClient( null, null );// TODO
+          client.connect().get();
+          logger.debug( "Driver has connected to OPC UA server on host: '%s'", host ); //$NON-NLS-1$
+          connected = true;
+        }
+        catch( Exception connectioEx ) {
+          logger.error( "Exception in process of connection to OPC UA server. Error message: '%s'", //$NON-NLS-1$
+              connectioEx.getMessage() );
+        }
+      }
       opcUaNodesReader = new NodesReader( client );
       opcUaNodesWriter = new NodesWriter( client );
 
