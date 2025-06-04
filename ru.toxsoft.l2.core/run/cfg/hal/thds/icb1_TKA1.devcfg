@@ -3,7 +3,7 @@ DeviceConfig =
   false,
   "opc2s5.cfg",
   {
-    javaClassName = "org.toxsoft.l2.thd.opc.ua.milo.OpcUaMiloDriverProducer",
+    javaClassName = "ru.toxsoft.bkn.l2.thd.opc.BknOpcUaMiloDriverProducer",
     id = "opc2s5.bridge.collection.id",
     description = "opc 2 s5 pins UA apparat producer"
   }
@@ -42,6 +42,630 @@ DeviceConfig =
                     {
                       true,
                       [
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TP8_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TP8\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TP8_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_RDS_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_RDS\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_RDS_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_T2_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_T2\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_T2_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_VSP4_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_VSP4\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_VSP4_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_VSP3_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_VSP3\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_VSP3_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_T9_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_T9\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_T9_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_GDZ_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_GDZ\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_GDZ_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TV5_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TV5\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TV5_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_VSP2_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_VSP2\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_VSP2_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TV1_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TV1\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TV1_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TP1_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TP1\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TP1_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_T8_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_T8\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_T8_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_PDD2_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_PDD2\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_PDD2_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_GVW_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_GVW\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_GVW_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TP4_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TP4\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TP4_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_T3_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_T3\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_T3_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_T1_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_T1\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_T1_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_RDV_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_RDV\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_RDV_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_VSP6_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_VSP6\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_VSP6_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TV4_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TV4\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TV4_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_RDM1_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_RDM1\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_RDM1_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_RDM2_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_RDM2\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_RDM2_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_DM_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_DM\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_DM_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TP6_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TP6\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TP6_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_VSP7_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_VSP7\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_VSP7_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_T12_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_T12\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_T12_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_T5_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_T5\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_T5_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_T6_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_T6\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_T6_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_GPK_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_GPK\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_GPK_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_T7_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_T7\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_T7_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TV3_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TV3\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TV3_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TM2_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TM2\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TM2_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TM4_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TM4\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TM4_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TP9_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TP9\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TP9_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TV2_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TV2\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TV2_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TP7_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TP7\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TP7_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TV6_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TV6\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TV6_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_VSP8_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_VSP8\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_VSP8_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_RDP_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_RDP\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_RDP_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_T11_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_T11\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_T11_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_T4_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_T4\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_T4_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TP5_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TP5\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TP5_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_VSP5_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_VSP5\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_VSP5_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TM1_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TM1\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TM1_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_VSP1_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_VSP1\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_VSP1_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TP3_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TP3\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TP3_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TP2_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TP2\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TP2_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_TKA1_TV7_CV.def",
+                          {
+                            opc.tag = "ns=3;s=\"TKA1_TV7\".\"CV\"",
+                            pin.id = "ns_3_s_TKA1_TV7_CV",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
                         {
                           false,
                           "pin.tag.ns_3_s_noLink_TKA1.def",
@@ -5456,19 +6080,6 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.tag.ns_3_s_TKA1_TP8_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TP8\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TP8_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
                           "pin.tag.ns_3_s_TKA1_TP1_WS.def",
                           {
                             opc.tag = "ns=3;s=\"TKA1_TP1\".\"WS\"",
@@ -5483,38 +6094,12 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.tag.ns_3_s_TKA1_RDS_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_RDS\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_RDS_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
                           "pin.tag.ns_3_s_TKA1_TM1_WS.def",
                           {
                             opc.tag = "ns=3;s=\"TKA1_TM1\".\"WS\"",
                             pin.id = "ns_3_s_TKA1_TM1_WS",
                             pin.type = "Integer",
                             pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_T2_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_T2\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_T2_CV",
-                            pin.type = "Float"
                           }
                           ,
                           {
@@ -5775,19 +6360,6 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.tag.ns_3_s_TKA1_VSP4_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_VSP4\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_VSP4_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
                           "pin.tag.ns_3_s_TKA1_TP8_WS.def",
                           {
                             opc.tag = "ns=3;s=\"TKA1_TP8\".\"WS\"",
@@ -5836,19 +6408,6 @@ DeviceConfig =
                             pin.id = "ns_3_s_TKA1_T11_WS",
                             pin.type = "Integer",
                             pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_VSP3_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_VSP3\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_VSP3_CV",
-                            pin.type = "Float"
                           }
                           ,
                           {
@@ -6011,45 +6570,6 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.tag.ns_3_s_TKA1_T9_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_T9\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_T9_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_GDZ_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_GDZ\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_GDZ_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TV5_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TV5\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TV5_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
                           "pin.tag.ns_3_s_TKA1_TP9_WS.def",
                           {
                             opc.tag = "ns=3;s=\"TKA1_TP9\".\"WS\"",
@@ -6070,32 +6590,6 @@ DeviceConfig =
                             pin.id = "ns_3_s_TKA1_TM2_WS",
                             pin.type = "Integer",
                             pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_VSP2_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_VSP2\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_VSP2_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TV1_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TV1\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TV1_CV",
-                            pin.type = "Float"
                           }
                           ,
                           {
@@ -6138,500 +6632,6 @@ DeviceConfig =
                             pin.id = "ns_3_s_TKA1_T3_WS",
                             pin.type = "Integer",
                             pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TP1_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TP1\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TP1_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_T8_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_T8\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_T8_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_PDD2_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_PDD2\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_PDD2_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_GVW_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_GVW\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_GVW_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TP4_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TP4\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TP4_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_T3_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_T3\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_T3_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_T1_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_T1\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_T1_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_RDV_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_RDV\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_RDV_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_VSP6_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_VSP6\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_VSP6_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TV4_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TV4\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TV4_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_RDM1_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_RDM1\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_RDM1_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_RDM2_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_RDM2\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_RDM2_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_DM_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_DM\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_DM_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TP6_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TP6\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TP6_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_VSP7_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_VSP7\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_VSP7_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_T12_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_T12\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_T12_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_T5_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_T5\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_T5_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_T6_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_T6\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_T6_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_GPK_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_GPK\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_GPK_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_T7_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_T7\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_T7_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TV3_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TV3\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TV3_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TM2_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TM2\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TM2_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TM4_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TM4\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TM4_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TP9_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TP9\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TP9_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TV2_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TV2\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TV2_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TP7_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TP7\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TP7_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TV6_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TV6\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TV6_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_VSP8_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_VSP8\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_VSP8_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_RDP_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_RDP\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_RDP_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_T11_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_T11\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_T11_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_T4_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_T4\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_T4_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TP5_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TP5\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TP5_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_VSP5_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_VSP5\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_VSP5_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TM1_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TM1\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TM1_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_VSP1_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_VSP1\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_VSP1_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TP3_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TP3\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TP3_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TP2_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TP2\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TP2_CV",
-                            pin.type = "Float"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_3_s_TKA1_TV7_CV.def",
-                          {
-                            opc.tag = "ns=3;s=\"TKA1_TV7\".\"CV\"",
-                            pin.id = "ns_3_s_TKA1_TV7_CV",
-                            pin.type = "Float"
                           }
                           ,
                           {

@@ -39820,7 +39820,7 @@ DlmConfig =
             is.curr = true,
             is.hist = true,
             class.id = "InterfaceConverterBox",
-            obj.name = "icbox1",
+            obj.name = "icbox2",
             data.id = "rtdNoLink_TKA3",
             tag.id = "ns=3;s=\"noLink_TKA3\"",
             tag.dev.id = "opc2s5.bridge.collection.id"
