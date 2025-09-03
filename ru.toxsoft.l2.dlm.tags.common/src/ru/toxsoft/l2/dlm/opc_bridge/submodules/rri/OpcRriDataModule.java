@@ -111,7 +111,7 @@ public class OpcRriDataModule
       throws TsIllegalArgumentRtException {
 
     IAvTree rriDefs = aConfig.params().nodes().findByKey( RRI_DEFS );
-    if( rriDefs.arrayLength() > 0 ) {
+    if( rriDefs != null ) {
       // читаем описание конфигурации самого модуля
       statusRriMonitor.config( rriDefs );
       // далее имеет смысл работать только если
