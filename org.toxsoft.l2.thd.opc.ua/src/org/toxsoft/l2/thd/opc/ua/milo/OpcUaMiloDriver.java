@@ -131,6 +131,10 @@ public class OpcUaMiloDriver
       for( String readTagKey : readTagsKeys ) {
         tags.put( readTagKey, readTags.getByKey( readTagKey ) );
       }
+      // dima 04.09.25 сразу прочитаем все теги на чтение
+      // без следующих 2-х строчек кода на этапе инициализаци DLM все синхронные теги !isAssigned()
+      opcUaNodesReader.readValuesFromNodes();
+      opcUaNodesReader.readValuesFromBuffer();
 
       // список тегов печать
       IList<String> tagsKeys = tags.keys();
