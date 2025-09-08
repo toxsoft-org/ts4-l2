@@ -194,10 +194,14 @@ public class ComplexTagImpl
 
         // atomic type tag
         ITag wAtomTypeValTag = tagsDevice.tag( cfgData.fields().getStr( cfgkey ) );
-        setValueTypeTag( atomType, wAtomTypeValTag );
+        // dima 08.09.25 situation when there is no tag of type float/integer is acceptable
+        if( wAtomTypeValTag != null ) {
+          setValueTypeTag( atomType, wAtomTypeValTag );
+        }
       }
     }
-
+    // dima 08.09.25 force 0 to address tag
+    addressTag.set( AvUtils.avInt( 0 ) );
   }
 
 }
