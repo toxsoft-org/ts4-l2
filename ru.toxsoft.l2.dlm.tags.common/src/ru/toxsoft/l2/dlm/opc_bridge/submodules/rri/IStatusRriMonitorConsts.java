@@ -2,6 +2,7 @@ package ru.toxsoft.l2.dlm.opc_bridge.submodules.rri;
 
 /**
  * Константы для процесса мониторинга и загрузки НСИ <br>
+ * FIXME copy past from OpcToS5DataCfgConverter
  *
  * @author dima
  */
@@ -14,9 +15,14 @@ public interface IStatusRriMonitorConsts {
   String RRI_STATUS_DEVICE_ID = "status.rri.tag.dev.id";
 
   /**
-   * node id чтения статуса НСИ.
+   * node id слова состояния для чтения статуса НСИ.
    */
-  String RRI_STATUS_READ_NODE_ID = "status.rri.read.tag.id";
+  String RRI_STATUS_WS_READ_NODE_ID = "status.rri.ws.read.tag.id";
+
+  /**
+   * индекс в слове состояния для чтения статуса НСИ.
+   */
+  String RRI_STATUS_WS_INDEX = "status.rri.ws.index";
 
   /**
    * аргумент aAddress в IComplexTag::setValue( int aAddress, IAtomicValue aValue ) для установки статуса НСИ.

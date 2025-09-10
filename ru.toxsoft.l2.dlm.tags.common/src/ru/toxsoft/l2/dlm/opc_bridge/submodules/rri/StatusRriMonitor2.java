@@ -82,7 +82,7 @@ public class StatusRriMonitor2 {
   /**
    * ITag для чтения статуса
    */
-  protected ITag rStatusRri;
+  protected ITag rStatusRriWS;
 
   /**
    * IComplexTag для записи статуса.
@@ -102,7 +102,12 @@ public class StatusRriMonitor2 {
   /**
    * id тега на чтение
    */
-  protected IAtomicValue rStatusRriNodeId = AvUtils.avStr( "ns=32769;i=4955" ); //$NON-NLS-1$
+  protected IAtomicValue rStatusRriWSNodeId = AvUtils.avStr( "ns=32769;i=4955" ); //$NON-NLS-1$
+
+  /**
+   * index in WS
+   */
+  protected IAtomicValue indexStatus = AvUtils.avInt( 12 );
 
   /**
    * id тега на запись
@@ -140,7 +145,7 @@ public class StatusRriMonitor2 {
   private long setStatusTimestamp = 0;
 
   /**
-   * метка времени начала текуще операции записи очередно параметра
+   * метка времени начала текущей операции записи очередно параметра
    */
   private long currParamStartWritingTimestamp = 0;
 
@@ -155,6 +160,11 @@ public class StatusRriMonitor2 {
   private boolean errInProcess = false;
 
   /**
+   * маска для получения статуса НСИ из WS
+   */
+  private int mask;
+
+  /**
    * Вызывается на этапе конфигурации
    *
    * @param aParams дерево описания параметров конфигурации модуля
@@ -165,8 +175,10 @@ public class StatusRriMonitor2 {
     IOptionSet rriMonitorParams = aParams.fields();
     if( rriMonitorParams.hasValue( RRI_STATUS_DEVICE_ID ) ) {
       deviceId = rriMonitorParams.getValue( RRI_STATUS_DEVICE_ID );
-      if( rriMonitorParams.hasValue( RRI_STATUS_READ_NODE_ID ) ) {
-        rStatusRriNodeId = rriMonitorParams.getValue( RRI_STATUS_READ_NODE_ID );
+      if( rriMonitorParams.hasValue( RRI_STATUS_WS_READ_NODE_ID ) ) {
+        rStatusRriWSNodeId = rriMonitorParams.getValue( RRI_STATUS_WS_READ_NODE_ID );
+        indexStatus = rriMonitorParams.getValue( RRI_STATUS_WS_INDEX );
+        mask = 0x1 << indexStatus.asInt();
         if( rriMonitorParams.hasValue( RRI_STATUS_COMPLEX_NODE_ID ) ) {
           complextStatusRriNodeId = rriMonitorParams.getValue( RRI_STATUS_COMPLEX_NODE_ID );
           if( rriMonitorParams.hasValue( RRI_STATUS_CMD_SET_ID ) ) {
@@ -199,16 +211,22 @@ public class StatusRriMonitor2 {
       context = aContext;
       // получаем нужные теги от драйвера OPC UA
       ITsOpc tagsDevice = (ITsOpc)aContext.hal().listSpecificDevices().getByKey( deviceId.asString() );
-      rStatusRri = tagsDevice.tag( rStatusRriNodeId.asString() );
+      rStatusRriWS = tagsDevice.tag( rStatusRriWSNodeId.asString() );
       // тут комплексный тег
       wStatusRri = aComplexTagsContainer.getComplexTagById( complextStatusRriNodeId.asString() );
       pinRriDataTransmitters = aPinRriDataTransmitters;
-      prevRriOk = rStatusRri.get();
+      prevRriOk = getStatus();
       // на старте оказалось что контроллер требует НСИ, сразу запускаем процесс
-      if( prevRriOk.asInt() == 0 ) {
+      if( !prevRriOk.asBool() ) {
         currState = MonitorRunningStage.STARTING_DOWNLOAD;
       }
     }
+  }
+
+  private IAtomicValue getStatus() {
+    IAtomicValue wsValue = rStatusRriWS.get();
+    boolean rriStatusBit = (wsValue.asInt() & mask) != 0;
+    return AvUtils.avBool( rriStatusBit );
   }
 
   long setStatus() {
@@ -243,8 +261,8 @@ public class StatusRriMonitor2 {
         break;
       case MONITORING:
         // ловим переход 1 или 2 -> 0
-        IAtomicValue currRriOk = rStatusRri.get();
-        if( prevRriOk.asInt() != 0 && (currRriOk.asInt() == 0) ) {
+        IAtomicValue currRriOk = getStatus();
+        if( prevRriOk.asBool() && !currRriOk.asBool() ) {
           // поймали переход из было "НСИ норма", стало "НСИ нужно"
           prevRriOk = currRriOk;
           // переходим в загрузку
@@ -436,7 +454,7 @@ public class StatusRriMonitor2 {
   private void csMonitoring() {
     // переходим в режим мониторинга
     currState = MonitorRunningStage.MONITORING;
-    prevRriOk = rStatusRri.get();
+    prevRriOk = getStatus();
   }
 
   /**
