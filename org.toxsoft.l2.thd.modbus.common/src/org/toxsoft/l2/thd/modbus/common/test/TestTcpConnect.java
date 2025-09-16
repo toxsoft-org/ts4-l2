@@ -27,7 +27,7 @@ public class TestTcpConnect {
     // optSet.setStr( IP_PARAM_ID, "192.168.0.125" ); // OWEN ВК№3
     // optSet.setStr( IP_PARAM_ID, "192.168.0.126" ); // OWEN ВК№4
     // optSet.setStr( IP_PARAM_ID, "192.168.0.222" ); // БРВ №3 ВКМ 360А ссука!
-    optSet.setStr( IP_PARAM_ID, "192.168.0.220" ); // payload
+    // optSet.setStr( IP_PARAM_ID, "192.168.0.220" ); // payload
     // optSet.setStr( IP_PARAM_ID, "192.168.0.132" ); // газодувки, регистратор новый
     // optSet.setStr( IP_PARAM_ID, "192.168.0.139" ); // АК №7
     // optSet.setStr( IP_PARAM_ID, "192.168.0.140" ); // АК №8
@@ -36,6 +36,7 @@ public class TestTcpConnect {
     // optSet.setStr( IP_PARAM_ID, "192.168.0.129" ); // БРВ №2
     // optSet.setStr( IP_PARAM_ID, "192.168.0.147" ); // рег. № 1225
     // optSet.setStr( IP_PARAM_ID, "192.168.0.131" ); // рег. № 1240 Элметро в АКО
+    optSet.setStr( IP_PARAM_ID, "172.27.232.2" ); // Vordaq
     optSet.setInt( PORT_PARAM_ID, 502 );
 
     transactionCreator.config( optSet );
@@ -128,7 +129,38 @@ public class TestTcpConnect {
    */
   public static void readAOReg( int aAdress, int aReg, int aCount ) {
     // формирование запроса
-    // ReadMultipleRegistersRequest cr = new ReadMultipleRegistersRequest( aReg, aCount );
+    ReadMultipleRegistersRequest cr = new ReadMultipleRegistersRequest( aReg, aCount );
+    cr.setUnitID( aAdress );
+    // cr.setHeadless();
+
+    // транзакция
+    ModbusTransaction trans = transactionCreator.createModbusTransaction();
+    trans.setRequest( cr );
+
+    // испонение транзакции
+    try {
+      trans.execute();
+      System.out.println( "Read " + aAdress );
+      ModbusResponse r = trans.getResponse();
+      for( int i = 0; i < aCount; i++ ) {
+        System.out.println( "Response val: " + ((ReadMultipleRegistersResponse)r).getRegisterValue( i ) );
+      }
+      // try to translate
+      int[] ints = new int[2];
+      ints[0] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 0 );
+      ints[1] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 1 );
+      IAtomicValue translatedVal = translateVdq( ints );
+      System.out.println( "translated val: " + translatedVal.asInt() );
+    }
+    catch( ModbusException e ) {
+      System.out.println( "Havnt read " + aAdress );
+      e.printStackTrace();
+    }
+    // for( int ri = 0; ri < aCount; ri++ ) {
+    // int currReg = aReg + 3 * ri;
+    //
+    // // формирование запроса
+    // ReadMultipleRegistersRequest cr = new ReadMultipleRegistersRequest( currReg, 3 );
     // cr.setUnitID( aAdress );
     // // cr.setHeadless();
     //
@@ -139,50 +171,25 @@ public class TestTcpConnect {
     // // испонение транзакции
     // try {
     // trans.execute();
-    // System.out.println( "Read " + aAdress );
+    // System.out.println( "\nPen №" + (ri + 1) + " read reg = " + Integer.toHexString( currReg ) );
     // ModbusResponse r = trans.getResponse();
-    // for( int i = 0; i < aCount; i++ ) {
-    // System.out.println( "Response val: " + ((ReadMultipleRegistersResponse)r).getRegisterValue( i ) );
-    // }
+    // byte[] hiBytes = ((ReadMultipleRegistersResponse)r).getRegister( 0 ).toBytes();
+    // byte[] lowBytes = ((ReadMultipleRegistersResponse)r).getRegister( 1 ).toBytes();
+    // int penError = ((ReadMultipleRegistersResponse)r).getRegister( 2 ).getValue();
+    // byte[] bytes = new byte[4];
+    // bytes[0] = hiBytes[0];
+    // bytes[1] = hiBytes[1];
+    // bytes[2] = lowBytes[0];
+    // bytes[3] = lowBytes[1];
+    // float val = registersToFloat( bytes );
+    // System.out.println( "Pen float val: " + val );
+    // System.out.println( "Pen error: " + penError );
     // }
     // catch( ModbusException e ) {
     // System.out.println( "Havnt read " + aAdress );
     // e.printStackTrace();
     // }
-    for( int ri = 0; ri < aCount; ri++ ) {
-      int currReg = aReg + 3 * ri;
-
-      // формирование запроса
-      ReadMultipleRegistersRequest cr = new ReadMultipleRegistersRequest( currReg, 3 );
-      cr.setUnitID( aAdress );
-      // cr.setHeadless();
-
-      // транзакция
-      ModbusTransaction trans = transactionCreator.createModbusTransaction();
-      trans.setRequest( cr );
-
-      // испонение транзакции
-      try {
-        trans.execute();
-        System.out.println( "\nPen №" + (ri + 1) + " read reg = " + Integer.toHexString( currReg ) );
-        ModbusResponse r = trans.getResponse();
-        byte[] hiBytes = ((ReadMultipleRegistersResponse)r).getRegister( 0 ).toBytes();
-        byte[] lowBytes = ((ReadMultipleRegistersResponse)r).getRegister( 1 ).toBytes();
-        int penError = ((ReadMultipleRegistersResponse)r).getRegister( 2 ).getValue();
-        byte[] bytes = new byte[4];
-        bytes[0] = hiBytes[0];
-        bytes[1] = hiBytes[1];
-        bytes[2] = lowBytes[0];
-        bytes[3] = lowBytes[1];
-        float val = registersToFloat( bytes );
-        System.out.println( "Pen float val: " + val );
-        System.out.println( "Pen error: " + penError );
-      }
-      catch( ModbusException e ) {
-        System.out.println( "Havnt read " + aAdress );
-        e.printStackTrace();
-      }
-    }
+    // }
   }
 
   /**
@@ -563,6 +570,29 @@ public class TestTcpConnect {
       return AvUtils.avFloat( Double.longBitsToDouble( value ) );
     }
     return AvUtils.avFloat( aBytes[0] );
+  }
+
+  public static IAtomicValue translateVdq( int[] aWords ) {
+    // StringBuilder strValue = new StringBuilder();
+    // if( aWords.length == 2 ) {
+    // // first step convert to binary string
+    // for( int i = 0; i < aWords.length; i++ ) {
+    // String regBinaryString = Integer.toBinaryString( aWords[i] );
+    // strValue.append( String.format( "%16s", regBinaryString ).replace( ' ', '0' ) );
+    // }
+    // // Convert string to integer value on radix 2
+    // int value = Integer.parseInt( strValue.toString(), 2 );
+    // return AvUtils.avInt( value );
+    // }
+    if( aWords.length == 2 ) {
+      int value = 0;
+      for( int i = 0; i < aWords.length; i++ ) {
+        value = value << 16;
+        value += aWords[i];
+      }
+      return AvUtils.avInt( value );
+    }
+    return AvUtils.avInt( aWords[0] );
   }
 
   /**
