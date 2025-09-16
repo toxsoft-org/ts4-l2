@@ -65,11 +65,12 @@ public class TestTcpConnect {
           readAOReg( adress, reg, regVal );
           break;
         case "ai":
+          readAIReg( adress, reg, regVal );
           // 0 is first register
           // owenReadAIReg( 1, 0, 13 );
           // rmt59ReadAIReg( 1, 0x500, 9 );
           // rmt79ReadAIReg( 1, 0x4000, 4 );
-          vkm360ReadAIReg( 1, 4000, 2 );
+          // vkm360ReadAIReg( 1, 4000, 2 );
           // elmetroReadAIReg( 1, 0, 3 );
           break;
 
@@ -150,7 +151,7 @@ public class TestTcpConnect {
       ints[0] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 0 );
       ints[1] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 1 );
       IAtomicValue translatedVal = translateVdq( ints );
-      System.out.println( "translated val: " + translatedVal.asInt() );
+      System.out.println( "translated val as integer: " + translatedVal.asInt() );
     }
     catch( ModbusException e ) {
       System.out.println( "Havnt read " + aAdress );
@@ -190,6 +191,41 @@ public class TestTcpConnect {
     // e.printStackTrace();
     // }
     // }
+  }
+
+  /**
+   * Чтение состояния аналоговых выходов INPUT REGISTERs #4 (Read Input Registers)
+   *
+   * @param aAdress device Id
+   * @param aReg адрес начального регистра
+   * @param aCount кол-во регистров для чтения
+   */
+  public static void readAIReg( int aAdress, int aReg, int aCount ) {
+    // формирование запроса FC4
+    ReadInputRegistersRequest cr = new ReadInputRegistersRequest( aReg, aCount );
+    cr.setUnitID( aAdress );
+    // cr.setHeadless();
+
+    // транзакция
+    ModbusTransaction trans = transactionCreator.createModbusTransaction();
+    trans.setRequest( cr );
+
+    // испоkнение транзакции
+    try {
+      // System.out.println( "\nLogical input №" + (ri + 1) + " read reg = " + currReg );
+      trans.execute();
+
+      ModbusResponse r = trans.getResponse();
+      int[] ints = new int[2];
+      ints[0] = ((ReadInputRegistersResponse)r).getRegisterValue( 0 );
+      ints[1] = ((ReadInputRegistersResponse)r).getRegisterValue( 1 );
+      IAtomicValue translatedVal = translateVdq( ints );
+      System.out.println( "translated val as integer: " + translatedVal.asInt() );
+    }
+    catch( ModbusException e ) {
+      System.out.println( "Havnt read " + aAdress );
+      e.printStackTrace();
+    }
   }
 
   /**
