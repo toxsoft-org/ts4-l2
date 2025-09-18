@@ -10,10 +10,12 @@ import gnu.io.*;
 
 /**
  * Translator of registers to integer value for Vordaq <br>
- * just simple ABCD bytes order conversion
+ * just simple ABCD bytes order conversion <br>
  *
+ * @deprecated use IntegerCommonRegistersTranslator with argument ABCD
  * @author dima
  */
+@Deprecated
 public class VordaqIntegerRegistersTranslator
     implements IAnalogTranslator {
 
