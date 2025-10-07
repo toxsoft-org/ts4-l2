@@ -218,7 +218,7 @@ public class NodesWriter {
             UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
             // dima 07.10.25 определение дополнительного типа (extraType)
             // NodeId dataType = dNode.getDataType();
-            // dataTypeClass = ;
+            // dataTypeClass = TypeUtil.getBackingClass( dataType );
             dataTypeClass = OpcUaUtils.getNodeDataTypeClass( dNode );
 
             // Class<?> dataTypeClass = getNodeDataTypeClassByValue( dNode );
