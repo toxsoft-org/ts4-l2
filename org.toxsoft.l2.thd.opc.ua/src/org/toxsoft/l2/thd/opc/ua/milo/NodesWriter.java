@@ -148,7 +148,6 @@ public class NodesWriter {
     private boolean toClear = false;
 
     BufferedUaTag( TagImpl aTag, NodeId aNodeId, IAtomicValue aCurValue ) {
-      super();
       tag = aTag;
       curValue = aCurValue;
       nodeId = aNodeId;
@@ -177,12 +176,11 @@ public class NodesWriter {
             changed = true;
           }
         }
-        toClear = false;
       }
       else {
         changed = false;
-        toClear = false;
       }
+      toClear = false;
     }
 
     boolean isChanged() {
@@ -218,10 +216,10 @@ public class NodesWriter {
           Class<?> dataTypeClass = null;
           try {
             UaVariableNode dNode = client.getAddressSpace().getVariableNode( nodeId );
-            // TODO - определение дополнительного типа (extraType)
-
-            NodeId dataType = dNode.getDataType();
-            dataTypeClass = TypeUtil.getBackingClass( dataType );
+            // dima 07.10.25 определение дополнительного типа (extraType)
+            // NodeId dataType = dNode.getDataType();
+            // dataTypeClass = ;
+            dataTypeClass = OpcUaUtils.getNodeDataTypeClass( dNode );
 
             // Class<?> dataTypeClass = getNodeDataTypeClassByValue( dNode );
           }

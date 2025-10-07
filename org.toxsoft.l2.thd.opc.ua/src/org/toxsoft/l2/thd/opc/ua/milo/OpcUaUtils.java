@@ -2,8 +2,13 @@ package org.toxsoft.l2.thd.opc.ua.milo;
 
 import static ru.toxsoft.l2.thd.opc.IOpcConstants.*;
 
+import java.util.*;
+
+import org.eclipse.milo.opcua.sdk.client.nodes.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.*;
 import org.eclipse.milo.opcua.stack.core.types.builtin.unsigned.*;
+import org.eclipse.milo.opcua.stack.core.types.enumerated.*;
+import org.eclipse.milo.opcua.stack.core.util.*;
 import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
@@ -12,6 +17,7 @@ import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
 
 /**
  * Утилитный класс для работы с OPC
@@ -271,15 +277,48 @@ public class OpcUaUtils {
     if( tagId.atomicType() == EAtomicType.INTEGER ) {
       nodeId = new NodeId( namespaceId, tagId.asInt() );
     }
-    else
+    else {
       if( tagId.atomicType() == EAtomicType.STRING ) {
-        nodeId = new NodeId( namespaceId, tagId.asString() );
       }
-      else {
-        nodeId = new NodeId( namespaceId, tagId.asString() );
-      }
+      nodeId = new NodeId( namespaceId, tagId.asString() );
+    }
 
     return nodeId;
+  }
+
+  /**
+   * @param aEntity узел значения переменной
+   * @return класс типа данных значения узла
+   */
+  public static Class<?> getNodeDataTypeClass( UaVariableNode aEntity ) {
+    // new verion of max
+    Class<?> retVal = null;
+    try {
+      retVal = TypeUtil.getBackingClass( aEntity.getDataType() );
+    }
+    catch( Exception ex ) {
+      LoggerUtils.errorLogger().error( ex );
+    }
+    // dima 29.02.24 на Siemens верхний метод срабатывает не всегда, а нижний работает
+    if( retVal == null ) {
+      // old version of dima
+      // получение значения узла
+      DataValue dataValue = aEntity.getValue();
+      // тут получаем Variant
+      Variant variant = dataValue.getValue();
+      Optional<ExpandedNodeId> dataTypeNode = variant.getDataType();
+      if( dataTypeNode.isPresent() ) {
+        ExpandedNodeId expNodeId = dataTypeNode.get();
+        // TODO разобраться с отображением не числовых типов
+        if( expNodeId.getType() == IdType.Numeric ) {
+          UInteger id = (UInteger)expNodeId.getIdentifier();
+          NodeId nodeId = new NodeId( expNodeId.getNamespaceIndex(), id );
+          Class<?> clazz = TypeUtil.getBackingClass( nodeId );
+          retVal = clazz;
+        }
+      }
+    }
+    return retVal;
   }
 
   // public static void main( String[] a ) {
