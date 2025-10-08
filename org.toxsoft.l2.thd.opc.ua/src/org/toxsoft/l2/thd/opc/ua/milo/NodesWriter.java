@@ -17,6 +17,8 @@ import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 
 import ru.toxsoft.l2.thd.opc.*;
@@ -51,6 +53,8 @@ public class NodesWriter {
   private List<NodeId>        currWriteIds    = new ArrayList<>();
   private List<DataValue>     currWriteValues = new ArrayList<>();
   private List<BufferedUaTag> currWriteTags   = new ArrayList<>();
+  // карта неудачных попыток записать значение в тег
+  private IStringMapEdit<Integer> nodeId2ErrorCnt = new StringMap<>();
 
   /**
    * @param aClient
@@ -98,13 +102,34 @@ public class NodesWriter {
 
         for( int i = 0; i < statusCodes.size(); i++ ) {
           StatusCode code = statusCodes.get( i );
+          String key = currWriteTags.get( i ).getNodeId().toParseableString();
 
           if( code.isGood() ) {
             currWriteTags.get( i ).clear();
             logger.debug( "tag %s cleared", currWriteTags.get( i ).getNodeId().toParseableString() );
+            if( nodeId2ErrorCnt.hasKey( key ) ) {
+              nodeId2ErrorCnt.removeByKey( key );
+            }
           }
           else {
             logger.error( "tag %s error writing", currWriteTags.get( i ).getNodeId().toParseableString() );
+            // dima 08.10.25 при ошибке делаем три попытки и отменяем выполнение этой команды
+            if( !nodeId2ErrorCnt.hasKey( key ) ) {
+              nodeId2ErrorCnt.put( key, Integer.valueOf( 1 ) );
+            }
+            else {
+              int errCount = nodeId2ErrorCnt.getByKey( key ).intValue();
+              errCount++;
+              if( errCount >= 3 ) {
+                logger.error( "tag %s error writing failed after %d attempts",
+                    currWriteTags.get( i ).getNodeId().toParseableString(), errCount );
+                currWriteTags.get( i ).clear();
+                nodeId2ErrorCnt.removeByKey( key );
+              }
+              else {
+                nodeId2ErrorCnt.put( key, Integer.valueOf( errCount ) );
+              }
+            }
           }
         }
         logger.debug( "exit from writeValues method" );
@@ -129,7 +154,7 @@ public class NodesWriter {
   }
 
   /**
-   * Класс буфферезированного тега с призаком изменения
+   * Класс буфферезированного тега с признаком изменения
    *
    * @author max
    */
@@ -221,7 +246,6 @@ public class NodesWriter {
             // dataTypeClass = TypeUtil.getBackingClass( dataType );
             dataTypeClass = OpcUaUtils.getNodeDataTypeClass( dNode );
 
-            // Class<?> dataTypeClass = getNodeDataTypeClassByValue( dNode );
           }
           catch( UaException uaEx ) {
             logger.error( "Write tag '%s' creation faild '%s'", nodeId.toParseableString(), uaEx.getMessage() );
@@ -243,35 +267,6 @@ public class NodesWriter {
 
   IMap<String, TagImpl> getTags() {
     return tags;
-  }
-
-  /**
-   * Возвращает java тип узла opc ua по значению, получаемому от узла.
-   *
-   * @param aEntity узел значения переменной
-   * @return класс типа данных значения узла
-   */
-  public static Class<?> getNodeDataTypeClassByValue( UaVariableNode aEntity ) {
-    Class<?> retVal = null;
-    // получение значения узла
-    DataValue dataValue = aEntity.getValue();
-    // тут получаем Variant
-    Variant variant = dataValue.getValue();
-    Optional<ExpandedNodeId> dataTypeNode = variant.getDataType();
-    if( dataTypeNode.isPresent() ) {
-      //
-      // aEntity.getTypeDefinition().
-      //
-      ExpandedNodeId expNodeId = dataTypeNode.get();
-      // TODO разобраться с отображением не числовых типов
-      if( expNodeId.getType() == IdType.Numeric ) {
-        UInteger id = (UInteger)expNodeId.getIdentifier();
-        NodeId nodeId = new NodeId( expNodeId.getNamespaceIndex(), id );
-        Class<?> clazz = TypeUtil.getBackingClass( nodeId );
-        retVal = clazz;
-      }
-    }
-    return retVal;
   }
 
 }
