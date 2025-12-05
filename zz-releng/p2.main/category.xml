@@ -11,6 +11,7 @@
    <bundle id="ru.toxsoft.l2.thd.opc.da"/>
    <bundle id="ru.toxsoft.l2.utils.opc.cfg.exe"/>
    <bundle id="org.toxsoft.l2.thd.opc.ua"/>
+   <bundle id="org.toxsoft.l2.thd.modbus.common"/>
 
    <!-- sources -->
    <bundle id="ru.toxsoft.l2.core.source"/>
@@ -19,5 +20,6 @@
    <bundle id="ru.toxsoft.l2.thd.opc.da.source"/>
    <bundle id="ru.toxsoft.l2.utils.opc.cfg.exe.source"/>
    <bundle id="org.toxsoft.l2.thd.opc.ua.source"/>
+   <bundle id="org.toxsoft.l2.thd.modbus.common.source"/>
 
 </site>
