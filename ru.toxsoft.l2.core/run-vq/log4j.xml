@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+	debug="false">
+
+	<appender name="FILE" class="org.apache.log4j.RollingFileAppender">
+		<param name="Threshold" value="TRACE" />
+		<param name="File" value="log/l2_core.log" />
+		<param name="MaxFileSize" value="1000KB" />
+		<param name="MaxBackupIndex" value="100" />
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c] %m%n" />
+		</layout>
+	</appender>
+	
+	<appender name="L2FILE" class="org.apache.log4j.RollingFileAppender">
+		<param name="Threshold" value="TRACE" />
+		<param name="File" value="log/l2.log" />
+		<param name="MaxFileSize" value="1000KB" />
+		<param name="MaxBackupIndex" value="100" />
+		
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%c] %m%n" />
+		</layout>
+	</appender>
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+           <param name="Threshold" value="TRACE" />
+           <param name="Target" value="System.out" />
+
+           <layout class="org.apache.log4j.PatternLayout">
+                 <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n" />
+           </layout>
+    </appender>
+
+	<category name="org.toxsoft">
+		<priority value="WARN" />		
+	</category>
+
+        <category name="org.toxsoft.core.pas">
+                <priority value="OFF" />
+        </category>
+
+	<category name="ru.toxsoft.uskat">
+		<priority value="OFF" />		
+	</category>
+
+	<category name="ru.toxsoft.l2.core.reserve.impl">
+		<priority value="OFF" />		
+	</category>
+
+	<category name="ru.toxsoft.l2.core.hal.devices.impl.modbus.rtu">
+		<priority value="OFF" />
+	</category>
+	
+	<category name="ru.toxsoft.l2.core.hal">
+		<priority value="TRACE" />
+	</category>
+	
+	<category name="ru.toxsoft.l2.core.hal.devices.impl.opc.impl">
+		<priority value="TRACE" />
+	</category>
+
+	<category name="org.xnio">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="org.jboss">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="org.hornetq">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="io.netty">
+		<priority value="ERROR" />
+	</category>
+	
+	<category name="ru.toxsoft.l2.dlms" >
+		<priority value="ERROR" />
+	</category>
+		
+	<category name="org.jinterop" >
+		<priority value="ERROR"/>	
+	</category>
+
+        <category name="org.toxsoft.core.pas">
+                <priority value="TRACE" />
+        </category>
+
+	<category name="ru.toxsoft.l2.thd.opc.da.OpenSCADA2S5Bridge" >
+		<priority value="TRACE"/>	
+	</category>
+
+	<category name="ru.toxsoft.l2.core.hal.devices.impl.lgcpp.impl" >
+		<priority value="OFF"/>	
+	</category>
+
+	<category name="ru.toxsoft.l2.core.dlm.impl" >
+		<priority value="TRACE"/>	
+	</category>
+
+	<category name="ru.toxsoft.metro.l2.dlms.boxcheck" >
+		<priority value="ERROR" />	
+	</category>
+	
+	<category name="ru.toxsoft.l2.core.reserve" >
+		<priority value="TRACE" />	
+	</category>
+
+	<category name="ru.toxsoft.l2.core.app.impl.BaseAppImpl" >
+		<priority value="TRACE" />	
+	</category>
+	
+	<category name="ru.toxsoft.l2.dlm.opc_bridge.submodules.commands" >
+		<priority value="TRACE" />	
+	</category>
+	
+	<category name="ru.toxsoft.l2.dlm.opc_bridge.submodules.data" >
+		<priority value="TRACE" />	
+	</category>
+                    
+	<category name="ru.toxsoft.l2.dlm.opc_bridge.submodules.data.CurrDataTransmittersInitializer" >
+		<priority value="INFO" />	
+	</category>
+                    
+	<category name="ru.toxsoft.l2.dlm.opc_bridge.submodules.events" >
+		<priority value="TRACE" />	
+	</category>
+	
+  <category name="ru.toxsoft.l2.dlm.opc_bridge.submodules.ctags" >
+    <priority value="TRACE" />  
+  </category>
+
+  <category name="ru.toxsoft.l2.dlm.opc_bridge.submodules.rri" >
+    <priority value="TRACE" />  
+  </category>
+
+	<category name="org.toxsoft.l2.thd.opc.ua.milo.NodesWriter" >
+		<priority value="OFF" />	
+	</category>
+                                                 
+	<category name="org.toxsoft.l2.thd.opc.ua.milo.NodesReader" >
+		<priority value="OFF" />	
+	</category>
+
+	<category name="org.toxsoft.l2.thd.opc.ua.milo.TagImpl" >
+		<priority value="TRACE" />	
+	</category>
+
+	<category name="ru.toxsoft.metro.l2.dlms.dispatch.submodules.FreqCounterModule" >
+		<priority value="ERROR" />	
+	</category>
+
+	<category name="ru.toxsoft.l2.dlms.pins.base.submodules.BaseHistDataModule" >
+		<priority value="ERROR" />	
+	</category>
+
+	<category name="org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient" >
+		<priority value="ERROR" />	
+	</category>
+
+	<category name="org.toxsoft.uskat.s5.server.backend.addons.rtdata.S5BaRtdataRemote" >
+		<priority value="ERROR" />	
+	</category>
+
+	<category name="ru.toxsoft.l2.dlm.opc_bridge.submodules.data" >
+		<priority value="ERROR" />	
+	</category>
+
+	<root>
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />		
+	</root>
+
+</log4j:configuration>
