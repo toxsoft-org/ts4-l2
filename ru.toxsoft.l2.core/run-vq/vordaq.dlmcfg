@@ -48,6 +48,13 @@ DlmConfig =
       ]
     }
     ,
+    rriDefs=
+    {
+      true,
+      [
+      ]
+    }
+    ,
     eventDefs=
     {
       true,
