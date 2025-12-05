@@ -1,0 +1,65 @@
+DlmConfig = 
+{
+  false,
+  "opc.dlm.cfg",
+  {
+    id = "ru.toxsoft.l2.dlm.tags.common",
+    description = "ru.toxsoft.l2.dlm.tags.common"
+  }
+  ,
+  {
+    cmdClassDefs=
+    {
+      true,
+      [
+      ]
+    }
+    ,
+    cmdDefs=
+    {
+      true,
+      [
+      ]
+    }
+    ,
+    dataDefs=
+    {
+      true,
+      [
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1764784589970.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1764784589970",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vq.Sensor",
+            obj.name = "cust001.pharavanhesi.flometer",
+            data.id = "rawValue",
+            tag.id = "modbus_node_id_tcp_ip_address_10_8_0_4_ip_port_502_AI_141_2",
+            tag.dev.id = "tcp_10_8_0_4_502"
+          }
+          ,
+          {
+          }
+        }
+      ]
+    }
+    ,
+    eventDefs=
+    {
+      true,
+      [
+      ]
+    }
+    ,
+    complexTagsDefs=
+    {
+      true,
+      [
+      ]
+    }
+  }
+}
