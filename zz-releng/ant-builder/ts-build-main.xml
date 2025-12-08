@@ -24,6 +24,7 @@
     <ant dir="../../ru.toxsoft.l2.thd.opc.da" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
     <ant dir="../../ru.toxsoft.l2.utils.opc.cfg.exe" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
     <ant dir="../../org.toxsoft.l2.thd.opc.ua" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
+    <ant dir="../../org.toxsoft.l2.thd.modbus.common" antfile="${ts-scripts-dir}/ts-build-lib.xml" target="build-lib-jar" />
   </target>
 
   <!-- ЦЕЛЬ: сборка plugin-ов -->
@@ -35,11 +36,12 @@
                        exportSourceBundle="false"
                        exportType="directory"
                        plugins="ru.toxsoft.l2.core,
-				ru.toxsoft.l2.dlm.tags.common,
-				ru.toxsoft.l2.sysdescr.constants,
+                                ru.toxsoft.l2.dlm.tags.common,
+                                ru.toxsoft.l2.sysdescr.constants,
                                 ru.toxsoft.l2.thd.opc.da,
                                 ru.toxsoft.l2.utils.opc.cfg.exe,
-                                org.toxsoft.l2.thd.opc.ua"
+                                org.toxsoft.l2.thd.opc.ua,
+                                org.toxsoft.l2.thd.modbus.common"
                        useworkspacecompiledclasses="true"
                        useJARFormat="true" />
   </target>

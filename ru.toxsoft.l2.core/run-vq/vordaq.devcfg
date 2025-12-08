@@ -49,8 +49,8 @@ DeviceConfig =
                             request.type = "AI",
                             register = 141,
                             words.count = 2,
-                            translator = "INTEGER_REGISTERS",
-                            translator.params = "org.toxsoft.l2.thd.modbus.common.translators.VordaqIntegerRegistersTranslator"
+                            translator = "org.toxsoft.l2.thd.modbus.common.translators.VordaqIntegerRegistersTranslator",
+                            translator.params = ""
                           }
                           ,
                           {
