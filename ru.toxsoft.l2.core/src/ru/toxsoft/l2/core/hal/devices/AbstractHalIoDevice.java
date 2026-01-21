@@ -491,7 +491,7 @@ public abstract class AbstractHalIoDevice
    *          аппарата.
    */
 
-  protected void writeValuesWrongMode( @SuppressWarnings( "unused" ) EMode currMode ) {
+  protected void writeValuesWrongMode( EMode currMode ) {
     // по мере необходимости реализуется в наследниках
   }
 
@@ -502,7 +502,7 @@ public abstract class AbstractHalIoDevice
    * @param currMode {@link EMode} - режим, в котором на момент вызова метода {@link #readDevices()} находился поток
    *          аппарата.
    */
-  protected void readDevicesWrongMode( @SuppressWarnings( "unused" ) EMode currMode ) {
+  protected void readDevicesWrongMode( EMode currMode ) {
     // по мере необходимости реализуется в наследниках
   }
 
@@ -513,7 +513,7 @@ public abstract class AbstractHalIoDevice
    * @param currMode {@link EMode} - режим, в котором на момент вызова метода {@link #readValues()} находился поток
    *          аппарата.
    */
-  protected void readValuesWrongMode( @SuppressWarnings( "unused" ) EMode currMode ) {
+  protected void readValuesWrongMode( EMode currMode ) {
     // по мере необходимости реализуется в наследниках
   }
 
