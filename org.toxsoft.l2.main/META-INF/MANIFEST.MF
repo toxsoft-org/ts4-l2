@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: USkat L2 - static main() runner
+Bundle-SymbolicName: org.toxsoft.l2.main
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.toxsoft.core.tslib,
+ org.toxsoft.extlibs.log4j,
+ org.toxsoft.core.log4j,
+ org.toxsoft.core.pas,
+ org.toxsoft.uskat.core,
+ org.toxsoft.uskat.s5,
+ org.toxsoft.skf.dq.lib,
+ org.toxsoft.skf.rri.lib,
+ org.toxsoft.l2.lib
+Bundle-Vendor: toxsoft.org
+Automatic-Module-Name: org.toxsoft.l2.main
+Bundle-RequiredExecutionEnvironment: JavaSE-21
