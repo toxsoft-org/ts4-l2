@@ -1,4 +1,4 @@
-package org.toxsoft.l2.main;
+package org.toxsoft.l2.main.new_l2app;
 
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;

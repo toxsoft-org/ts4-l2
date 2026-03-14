@@ -1,8 +1,8 @@
-package org.toxsoft.l2.main.old_refactor.main;
+package org.toxsoft.l2.main.old_refactor;
 
 import static org.toxsoft.l2.lib.main.IL2HardConstants.*;
-import static org.toxsoft.l2.main.old_refactor.L2AppUtils.*;
-import static org.toxsoft.l2.main.old_refactor.l10n.IL2MainSharedResources.*;
+import static org.toxsoft.l2.main.old_refactor.helpers.IL2MainSharedResources.*;
+import static org.toxsoft.l2.main.old_refactor.helpers.L2AppUtils.*;
 
 import java.io.*;
 
@@ -20,7 +20,7 @@ import org.toxsoft.l2.lib.main.*;
 import org.toxsoft.l2.lib.main.impl.*;
 import org.toxsoft.l2.lib.net.*;
 import org.toxsoft.l2.lib.reserve.*;
-import org.toxsoft.l2.main.old_refactor.*;
+import org.toxsoft.l2.main.old_refactor.helpers.*;
 import org.toxsoft.skf.dq.lib.impl.*;
 import org.toxsoft.skf.rri.lib.impl.*;
 import org.toxsoft.uskat.core.impl.*;

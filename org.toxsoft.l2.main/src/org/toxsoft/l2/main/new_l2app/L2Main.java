@@ -1,6 +1,6 @@
-package org.toxsoft.l2.main;
+package org.toxsoft.l2.main.new_l2app;
 
-import static org.toxsoft.l2.main.IL2ApplicationConstants.*;
+import static org.toxsoft.l2.main.new_l2app.IL2ApplicationConstants.*;
 
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
@@ -34,8 +34,7 @@ public class L2Main {
 
     // TODO prpare L2Application context
     ITsContext l2AppArgs = new TsContext();
-    REFDEF_DEFAULT_LOGGER.setRef( l2AppArgs, LoggerUtils.defaultLogger() );
-    REFDEF_ERROR_LOGGER.setRef( l2AppArgs, LoggerUtils.errorLogger() );
+    REFDEF_UNIT_LOGGER.setRef( l2AppArgs, LoggerUtils.defaultLogger() );
 
     // TODO prepare L2Application parameters
     String l2AppId = IStridable.NONE_ID;

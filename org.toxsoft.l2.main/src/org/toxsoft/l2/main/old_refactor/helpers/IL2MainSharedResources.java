@@ -1,4 +1,4 @@
-package org.toxsoft.l2.main.old_refactor.l10n;
+package org.toxsoft.l2.main.old_refactor.helpers;
 
 /**
  * Локализуемые ресурсы точки входа в программу нижнего уровня.

@@ -1,6 +1,6 @@
-package org.toxsoft.l2.main.old_refactor;
+package org.toxsoft.l2.main.old_refactor.helpers;
 
-import static org.toxsoft.l2.main.old_refactor.l10n.IL2MainSharedResources.*;
+import static org.toxsoft.l2.main.old_refactor.helpers.IL2MainSharedResources.*;
 
 import java.io.*;
 import java.lang.reflect.*;
@@ -22,7 +22,7 @@ import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.l2.lib.app.*;
 import org.toxsoft.l2.lib.main.*;
 import org.toxsoft.l2.lib.main.impl.*;
-import org.toxsoft.l2.main.old_refactor.main.*;
+import org.toxsoft.l2.main.old_refactor.*;
 
 /**
  * Статические и вспомогательные методы работы с компонентой проектно-зависимого функционала.
