@@ -69,7 +69,7 @@ final class DlmHolder
   DlmHolder( IGlobalContext aContext, File aPluginsDir ) {
     globalContext = aContext;
 
-    dlmConfigDir = new File( globalContext.globalOps().getStr( EGlobalOps.DLM_CONFIG_DIR ) );
+    dlmConfigDir = new File( globalContext.globalOps().getStr( IGlobalOps.DLM_CONFIG_DIR ) );
 
     dlmContext = new DlmContext( aContext );
 

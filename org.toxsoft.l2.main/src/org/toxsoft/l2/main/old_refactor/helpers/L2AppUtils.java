@@ -61,7 +61,7 @@ public class L2AppUtils {
   }
 
   private static IAppComponent createAppImpl( GlobalContext aGlobalContext ) {
-    String appClassName = aGlobalContext.globalOps().getStr( EGlobalOps.APP_CLASS_NAME );
+    String appClassName = aGlobalContext.globalOps().getStr( IGlobalOps.APP_CLASS_NAME );
 
     try {
       Class<?> appClass = Class.forName( appClassName );

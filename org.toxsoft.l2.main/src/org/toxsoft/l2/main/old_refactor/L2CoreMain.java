@@ -7,6 +7,7 @@ import static org.toxsoft.l2.main.old_refactor.helpers.L2AppUtils.*;
 import java.io.*;
 
 import org.toxsoft.core.log4j.*;
+import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.bricks.*;
 import org.toxsoft.core.tslib.utils.errors.*;
@@ -192,7 +193,9 @@ public class L2CoreMain {
       // LoggerUtils.createFileLogger( new File( "l2Log.log" ) );
 
       // инициализировать конфигурацию: умолчания - файл - командная строка
-      OptionSet ops = new OptionSet( EGlobalOps.asOptionSet() );
+      IOptionSetEdit ops = new OptionSet();
+      OptionSetUtils.initOptionSet( ops, IGlobalOps.ALL_L2_GLOBAL_OPS );
+
       // OptionSetUtils.nvAdd( ops, readConfigFile( new File( L2_MAIN_CFG_FILE_NAME ) ) );
       ops.addAll( L2AppUtils.readConfigFile( new File( L2_MAIN_CFG_FILE_NAME ) ) );
       // OptionSetUtils.nvAdd( ops, parseCmdLine( aArgs ) );
@@ -333,10 +336,10 @@ public class L2CoreMain {
           Thread.sleep( writeDevicesDelay );// настраиваемый параметр
 
           if( globalContext != null ) {
-            Thread.sleep( globalContext.globalOps().getLong( EGlobalOps.MAIN_LOOP_SLEEP_MSECS ) );
+            Thread.sleep( globalContext.globalOps().getLong( IGlobalOps.MAIN_LOOP_SLEEP_MSECS ) );
             // TODO: mvkd
             if( d0 + d1 + d2 + d3 + d4 + readDevicesDelay + writeDevicesDelay
-                + globalContext.globalOps().getLong( EGlobalOps.MAIN_LOOP_SLEEP_MSECS ) > 1000 ) {
+                + globalContext.globalOps().getLong( IGlobalOps.MAIN_LOOP_SLEEP_MSECS ) > 1000 ) {
               System.out.println( "+++++++++++++++++++++++ MVK d0 = " + d0 + ", d1 = " + d1 + ", d2 = " + d2 + ", d3 = "
                   + d3 + ", d4 = " + d4 );
             }

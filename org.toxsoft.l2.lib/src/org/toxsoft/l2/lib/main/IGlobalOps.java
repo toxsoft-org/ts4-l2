@@ -8,21 +8,18 @@ import static org.toxsoft.l2.lib.main.IL2Resources.*;
 
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 
 /**
  * Глобальные параметры настройки программы нижнего уровня.
  * <p>
  * Значения параметров доступны через {@link IGlobalContext#globalOps()}.
- * <p>
- * Эти жа параметры используются в качестве аргументов командной строки в формате <b>-{@link #id()} value</b>. Где
- * <b>value</b> это атомарное значение, записанное по правилам {@link IDvWriter#writeAtomicValue(IAtomicValue)}.
  *
  * @author goga
  */
 @SuppressWarnings( "nls" )
-public interface EGlobalOps {
+public interface IGlobalOps {
 
   /**
    * Путь к файлу конфигурации нижнего уровня.
@@ -84,29 +81,6 @@ public interface EGlobalOps {
           E_MO_N_PLUGINS_RESCAN_INTERVAL_SECS, TSID_DEFAULT_VALUE, avInt( 60 ) );
 
   /**
-   * Имя хоста или IP-адрес сервера ВУ.<br>
-   * Тип данных: примитивный {@link EAtomicType#STRING}<br>
-   * Формат: IP-адрес (вида 192.168.0.1) или имя хоста (вида ct.server.zavod.ru) сервера верхнего уровня<br>
-   * Значение по умолчанию: "localhost" (на своей машине, удобно для отладчоного запуска)
-   */
-  // SERVER_ADDRESS( "ServerAddress", E_MO_SERVER_ADDRESS, E_MO_N_SERVER_ADDRESS, avStr( "localhost" ) ),
-
-  /**
-   * Номер порта сервера для доступа по JNDI к провайдеру имен Java (JNP).<br>
-   * Тип данных: примитивный {@link EAtomicType#INTEGER}<br>
-   * Формат: номер TCP-порта для доступа на сервере к слубам именования Java (JNP)<br>
-   * Значение по умолчанию: 1099
-   */
-  // SERVER_JNP_PORT( "ServerJnpPort", E_MO_SERVER_JNP_PORT, E_MO_N_SERVER_JNP_PORT, avInt( 1099 ) ),
-
-  /**
-   * Логин (имя пользователя), с которым программа входит на сервер.<br>
-   * Тип данных: примитивный {@link EAtomicType#STRING}<br>
-   * Значение по умолчанию: admin
-   */
-  // LOGIN_NAME( "LoginName", E_MO_LOGIN_NAME, E_MO_N_LOGIN_NAME, avStr( "admin" ) ),
-
-  /**
    * Время \"засыпания\" на каждом проходе главного цикла в миллисекундах.<br>
    * Тип данных: примитивный {@link EAtomicType#INTEGER}<br>
    * Формат: кол-во миллисекунд (0..100), который главный цикл "уступает" драгим процессам на кажом проходе<br>
@@ -116,30 +90,18 @@ public interface EGlobalOps {
       TSID_NAME, E_MO_N_MAIN_LOOP_SLEEP_MSECS, TSID_DEFAULT_VALUE, avInt( 10 ) );
 
   /**
-   * Время \"засыпания\" на каждом проходе серверного цикла в миллисекундах.<br>
+   * List of all known parameters used for {@link IL2Application} initialization.
    */
-  // NET_LOOP_SLEEP_MSECS( "NetLoopSleepMsecs", E_MO_NET_LOOP_SLEEP_MSECS, E_MO_N_NET_LOOP_SLEEP_MSECS, avInt( 10 ) ),
-
-  OptionSet optionSet = new OptionSet();
-
-  /**
-   * Возвращает набор всех опции в виде {@link IOptionSet}.
-   *
-   * @return IOptionSet - набор опции компоненты по умолчанию
-   */
-  static IOptionSet asOptionSet() {
-    if( optionSet.size() == 0 ) {
-      HAL_CONFIG_FILE.setValue( optionSet, HAL_CONFIG_FILE.defaultValue() );
-      DLM_CONFIG_DIR.setValue( optionSet, DLM_CONFIG_DIR.defaultValue() );
-      THD_CONFIG_DIR.setValue( optionSet, THD_CONFIG_DIR.defaultValue() );
-      CONTROLLER_NO.setValue( optionSet, CONTROLLER_NO.defaultValue() );
-      APP_CLASS_NAME.setValue( optionSet, APP_CLASS_NAME.defaultValue() );
-      PLUGINS_DIR.setValue( optionSet, PLUGINS_DIR.defaultValue() );
-      DATA_DIR.setValue( optionSet, DATA_DIR.defaultValue() );
-      PLUGINS_RESCAN_INTERVAL_SECS.setValue( optionSet, PLUGINS_RESCAN_INTERVAL_SECS.defaultValue() );
-      MAIN_LOOP_SLEEP_MSECS.setValue( optionSet, MAIN_LOOP_SLEEP_MSECS.defaultValue() );
-    }
-    return optionSet;
-  }
+  IStridablesList<IDataDef> ALL_L2_GLOBAL_OPS = new StridablesList<>( //
+      HAL_CONFIG_FILE, //
+      DLM_CONFIG_DIR, //
+      THD_CONFIG_DIR, //
+      CONTROLLER_NO, //
+      APP_CLASS_NAME, //
+      PLUGINS_DIR, //
+      DATA_DIR, //
+      PLUGINS_RESCAN_INTERVAL_SECS, //
+      MAIN_LOOP_SLEEP_MSECS //
+  );
 
 }

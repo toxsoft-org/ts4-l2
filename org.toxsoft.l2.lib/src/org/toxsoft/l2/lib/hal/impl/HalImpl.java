@@ -177,7 +177,7 @@ public class HalImpl
 
     // получение конфигураций устройств по данным из конфигурационной
     // директории
-    File dir = new File( globalContext.globalOps().getStr( EGlobalOps.THD_CONFIG_DIR ) );
+    File dir = new File( globalContext.globalOps().getStr( IGlobalOps.THD_CONFIG_DIR ) );
 
     // инициализация загрузчика конфигураций
     DefaultUnitConfigLoader loader = new DefaultUnitConfigLoader( DEVCFG, DEVICE_CONFIG );

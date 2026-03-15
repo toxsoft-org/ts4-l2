@@ -31,12 +31,12 @@ class DlmManager
   /**
    * Интервали между проверками обновлений плагинов.
    * <p>
-   * Интервал проверок модулей задается в параметре {@link EGlobalOps#PLUGINS_RESCAN_INTERVAL_SECS}. То есть, с момента,
+   * Интервал проверок модулей задается в параметре {@link IGlobalOps#PLUGINS_RESCAN_INTERVAL_SECS}. То есть, с момента,
    * как файл плагина поменялся, должно пройти не более заданого количества секунд до обновления соответствующего модуля
    * в памяти. Если у нас несколько директорий с плагинами, то распределим проверку каждой директории равномерно по
    * заданному интервалу.
    * <p>
-   * Поэтому, интервал между проверками будет {@link EGlobalOps#PLUGINS_RESCAN_INTERVAL_SECS} / (кол-во директорий ).
+   * Поэтому, интервал между проверками будет {@link IGlobalOps#PLUGINS_RESCAN_INTERVAL_SECS} / (кол-во директорий ).
    */
   private final long dlmHolderCheckInterval;
 
@@ -54,8 +54,8 @@ class DlmManager
     super( aContext );
     aContext.setDlmManager( this );
 
-    dlmHolderCheckInterval = 1000 * context.globalOps().getInt( EGlobalOps.PLUGINS_RESCAN_INTERVAL_SECS );
-    File dir = new File( context.globalOps().getStr( EGlobalOps.PLUGINS_DIR ) );
+    dlmHolderCheckInterval = 1000 * context.globalOps().getInt( IGlobalOps.PLUGINS_RESCAN_INTERVAL_SECS );
+    File dir = new File( context.globalOps().getStr( IGlobalOps.PLUGINS_DIR ) );
 
     dlmHolder = new DlmHolder( context, dir );
   }

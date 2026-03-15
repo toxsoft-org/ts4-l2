@@ -1,0 +1,29 @@
+package org.toxsoft.l2.main.new_l2app.app;
+
+import org.toxsoft.core.tslib.bricks.wub.*;
+import org.toxsoft.l2.lib.main.*;
+
+/**
+ * Interface used to create and run L2 applications in different environmanets.
+ * <p>
+ * L2 application is implemented as {@link IWubUnit} and may be run both in containres and as a atandalone application
+ * directly from <code>main()</code> method.
+ *
+ * @author hazard157
+ */
+public interface IL2Application
+    extends IWubUnit {
+
+  /**
+   * Returns application quit command if quit was initialized by application itself.
+   * <p>
+   * Note that depending on {@link IProgramQuitCommand#programRetCode()} application may request restart, not a finish.
+   * <p>
+   * Program quit may be requested for several reasons: remotely by network component or restart will be needed to apply
+   * configuration file change.
+   *
+   * @return {@link IProgramQuitCommand} - quit command or <code>null</code>
+   */
+  IProgramQuitCommand getQuitCommandIfAny();
+
+}
