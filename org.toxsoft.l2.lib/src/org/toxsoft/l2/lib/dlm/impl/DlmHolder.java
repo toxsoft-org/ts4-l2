@@ -1,7 +1,7 @@
 package org.toxsoft.l2.lib.dlm.impl;
 
+import static org.toxsoft.l2.lib.IL2HardConstants.*;
 import static org.toxsoft.l2.lib.dlm.impl.IL2Resources.*;
-import static org.toxsoft.l2.lib.main.IL2HardConstants.*;
 
 import java.io.*;
 

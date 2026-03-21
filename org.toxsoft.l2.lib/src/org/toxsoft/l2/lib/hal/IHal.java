@@ -50,9 +50,9 @@ public interface IHal
   IStridablesList<? extends IDOPin> listDOPins();
 
   /**
-   * Возвращает список всех зарегистрированных специфических устройств.
+   * Returns all registered specific devices.
    *
-   * @return IStridablesList - список всех зарегистрированных специфических устройств.
+   * @return {@link IStridablesList}&lt;{@link ISpecificDevice}&gt; - list of specific devices
    */
   IStridablesList<? extends ISpecificDevice> listSpecificDevices();
 

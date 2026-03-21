@@ -18,13 +18,13 @@ import org.toxsoft.l2.lib.net.*;
 public class GlobalContext
     implements IGlobalContext {
 
-  private final IOptionSet globalOps;
-  private final ILogger    logger;
-  private final long       startTime;
-  private IHal             hal        = null;
-  private INetwork         network    = null;
-  private IDlmManager      dlmManager = null;
-  // private IApp appApi = null;
+  private final IOptionSet   globalOps;
+  private final ILogger      logger;
+  private final long         startTime;
+  private IHal               hal          = null;
+  private INetwork           network      = null;
+  private IDlmManager        dlmManager   = null;
+  private IHalErrorProcessor errProcessor = null;
 
   /**
    * Конструктор со всеми инвариантами.
@@ -85,15 +85,9 @@ public class GlobalContext
   // API класса
   //
 
-  /**
-   * Добавляет компоненту в контекст.
-   *
-   * @param aAppApi {@link IAppComponent} - дотуп к специфичному для проекта функционалу
-   * @throws TsNullArgumentRtException аргумент = null
-   */
-  // public void setAppApi( IAppComponent aAppApi ) {
-  // appApi = TsNullArgumentRtException.checkNull( aAppApi );
-  // }
+  public void setErrProcessor( IHalErrorProcessor errProcessor ) {
+    errProcessor = TsNullArgumentRtException.checkNull( errProcessor );
+  }
 
   /**
    * Добавляет компоненту в контекст.
@@ -127,10 +121,7 @@ public class GlobalContext
 
   @Override
   public IHalErrorProcessor errorProcessor() {
-
-    // TODO implement GlobalContext.errorProcessor()
-    throw new TsUnderDevelopmentRtException( "GlobalContext.errorProcessor()" );
-
+    return errProcessor;
   }
 
 }

@@ -56,7 +56,7 @@ public class L2AppUtils {
    */
   public static IAppComponent createApp( GlobalContext aGlobalContext ) {
     IAppComponent result = createAppImpl( aGlobalContext );
-    // FIXME aGlobalContext.setAppApi( result );
+    aGlobalContext.setErrProcessor( result );
     return result;
   }
 

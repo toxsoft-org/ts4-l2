@@ -1,29 +1,33 @@
 package org.toxsoft.l2.lib.reserve;
 
+import static org.toxsoft.l2.lib.IL2HardConstants.*;
+
+import org.toxsoft.l2.lib.*;
+
 /**
- * Интерфейс элемента, способного оценить своё состояние в цифрах от 0 до 100.
- * 
+ * Mix-in interface of the entities with health <code>int</code> property in range
+ * {@link IL2HardConstants#L2_HEALTH_RANGE}.
+ *
  * @author max
  */
 public interface IHealthMeasurable {
 
   /**
-   * Возвращает степень исправности в процентах (0-100).
-   * 
-   * @return int - степень исправности.
+   * Returns the health level as a value in range {@link IL2HardConstants#L2_HEALTH_RANGE}.
+   *
+   * @return int - the health value
    */
-  default int getHealth(){
-    return 100;
+  default int getHealth() {
+    return L2_HEALTH_RANGE.maxValue();
   }
 
   /**
-   * Относительный вклад в исправность системы (1-10).
-   * 
-   * @return int - вклад в исправность системы.
+   * Returns relative contribution to system health in range {@link IL2HardConstants#L2_HEALTH_CONTRIBUTION_RANGE}.
+   *
+   * @return int - relative contribution to the system health
    */
-  default int getWeight(){
-    return 5;
+  default int getWeight() {
+    return DEFAULT_HEALTH_CONTRIBUTION;
   }
-  
-  
+
 }

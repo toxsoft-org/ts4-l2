@@ -1,6 +1,6 @@
 package org.toxsoft.l2.main.old_refactor;
 
-import static org.toxsoft.l2.lib.main.IL2HardConstants.*;
+import static org.toxsoft.l2.lib.IL2HardConstants.*;
 import static org.toxsoft.l2.main.old_refactor.helpers.IL2MainSharedResources.*;
 import static org.toxsoft.l2.main.old_refactor.helpers.L2AppUtils.*;
 
