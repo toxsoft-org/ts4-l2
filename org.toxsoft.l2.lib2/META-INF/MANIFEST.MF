@@ -6,7 +6,10 @@ Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.toxsoft.core.tslib,
  org.toxsoft.extlibs.log4j,
  org.toxsoft.core.log4j,
- org.toxsoft.uskat.core
+ org.toxsoft.uskat.core,
+ org.toxsoft.uskat.backend.memtext;bundle-version="1.0.0",
+ org.toxsoft.uskat.backend.sqlite;bundle-version="1.0.0",
+ org.toxsoft.core.txtproj.lib;bundle-version="1.0.0"
 Bundle-Vendor: toxsoft.org
 Automatic-Module-Name: org.toxsoft.l2.lib2
 Bundle-RequiredExecutionEnvironment: JavaSE-21

@@ -1,4 +1,4 @@
-package org.toxsoft.l2.lib2.hal;
+package org.toxsoft.l2.lib.hal;
 
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.metainfo.*;

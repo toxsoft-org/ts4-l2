@@ -1,8 +1,8 @@
-package org.toxsoft.l2.new_app.main;
+package org.toxsoft.l2.main;
 
-import static org.toxsoft.l2.new_app.app.IL2ApplicationConstants.*;
-import static org.toxsoft.l2.new_app.l10n.IL2MainSharedResources.*;
-import static org.toxsoft.l2.new_app.main.IL2MainConstants.*;
+import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
+import static org.toxsoft.l2.main.IL2MainConstants.*;
+import static org.toxsoft.l2.main.l10n.IL2MainSharedResources.*;
 
 import java.io.*;
 import java.lang.reflect.*;
@@ -28,8 +28,8 @@ import org.toxsoft.core.tslib.utils.files.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.core.tslib.utils.progargs.*;
-import org.toxsoft.l2.new_app.*;
-import org.toxsoft.l2.new_app.app.*;
+import org.toxsoft.l2.lib.app.*;
+import org.toxsoft.l2.lib.impl.*;
 import org.toxsoft.uskat.core.backend.*;
 import org.toxsoft.uskat.core.backend.metainf.*;
 import org.toxsoft.uskat.core.connection.*;
@@ -46,14 +46,20 @@ public class L2Main {
   // TODO try several times to open SkConnection
 
   private static final ILogger logger = LoggerWrapper.getLogger( L2Main.class.getName() );
-  // DEBUG ---
-  // private static final ILogger logger = LoggerUtils.defaultLogger();
-  // ---
 
   /**
    * Text console is initialized only if {@link IL2MainConstants#OPDEF_USE_TEXT_CONSOLE} is <code>true</code>.
    */
   private static L2MainTextConsole textConsole = null;
+
+  /**
+   * Guards main thread in {@link #runApplication(IOptionSet)}.
+   * <p>
+   * This is a thread separator passed to all components of {@link L2Application} in the reference
+   * {@link IL2ApplicationConstants#REFDEF_MAIN_THREAD_GUARD}. This guard is passed also to the {@link ISkConnection}
+   * passed as {@link IL2ApplicationConstants#REFDEF_SK_CONNECTION}.
+   */
+  private static ITsThreadExecutor mainThreadGuard = null;
 
   /**
    * Application startup.
@@ -94,6 +100,8 @@ public class L2Main {
   // ---
 
   private static L2AppQuitCommand runApplication( IOptionSet aGlobalOps ) {
+    // prepare thread guard
+    mainThreadGuard = new TsThreadExecutor( L2Main.class.getSimpleName(), logger );
     // open SkConnection
     ISkConnection skConn;
     try {
@@ -103,10 +111,11 @@ public class L2Main {
       logger.error( ex );
       return new L2AppQuitCommand( ECODE_CONN_OPEN_FAILED, ex.getMessage() );
     }
-    // prepare L2Application context
+    // prepare L2Application arguments
     ITsContext l2AppArgs = new TsContext();
     l2AppArgs.params().setAll( aGlobalOps );
     REFDEF_UNIT_LOGGER.setRef( l2AppArgs, LoggerUtils.defaultLogger() );
+    REFDEF_MAIN_THREAD_GUARD.setRef( l2AppArgs, mainThreadGuard );
     REFDEF_SK_CONNECTION.setRef( l2AppArgs, skConn );
     // initialize application
     L2Application app = new L2AppImpl();
@@ -134,23 +143,26 @@ public class L2Main {
       }
 
       // DEBUG ---
-      if( ++num > 100 ) {
+      if( ++num > 10 ) {
         quitCmd = new L2AppQuitCommand( ECODE_OK, "Normal finish" );
       }
       // ---
 
       if( quitCmd != null ) {
         app.queryStop();
-      }
-    }
-    // wait till stop or timeout
-    long timeStopWasQueried = System.currentTimeMillis();
-    long timeoutMsecs = 1000L * OPDEF_SHUTDOWN_TIMEOUT_SECS.getValue( l2AppArgs.params() ).asInt();
-    while( app.isStopped() ) {
-      app.doJob();
-      // process timeout
-      if( System.currentTimeMillis() - timeStopWasQueried > timeoutMsecs ) {
-        break;
+        // wait till stop or timeout
+        long timeStopWasQueried = System.currentTimeMillis();
+        int timeoutSecs = OPDEF_SHUTDOWN_TIMEOUT_SECS.getValue( l2AppArgs.params() ).asInt();
+        long timeoutMsecs = 1000L * timeoutSecs;
+        while( !app.isStopped() ) {
+          app.doJob();
+          // process timeout and change exit code
+          if( System.currentTimeMillis() - timeStopWasQueried > timeoutMsecs ) {
+            String msg = String.format( FMT_ERR_STOP_TIMEOUTED, HmsUtils.autoHms( timeoutSecs ) );
+            quitCmd = new L2AppQuitCommand( ECODE_STOP_TIMEOUTED, msg );
+            break;
+          }
+        }
       }
     }
     // clean-up (do we need timeout during clean-up?)
@@ -177,8 +189,7 @@ public class L2Main {
     ISkCoreConfigConstants.REFDEF_BACKEND_PROVIDER.setRef( connArgs, backendProvider );
     ISkBackendMetaInfo metaInfo = backendProvider.getMetaInfo();
     // separate backend and L2 main threads
-    TsThreadExecutor threadExecutor = new TsThreadExecutor( L2Main.class.getSimpleName(), logger );
-    ISkCoreConfigConstants.REFDEF_THREAD_EXECUTOR.setRef( connArgs, threadExecutor );
+    ISkCoreConfigConstants.REFDEF_THREAD_EXECUTOR.setRef( connArgs, mainThreadGuard );
     // validate arguments
     TsValidationFailedRtException.checkError( metaInfo.checkArguments( connArgs ) );
     // open the connection
@@ -192,7 +203,7 @@ public class L2Main {
     try {
       Class<?> rawClass = Class.forName( className );
       if( !ISkBackendProvider.class.isAssignableFrom( rawClass ) ) {
-        throw new TsIoRtException( "jhkgjhgjhg" ); // TODO add message
+        throw new TsIoRtException( FMT_ERR_INV_BACKEND_CLASS, className );
       }
       @SuppressWarnings( "unchecked" )
       Class<ISkBackendProvider> clazz = (Class<ISkBackendProvider>)rawClass;
@@ -226,8 +237,6 @@ public class L2Main {
    * <li>Any other parameters specified by user in configuration file or in command line..</li>
    * </ul>
    * <p>
-   * TODO 2026-03-15: {@link IGlobalOps#ALL_L2_GLOBAL_OPS} are used until they'll be moved to ALL_L2_INIT_PARAMS
-   * <p>
    * Option values are initialized in following order:
    * <ul>
    * <li>filled by default values from {@link IL2MainConstants#ALL_L2_MAIN_PARAMS} and
@@ -246,7 +255,6 @@ public class L2Main {
     // create global options
     IOptionSetEdit globalOps = new OptionSet();
     OptionSetUtils.initOptionSet( globalOps, ALL_L2_MAIN_PARAMS );
-    OptionSetUtils.initOptionSet( globalOps, ALL_L2_GLOBAL_OPS );
     OptionSetUtils.initOptionSet( globalOps, ALL_L2_INIT_PARAMS );
     // read and apply settings from config file
     File cfgFile = extractConfigFile( clineArgs );
@@ -280,6 +288,16 @@ public class L2Main {
     ValidationResult vr = TsFileUtils.VALIDATOR_FILE_READABLE.validate( aFile );
     if( vr.isError() ) {
       logger.warning( vr.message() );
+      // try to create an empty configuration file
+      if( !aFile.exists() && TsFileUtils.isFileAppendable( aFile ) ) {
+        try {
+          OptionSetKeeper.KEEPER.write( aFile, IOptionSet.NULL );
+          logger.info( FMT_INF_EMPTY_CFG_FILE_CREATED, aFile.getAbsolutePath() );
+        }
+        catch( Exception ex ) {
+          LoggerUtils.errorLogger().error( ex );
+        }
+      }
       return;
     }
     try {
@@ -321,10 +339,6 @@ public class L2Main {
     if( vr.isError() ) {
       return vr;
     }
-    vr = ValidationResult.firstNonOk( vr, OptionSetUtils.validateOptionSet( aGlobalOps, ALL_L2_GLOBAL_OPS ) );
-    if( vr.isError() ) {
-      return vr;
-    }
     return ValidationResult.firstNonOk( vr, OptionSetUtils.validateOptionSet( aGlobalOps, ALL_L2_INIT_PARAMS ) );
   }
 
@@ -340,10 +354,11 @@ public class L2Main {
     // help message is always displayed in stdout
     TsTestUtils.pl( FMT_MSG_COMMAND_LINE_HELP );
     final String fmtStr = "  -%s - %s (%s)"; //$NON-NLS-1$
-    // non-listed arguments
-    TsTestUtils.pl( fmtStr, CLINEARG_HELP, "", "" );
-    TsTestUtils.pl( fmtStr, CLINEARG_MAIN_CFG_FILE_NAME, "", "" );
-    // listed arguments
+    // only command line arguments
+    for( IDataDef claDef : ALL_L2_MAIN_SOLE_COMMAND_LINE_ARGS ) {
+      TsTestUtils.pl( fmtStr, claDef.id(), claDef.nmName(), claDef.description() );
+    }
+    // arguments passed to the L2Application
     for( IDataDef dd : ALL_L2_MAIN_PARAMS ) {
       TsTestUtils.pl( fmtStr, dd.id(), dd.nmName(), dd.description() );
     }

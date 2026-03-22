@@ -1,8 +1,8 @@
-package org.toxsoft.l2.temp_from_old_lib;
+package org.toxsoft.l2.lib.hal;
 
-import static org.toxsoft.l2.lib2.IL2HardConstants.*;
+import static org.toxsoft.l2.lib.IL2HardConstants.*;
 
-import org.toxsoft.l2.lib2.*;
+import org.toxsoft.l2.lib.*;
 
 /**
  * Mix-in interface of the entities with health <code>int</code> property in range

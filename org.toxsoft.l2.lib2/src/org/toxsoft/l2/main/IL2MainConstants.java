@@ -1,15 +1,17 @@
-package org.toxsoft.l2.new_app.main;
+package org.toxsoft.l2.main;
 
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
+import static org.toxsoft.l2.main.l10n.IL2MainSharedResources.*;
 
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.utils.progargs.*;
-import org.toxsoft.l2.new_app.app.*;
+import org.toxsoft.l2.lib.app.*;
+import org.toxsoft.l2.lib.impl.*;
 
 /**
  * Constants used by application runner {@link L2Main}.
@@ -31,12 +33,12 @@ public interface IL2MainConstants {
   //
 
   /**
-   * Displays help message and exists.
+   * Command line argument for {@link #CLINEARGDEF_HELP}.
    */
   String CLINEARG_HELP = "help"; //$NON-NLS-1$
 
   /**
-   * Specifies path to the main configuration file.
+   * Command line argument for {@link #CLINEARGDEF_MAIN_CFG_FILE_NAME}.
    */
   String CLINEARG_MAIN_CFG_FILE_NAME = "cfgFile"; //$NON-NLS-1$
 
@@ -72,6 +74,36 @@ public interface IL2MainConstants {
   // String DEFAULT_BACKEND_PROVIDER_CLASS = "org.toxsoft.uskat.backend.sqlite.SkBackendSqliteProvider"; //$NON-NLS-1$
 
   // ------------------------------------------------------------------------------------
+  // Command line arguments that are NOT represented as global options
+  //
+
+  /**
+   * Displays help message and exists.
+   */
+  IDataDef CLINEARGDEF_HELP = DataDef.create( CLINEARG_HELP, BOOLEAN, //
+      TSID_NAME, STR_CLARG_HELP, //
+      TSID_DESCRIPTION, STR_CLARG_HELP_D, //
+      TSID_DEFAULT_VALUE, AV_FALSE //
+  );
+
+  /**
+   * Specifies path to the main configuration file.
+   */
+  IDataDef CLINEARGDEF_MAIN_CFG_FILE_NAME = DataDef.create( CLINEARG_MAIN_CFG_FILE_NAME, BOOLEAN, //
+      TSID_NAME, STR_CLARG_MAIN_CFG_FILE_NAME, //
+      TSID_DESCRIPTION, STR_CLARG_MAIN_CFG_FILE_NAME_D, //
+      TSID_DEFAULT_VALUE, avStr( DEFAULT_MAIN_CFG_FILE_NAME ) //
+  );
+
+  /**
+   * List of command line arguments not used as a global options.
+   */
+  IStridablesList<IDataDef> ALL_L2_MAIN_SOLE_COMMAND_LINE_ARGS = new StridablesList<>( //
+      CLINEARGDEF_HELP, //
+      CLINEARGDEF_MAIN_CFG_FILE_NAME //
+  );
+
+  // ------------------------------------------------------------------------------------
   // Command line arguments that ARE represented as global options
   //
 
@@ -104,8 +136,8 @@ public interface IL2MainConstants {
    * Each specified seconds logger read configuration to accept changes, 0 means no rescan.
    */
   IDataDef OPDEF_LOGGER_CFG_RESCAN_SECS = DataDef.create( OPID_LOGGER_CFG_RESCAN_SECS, INTEGER, //
-      TSID_NAME, "Rescan logger (sec)", //
-      TSID_DESCRIPTION, "Each specified seconds logger read configuration to accept changes, 0 means no rescan.",
+      TSID_NAME, STR_LOGGER_CFG_RESCAN_SECS, //
+      TSID_DESCRIPTION, STR_LOGGER_CFG_RESCAN_SECS_D, //
       TSID_DEFAULT_VALUE, avInt( DEFAULT_SHUTDOWN_TIMEOUT_SECS ) //
   );
 
@@ -114,9 +146,8 @@ public interface IL2MainConstants {
    * terminate it.
    */
   IDataDef OPDEF_SHUTDOWN_TIMEOUT_SECS = DataDef.create( OPID_SHUTDOWN_TIMEOUT_SECS, INTEGER, //
-      TSID_NAME, "Shutdown timeout (sec)", //
-      TSID_DESCRIPTION,
-      "If application shutdown after quit command timeouts specified number of seconds the {@link L2Main} will forcibly terminate it",
+      TSID_NAME, STR_SHUTDOWN_TIMEOUT_SECS, //
+      TSID_DESCRIPTION, STR_SHUTDOWN_TIMEOUT_SECS_D, //
       TSID_DEFAULT_VALUE, avInt( DEFAULT_SHUTDOWN_TIMEOUT_SECS ) //
   );
 
@@ -124,17 +155,17 @@ public interface IL2MainConstants {
    * Creates text console for user to communicate with running application.
    */
   IDataDef OPDEF_USE_TEXT_CONSOLE = DataDef.create( OPID_USE_TEXT_CONSOLE, BOOLEAN, //
-      TSID_NAME, "Use console", //
-      TSID_DESCRIPTION, "Creates text console for user to communicate with running application", //
+      TSID_NAME, STR_USE_TEXT_CONSOLE, //
+      TSID_DESCRIPTION, STR_USE_TEXT_CONSOLE_D, //
       TSID_DEFAULT_VALUE, avBool( DEFAULT_USE_TEXT_CONSOLE ) //
   );
 
   /**
-   * Full class name of the Ubackend provider to create the USkat connection.
+   * Full class name of the backend provider to create the USkat connection.
    */
   IDataDef OPDEF_BACKEND_PROVIDER_CLASS = DataDef.create( OPID_BACKEND_PROVIDER_CLASS, STRING, //
-      TSID_NAME, "Backend provider", //
-      TSID_DESCRIPTION, "Full class name of the Ubackend provider to create the USkat connection", //
+      TSID_NAME, STR_BACKEND_PROVIDER_CLASS, //
+      TSID_DESCRIPTION, STR_BACKEND_PROVIDER_CLASS_D, //
       TSID_DEFAULT_VALUE, avStr( DEFAULT_BACKEND_PROVIDER_CLASS ) //
   );
 
@@ -168,5 +199,7 @@ public interface IL2MainConstants {
   short ECODE_INIT_FAILED = 4;
 
   short ECODE_START_FAILED = 5;
+
+  short ECODE_STOP_TIMEOUTED = 6;
 
 }

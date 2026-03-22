@@ -1,4 +1,4 @@
-package org.toxsoft.l2.temp_from_old_lib;
+package org.toxsoft.l2.lib.hal;
 
 import org.toxsoft.core.tslib.bricks.strid.*;
 

@@ -1,15 +1,16 @@
-package org.toxsoft.l2.new_app.app;
+package org.toxsoft.l2.lib.impl;
 
-import static org.toxsoft.l2.new_app.app.IL2ApplicationConstants.*;
-import static org.toxsoft.l2.new_app.main.IL2MainConstants.*;
+import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
+import static org.toxsoft.l2.main.IL2MainConstants.*;
 
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
+import org.toxsoft.core.tslib.bricks.threadexec.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.bricks.wub.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.l2.new_app.*;
+import org.toxsoft.l2.lib.app.*;
 import org.toxsoft.uskat.core.connection.*;
 
 /**
@@ -21,8 +22,9 @@ public class L2Application
     extends AbstractWubUnit
     implements IL2Application {
 
-  private ILogger       logger;
-  private ISkConnection skConn;
+  private ILogger           logger;
+  private ITsThreadExecutor threadGuard;
+  private ISkConnection     skConn;
 
   /**
    * Constructor.
@@ -41,6 +43,7 @@ public class L2Application
   @Override
   protected ValidationResult doInit( ITsContextRo aEnviron ) {
     logger = REFDEF_UNIT_LOGGER.getRef( aEnviron );
+    threadGuard = REFDEF_MAIN_THREAD_GUARD.getRef( aEnviron );
     skConn = REFDEF_SK_CONNECTION.getRef( aEnviron );
 
     // TODO L2Application.doInit()
@@ -63,6 +66,8 @@ public class L2Application
   protected void doDoJob() {
 
     // TODO L2Application.doStart()
+
+    logger.info( "L2App doJob()" );
     ++counter;
     try {
       Thread.sleep( 50 );
@@ -104,10 +109,10 @@ public class L2Application
 
     // TODO L2Application.getQuitCommandIfAny()
 
-    if( counter >= 50 ) {
+    if( counter >= 9 ) {
 
       counter = 0;
-      return new L2AppQuitCommand( ECODE_RESTART_L2APP, "Test restart" );
+      return new L2AppQuitCommand( ECODE_RESTART_L2APP, "Test restart" ); //$NON-NLS-1$
 
     }
 

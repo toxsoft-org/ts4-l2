@@ -1,7 +1,7 @@
-package org.toxsoft.l2.new_app.main;
+package org.toxsoft.l2.main;
 
 import org.toxsoft.core.tslib.utils.*;
-import org.toxsoft.l2.new_app.*;
+import org.toxsoft.l2.lib.app.*;
 
 /**
  * Optional class to initialize console for the {@link L2Main} application.

@@ -1,4 +1,4 @@
-package org.toxsoft.l2.new_app.l10n;
+package org.toxsoft.l2.main.l10n;
 
 import java.util.*;
 

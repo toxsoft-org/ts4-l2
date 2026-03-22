@@ -1,8 +1,7 @@
-package org.toxsoft.l2.lib2.hal;
+package org.toxsoft.l2.lib.hal;
 
 import org.toxsoft.core.tslib.av.utils.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
-import org.toxsoft.l2.temp_from_old_lib.*;
 
 /**
  * HAL - I/O Hardware Abstraction Layer provides L2 entities access to the physical world data.

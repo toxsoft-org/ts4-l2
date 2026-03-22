@@ -1,4 +1,4 @@
-package org.toxsoft.l2.lib2;
+package org.toxsoft.l2.lib;
 
 import static org.toxsoft.core.tslib.ITsHardConstants.*;
 

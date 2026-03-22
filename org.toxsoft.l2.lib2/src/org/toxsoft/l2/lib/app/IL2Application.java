@@ -1,7 +1,6 @@
-package org.toxsoft.l2.new_app.app;
+package org.toxsoft.l2.lib.app;
 
 import org.toxsoft.core.tslib.bricks.wub.*;
-import org.toxsoft.l2.new_app.*;
 
 /**
  * Interface used to create and run L2 applications in different environmanets.

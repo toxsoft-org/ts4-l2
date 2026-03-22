@@ -1,4 +1,4 @@
-package org.toxsoft.l2.new_app;
+package org.toxsoft.l2.lib.app;
 
 import org.toxsoft.core.tslib.utils.errors.*;
 
