@@ -1,9 +1,8 @@
-package org.toxsoft.l2.main.new_l2app.main;
+package org.toxsoft.l2.new_app.main;
 
-import static org.toxsoft.l2.lib.main.IGlobalOps.*;
-import static org.toxsoft.l2.main.new_l2app.app.IL2ApplicationConstants.*;
-import static org.toxsoft.l2.main.new_l2app.l10n.IL2MainSharedResources.*;
-import static org.toxsoft.l2.main.new_l2app.main.IL2MainConstants.*;
+import static org.toxsoft.l2.new_app.app.IL2ApplicationConstants.*;
+import static org.toxsoft.l2.new_app.l10n.IL2MainSharedResources.*;
+import static org.toxsoft.l2.new_app.main.IL2MainConstants.*;
 
 import java.io.*;
 import java.lang.reflect.*;
@@ -29,9 +28,8 @@ import org.toxsoft.core.tslib.utils.files.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.core.tslib.utils.progargs.*;
-import org.toxsoft.l2.lib.main.*;
-import org.toxsoft.l2.lib.main.impl.*;
-import org.toxsoft.l2.main.new_l2app.app.*;
+import org.toxsoft.l2.new_app.*;
+import org.toxsoft.l2.new_app.app.*;
 import org.toxsoft.uskat.core.backend.*;
 import org.toxsoft.uskat.core.backend.metainf.*;
 import org.toxsoft.uskat.core.connection.*;
@@ -78,13 +76,13 @@ public class L2Main {
     // setup L2Main
     setupL2Main( globalOps );
     // run application with restart if requested
-    IProgramQuitCommand quitCmd;
+    L2AppQuitCommand quitCmd;
     do {
       quitCmd = runApplication( globalOps );
-    } while( quitCmd == null || quitCmd.programRetCode() == ECODE_RESTART_L2APP );
+    } while( quitCmd == null || quitCmd.exitCode() == ECODE_RESTART_L2APP );
     // finish the program
     sayGoodbye( quitCmd );
-    Runtime.getRuntime().halt( quitCmd.programRetCode() ); // halt() to avoid program hang because of crap threads
+    Runtime.getRuntime().halt( quitCmd.exitCode() ); // halt() to avoid program hang because of crap threads
   }
 
   // ------------------------------------------------------------------------------------
@@ -95,7 +93,7 @@ public class L2Main {
   static int num = 0;
   // ---
 
-  private static IProgramQuitCommand runApplication( IOptionSet aGlobalOps ) {
+  private static L2AppQuitCommand runApplication( IOptionSet aGlobalOps ) {
     // open SkConnection
     ISkConnection skConn;
     try {
@@ -103,7 +101,7 @@ public class L2Main {
     }
     catch( Exception ex ) {
       logger.error( ex );
-      return new ProgramQuitCommand( ECODE_CONN_OPEN_FAILED, ex.getMessage() );
+      return new L2AppQuitCommand( ECODE_CONN_OPEN_FAILED, ex.getMessage() );
     }
     // prepare L2Application context
     ITsContext l2AppArgs = new TsContext();
@@ -115,7 +113,7 @@ public class L2Main {
     ValidationResult vr = app.init( l2AppArgs );
     if( vr.isError() ) {
       logger.error( vr.message() );
-      return new ProgramQuitCommand( ECODE_INIT_FAILED, vr.message() );
+      return new L2AppQuitCommand( ECODE_INIT_FAILED, vr.message() );
     }
     // start application
     try {
@@ -123,11 +121,11 @@ public class L2Main {
     }
     catch( Exception ex ) {
       logger.error( ex );
-      return new ProgramQuitCommand( ECODE_START_FAILED, ex.getMessage() );
+      return new L2AppQuitCommand( ECODE_START_FAILED, ex.getMessage() );
     }
 
     // run normal main loop until quit command
-    IProgramQuitCommand quitCmd = null;
+    L2AppQuitCommand quitCmd = null;
     while( quitCmd == null ) {
       app.doJob();
       quitCmd = app.getQuitCommandIfAny();
@@ -137,7 +135,7 @@ public class L2Main {
 
       // DEBUG ---
       if( ++num > 100 ) {
-        quitCmd = new ProgramQuitCommand( ECODE_OK, "Normal finish" );
+        quitCmd = new L2AppQuitCommand( ECODE_OK, "Normal finish" );
       }
       // ---
 
@@ -363,11 +361,11 @@ public class L2Main {
     }
   }
 
-  private static void sayGoodbye( IProgramQuitCommand aQuitCommand ) {
+  private static void sayGoodbye( L2AppQuitCommand aQuitCommand ) {
     if( logger.isSeverityOn( ELogSeverity.INFO ) ) {
-      logger.info( FMT_LOG_L2MAIN_FINISHED, Integer.valueOf( aQuitCommand.programRetCode() ), aQuitCommand.message() );
+      logger.info( FMT_LOG_L2MAIN_FINISHED, Integer.valueOf( aQuitCommand.exitCode() ), aQuitCommand.message() );
     }
-    TsTestUtils.pl( FMT_L2MAIN_FINISHED, aQuitCommand.message(), Integer.valueOf( aQuitCommand.programRetCode() ) );
+    TsTestUtils.pl( FMT_L2MAIN_FINISHED, aQuitCommand.message(), Integer.valueOf( aQuitCommand.exitCode() ) );
   }
 
   private static ValidationResult logResult( ValidationResult aVr ) {

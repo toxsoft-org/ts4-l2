@@ -1,4 +1,4 @@
-package org.toxsoft.l2.main.new_l2app.main;
+package org.toxsoft.l2.new_app.main;
 
 import static org.toxsoft.core.tslib.av.EAtomicType.*;
 import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
@@ -9,7 +9,7 @@ import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.utils.progargs.*;
-import org.toxsoft.l2.main.new_l2app.app.*;
+import org.toxsoft.l2.new_app.app.*;
 
 /**
  * Constants used by application runner {@link L2Main}.
@@ -157,16 +157,16 @@ public interface IL2MainConstants {
    * <p>
    * It is used internally to restart {@link L2Application} in {@link L2Main}.
    */
-  int ECODE_RESTART_L2APP = -1;
+  short ECODE_RESTART_L2APP = -1;
 
-  int ECODE_OK = 0;
+  short ECODE_OK = 0;
 
-  int ECODE_HELP_DISPLAYED = 1;
+  short ECODE_HELP_DISPLAYED = 1;
 
-  int ECODE_CONN_OPEN_FAILED = 3;
+  short ECODE_CONN_OPEN_FAILED = 3;
 
-  int ECODE_INIT_FAILED = 4;
+  short ECODE_INIT_FAILED = 4;
 
-  int ECODE_START_FAILED = 5;
+  short ECODE_START_FAILED = 5;
 
 }

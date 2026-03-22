@@ -1,6 +1,6 @@
-package org.toxsoft.l2.main.new_l2app.l10n;
+package org.toxsoft.l2.new_app.l10n;
 
-import org.toxsoft.l2.main.new_l2app.main.*;
+import org.toxsoft.l2.new_app.main.*;
 
 /**
  * Localizable resources.

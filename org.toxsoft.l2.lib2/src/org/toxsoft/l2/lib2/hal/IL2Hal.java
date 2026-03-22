@@ -1,9 +1,8 @@
-package org.toxsoft.l2.main.new_lib;
+package org.toxsoft.l2.lib2.hal;
 
 import org.toxsoft.core.tslib.av.utils.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
-import org.toxsoft.l2.lib.hal.devices.*;
-import org.toxsoft.l2.lib.reserve.*;
+import org.toxsoft.l2.temp_from_old_lib.*;
 
 /**
  * HAL - I/O Hardware Abstraction Layer provides L2 entities access to the physical world data.
@@ -16,11 +15,11 @@ public interface IL2Hal
     extends IHealthMeasurable, IParameterized {
 
   /**
-   * Returns all tags in provided by I/O to the physical world.
+   * Returns all signals in provided by I/O to the physical world.
    *
-   * @return {@link IStridablesList}&lt;{@link IL2Tag}&gt; - list of tags
+   * @return {@link IStridablesList}&lt;{@link IL2Signal}&gt; - list of signals
    */
-  IStridablesList<IL2Tag> tags();
+  IStridablesList<IL2Signal> signals();
 
   /**
    * Returns all registered specific devices.

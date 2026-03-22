@@ -1,7 +1,7 @@
-package org.toxsoft.l2.main.new_l2app.app;
+package org.toxsoft.l2.new_app.app;
 
-import static org.toxsoft.l2.main.new_l2app.app.IL2ApplicationConstants.*;
-import static org.toxsoft.l2.main.new_l2app.main.IL2MainConstants.*;
+import static org.toxsoft.l2.new_app.app.IL2ApplicationConstants.*;
+import static org.toxsoft.l2.new_app.main.IL2MainConstants.*;
 
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
@@ -9,8 +9,7 @@ import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.bricks.wub.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.l2.lib.main.*;
-import org.toxsoft.l2.lib.main.impl.*;
+import org.toxsoft.l2.new_app.*;
 import org.toxsoft.uskat.core.connection.*;
 
 /**
@@ -101,14 +100,14 @@ public class L2Application
   }
 
   @Override
-  public IProgramQuitCommand getQuitCommandIfAny() {
+  public L2AppQuitCommand getQuitCommandIfAny() {
 
     // TODO L2Application.getQuitCommandIfAny()
 
     if( counter >= 50 ) {
 
       counter = 0;
-      return new ProgramQuitCommand( ECODE_RESTART_L2APP, "Test restart" );
+      return new L2AppQuitCommand( ECODE_RESTART_L2APP, "Test restart" );
 
     }
 

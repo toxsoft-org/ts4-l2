@@ -1,7 +1,7 @@
-package org.toxsoft.l2.main.new_l2app.main;
+package org.toxsoft.l2.new_app.main;
 
 import org.toxsoft.core.tslib.utils.*;
-import org.toxsoft.l2.lib.main.*;
+import org.toxsoft.l2.new_app.*;
 
 /**
  * Optional class to initialize console for the {@link L2Main} application.
@@ -38,7 +38,7 @@ public class L2MainTextConsole
   // API
   //
 
-  public IProgramQuitCommand getQuitCommandIfAny() {
+  public L2AppQuitCommand getQuitCommandIfAny() {
 
     // TODO L2MainTextConsole.getQuitCommandIfAny()
 

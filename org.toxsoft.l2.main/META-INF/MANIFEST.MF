@@ -3,10 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: USkat L2 - static main() runner
 Bundle-SymbolicName: org.toxsoft.l2.main
 Bundle-Version: 1.0.0.qualifier
-Export-Package: org.toxsoft.l2.main.new_l2app.app,
- org.toxsoft.l2.main.new_l2app.l10n,
- org.toxsoft.l2.main.new_l2app.main,
- org.toxsoft.l2.main.old_refactor,
+Export-Package: org.toxsoft.l2.main.old_refactor,
  org.toxsoft.l2.main.old_refactor.helpers
 Require-Bundle: org.toxsoft.core.tslib,
  org.toxsoft.extlibs.log4j,

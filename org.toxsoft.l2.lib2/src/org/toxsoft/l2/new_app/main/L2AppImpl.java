@@ -1,12 +1,12 @@
-package org.toxsoft.l2.main.new_l2app.main;
+package org.toxsoft.l2.new_app.main;
 
 import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
-import static org.toxsoft.l2.lib.IL2LibConstants.*;
-import static org.toxsoft.l2.main.new_l2app.l10n.IL2MainSharedResources.*;
+import static org.toxsoft.l2.lib2.IL2HardConstants.*;
+import static org.toxsoft.l2.new_app.l10n.IL2MainSharedResources.*;
 
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
-import org.toxsoft.l2.main.new_l2app.app.*;
+import org.toxsoft.l2.new_app.app.*;
 
 /**
  * {@link IL2Application} implementation used by {@link L2Main}.

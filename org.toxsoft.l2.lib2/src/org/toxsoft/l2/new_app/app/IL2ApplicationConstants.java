@@ -1,6 +1,6 @@
-package org.toxsoft.l2.main.new_l2app.app;
+package org.toxsoft.l2.new_app.app;
 
-import static org.toxsoft.l2.lib.IL2LibConstants.*;
+import static org.toxsoft.l2.lib2.IL2HardConstants.*;
 
 import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
