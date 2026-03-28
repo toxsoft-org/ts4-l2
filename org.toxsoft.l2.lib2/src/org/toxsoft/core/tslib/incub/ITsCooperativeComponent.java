@@ -10,6 +10,6 @@ import org.toxsoft.core.tslib.bricks.*;
 public interface ITsCooperativeComponent
     extends ITsInitializable, IWorkerComponent, ICooperativeMultiTaskable {
 
-  // nop
+  ETsCoopCompState state();
 
 }
