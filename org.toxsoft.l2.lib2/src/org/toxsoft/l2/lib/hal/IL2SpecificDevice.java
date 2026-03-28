@@ -7,7 +7,7 @@ import org.toxsoft.core.tslib.bricks.strid.*;
  *
  * @author max
  */
-public interface ISpecificDevice
+public interface IL2SpecificDevice
     extends IStridable {
 
   // nop
