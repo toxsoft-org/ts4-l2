@@ -1,5 +1,6 @@
 package org.toxsoft.l2.lib.app;
 
+import org.toxsoft.core.tslib.bricks.coopcomp.*;
 import org.toxsoft.core.tslib.bricks.wub.*;
 
 /**
@@ -11,7 +12,14 @@ import org.toxsoft.core.tslib.bricks.wub.*;
  * @author hazard157
  */
 public interface IL2Application
-    extends IWubUnit {
+    extends ITsCooperativeComponent {
+
+  /**
+   * Returns the application identifier used in logs and environment with several L2 applications.
+   *
+   * @return String - the L2 application ID (an IDpath)
+   */
+  String appId();
 
   /**
    * Returns application quit command if quit was initialized by application itself.

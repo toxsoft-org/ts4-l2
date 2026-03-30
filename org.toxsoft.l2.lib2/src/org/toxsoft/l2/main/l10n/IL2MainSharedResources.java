@@ -27,12 +27,6 @@ public interface IL2MainSharedResources {
   String FMT_ERR_STOP_TIMEOUTED                = Messages.getString( "L2Main.FMT_ERR_STOP_TIMEOUTED" );                //$NON-NLS-1$
 
   /**
-   * {@link L2AppImpl}
-   */
-  String STR_L2APP_IMPL   = Messages.getString( "L2AppImpl.STR_L2APP_IMPL" );   //$NON-NLS-1$
-  String STR_L2APP_IMPL_D = Messages.getString( "L2AppImpl.STR_L2APP_IMPL_D" ); //$NON-NLS-1$
-
-  /**
    * {@link IL2MainConstants}
    */
   String STR_CLARG_HELP                 = Messages.getString( "L2MainConstants.STR_CLARG_HELP" );                 //$NON-NLS-1$

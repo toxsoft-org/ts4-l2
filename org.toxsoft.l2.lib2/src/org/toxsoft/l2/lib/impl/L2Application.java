@@ -1,13 +1,15 @@
 package org.toxsoft.l2.lib.impl;
 
+import static org.toxsoft.core.tslib.bricks.validator.ValidationResult.*;
 import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
 import static org.toxsoft.l2.main.IL2MainConstants.*;
 
-import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.bricks.coopcomp.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
+import org.toxsoft.core.tslib.bricks.strid.impl.*;
 import org.toxsoft.core.tslib.bricks.threadexec.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
-import org.toxsoft.core.tslib.bricks.wub.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.l2.lib.app.*;
@@ -19,8 +21,13 @@ import org.toxsoft.uskat.core.connection.*;
  * @author hazard157
  */
 public class L2Application
-    extends AbstractWubUnit
+    extends AbstractTsCoopCompMultiUse
     implements IL2Application {
+
+  private final String       appId;
+  private final L2Hal        hal;
+  private final L2DlmManager dlmMgr;
+  private final L2Network    net;
 
   private ILogger           logger;
   private ITsThreadExecutor threadGuard;
@@ -29,35 +36,47 @@ public class L2Application
   /**
    * Constructor.
    *
-   * @param aId String - the application ID (an IDpath)
-   * @param aParame {@link IOptionSet} - creation parameters describing the application
+   * @param aAppId String - L2 application ID
+   * @throws TsNullArgumentRtException any argument = <code>null</code>
+   * @throws TsIllegalArgumentRtException argument is not an ID path
    */
-  public L2Application( String aId, IOptionSet aParame ) {
-    super( aId, aParame );
+  public L2Application( String aAppId ) {
+    appId = StridUtils.checkValidIdPath( aAppId );
+    hal = new L2Hal( appId );
+    dlmMgr = new L2DlmManager( appId );
+    net = new L2Network( appId );
   }
 
   // ------------------------------------------------------------------------------------
-  // AbstractWubUnit
+  // AbstractTsCoopCompMultiUse
   //
 
   @Override
-  protected ValidationResult doInit( ITsContextRo aEnviron ) {
-    logger = REFDEF_UNIT_LOGGER.getRef( aEnviron );
-    threadGuard = REFDEF_MAIN_THREAD_GUARD.getRef( aEnviron );
-    skConn = REFDEF_SK_CONNECTION.getRef( aEnviron );
+  protected ValidationResult doInit( ITsContextRo aArgs ) {
 
-    // TODO L2Application.doInit()
+    // TODO logger = new L2LoggerWrapper( "L2App(appId)", REFDEF_UNIT_LOGGER.getRef( aArgs ) );
+    // where L2Loggerwrapper adds prefix #appId to the log messages
 
-    logger.info( "L2App init()" );
-    return ValidationResult.SUCCESS;
+    logger = REFDEF_UNIT_LOGGER.getRef( aArgs );
+    threadGuard = REFDEF_MAIN_THREAD_GUARD.getRef( aArgs );
+    skConn = REFDEF_SK_CONNECTION.getRef( aArgs );
+    ValidationResult vr = hal.init( aArgs );
+    if( !vr.isError() ) {
+      vr = firstNonOk( vr, net.init( aArgs ) );
+      if( !vr.isError() ) {
+        vr = firstNonOk( vr, dlmMgr.init( aArgs ) );
+      }
+    }
+    logger.info( "L2Application init() - %s: %s", vr.type().id(), vr.message() );
+    return vr;
   }
 
   @Override
   protected void doStart() {
-
-    // TODO L2Application.doStart()
-
-    logger.info( "L2App start()" );
+    hal.start();
+    net.start();
+    dlmMgr.start();
+    logger.info( "L2Application start()" );
   }
 
   int counter = 0;
@@ -98,10 +117,18 @@ public class L2Application
 
   @Override
   protected void doDestroy() {
+    hal.destroy();
+    dlmMgr.destroy();
+    net.destroy();
+  }
 
-    // TODO L2Application.doDestroy()
+  // ------------------------------------------------------------------------------------
+  // IL2Application
+  //
 
-    logger.info( "L2App doDestroy()" );
+  @Override
+  final public String appId() {
+    return appId;
   }
 
   @Override

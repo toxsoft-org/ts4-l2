@@ -1,11 +1,7 @@
 package org.toxsoft.l2.main;
 
-import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
 import static org.toxsoft.l2.lib.IL2HardConstants.*;
-import static org.toxsoft.l2.main.l10n.IL2MainSharedResources.*;
 
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.l2.lib.app.*;
 import org.toxsoft.l2.lib.impl.*;
 
@@ -22,16 +18,11 @@ public class L2AppImpl
    */
   public static final String APP_ID = L2_FULL_ID + ".MainApplication"; //$NON-NLS-1$
 
-  private static final IOptionSet APP_PARAMS = OptionSetUtils.createOpSet( //
-      TSID_NAME, STR_L2APP_IMPL, //
-      TSID_DESCRIPTION, STR_L2APP_IMPL_D //
-  );
-
   /**
    * Constructor.
    */
   public L2AppImpl() {
-    super( APP_ID, APP_PARAMS );
+    super( APP_ID );
   }
 
 }
