@@ -2,8 +2,8 @@ package org.toxsoft.l2.lib.impl;
 
 import static org.toxsoft.core.tslib.bricks.validator.ValidationResult.*;
 import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
-import static org.toxsoft.l2.main.IL2MainConstants.*;
 
+import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.bricks.coopcomp.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.strid.impl.*;
@@ -11,9 +11,7 @@ import org.toxsoft.core.tslib.bricks.threadexec.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
-import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.l2.lib.app.*;
-import org.toxsoft.uskat.core.connection.*;
 
 /**
  * {@link IL2Application} implementation.
@@ -28,10 +26,9 @@ public class L2Application
   private final L2Hal        hal;
   private final L2DlmManager dlmMgr;
   private final L2Network    net;
+  private final ILogger      logger;
 
-  private ILogger           logger;
   private ITsThreadExecutor threadGuard;
-  private ISkConnection     skConn;
 
   /**
    * Constructor.
@@ -42,9 +39,13 @@ public class L2Application
    */
   public L2Application( String aAppId ) {
     appId = StridUtils.checkValidIdPath( aAppId );
-    hal = new L2Hal( appId );
-    dlmMgr = new L2DlmManager( appId );
-    net = new L2Network( appId );
+    // FIXME --- replace default logger with new getLogger()
+    // logger = LoggerUtils.getLogger( this.getClass(), l2AppId );
+    logger = LoggerWrapper.getLogger( getClass() );
+    // ---
+    hal = new L2Hal( this );
+    dlmMgr = new L2DlmManager( this );
+    net = new L2Network( this );
   }
 
   // ------------------------------------------------------------------------------------
@@ -53,13 +54,7 @@ public class L2Application
 
   @Override
   protected ValidationResult doInit( ITsContextRo aArgs ) {
-
-    // TODO logger = new L2LoggerWrapper( "L2App(appId)", REFDEF_UNIT_LOGGER.getRef( aArgs ) );
-    // where L2Loggerwrapper adds prefix #appId to the log messages
-
-    logger = REFDEF_UNIT_LOGGER.getRef( aArgs );
     threadGuard = REFDEF_MAIN_THREAD_GUARD.getRef( aArgs );
-    skConn = REFDEF_SK_CONNECTION.getRef( aArgs );
     ValidationResult vr = hal.init( aArgs );
     if( !vr.isError() ) {
       vr = firstNonOk( vr, net.init( aArgs ) );
@@ -73,46 +68,39 @@ public class L2Application
 
   @Override
   protected void doStart() {
+    // DEBUG logger.info( "L2Application start()" );
     hal.start();
     net.start();
     dlmMgr.start();
-    logger.info( "L2Application start()" );
   }
-
-  int counter = 0;
 
   @Override
   protected void doDoJob() {
-
-    // TODO L2Application.doStart()
-
-    logger.info( "L2App doJob()" );
-    ++counter;
-    try {
-      Thread.sleep( 50 );
-    }
-    catch( InterruptedException ex ) {
-      LoggerUtils.errorLogger().error( ex );
-    }
-
+    // DEBUG logger.info( "L2App doJob()" );
+    hal.doJob();
+    dlmMgr.doJob();
+    // FIXME --- HAL must process I/O read BEFORE DLM manager and I/O write AFTER
+    // hal.doJob();
+    // ---
+    net.doJob();
   }
 
   @Override
   protected boolean doQueryStop() {
-
-    // TODO L2Application.doQueryStop()
-
-    logger.info( "L2App doQueryStop()" );
-    return false;
+    // DEBUG logger.info( "L2App doQueryStop()" );
+    boolean s1 = hal.queryStop();
+    boolean s2 = dlmMgr.queryStop();
+    boolean s3 = net.queryStop();
+    return s1 && s2 && s3;
   }
 
   @Override
   protected boolean doStopping() {
-
-    // TODO L2Application.doStopping()
-
-    logger.info( "L2App doStopping()" );
-    return true;
+    // DEBUG logger.info( "L2App doStopping()" );
+    boolean s1 = hal.isStopped();
+    boolean s2 = dlmMgr.isStopped();
+    boolean s3 = net.isStopped();
+    return s1 && s2 && s3;
   }
 
   @Override
@@ -133,17 +121,14 @@ public class L2Application
 
   @Override
   public L2AppQuitCommand getQuitCommandIfAny() {
-
-    // TODO L2Application.getQuitCommandIfAny()
-
-    if( counter >= 9 ) {
-
-      counter = 0;
-      return new L2AppQuitCommand( ECODE_RESTART_L2APP, "Test restart" ); //$NON-NLS-1$
-
+    L2AppQuitCommand cmd = hal.getQuitCommandIfAny();
+    if( cmd == null ) {
+      cmd = dlmMgr.getQuitCommandIfAny();
+      if( cmd == null ) {
+        cmd = net.getQuitCommandIfAny();
+      }
     }
-
-    return null;
+    return cmd;
   }
 
 }

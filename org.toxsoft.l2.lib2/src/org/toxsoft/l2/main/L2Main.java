@@ -45,6 +45,7 @@ public class L2Main {
   // TODO set Ctrl+C handler
   // TODO try several times to open SkConnection
 
+  // TODO change to new getLogger()
   private static final ILogger logger = LoggerWrapper.getLogger( L2Main.class.getName() );
 
   /**
@@ -95,10 +96,6 @@ public class L2Main {
   // implementation
   //
 
-  // DEBUG ---
-  static int num = 0;
-  // ---
-
   private static L2AppQuitCommand runApplication( IOptionSet aGlobalOps ) {
     // prepare thread guard
     mainThreadGuard = new TsThreadExecutor( L2Main.class.getSimpleName(), logger );
@@ -114,7 +111,6 @@ public class L2Main {
     // prepare L2Application arguments
     ITsContext l2AppArgs = new TsContext();
     l2AppArgs.params().setAll( aGlobalOps );
-    REFDEF_UNIT_LOGGER.setRef( l2AppArgs, LoggerUtils.defaultLogger() );
     REFDEF_MAIN_THREAD_GUARD.setRef( l2AppArgs, mainThreadGuard );
     REFDEF_SK_CONNECTION.setRef( l2AppArgs, skConn );
     // initialize application
@@ -141,13 +137,6 @@ public class L2Main {
       if( quitCmd == null && textConsole != null ) {
         quitCmd = textConsole.getQuitCommandIfAny();
       }
-
-      // DEBUG ---
-      if( ++num > 10 ) {
-        quitCmd = new L2AppQuitCommand( ECODE_OK, "Normal finish" );
-      }
-      // ---
-
       if( quitCmd != null ) {
         app.queryStop();
         // wait till stop or timeout

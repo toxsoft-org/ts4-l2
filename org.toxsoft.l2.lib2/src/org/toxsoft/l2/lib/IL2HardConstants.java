@@ -3,6 +3,8 @@ package org.toxsoft.l2.lib;
 import static org.toxsoft.core.tslib.ITsHardConstants.*;
 
 import org.toxsoft.core.tslib.math.*;
+import org.toxsoft.core.tslib.utils.plugins.*;
+import org.toxsoft.l2.lib.dlms.*;
 
 /**
  * L2 subsystem hard-coded constants.
@@ -39,5 +41,23 @@ public interface IL2HardConstants {
    * Default value for health contribution if not specified.
    */
   int DEFAULT_HEALTH_CONTRIBUTION = 5;
+
+  // ------------------------------------------------------------------------------------
+  // DLM support
+  //
+
+  /**
+   * Type of the plugin containing the DLM.
+   * <p>
+   * This constant is used as the value of the {@link IPluginsHardConstants#PLUGIN_TYPE_ID} parameter. Plugin JAR files
+   * must be created according to the rules of the {@link IPluginManagerComponent} plugin subsystem from the tslib
+   * library.
+   */
+  String DLM_PLUGIN_TYPE_ID = "DLM"; //$NON-NLS-1$
+
+  /**
+   * The name of the property {@link DlmInfo#moduleName()} in the corresponding section of the plugin JAR file manifest.
+   */
+  String MF_ATTR_DLM_NAME = "DlmName"; //$NON-NLS-1$
 
 }

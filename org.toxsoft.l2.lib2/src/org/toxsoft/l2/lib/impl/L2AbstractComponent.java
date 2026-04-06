@@ -1,7 +1,11 @@
 package org.toxsoft.l2.lib.impl;
 
 import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
+import static org.toxsoft.l2.lib.l10n.IL2LibSharedResources.*;
 
+import java.io.*;
+
+import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
@@ -11,36 +15,50 @@ import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.threadexec.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.l2.lib.*;
+import org.toxsoft.l2.lib.app.*;
 
 /**
  * Base implementation of L2 core components.
- * <p>
- * {@link #params()} contains component-specific options update from arguments in {@link #init(ITsContextRo)}.
  *
  * @author hazard157
  */
 abstract class L2AbstractComponent
     extends AbstractTsCoopCompMultiUse
-    implements IParameterizedEdit {
+    implements IL2Component, IParameterizedEdit {
 
-  private final String                    l2AppId;
+  private final L2Application             l2App;
   private final IStridablesList<IDataDef> opDefs;
   private final IOptionSetEdit            params = new OptionSet();
+  private final ILogger                   logger;
 
-  private ILogger           logger;
   private ITsThreadExecutor guardThread;
+  private L2CompCfgDir      cfgDir;
+
+  /**
+   * The quit command when quit is initialized by this component or <code>null</code>.
+   * <p>
+   * Quit command is reset to <code>null</code> when initializing, non-<code>null</code> value may be set by subclass by
+   * method {@link #setQuitCommand(L2AppQuitCommand)}.
+   */
+  private L2AppQuitCommand quitCmd = null;
 
   /**
    * Constructor.
    *
-   * @param aL2AppId String - the L2Application ID
+   * @param aL2App {@link L2Application} - the L2 Application
    * @param aOpDefs {@link IStridablesListEdit}&lt;{@link IDataDef}&gt; - component-specific option definitions
    */
-  protected L2AbstractComponent( String aL2AppId, IStridablesList<IDataDef> aOpDefs ) {
-    l2AppId = aL2AppId;
+  protected L2AbstractComponent( L2Application aL2App, IStridablesList<IDataDef> aOpDefs ) {
+    l2App = aL2App;
     opDefs = aOpDefs;
     OptionSetUtils.initOptionSet( params, opDefs );
+    // FIXME --- replace default logger with new getLogger()
+    // logger = LoggerUtils.getLogger(this.getClass(), l2AppId );
+    logger = LoggerWrapper.getLogger( getClass() );
+    // ---
   }
 
   // ------------------------------------------------------------------------------------
@@ -49,10 +67,10 @@ abstract class L2AbstractComponent
 
   @Override
   final protected ValidationResult doInit( ITsContextRo aArgs ) {
+    // reset class fields
+    quitCmd = null;
+
     // initialize mandatory references from arguments
-    // String shortName = this.getClass().getSimpleName();
-    // TODO logger = new L2LoggerWrapper( sahortName+"(appId)", REFDEF_UNIT_LOGGER.getRef( aArgs ) );
-    logger = REFDEF_UNIT_LOGGER.getRef( aArgs );
     guardThread = REFDEF_MAIN_THREAD_GUARD.getRef( aArgs );
     // initialize and check options
     IOptionSetEdit tmpOps = new OptionSet( params ); // default values
@@ -60,6 +78,21 @@ abstract class L2AbstractComponent
     ValidationResult vr = OptionSetUtils.validateOptionSet( tmpOps, opDefs );
     if( !vr.isError() ) {
       vr = ValidationResult.firstNonOk( vr, doDoInit( aArgs ) );
+    }
+    if( vr.isError() ) {
+      return vr;
+    }
+    // initialize configuration directory
+    String subdir = params.getStr( kind().getCfgSubirOptionId(), kind().id() );
+    TsInternalErrorRtException.checkNull( subdir );
+    TsInternalErrorRtException.checkTrue( subdir.isBlank() );
+    String rootdir = OPDEF_L2_COMP_CFG_DIR_ROOT.getValue( params() ).asString();
+    File f = new File( rootdir, subdir ); // Note: directory is specified relative to the program working directory
+    try {
+      cfgDir = new L2CompCfgDir( f );
+    }
+    catch( Exception ex ) {
+      return ValidationResult.error( ex );
     }
     return vr;
   }
@@ -74,19 +107,42 @@ abstract class L2AbstractComponent
   }
 
   // ------------------------------------------------------------------------------------
-  // API
+  // IL2Component
   //
 
-  public String appId() {
-    return l2AppId;
+  @Override
+  public IL2Application l2App() {
+    return l2App;
   }
+
+  @Override
+  final public L2AppQuitCommand getQuitCommandIfAny() {
+    return quitCmd;
+  }
+
+  // ------------------------------------------------------------------------------------
+  // API
+  //
 
   public ILogger logger() {
     return logger;
   }
 
   public ITsThreadExecutor guardThread() {
+    TsIllegalStateRtException.checkNull( guardThread );
     return guardThread;
+  }
+
+  public L2CompCfgDir cfgDir() {
+    TsIllegalStateRtException.checkNull( cfgDir );
+    return cfgDir;
+  }
+
+  final protected void setQuitCommand( L2AppQuitCommand aQuitCmd ) {
+    if( aQuitCmd != null ) {
+      logger.info( FMT_INFO_L2COMP_INITED_QUIT, aQuitCmd.toString() );
+    }
+    quitCmd = aQuitCmd;
   }
 
   // ------------------------------------------------------------------------------------

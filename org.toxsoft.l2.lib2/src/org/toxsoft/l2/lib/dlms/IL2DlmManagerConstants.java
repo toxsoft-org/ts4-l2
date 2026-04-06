@@ -1,8 +1,14 @@
 package org.toxsoft.l2.lib.dlms;
 
+import static org.toxsoft.core.tslib.av.EAtomicType.*;
+import static org.toxsoft.core.tslib.av.impl.AvUtils.*;
+import static org.toxsoft.core.tslib.av.metainfo.IAvMetaConstants.*;
+
+import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
+import org.toxsoft.l2.lib.*;
 
 /**
  * Package constants.
@@ -12,10 +18,22 @@ import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 public interface IL2DlmManagerConstants {
 
   /**
+   * DLM manager configuration files subdirectory.
+   * <p>
+   * Note: this option definition is used only to display help.
+   */
+  IDataDef OPDEF_DLMMGR_CFG_SUBDIR = DataDef.create( EL2ComponentKind.DLMMGR.getCfgSubirOptionId(), STRING, //
+      TSID_NAME, "Config subdir", //
+      TSID_DESCRIPTION, "DLM manager configuration files subdirectory", //
+      TSID_IS_MANDATORY, AV_FALSE, //
+      TSID_DEFAULT_VALUE, avStr( EL2ComponentKind.DLMMGR.id() ) //
+  );
+
+  /**
    * All known DLM manager options.
    */
-  IStridablesListEdit<IDataDef> ALL_DLM_MANAGER_ARG_OPDEFS = new StridablesList<>(
-  //
+  IStridablesListEdit<IDataDef> ALL_DLM_MANAGER_ARG_OPDEFS = new StridablesList<>( //
+      OPDEF_DLMMGR_CFG_SUBDIR //
   );
 
 }

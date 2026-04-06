@@ -5,6 +5,7 @@ import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
+import org.toxsoft.l2.lib.*;
 import org.toxsoft.l2.lib.hal.*;
 
 /**
@@ -21,10 +22,10 @@ class L2Hal
   /**
    * Constructor.
    *
-   * @param aAppId String - the L2Application ID
+   * @param aL2App {@link L2Application} - the L2 Application
    */
-  public L2Hal( String aAppId ) {
-    super( aAppId, IL2HalConstants.ALL_HAL_ARG_OPDEFS );
+  public L2Hal( L2Application aL2App ) {
+    super( aL2App, IL2HalConstants.ALL_HAL_ARG_OPDEFS );
   }
 
   // ------------------------------------------------------------------------------------
@@ -41,14 +42,30 @@ class L2Hal
 
   @Override
   protected void doDoJob() {
-    // TODO Auto-generated method stub
+
+    // TODO L2Hal.doDoJob()
 
   }
 
   @Override
   protected boolean doQueryStop() {
-    // TODO Auto-generated method stub
-    return false;
+
+    // TODO L2Hal.doQueryStop()
+
+    return true;
+  }
+
+  // ------------------------------------------------------------------------------------
+  // L2AbstractComponent
+  //
+
+  // ------------------------------------------------------------------------------------
+  // IL2Component
+  //
+
+  @Override
+  final public EL2ComponentKind kind() {
+    return EL2ComponentKind.HAL;
   }
 
   // ------------------------------------------------------------------------------------
