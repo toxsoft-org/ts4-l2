@@ -287,11 +287,12 @@ public class L2CoreMain {
    * @param aArgs String[] - аргументы командной строки
    */
   public static void main( String[] aArgs ) {
+    // Инициализация фабрики журналов
+    LoggerUtils.setLoggerFactory( LoggerWrapper::getLogger );
     // Слежение за файлом конфигурации журнала log4j.xml
     LoggerWrapper.setScanPropertiesTimeout( 10000 );
     // инициализация глобального логера
     globalLogger = LoggerWrapper.getLogger( L2CoreMain.class.getName() );
-    LoggerUtils.setErrorLogger( globalLogger ); // to Goga scandir 2015.09.17 by Max
 
     // регистрируем службу НСИ
     SkCoreUtils.registerSkServiceCreator( SkRegRefInfoService.CREATOR );

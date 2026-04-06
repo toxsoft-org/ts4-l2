@@ -21,7 +21,7 @@ import ru.toxsoft.l2.utils.opc.cfg.exe.*;
 
 public class GwpOpcOdsToBaseDlmConvertor {
 
-  private static final ILogger logger = LoggerUtils.errorLogger();
+  private static final ILogger logger = LoggerUtils.getLogger( GwpOpcOdsToBaseDlmConvertor.class );
 
   private static boolean USE_EVENT_SCRIPT_VER = false;
 
