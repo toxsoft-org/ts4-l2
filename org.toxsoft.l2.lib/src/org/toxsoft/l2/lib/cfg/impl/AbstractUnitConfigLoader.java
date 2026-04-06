@@ -87,14 +87,14 @@ public abstract class AbstractUnitConfigLoader<T extends IUnitConfig> {
 
         // проверка на наличие повторяющихся идов
         if( unitConfigs.hasKey( unitCfg.id() ) ) {
-          LoggerUtils.errorLogger().error( ERR_LIST_ALREADY_CONTAINS_CONFIG, unitCfg.id(), f.getName() );
+          LoggerUtils.error( ERR_LIST_ALREADY_CONTAINS_CONFIG, unitCfg.id(), f.getName() );
         }
         else {
           unitConfigs.add( unitCfg );
         }
       }
       catch( Exception e ) {
-        LoggerUtils.errorLogger().error( e, ERR_CONFIG_LOADING_N_CREATION, f.getName() );
+        LoggerUtils.error( e, ERR_CONFIG_LOADING_N_CREATION, f.getName() );
       }
       // finally {
       // if( chIn != null ) {

@@ -180,7 +180,7 @@ public class CommonModbusDevice
           writeBuffers.add( wBuffer );
         }
         catch( Exception e ) {
-          LoggerUtils.errorLogger().error( e );
+          LoggerUtils.error( e );
         }
 
         continue;
@@ -214,7 +214,7 @@ public class CommonModbusDevice
           buffers.add( propperBuffer );
         }
         catch( Exception e ) {
-          LoggerUtils.errorLogger().error( e );
+          LoggerUtils.error( e );
         }
 
       }
@@ -228,7 +228,7 @@ public class CommonModbusDevice
         tags.put( tag.tagId(), tag );
       }
       catch( Exception e ) {
-        LoggerUtils.errorLogger().error( e );
+        LoggerUtils.error( e );
       }
 
     }
@@ -245,7 +245,7 @@ public class CommonModbusDevice
       transactionCreator.config( aConnectionParams );
     }
     catch( Exception e ) {
-      LoggerUtils.errorLogger().error( e );
+      LoggerUtils.error( e );
     }
 
   }
@@ -263,17 +263,17 @@ public class CommonModbusDevice
   @Override
   protected void readValuesFromLL()
       throws TsMultipleApparatRtException {
-    LoggerUtils.defaultLogger().debug( "Buffer size = %s", String.valueOf( buffers.size() ) );
+    LoggerUtils.debug( "Buffer size = %s", String.valueOf( buffers.size() ) );
     for( IValuesBuffer b : buffers ) {
       ValuesBufferImpl vbi = (ValuesBufferImpl)b;
-      LoggerUtils.defaultLogger().debug( "Buffer: start = %s, count = %s", String.valueOf( vbi.startReg ),
+      LoggerUtils.debug( "Buffer: start = %s, count = %s", String.valueOf( vbi.startReg ),
           String.valueOf( vbi.wordsCount ) );
       b.doJob();
       try {
         Thread.sleep( REQUESTS_INTERVAL );
       }
       catch( InterruptedException e ) {
-        LoggerUtils.errorLogger().error( e );
+        LoggerUtils.error( e );
       }
     }
 
@@ -381,11 +381,11 @@ public class CommonModbusDevice
             closeApparatResources();
           }
           catch( Exception ex ) {
-            LoggerUtils.errorLogger().error( ex );
+            LoggerUtils.error( ex );
           }
         }
         else {
-          LoggerUtils.errorLogger().error( e, "Write error count: %s", String.valueOf( writeErrorCount ) );
+          LoggerUtils.error( e, "Write error count: %s", String.valueOf( writeErrorCount ) );
         }
       }
     }
@@ -440,11 +440,11 @@ public class CommonModbusDevice
             closeApparatResources();
           }
           catch( Exception ex ) {
-            LoggerUtils.errorLogger().error( ex );
+            LoggerUtils.error( ex );
           }
         }
         else {
-          LoggerUtils.errorLogger().error( e, "Read error count: %s", String.valueOf( readErrorCount ) );
+          LoggerUtils.error( e, "Read error count: %s", String.valueOf( readErrorCount ) );
         }
 
       }
@@ -665,14 +665,14 @@ public class CommonModbusDevice
       // ответ
       ReadInputRegistersResponse res = (ReadInputRegistersResponse)trans.getResponse();
       InputRegister[] regs = res.getRegisters();
-      LoggerUtils.errorLogger().debug( "start reg = %d, regs count = %d", startReg, wordsCount ); //$NON-NLS-1$
+      LoggerUtils.debug( "start reg = %d, regs count = %d", startReg, wordsCount ); //$NON-NLS-1$
       int[] inputMassive = new int[regs.length];
 
       for( int j = 0; j < inputMassive.length; j++ ) {
         inputMassive[j] = regs[j].getValue();
-        LoggerUtils.errorLogger().debug( "%d,", regs[j].getValue() ); //$NON-NLS-1$
+        LoggerUtils.debug( "%d,", regs[j].getValue() ); //$NON-NLS-1$
       }
-      LoggerUtils.errorLogger().debug( "/n" ); //$NON-NLS-1$
+      LoggerUtils.debug( "/n" ); //$NON-NLS-1$
 
       for( AnalogTagValueInjector inj : injectors ) {
         inj.readValue( inputMassive );

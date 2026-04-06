@@ -68,9 +68,7 @@ public class L2Main {
    * @param aArgs String[] - command line arguments
    */
   public static void main( String[] aArgs ) {
-    // prepare default and error logger and log program startup
-    LoggerUtils.setDefaultLogger( logger );
-    LoggerUtils.setErrorLogger( logger );
+    LoggerUtils.setLoggerFactory( LoggerWrapper::getLogger );
     sayHello();
     // create and validate global options from all sources
     IOptionSetEdit globalOps = prepareGlobalOptions( aArgs );
@@ -284,7 +282,7 @@ public class L2Main {
           logger.info( FMT_INF_EMPTY_CFG_FILE_CREATED, aFile.getAbsolutePath() );
         }
         catch( Exception ex ) {
-          LoggerUtils.errorLogger().error( ex );
+          LoggerUtils.error( ex );
         }
       }
       return;
@@ -374,12 +372,7 @@ public class L2Main {
 
   private static ValidationResult logResult( ValidationResult aVr ) {
     if( !aVr.isOk() ) {
-      aVr.logTo( LoggerUtils.errorLogger() );
-    }
-    else {
-      if( aVr != ValidationResult.SUCCESS ) {
-        aVr.logTo( LoggerUtils.defaultLogger() );
-      }
+      logger.error( aVr.message() );
     }
     return aVr;
   }

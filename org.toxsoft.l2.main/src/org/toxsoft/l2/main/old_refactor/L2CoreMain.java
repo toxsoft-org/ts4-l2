@@ -148,9 +148,10 @@ public class L2CoreMain {
   public static void main( String[] aArgs ) {
     // Слежение за файлом конфигурации журнала log4j.xml
     LoggerWrapper.setScanPropertiesTimeout( 10000 );
+    // Инициализация фабрики журналов
+    LoggerUtils.setLoggerFactory( LoggerWrapper::getLogger );
     // инициализация глобального логера
     globalLogger = LoggerWrapper.getLogger( L2CoreMain.class.getName() );
-    LoggerUtils.setErrorLogger( globalLogger ); // to Goga scandir 2015.09.17 by Max
     shutdownHookThread = new ShutdownHookThread( globalLogger );
     cpuLoadCalculator = new CpuLoadCalculator( globalLogger );
 
