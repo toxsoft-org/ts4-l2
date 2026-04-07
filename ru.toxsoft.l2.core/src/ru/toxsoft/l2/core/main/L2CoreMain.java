@@ -288,7 +288,7 @@ public class L2CoreMain {
    */
   public static void main( String[] aArgs ) {
     // Инициализация фабрики журналов
-    LoggerUtils.setLoggerFactory( LoggerWrapper::getLogger );
+    LoggerUtils.setLoggerFactory( LoggerWrapper.getFactory() );
     // Слежение за файлом конфигурации журнала log4j.xml
     LoggerWrapper.setScanPropertiesTimeout( 10000 );
     // инициализация глобального логера
