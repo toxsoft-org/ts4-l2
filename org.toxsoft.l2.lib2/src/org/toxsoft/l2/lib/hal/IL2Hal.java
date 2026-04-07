@@ -11,11 +11,11 @@ public interface IL2Hal
     extends IHealthMeasurable {
 
   /**
-   * Returns all signals in provided by I/O to the physical world.
+   * Returns all tags in provided by I/O to the physical world.
    *
-   * @return {@link IStridablesList}&lt;{@link IL2Signal}&gt; - list of signals
+   * @return {@link IStridablesList}&lt;{@link IL2Tag}&gt; - list of tags
    */
-  IStridablesList<IL2Signal> signals();
+  IStridablesList<IL2Tag> tags();
 
   /**
    * Returns all registered specific devices.

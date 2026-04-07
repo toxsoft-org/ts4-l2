@@ -17,7 +17,7 @@ class L2Hal
     extends L2AbstractComponent
     implements IL2Hal, ICooperativeWorkerComponent {
 
-  private final IStridablesListEdit<L2AbstractSignal> signalsList = new StridablesList<>();
+  private final IStridablesListEdit<L2AbstractTag> tagsList = new StridablesList<>();
 
   /**
    * Constructor.
@@ -74,8 +74,8 @@ class L2Hal
 
   @SuppressWarnings( { "rawtypes", "unchecked" } )
   @Override
-  public IStridablesList<IL2Signal> signals() {
-    return (IStridablesList)signalsList;
+  public IStridablesList<IL2Tag> tags() {
+    return (IStridablesList)tagsList;
   }
 
   @Override

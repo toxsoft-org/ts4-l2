@@ -14,7 +14,7 @@ import org.toxsoft.core.tslib.utils.rwkind.*;
  *
  * @author hazard157
  */
-public interface IL2Signal
+public interface IL2Tag
     extends IStridableParameterized {
 
   /**

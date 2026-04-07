@@ -12,12 +12,12 @@ import org.toxsoft.core.tslib.utils.rwkind.*;
 import org.toxsoft.l2.lib.hal.*;
 
 /**
- * {@link IL2Signal} abstract implementation.
+ * {@link IL2Tag} abstract implementation.
  *
  * @author hazard157
  */
-public abstract class L2AbstractSignal
-    implements IL2Signal {
+public abstract class L2AbstractTag
+    implements IL2Tag {
 
   private final String     id;
   private final IOptionSet params;
@@ -37,7 +37,7 @@ public abstract class L2AbstractSignal
    * @throws TsNullArgumentRtException any argument = <code>null</code>
    * @throws TsIllegalArgumentRtException ID is not an IDpath
    */
-  protected L2AbstractSignal( String aId, IOptionSet aParams, IDataType aDataType, ERwKind aKind ) {
+  protected L2AbstractTag( String aId, IOptionSet aParams, IDataType aDataType, ERwKind aKind ) {
     TsNullArgumentRtException.checkNulls( aParams, aDataType, aKind );
     id = StridUtils.checkValidIdPath( aId );
     params = aParams;
