@@ -25,7 +25,7 @@ while true; do
      -Dl2.core.run_id=${USKAT_L2CORE_RUN_ID}  \
      ${_JVM_OPS_MEMORY}                       \
      ${_JVM_OPS_DEBUG}                        \
-     -Dlog4j.configuration=log4j.xml          \
+     -Dlog4j2.configurationFile=log4j2.xml    \
      -Djava.library.path=/usr/lib/jni         \
      -cp .:libs/*:libs/wildfly/*:libs-app/*   \
      -Duser.country=${USKAT_COUNTRY}          \
