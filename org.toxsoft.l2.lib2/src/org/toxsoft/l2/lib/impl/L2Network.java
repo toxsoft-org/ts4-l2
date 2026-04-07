@@ -64,7 +64,7 @@ class L2Network
       Thread.sleep( SLEEP_MSECS );
     }
     catch( InterruptedException ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
     }
     if( counter >= QUIT_SECS * 1000L / SLEEP_MSECS ) {
       counter = 0;

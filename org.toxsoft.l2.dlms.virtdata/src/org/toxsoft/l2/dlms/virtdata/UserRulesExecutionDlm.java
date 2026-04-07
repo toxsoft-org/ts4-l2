@@ -36,7 +36,7 @@ public class UserRulesExecutionDlm
   /**
    * Журнал работы
    */
-  private static final ILogger logger = LoggerUtils.errorLogger();
+  private static final ILogger logger = LoggerUtils.getLogger( UserRulesExecutionDlm.class );
 
   /**
    * Список правил
@@ -116,7 +116,7 @@ public class UserRulesExecutionDlm
       }
     }
     catch( TsItemNotFoundRtException e ) {
-      LoggerUtils.defaultLogger().error( e, ERR_MSG_NECESSARY_PARAM_IS_NOT_SET );
+      LoggerUtils.error( e, ERR_MSG_NECESSARY_PARAM_IS_NOT_SET );
       return;
     }
 
@@ -207,7 +207,7 @@ public class UserRulesExecutionDlm
       }
       catch( Exception e ) {
         // сбой одного правила не должен затрагивать другие
-        LoggerUtils.defaultLogger().error( e, ERR_MSG_JAVACSRIPT_RUN_EXCEPTION, e.getMessage() );
+        LoggerUtils.error( e, ERR_MSG_JAVACSRIPT_RUN_EXCEPTION, e.getMessage() );
       }
     }
   }

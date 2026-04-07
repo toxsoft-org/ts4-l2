@@ -24,7 +24,7 @@ public class Float2BitRegistersTranslator
       bitPosition = Integer.parseInt( aBitPosition );
     }
     catch( NumberFormatException ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
       bitPosition = -1;
     }
   }
