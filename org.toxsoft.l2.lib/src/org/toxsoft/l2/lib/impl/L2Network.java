@@ -1,7 +1,6 @@
 package org.toxsoft.l2.lib.impl;
 
 import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
-import static org.toxsoft.l2.main.IL2MainConstants.*;
 
 import org.toxsoft.core.tslib.bricks.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
@@ -68,7 +67,7 @@ class L2Network
     }
     if( counter >= QUIT_SECS * 1000L / SLEEP_MSECS ) {
       counter = 0;
-      L2AppQuitCommand cmd = new L2AppQuitCommand( ECODE_OK, "Test normal finish after " + QUIT_SECS + " seconds" ); //$NON-NLS-1$
+      L2AppQuitCommand cmd = new L2AppQuitCommand( (short)0, "Test normal finish after " + QUIT_SECS + " seconds" ); //$NON-NLS-1$
       setQuitCommand( cmd );
     }
     // ---

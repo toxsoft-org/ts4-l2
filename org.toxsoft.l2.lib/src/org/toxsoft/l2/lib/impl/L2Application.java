@@ -3,7 +3,6 @@ package org.toxsoft.l2.lib.impl;
 import static org.toxsoft.core.tslib.bricks.validator.ValidationResult.*;
 import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
 
-import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.bricks.coopcomp.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.strid.impl.*;
@@ -11,6 +10,7 @@ import org.toxsoft.core.tslib.bricks.threadexec.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.l2.lib.app.*;
 
 /**
@@ -39,10 +39,7 @@ public class L2Application
    */
   public L2Application( String aAppId ) {
     appId = StridUtils.checkValidIdPath( aAppId );
-    // FIXME --- replace default logger with new getLogger()
-    // logger = LoggerUtils.getLogger( this.getClass(), l2AppId );
-    logger = LoggerWrapper.getLogger( getClass() );
-    // ---
+    logger = LoggerUtils.getLogger( this.getClass(), appId );
     hal = new L2Hal( this );
     dlmMgr = new L2DlmManager( this );
     net = new L2Network( this );

@@ -5,7 +5,6 @@ import static org.toxsoft.l2.lib.l10n.IL2LibSharedResources.*;
 
 import java.io.*;
 
-import org.toxsoft.core.log4j.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
@@ -17,6 +16,7 @@ import org.toxsoft.core.tslib.bricks.threadexec.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.l2.lib.*;
 import org.toxsoft.l2.lib.app.*;
 
@@ -55,10 +55,7 @@ abstract class L2AbstractComponent
     l2App = aL2App;
     opDefs = aOpDefs;
     OptionSetUtils.initOptionSet( params, opDefs );
-    // FIXME --- replace default logger with new getLogger()
-    // logger = LoggerUtils.getLogger(this.getClass(), l2AppId );
-    logger = LoggerWrapper.getLogger( getClass() );
-    // ---
+    logger = LoggerUtils.getLogger( this.getClass(), l2App.appId() );
   }
 
   // ------------------------------------------------------------------------------------

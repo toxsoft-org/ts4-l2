@@ -45,8 +45,11 @@ public class L2Main {
   // TODO set Ctrl+C handler
   // TODO try several times to open SkConnection
 
-  // TODO change to new getLogger()
-  private static final ILogger logger = LoggerWrapper.getLogger( L2Main.class.getName() );
+  static {
+    LoggerUtils.setLoggerFactory( org.toxsoft.core.log4j.LoggerWrapper.getFactory() );
+  }
+
+  private static final ILogger logger = LoggerUtils.getLogger( L2Main.class );
 
   /**
    * Text console is initialized only if {@link IL2MainConstants#OPDEF_USE_TEXT_CONSOLE} is <code>true</code>.
@@ -68,7 +71,6 @@ public class L2Main {
    * @param aArgs String[] - command line arguments
    */
   public static void main( String[] aArgs ) {
-    LoggerUtils.setLoggerFactory( LoggerWrapper::getLogger );
     sayHello();
     // create and validate global options from all sources
     IOptionSetEdit globalOps = prepareGlobalOptions( aArgs );
