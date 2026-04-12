@@ -18,10 +18,10 @@ public interface IL2Hal
   IStridablesList<IL2Tag> tags();
 
   /**
-   * Returns all registered specific devices.
+   * Returns all device drivers.
    *
-   * @return {@link IStridablesList}&lt;{@link IL2SpecificDevice}&gt; - list of specific devices
+   * @return {@link IStridablesList}&lt;{@link IL2HalDevice}&gt; - list of devices
    */
-  IStridablesList<IL2SpecificDevice> specificDevices();
+  IStridablesList<IL2HalDevice> deviceList();
 
 }

@@ -1,5 +1,6 @@
 package org.toxsoft.l2.lib.impl;
 
+import static org.toxsoft.l2.lib.IL2GlobalOptions.*;
 import static org.toxsoft.l2.lib.l10n.IL2LibSharedResources.*;
 
 import org.toxsoft.core.tslib.bricks.*;
@@ -10,6 +11,7 @@ import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.l2.lib.*;
+import org.toxsoft.l2.lib.common.*;
 import org.toxsoft.l2.lib.dlms.*;
 import org.toxsoft.l2.lib.hal.*;
 
@@ -28,10 +30,10 @@ class L2DlmManager
   /**
    * Constructor.
    *
-   * @param aL2App {@link L2Application} - the L2 Application
+   * @param aL2Context {@link IL2SharedContext} - the L2 context
    */
-  public L2DlmManager( L2Application aL2App ) {
-    super( aL2App, IL2DlmManagerConstants.ALL_DLM_MANAGER_ARG_OPDEFS );
+  public L2DlmManager( IL2SharedContext aL2Context ) {
+    super( aL2Context, ALL_DLMMGR_COMP_OPDEFS );
   }
 
   // ------------------------------------------------------------------------------------

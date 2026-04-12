@@ -2,11 +2,12 @@ package org.toxsoft.l2.lib;
 
 import org.toxsoft.core.tslib.av.utils.*;
 import org.toxsoft.l2.lib.app.*;
+import org.toxsoft.l2.lib.common.*;
 
 /**
  * Base interface of the L2 framework component, either HAL, DLM manager of network.
  * <p>
- * {@link #params()} contains component-specific inititlization options.
+ * {@link #params()} contains component-specific initialization options.
  *
  * @author hazard157
  */
@@ -14,11 +15,11 @@ public interface IL2Component
     extends IParameterized {
 
   /**
-   * Returns the owner application.
+   * Returns the L2 application shared context.
    *
-   * @return {@link IL2Application} - application - creator and owner of this component
+   * @return {@link IL2SharedContext} - the L2 context
    */
-  IL2Application l2App();
+  IL2SharedContext l2Context();
 
   /**
    * Returns the kind of this component.

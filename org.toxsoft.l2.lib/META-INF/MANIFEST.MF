@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.toxsoft.l2.lib
 Bundle-Version: 1.0.0.qualifier
 Export-Package: org.toxsoft.l2.lib,
  org.toxsoft.l2.lib.app,
+ org.toxsoft.l2.lib.common,
  org.toxsoft.l2.lib.dlms,
  org.toxsoft.l2.lib.hal,
  org.toxsoft.l2.lib.impl,

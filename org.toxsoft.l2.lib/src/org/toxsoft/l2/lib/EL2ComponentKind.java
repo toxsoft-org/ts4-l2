@@ -9,7 +9,6 @@ import org.toxsoft.core.tslib.bricks.strid.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.l2.lib.app.*;
 
 /**
  * Kinds of {@link IL2Component}.
@@ -22,11 +21,11 @@ import org.toxsoft.l2.lib.app.*;
 public enum EL2ComponentKind
     implements IStridable {
 
-  HAL( "hal", STR_L2CK_HAL, STR_L2CK_HAL_D ), //$NON-NLS-1$
+  HAL( "hal", HAL_MODULE_CONFIG_FILE_EXT, STR_L2CK_HAL, STR_L2CK_HAL_D ), //$NON-NLS-1$
 
-  DLMMGR( "dlm", STR_L2CK_DLMMGR, STR_L2CK_DLMMGR_D ), //$NON-NLS-1$
+  DLMMGR( "dlm", DLM_MODULE_CONFIG_FILE_EXT, STR_L2CK_DLMMGR, STR_L2CK_DLMMGR_D ), //$NON-NLS-1$
 
-  NETWORK( "net", STR_L2CK_NETWORK, STR_L2CK_NETWORK_D ); //$NON-NLS-1$
+  NETWORK( "net", NET_MODULE_CONFIG_FILE_EXT, STR_L2CK_NETWORK, STR_L2CK_NETWORK_D ); //$NON-NLS-1$
 
   /**
    * The registered keeper ID.
@@ -43,11 +42,13 @@ public enum EL2ComponentKind
   private final String id;
   private final String name;
   private final String description;
+  private final String moduleCfgFileExt;
 
-  EL2ComponentKind( String aId, String aName, String aDescription ) {
+  EL2ComponentKind( String aId, String aCfgFileExt, String aName, String aDescription ) {
     id = aId;
     name = aName;
     description = aDescription;
+    moduleCfgFileExt = aCfgFileExt;
   }
 
   // --------------------------------------------------------------------------
@@ -74,17 +75,12 @@ public enum EL2ComponentKind
   //
 
   /**
-   * Returns global option ID specifying the component config files subdirectory in the configuration files root.
-   * <p>
-   * Default value of the configuration subdirectory name is the same as this constant ID {@link #id()}.
-   * <p>
-   * Configuration files root directory is determined by the global option
-   * {@link IL2ApplicationConstants#OPDEF_L2_COMP_CFG_DIR_ROOT}.
+   * Returns the component's module configuration file extension.
    *
-   * @return String - global option ID containing component configuration files subdirectory
+   * @return String - config file extension (without dot)
    */
-  public String getCfgSubirOptionId() {
-    return L2_ID + '.' + id() + ".CfgSubdir"; //$NON-NLS-1$
+  public String getModuleConfigFileExtension() {
+    return moduleCfgFileExt;
   }
 
   // ----------------------------------------------------------------------------------

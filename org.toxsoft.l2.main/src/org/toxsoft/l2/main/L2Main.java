@@ -1,5 +1,6 @@
 package org.toxsoft.l2.main;
 
+import static org.toxsoft.l2.lib.IL2GlobalOptions.*;
 import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
 import static org.toxsoft.l2.main.IL2MainConstants.*;
 import static org.toxsoft.l2.main.l10n.IL2MainSharedResources.*;
@@ -28,6 +29,7 @@ import org.toxsoft.core.tslib.utils.files.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.core.tslib.utils.progargs.*;
+import org.toxsoft.l2.lib.*;
 import org.toxsoft.l2.lib.app.*;
 import org.toxsoft.l2.lib.impl.*;
 import org.toxsoft.uskat.core.backend.*;
@@ -222,14 +224,14 @@ public class L2Main {
    * All parameters means following options:
    * <ul>
    * <li>{@link L2Main} specific options listed in {@link IL2MainConstants#ALL_L2_MAIN_PARAMS};</li>
-   * <li>{@link IL2Application} specific options listed in {@link IL2ApplicationConstants#ALL_L2_INIT_PARAMS};</li>
+   * <li>{@link IL2Application} specific options listed in {@link IL2GlobalOptions#ALL_L2_INIT_OPDEFS};</li>
    * <li>Any other parameters specified by user in configuration file or in command line..</li>
    * </ul>
    * <p>
    * Option values are initialized in following order:
    * <ul>
    * <li>filled by default values from {@link IL2MainConstants#ALL_L2_MAIN_PARAMS} and
-   * {@link IL2ApplicationConstants#ALL_L2_INIT_PARAMS};</li>
+   * {@link IL2GlobalOptions#ALL_L2_INIT_OPDEFS};</li>
    * <li>updated by the values read from main configuration file
    * {@link IL2MainConstants#CLINEARG_MAIN_CFG_FILE_NAME};</li>
    * <li>updated by the values parsed from command line, when parsing command line {@link AvTextParser} is used to read
@@ -244,7 +246,7 @@ public class L2Main {
     // create global options
     IOptionSetEdit globalOps = new OptionSet();
     OptionSetUtils.initOptionSet( globalOps, ALL_L2_MAIN_PARAMS );
-    OptionSetUtils.initOptionSet( globalOps, ALL_L2_INIT_PARAMS );
+    OptionSetUtils.initOptionSet( globalOps, ALL_GLOBAL_OPDEFS );
     // read and apply settings from config file
     File cfgFile = extractConfigFile( clineArgs );
     readAndApplyCfgFileOps( cfgFile, globalOps );
@@ -328,7 +330,7 @@ public class L2Main {
     if( vr.isError() ) {
       return vr;
     }
-    return ValidationResult.firstNonOk( vr, OptionSetUtils.validateOptionSet( aGlobalOps, ALL_L2_INIT_PARAMS ) );
+    return ValidationResult.firstNonOk( vr, OptionSetUtils.validateOptionSet( aGlobalOps, ALL_GLOBAL_OPDEFS ) );
   }
 
   private static void setupL2Main( IOptionSet aGlobalOps ) {
