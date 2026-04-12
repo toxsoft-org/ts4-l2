@@ -1,5 +1,6 @@
 package org.toxsoft.l2.lib.impl;
 
+import static org.toxsoft.l2.lib.IL2GlobalOptions.*;
 import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
 import static org.toxsoft.l2.lib.l10n.IL2LibSharedResources.*;
 
@@ -19,6 +20,7 @@ import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.l2.lib.*;
 import org.toxsoft.l2.lib.app.*;
+import org.toxsoft.l2.lib.common.*;
 
 /**
  * Base implementation of L2 core components.
@@ -29,13 +31,13 @@ abstract class L2AbstractComponent
     extends AbstractTsCoopCompMultiUse
     implements IL2Component, IParameterizedEdit {
 
-  private final L2Application             l2App;
+  private final IL2SharedContext          l2Context;
   private final IStridablesList<IDataDef> opDefs;
   private final IOptionSetEdit            params = new OptionSet();
   private final ILogger                   logger;
 
-  private ITsThreadExecutor guardThread;
-  private L2CompCfgDir      cfgDir;
+  private ITsThreadExecutor    guardThread = null;
+  private L2ComponentConfigDir cfgDir      = null;
 
   /**
    * The quit command when quit is initialized by this component or <code>null</code>.
@@ -48,14 +50,14 @@ abstract class L2AbstractComponent
   /**
    * Constructor.
    *
-   * @param aL2App {@link L2Application} - the L2 Application
+   * @param aL2Context {@link IL2SharedContext} - the L2 context
    * @param aOpDefs {@link IStridablesListEdit}&lt;{@link IDataDef}&gt; - component-specific option definitions
    */
-  protected L2AbstractComponent( L2Application aL2App, IStridablesList<IDataDef> aOpDefs ) {
-    l2App = aL2App;
+  protected L2AbstractComponent( IL2SharedContext aL2Context, IStridablesList<IDataDef> aOpDefs ) {
+    l2Context = aL2Context;
     opDefs = aOpDefs;
     OptionSetUtils.initOptionSet( params, opDefs );
-    logger = LoggerUtils.getLogger( this.getClass(), l2App.appId() );
+    logger = LoggerUtils.getLogger( this.getClass(), l2Context.appId() );
   }
 
   // ------------------------------------------------------------------------------------
@@ -66,6 +68,9 @@ abstract class L2AbstractComponent
   final protected ValidationResult doInit( ITsContextRo aArgs ) {
     // reset class fields
     quitCmd = null;
+    cfgDir = null;
+    guardThread = null;
+    OptionSetUtils.initOptionSet( params, opDefs );
 
     // initialize mandatory references from arguments
     guardThread = REFDEF_MAIN_THREAD_GUARD.getRef( aArgs );
@@ -73,23 +78,21 @@ abstract class L2AbstractComponent
     IOptionSetEdit tmpOps = new OptionSet( params ); // default values
     tmpOps.refreshSet( aArgs.params() ); // update known options
     ValidationResult vr = OptionSetUtils.validateOptionSet( tmpOps, opDefs );
-    if( !vr.isError() ) {
-      vr = ValidationResult.firstNonOk( vr, doDoInit( aArgs ) );
-    }
     if( vr.isError() ) {
       return vr;
     }
     // initialize configuration directory
-    String subdir = params.getStr( kind().getCfgSubirOptionId(), kind().id() );
-    TsInternalErrorRtException.checkNull( subdir );
-    TsInternalErrorRtException.checkTrue( subdir.isBlank() );
     String rootdir = OPDEF_L2_COMP_CFG_DIR_ROOT.getValue( params() ).asString();
-    File f = new File( rootdir, subdir ); // Note: directory is specified relative to the program working directory
+    File f = new File( rootdir, kind().id() ); // Note: directory is specified relative to the program working directory
     try {
-      cfgDir = new L2CompCfgDir( f );
+      cfgDir = new L2ComponentConfigDir( f, kind().getModuleConfigFileExtension() );
     }
     catch( Exception ex ) {
       return ValidationResult.error( ex );
+    }
+    // subclass initialization
+    if( !vr.isError() ) {
+      vr = ValidationResult.firstNonOk( vr, doDoInit( aArgs ) );
     }
     return vr;
   }
@@ -108,8 +111,8 @@ abstract class L2AbstractComponent
   //
 
   @Override
-  public IL2Application l2App() {
-    return l2App;
+  final public IL2SharedContext l2Context() {
+    return l2Context;
   }
 
   @Override
@@ -130,7 +133,7 @@ abstract class L2AbstractComponent
     return guardThread;
   }
 
-  public L2CompCfgDir cfgDir() {
+  public L2ComponentConfigDir cfgDir() {
     TsIllegalStateRtException.checkNull( cfgDir );
     return cfgDir;
   }

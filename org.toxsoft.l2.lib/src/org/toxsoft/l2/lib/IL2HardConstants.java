@@ -2,9 +2,12 @@ package org.toxsoft.l2.lib;
 
 import static org.toxsoft.core.tslib.ITsHardConstants.*;
 
+import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.math.*;
 import org.toxsoft.core.tslib.utils.plugins.*;
 import org.toxsoft.l2.lib.dlms.*;
+import org.toxsoft.l2.lib.hal.*;
 
 /**
  * L2 subsystem hard-coded constants.
@@ -43,8 +46,7 @@ public interface IL2HardConstants {
   int DEFAULT_HEALTH_CONTRIBUTION = 5;
 
   // ------------------------------------------------------------------------------------
-  // DLM support
-  //
+  // L2 component: DLM manager
 
   /**
    * Type of the plugin containing the DLM.
@@ -59,5 +61,33 @@ public interface IL2HardConstants {
    * The name of the property {@link DlmInfo#moduleName()} in the corresponding section of the plugin JAR file manifest.
    */
   String MF_ATTR_DLM_NAME = "DlmName"; //$NON-NLS-1$
+
+  /**
+   * Extension (without dot) of the HAL I/O device driver configuration files.
+   */
+  String DLM_MODULE_CONFIG_FILE_EXT = "dlmcfg"; //$NON-NLS-1$
+
+  // ------------------------------------------------------------------------------------
+  // L2 component: HAL
+
+  /**
+   * Extension (without dot) of the HAL I/O device driver configuration files.
+   */
+  String HAL_MODULE_CONFIG_FILE_EXT = "devcfg"; //$NON-NLS-1$
+
+  /**
+   * Field name containing full name of {@link IL2HalDeviceFactory} implementation.
+   * <p>
+   * This is the option of type {@link EAtomicType#STRING} in device configuration {@link IAvTree#fields()}.
+   */
+  String HAL_DEVICE_PARAM_PRODUCER_CLASS = "DeviceProducerClass"; //$NON-NLS-1$
+
+  // ------------------------------------------------------------------------------------
+  // L2 component: Network
+
+  /**
+   * Extension (without dot) of the HAL I/O device driver configuration files.
+   */
+  String NET_MODULE_CONFIG_FILE_EXT = "netcfg"; //$NON-NLS-1$
 
 }

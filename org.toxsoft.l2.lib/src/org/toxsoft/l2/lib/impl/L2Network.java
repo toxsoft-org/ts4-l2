@@ -1,5 +1,6 @@
 package org.toxsoft.l2.lib.impl;
 
+import static org.toxsoft.l2.lib.IL2GlobalOptions.*;
 import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
 
 import org.toxsoft.core.tslib.bricks.*;
@@ -8,6 +9,7 @@ import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.l2.lib.*;
 import org.toxsoft.l2.lib.app.*;
+import org.toxsoft.l2.lib.common.*;
 import org.toxsoft.l2.lib.hal.*;
 import org.toxsoft.l2.lib.net.*;
 import org.toxsoft.uskat.core.connection.*;
@@ -26,10 +28,10 @@ class L2Network
   /**
    * Constructor.
    *
-   * @param aL2App {@link L2Application} - the L2 Application
+   * @param aL2Context {@link IL2SharedContext} - the L2 context
    */
-  public L2Network( L2Application aL2App ) {
-    super( aL2App, IL2NetworkConstants.ALL_NETWORK_ARG_OPDEFS );
+  public L2Network( IL2SharedContext aL2Context ) {
+    super( aL2Context, ALL_NET_COMP_OPDEFS );
   }
 
   // ------------------------------------------------------------------------------------

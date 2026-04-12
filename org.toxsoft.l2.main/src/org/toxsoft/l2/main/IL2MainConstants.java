@@ -49,7 +49,7 @@ public interface IL2MainConstants {
   /**
    * Default value of the {@link #CLINEARG_MAIN_CFG_FILE_NAME}.
    */
-  String DEFAULT_MAIN_CFG_FILE_NAME = "l2main.cfg"; //$NON-NLS-1$
+  String DEFAULT_MAIN_CFG_FILE_NAME = "l2app.cfg"; //$NON-NLS-1$
 
   /**
    * Default value of the {@link #OPDEF_LOGGER_CFG_RESCAN_SECS}.
