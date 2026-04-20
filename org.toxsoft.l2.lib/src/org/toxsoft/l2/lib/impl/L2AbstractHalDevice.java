@@ -1,6 +1,8 @@
 package org.toxsoft.l2.lib.impl;
 
 import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.l2.lib.*;
@@ -12,8 +14,8 @@ import org.toxsoft.l2.lib.hal.*;
  *
  * @author hazard157
  */
-public class L2AbstractHalDevice
-    implements IL2HalDevice {
+public non-sealed abstract class L2AbstractHalDevice
+    implements IL2HalDevice, IL2HalDeviceApi {
 
   private final ILogger          logger;
   private final IL2SharedContext l2Context;
@@ -21,6 +23,11 @@ public class L2AbstractHalDevice
   private final String           nmName;
   private final String           description;
   private final IAvTree          config;
+
+  /**
+   * Tags created by the subclass in the method {@link #getTags()}.
+   */
+  private IStridablesList<L2AbstractTag> createdTags = null;
 
   /**
    * Constructor.
@@ -57,7 +64,7 @@ public class L2AbstractHalDevice
   }
 
   // ------------------------------------------------------------------------------------
-  // API
+  // API for subclasses
   //
 
   /**
@@ -77,5 +84,61 @@ public class L2AbstractHalDevice
   final ILogger logger() {
     return logger;
   }
+
+  // ------------------------------------------------------------------------------------
+  // IWorkerComponent
+  //
+
+  @Override
+  final public void start() {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  final public boolean queryStop() {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  final public boolean isStopped() {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  final public void destroy() {
+    // TODO Auto-generated method stub
+
+  }
+
+  // ------------------------------------------------------------------------------------
+  // IL2HalDeviceApi
+  //
+
+  @Override
+  public IStridablesList<L2AbstractTag> getTags() {
+    if( createdTags == null ) {
+      createdTags = doCreateTags();
+      TsInternalErrorRtException.checkNull( createdTags );
+    }
+    return createdTags;
+  }
+
+  // ------------------------------------------------------------------------------------
+  // To override/implement
+  //
+
+  /**
+   * Subclass must create and return tag implementations.
+   * <p>
+   * This method is guaranteed to be called once in this instance lifetime.
+   * <p>
+   * Returned list may be empty for specific devices.
+   *
+   * @return {@link IStridablesList}&lt;{@link L2AbstractTag}&gt; - created instance of the tags list
+   */
+  protected abstract IStridablesList<L2AbstractTag> doCreateTags();
 
 }

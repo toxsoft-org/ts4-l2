@@ -32,6 +32,11 @@ class L2Hal
   private final IStridablesListEdit<L2AbstractTag>       tagsList   = new StridablesList<>();
   private final IStridablesListEdit<L2AbstractHalDevice> deviceList = new StridablesList<>();
 
+  @SuppressWarnings( { "rawtypes", "unchecked" } )
+  private final IStridablesList<IL2Tag>       apiTagsList = (IStridablesList)tagsList;
+  @SuppressWarnings( { "rawtypes", "unchecked" } )
+  private final IStridablesList<IL2HalDevice> apiDevsList = (IStridablesList)deviceList;
+
   /**
    * Constructor.
    *
@@ -59,24 +64,24 @@ class L2Hal
     return IL2HalDeviceFactory.class.cast( rawFactory );
   }
 
-  private IList<IL2HalDeviceFactory> loadFactories() {
+  private IMap<L2ModuleConfigFile, IL2HalDeviceFactory> loadFactories() {
     // read configurations of of the HAL I/O device drivers
     IMap<File, L2ModuleConfigFile> mmDevCfgs = cfgDir().readConfigs();
     // create factories of device drivers
-    IListEdit<IL2HalDeviceFactory> llFactories = new ElemArrayList<>();
+    IMapEdit<L2ModuleConfigFile, IL2HalDeviceFactory> mmFactories = new ElemMap<>();
     for( File f : mmDevCfgs.keys() ) {
       L2ModuleConfigFile cfg = mmDevCfgs.getByKey( f );
       IL2HalDeviceFactory factory;
       try {
         factory = getFactory( cfg );
-        llFactories.add( factory );
+        mmFactories.put( cfg, factory );
       }
       catch( Exception ex ) {
         logger().error( FMT_ERR_NO_HAL_DEVICE_FACTORY, f.getName(), ex.getMessage() );
         continue;
       }
     }
-    return llFactories;
+    return mmFactories;
   }
 
   // ------------------------------------------------------------------------------------
@@ -86,17 +91,39 @@ class L2Hal
   @Override
   protected ValidationResult doDoInit( ITsContextRo aArgs ) {
     cleanup();
-    IList<IL2HalDeviceFactory> llFactories = loadFactories();
-    // TODO create devices from loaded factories
-    for( IL2HalDeviceFactory factory : llFactories ) {
-
-      // factory.createDevice( cfg );
-
+    ValidationResult vr = ValidationResult.SUCCESS;
+    // create devices from loaded factories
+    IMap<L2ModuleConfigFile, IL2HalDeviceFactory> mmFactories = loadFactories();
+    IStridablesListEdit<L2AbstractHalDevice> tmpDeviceList = new StridablesList<>();
+    for( L2ModuleConfigFile cfg : mmFactories.keys() ) {
+      IL2HalDeviceFactory factory = mmFactories.getByKey( cfg );
+      L2AbstractHalDevice device;
+      try {
+        device = factory.createDevice( cfg );
+        TsInternalErrorRtException.checkNull( device );
+        TsInternalErrorRtException.checkFalse( device.id().equals( cfg.id() ) );
+        tmpDeviceList.add( device );
+      }
+      catch( Exception ex ) {
+        logger().error( ex );
+        vr = ValidationResult.firstNonOk( vr, ValidationResult.warn(
+            "Device configuration '%s' ignored, factory can not create valid device: %s", cfg.id(), ex.getMessage() ) );
+      }
     }
-
-    // TODO Auto-generated method stub
-
-    return ValidationResult.SUCCESS;
+    // TODO initialize devices from list tmpDeviceList, initialized devices will be added to #deviceList
+    for( L2AbstractHalDevice device : tmpDeviceList ) {
+      try {
+        device.start();
+        deviceList.add( device );
+      }
+      catch( Exception ex ) {
+        logger().error( ex );
+        vr = ValidationResult.firstNonOk( vr,
+            ValidationResult.warn( "Device '%s' ignored, error while starting: %s", device.id(), ex.getMessage() ) );
+        device.destroy();
+      }
+    }
+    return vr;
   }
 
   @Override
@@ -112,6 +139,12 @@ class L2Hal
     // TODO L2Hal.doQueryStop()
 
     return true;
+  }
+
+  @Override
+  protected boolean doStopping() {
+    // TODO Auto-generated method stub
+    return super.doStopping();
   }
 
   // ------------------------------------------------------------------------------------
@@ -131,17 +164,14 @@ class L2Hal
   // IL2Hal
   //
 
-  @SuppressWarnings( { "rawtypes", "unchecked" } )
   @Override
   public IStridablesList<IL2Tag> tags() {
-    return (IStridablesList)tagsList;
+    return apiTagsList;
   }
 
   @Override
   public IStridablesList<IL2HalDevice> deviceList() {
-    // TODO Auto-generated method stub
-    // TODO реализовать L2Hal.deviceList()
-    throw new TsUnderDevelopmentRtException( "L2Hal.deviceList()" );
+    return apiDevsList;
   }
 
 }
