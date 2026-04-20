@@ -354,9 +354,8 @@ public class OpcCurrDataModule
     }
 
     @Override
-    public IAtomicValue setValue( IAtomicValue aValue ) {
+    public void setValue( IAtomicValue aValue ) {
       // TODO Auto-generated method stub
-      return IAtomicValue.NULL;
     }
   }
 }
