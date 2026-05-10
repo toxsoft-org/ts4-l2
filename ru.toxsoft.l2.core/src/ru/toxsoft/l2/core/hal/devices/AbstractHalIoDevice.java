@@ -348,7 +348,7 @@ public abstract class AbstractHalIoDevice
       closeApparatResources();
     }
     catch( Exception e ) {
-      LoggerUtils.errorLogger().error( e );
+      LoggerUtils.error( e );
     }
   }
 

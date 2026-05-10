@@ -92,7 +92,7 @@ public class RtuTransactionCreator
         connection = openConnection();
       }
       catch( Exception ex ) {
-        LoggerUtils.errorLogger().error( ex );
+        LoggerUtils.error( ex );
       }
     }
     return connection;

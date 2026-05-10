@@ -17,7 +17,7 @@ public class ConfigurableWorkerModuleBase
   /**
    * Признак сконфигурированного состояния модуля.
    * <p>
-   * Сконфигурированное состояние компоненты это строго после вызова {@link #configYourself()}.
+   * Сконфигурированное состояние компоненты это строго после вызова {@link #configYourself(IUnitConfig)}
    */
   private volatile boolean configured = false;
 
@@ -83,10 +83,8 @@ public class ConfigurableWorkerModuleBase
    *
    * @param aConfig IUnitConfig - параметры конфигурации модуля.
    */
-  @SuppressWarnings( "unused" )
   protected void doConfigYourself( IUnitConfig aConfig ) {
     // нет реализации
-
   }
 
   @Override

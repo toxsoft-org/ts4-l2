@@ -28,7 +28,7 @@ import ru.toxsoft.l2.utils.opc.cfg.exe.OdsFileReader.*;
  */
 public class OpcOdsToBaseDlmsConvertor {
 
-  private static final ILogger logger = LoggerUtils.errorLogger();
+  private static final ILogger logger = LoggerUtils.getLogger( OpcOdsToBaseDlmsConvertor.class );
 
   private static boolean USE_EVENT_SCRIPT_VER = false;
 
@@ -503,15 +503,13 @@ public class OpcOdsToBaseDlmsConvertor {
         else {
           if( eventData.isOnTrigger() || eventData.isOffTrigger() ) {
             eventConditionClass = ONE_TAG_SWITCH_EVENT_CONDITION_CLASS;
-            // не понятен параметр, который ставить в событии - нашёл "oldVal;newVal" в системном описании
-            eventParamFormClass = ONE_TAG_TO_CHANGED_PARAM_FORMER_CLASS;
-            eventParamsList = "oldVal;newVal";
           }
           else {
             eventConditionClass = ONE_INT_TAG_CHANGE_EVENT_CONDITION_CLASS;
-            eventParamFormClass = ONE_TAG_TO_CHANGED_PARAM_FORMER_CLASS;
-            eventParamsList = "oldVal;newVal";
           }
+          // не понятен параметр, который ставить в событии - нашёл "oldVal;newVal" в системном описании
+          eventParamFormClass = ONE_TAG_TO_CHANGED_PARAM_FORMER_CLASS;
+          eventParamsList = "oldVal;newVal";
         }
       }
       else
@@ -548,14 +546,13 @@ public class OpcOdsToBaseDlmsConvertor {
     // всегда есть один параметр "on", значение которого равно тегу (или биту тега), который определяет событие
     if( !USE_EVENT_SCRIPT_VER ) {
       eventOpSet.setStr( PARAM_FORMER_JAVA_CLASS, eventParamFormClass );
-      eventOpSet.setStr( FORMER_EVENT_PARAMS, eventParamsList );
     }
     else {
       // для скрипта
       eventOpSet.setStr( PARAM_FORMER_JAVA_CLASS, SCRIPT_PARAM_FORMER_CLASS );
       formParamScript( eventOpSet, eventData.getTriggerWordBitIndex(), DEFAULT_TAG_ID, "on" );
-      eventOpSet.setStr( FORMER_EVENT_PARAMS, eventParamsList );
     }
+    eventOpSet.setStr( FORMER_EVENT_PARAMS, eventParamsList );
 
     StringMap<IAvTree> eventNodes = new StringMap<>();
 

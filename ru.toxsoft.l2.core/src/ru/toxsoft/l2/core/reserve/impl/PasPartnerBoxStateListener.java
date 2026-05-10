@@ -204,7 +204,7 @@ public class PasPartnerBoxStateListener
       thread.start();
     }
     catch( Exception ex ) {
-      LoggerUtils.errorLogger().error( ex );
+      LoggerUtils.error( ex );
       if( retValue != null ) {
         retValue.close();
         retValue = null;

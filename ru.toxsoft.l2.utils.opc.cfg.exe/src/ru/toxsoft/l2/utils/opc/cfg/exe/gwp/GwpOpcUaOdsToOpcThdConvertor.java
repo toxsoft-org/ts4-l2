@@ -22,7 +22,7 @@ import ru.toxsoft.l2.utils.opc.cfg.exe.OdsFileReader.*;
 
 public class GwpOpcUaOdsToOpcThdConvertor {
 
-  private static final ILogger logger = LoggerUtils.errorLogger();
+  private static final ILogger logger = LoggerUtils.getLogger( GwpOpcUaOdsToOpcThdConvertor.class );
 
   private static final String OPC_TAG_DEVICE_UA = "opc2s5.bridge.collection.id";
 

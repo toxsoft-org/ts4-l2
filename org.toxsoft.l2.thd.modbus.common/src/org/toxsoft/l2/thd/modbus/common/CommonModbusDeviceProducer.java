@@ -51,7 +51,7 @@ public class CommonModbusDeviceProducer
       }
       catch( Exception e ) {
         // Возможно нужно не перехватывать - а выбрасывать наверх - весь аппарат не прошёл конфигурацию
-        LoggerUtils.errorLogger().error( e );
+        LoggerUtils.error( e );
       }
 
     }

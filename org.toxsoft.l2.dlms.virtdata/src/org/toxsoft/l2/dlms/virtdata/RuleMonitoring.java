@@ -35,7 +35,7 @@ public class RuleMonitoring
   /**
    * Журнал работы
    */
-  private static final ILogger logger = LoggerUtils.errorLogger();
+  private static final ILogger logger = LoggerUtils.getLogger( RuleMonitoring.class );
 
   /**
    * Ключ блокировки для обмена данными с буферными значениями
@@ -90,7 +90,6 @@ public class RuleMonitoring
    * @param aRuleInfo описание одного правила
    */
   public RuleMonitoring( ISkConnection aConnection, RuleInfo aRuleInfo ) {
-    super();
     connection = aConnection;
     // сразу инициализируем массив значений входных и вЫходных данных
     for( int i = 0; i < aRuleInfo.getInputParams().size(); i++ ) {

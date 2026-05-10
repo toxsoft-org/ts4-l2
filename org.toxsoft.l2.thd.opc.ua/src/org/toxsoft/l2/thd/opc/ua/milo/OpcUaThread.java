@@ -35,7 +35,7 @@ public class OpcUaThread
       }
       catch( InterruptedException | ExecutionException ex ) {
         // TODO Auto-generated catch block
-        LoggerUtils.errorLogger().error( ex );
+        LoggerUtils.error( ex );
       }
 
       try {
@@ -43,7 +43,7 @@ public class OpcUaThread
       }
       catch( InterruptedException ex ) {
         // TODO Auto-generated catch block
-        LoggerUtils.errorLogger().error( ex );
+        LoggerUtils.error( ex );
       }
     }
   }

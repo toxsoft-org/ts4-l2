@@ -1,70 +1,30 @@
 package org.toxsoft.l2.lib;
 
+import static org.toxsoft.core.tslib.ITsHardConstants.*;
+
+import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.math.*;
 import org.toxsoft.core.tslib.utils.plugins.*;
-import org.toxsoft.l2.lib.dlm.*;
+import org.toxsoft.l2.lib.dlms.*;
+import org.toxsoft.l2.lib.hal.*;
 
 /**
- * Жестко "зашитые" в коде, персистентные константы.
+ * L2 subsystem hard-coded constants.
  *
- * @author goga
+ * @author hazard157
  */
-@SuppressWarnings( "nls" )
 public interface IL2HardConstants {
 
   /**
-   * Имя главного файла конфигурации по умолчанию.
+   * L2 entities short ID prefix.
    */
-  String L2_MAIN_CFG_FILE_NAME = "cfg/l2.cfg";
+  String L2_ID = "l2"; //$NON-NLS-1$ general short ID prefix (IDname)
 
   /**
-   * Имя главного файла конфигурации по умолчанию.
+   * L2 entities full ID prefix.
    */
-  String L2_HAL_CFG_FILE_NAME = "cfg/hal/hal.cfg";
-
-  /**
-   * Имя главного файла конфигурации по умолчанию.
-   */
-  String L2_NET_CFG_FILE_NAME = "cfg/net/net.cfg";
-
-  /**
-   * Пароль БУ для входа на сервер.
-   * <p>
-   * У всех БУ разные логины на сервер, но одинаковые пароли.
-   */
-  String PASSWORD_FOR_SERVER = "1";
-
-  // ------------------------------------------------------------------------------------
-  // Поддержка динамически загружаемых модулей (DLM - Dynamic Loadable Modules)
-  //
-
-  /**
-   * Тип плагина, в котором хранится DLM-модули.
-   * <p>
-   * Эта константа используется в качестве значения параметра {@link EPluginManagerOps#PLUGIN_TYPE_ID}. Напомним, что
-   * JAR-файлы плагинов должны быть созданы по правилам подсистемы плагинов {@link IPluginManagerComponent} из
-   * библиотеки tslib.
-   */
-  String DLM_PLUGIN_TYPE_ID = "DLM";
-
-  /**
-   * Название свойства {@link IDlmInfo#moduleName()} в соотвтетсвующем разделе манифеста JAR-файла плагина.
-   */
-  String MF_ATTR_DLM_NAME = "DlmName";
-
-  /**
-   * Название свойства {@link IDlmInfo#developerPersons()} в соотвтетсвующем разделе манифеста JAR-файла плагина.
-   */
-  String MF_ATTR_DLM_DEVELOPER_PERSONS = "DeveloperPersons";
-
-  /**
-   * Название свойства {@link IDlmInfo#developerCompany()} в соотвтетсвующем разделе манифеста JAR-файла плагина.
-   */
-  String MF_ATTR_DLM_DEVELOPER_COMPANY = "DeveloperCompany";
-
-  // ------------------------------------------------------------------------------------
-  // NEW section - adding tags, L2Application, refactoring old code, etc.
-  //
+  String L2_FULL_ID = TS_FULL_ID + "." + L2_ID; //$NON-NLS-1$ general full ID prefix (IDpath)
 
   /**
    * Allowed range of the L2 entities health value.
@@ -84,5 +44,50 @@ public interface IL2HardConstants {
    * Default value for health contribution if not specified.
    */
   int DEFAULT_HEALTH_CONTRIBUTION = 5;
+
+  // ------------------------------------------------------------------------------------
+  // L2 component: DLM manager
+
+  /**
+   * Type of the plugin containing the DLM.
+   * <p>
+   * This constant is used as the value of the {@link IPluginsHardConstants#PLUGIN_TYPE_ID} parameter. Plugin JAR files
+   * must be created according to the rules of the {@link IPluginManagerComponent} plugin subsystem from the tslib
+   * library.
+   */
+  String DLM_PLUGIN_TYPE_ID = "DLM"; //$NON-NLS-1$
+
+  /**
+   * The name of the property {@link DlmInfo#moduleName()} in the corresponding section of the plugin JAR file manifest.
+   */
+  String MF_ATTR_DLM_NAME = "DlmName"; //$NON-NLS-1$
+
+  /**
+   * Extension (without dot) of the HAL I/O device driver configuration files.
+   */
+  String DLM_MODULE_CONFIG_FILE_EXT = "dlmcfg"; //$NON-NLS-1$
+
+  // ------------------------------------------------------------------------------------
+  // L2 component: HAL
+
+  /**
+   * Extension (without dot) of the HAL I/O device driver configuration files.
+   */
+  String HAL_MODULE_CONFIG_FILE_EXT = "devcfg"; //$NON-NLS-1$
+
+  /**
+   * Field name containing full name of {@link IL2HalDeviceFactory} implementation.
+   * <p>
+   * This is the option of type {@link EAtomicType#STRING} in device configuration {@link IAvTree#fields()}.
+   */
+  String HAL_DEVICE_PARAM_PRODUCER_CLASS = "DeviceProducerClass"; //$NON-NLS-1$
+
+  // ------------------------------------------------------------------------------------
+  // L2 component: Network
+
+  /**
+   * Extension (without dot) of the HAL I/O device driver configuration files.
+   */
+  String NET_MODULE_CONFIG_FILE_EXT = "netcfg"; //$NON-NLS-1$
 
 }

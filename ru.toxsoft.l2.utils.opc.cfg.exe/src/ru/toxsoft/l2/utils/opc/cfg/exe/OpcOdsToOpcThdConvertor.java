@@ -27,7 +27,7 @@ import ru.toxsoft.l2.utils.opc.cfg.exe.OdsFileReader.*;
  */
 public class OpcOdsToOpcThdConvertor {
 
-  private static final ILogger logger = LoggerUtils.errorLogger();
+  private static final ILogger logger = LoggerUtils.getLogger( OpcOdsToOpcThdConvertor.class );
 
   // public static final String OPC_TAG_DEVICE = "opc2s5.vj";
   public static String OPC_TAG_DEVICE = "opc2s5.bridge.collection.id";
