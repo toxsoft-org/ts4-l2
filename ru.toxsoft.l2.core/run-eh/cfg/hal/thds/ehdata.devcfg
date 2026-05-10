@@ -1,0 +1,112 @@
+DeviceConfig = 
+{
+  false,
+  "opc2s5.cfg",
+  {
+    javaClassName = "org.toxsoft.l2.thd.opc.ua.milo.OpcUaMiloDriverProducer",
+    id = "opc2s5.bridge.collection.id",
+    description = "opc 2 s5 pins UA apparat producer"
+  }
+  ,
+  {
+    bridges=
+    {
+      true,
+      [
+        {
+          false,
+          "device1.opc.def",
+          {
+            id = "opc2s5.bridge.collection.id",
+            description = "opc 2 s5 pins UA apparat producer",
+            host = "opc.tcp://172.21.235.102:4840",
+            user = "",
+            password = ""
+          }
+          ,
+          {
+            groups=
+            {
+              true,
+              [
+                {
+                  false,
+                  "opc.sync.group.def",
+                  {
+                    period = 500
+                  }
+                  ,
+                  {
+                    sync.tags=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "pin.tag.ns_3_s_UNIT_1_RECIEV_FROM_DB202_DBD264_OP_Analog_Value_P9_1_264___91MKA0001T_TUR.def",
+                          {
+                            opc.tag = "ns=3;s=\"UNIT_1\".\"RECIEV_FROM_DB202.DBD264\".\"OP_Analog_Value_P9_1(264)  91MKA0001T_TUR\"",
+                            pin.id = "ns_3_s_UNIT_1_RECIEV_FROM_DB202_DBD264_OP_Analog_Value_P9_1_264___91MKA0001T_TUR",
+                            pin.type = "None"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_3_s_UNIT_1_RECIEV_FROM_DB202_DBD216_OP_Analog_Value_P8_4_228___91MKA0001PIN.def",
+                          {
+                            opc.tag = "ns=3;s=\"UNIT_1\".\"RECIEV_FROM_DB202.DBD216\".\"OP_Analog_Value_P8_4(228)  91MKA0001PIN\"",
+                            pin.id = "ns_3_s_UNIT_1_RECIEV_FROM_DB202_DBD216_OP_Analog_Value_P8_4_228___91MKA0001PIN",
+                            pin.type = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "opc.async.group.def",
+                  {
+                  }
+                  ,
+                  {
+                    async.tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "opc.output.group.def",
+                  {
+                  }
+                  ,
+                  {
+                    output.tags=
+                    {
+                      true,
+                      [
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

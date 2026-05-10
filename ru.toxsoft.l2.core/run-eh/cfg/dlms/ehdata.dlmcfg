@@ -1,0 +1,85 @@
+DlmConfig = 
+{
+  false,
+  "opc.dlm.cfg",
+  {
+    id = "ru.toxsoft.l2.dlm.tags.common",
+    description = "ru.toxsoft.l2.dlm.tags.common"
+  }
+  ,
+  {
+    cmdClassDefs=
+    {
+      true,
+      [
+      ]
+    }
+    ,
+    cmdDefs=
+    {
+      true,
+      [
+      ]
+    }
+    ,
+    dataDefs=
+    {
+      true,
+      [
+        {
+          false,
+          "data.opctos5.bridge.cfg.unit.id1765156181082.def",
+          {
+            pin.id = "opctos5.bridge.cfg.unit.id1765156181082",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "eh.Signal.Real",
+            obj.name = "kks_91MKA.pt_0001.prm_T_TUR",
+            data.id = "value",
+            tag.id = "ns=3;s=\"UNIT_1\".\"RECIEV_FROM_DB202.DBD264\".\"OP_Analog_Value_P9_1(264)  91MKA0001T_TUR\"",
+            tag.dev.id = "opc2s5.bridge.collection.id"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.opctos5.bridge.cfg.unit.id1768203036319.def",
+          {
+            pin.id = "opctos5.bridge.cfg.unit.id1768203036319",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "eh.Signal.Real",
+            obj.name = "kks_91MKA.pt_0001.prm_PIN",
+            data.id = "value",
+            tag.id = "ns=3;s=\"UNIT_1\".\"RECIEV_FROM_DB202.DBD216\".\"OP_Analog_Value_P8_4(228)  91MKA0001PIN\"",
+            tag.dev.id = "opc2s5.bridge.collection.id"
+          }
+          ,
+          {
+          }
+        }
+      ]
+    }
+    ,
+    eventDefs=
+    {
+      true,
+      [
+      ]
+    }
+    ,
+    complexTagsDefs=
+    {
+      true,
+      [
+      ]
+    }
+  }
+}
