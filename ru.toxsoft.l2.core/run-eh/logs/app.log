@@ -1,0 +1,627 @@
+[INFO |2026-05-14 00:03:14.657|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 00:03:14.660|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 00:03:14.660|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 00:03:14.660|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 00:13:14.791|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 00:13:14.791|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 00:13:14.791|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 00:13:14.791|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 00:23:14.924|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 00:23:14.924|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 00:23:14.924|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 00:23:14.924|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[ERROR|2026-05-14 00:29:15.372|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:41158] 2026-05-13 22:47:54] Обнаружен разрыв соединения канала remote(127.0.0.1:8081), local(127.0.0.1:41158), time =2026-05-13_22:47:54.194. Причина: TsIoRtException: Error acessing file or directory
+[ERROR|2026-05-14 00:29:15.372|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:41158] 2026-05-13 22:47:54] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 00:29:15.372|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:41158] 2026-05-13 22:47:54] restoreSessionQuery(): call handlingUnexpectedBreak()
+[WARN |2026-05-14 00:29:15.374|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:41158] 2026-05-13 22:47:54] S5CallbackClient.disconnected(). clear interrupted state
+[INFO |2026-05-14 00:29:15.375|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-199   ] client options: 
+{
+  sklogin = "root"
+  skpassword = "************************"
+  org.toxsoft.uskat.s5.client.hosts = @ S5HostList[1] { localhost:8080 }
+  org.toxsoft.uskat.s5.client.clientProgram = "l2"
+  org.toxsoft.uskat.s5.client.clientVersion = @ 22.13 2025-05-19 16:00:00
+  org.toxsoft.uskat.s5.client.connectTimeout = 3000
+  org.toxsoft.uskat.s5.client.failureTimeout = 120000
+  org.toxsoft.uskat.s5.client.currdataTimeout = 1000
+  org.toxsoft.uskat.s5.client.histdataTimeout = 10000
+  org.toxsoft.uskat.s5.client.sessionID = @ sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+  org.toxsoft.uskat.s5.client.clientAddress = "127.0.0.1"
+  org.toxsoft.uskat.s5.client.clientPort = 41158
+}
+[INFO |2026-05-14 00:29:15.380|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-199   ] tryConnect(...): topology: no_cluster:standalone[localhost:8080]
+[INFO |2026-05-14 00:29:15.380|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 00:29:15] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=57090]
+[INFO |2026-05-14 00:29:15.381|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 00:29:15] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:57090), time =2026-05-14_00:29:15.381
+[INFO |2026-05-14 00:29:15.381|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:57090] 2026-05-14 00:29:15] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:57090), time =2026-05-14_00:29:15.381, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 00:29:15.382|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5ConnectionThread-199   ] Ожидание callback-каналов = 2 msec. Установленных каналов = 1
+[INFO |2026-05-14 00:29:15.382|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-199   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = createTimeout(3000)
+[INFO |2026-05-14 00:29:15.382|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-199   ] tryConnect(...): classLoader = jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+[INFO |2026-05-14 00:29:15.402|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-199   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = failureTimeout(120000)
+[ERROR|2026-05-14 00:29:15.405|org.toxsoft.uskat.core.impl.SkCoreApi|main                     ] Unhandled message from backend, topicID= org.toxsoft.uskat.s5.backend, messageId = BeforeConnect, args = {}
+[INFO |2026-05-14 00:29:15.407|ru.toxsoft.l2.core.net.NetworkUtils|main                     ] IDataQualityService addConnectedResources: size = 2
+[INFO |2026-05-14 00:29:15.407|ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule|main                     ] Curr data channels are forced to re-upload curr values, size = 2
+[ERROR|2026-05-14 00:30:35.745|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5CallbackClient doJob   ] remote(127.0.0.1:8081), local(127.0.0.1:57090), time =2026-05-14_00:29:15.381. Завершение работы канала по обнаруженному отказу работы (isFailure = true). failureTimeout = 80000, waitTime = 80338
+[ERROR|2026-05-14 00:30:35.745|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5CallbackClient doJob   ] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 00:30:35.745|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5CallbackClient doJob   ] restoreSessionQuery(): call handlingUnexpectedBreak()
+[ERROR|2026-05-14 00:30:35.748|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:57090] 2026-05-14 00:29:15] Обнаружен разрыв соединения канала remote(127.0.0.1:8081), local(0.0.0.0:57090), time =2026-05-14_00:29:15.381. Причина: TsIoRtException: Error acessing file or directory
+[INFO |2026-05-14 00:30:35.748|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-203   ] client options: 
+{
+  sklogin = "root"
+  skpassword = "************************"
+  org.toxsoft.uskat.s5.client.hosts = @ S5HostList[1] { localhost:8080 }
+  org.toxsoft.uskat.s5.client.clientProgram = "l2"
+  org.toxsoft.uskat.s5.client.clientVersion = @ 22.13 2025-05-19 16:00:00
+  org.toxsoft.uskat.s5.client.connectTimeout = 3000
+  org.toxsoft.uskat.s5.client.failureTimeout = 120000
+  org.toxsoft.uskat.s5.client.currdataTimeout = 1000
+  org.toxsoft.uskat.s5.client.histdataTimeout = 10000
+  org.toxsoft.uskat.s5.client.sessionID = @ sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+  org.toxsoft.uskat.s5.client.clientAddress = "127.0.0.1"
+  org.toxsoft.uskat.s5.client.clientPort = 57090
+}
+[INFO |2026-05-14 00:30:35.752|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-203   ] tryConnect(...): topology: no_cluster:standalone[localhost:8080]
+[INFO |2026-05-14 00:30:35.753|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 00:30:35] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=50404]
+[INFO |2026-05-14 00:30:35.754|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 00:30:35] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:50404), time =2026-05-14_00:30:35.753
+[INFO |2026-05-14 00:30:35.754|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:50404] 2026-05-14 00:30:35] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:50404), time =2026-05-14_00:30:35.753, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 00:30:35.754|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5ConnectionThread-203   ] Ожидание callback-каналов = 2 msec. Установленных каналов = 1
+[INFO |2026-05-14 00:30:35.754|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-203   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = createTimeout(3000)
+[INFO |2026-05-14 00:30:35.754|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-203   ] tryConnect(...): classLoader = jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+[INFO |2026-05-14 00:30:35.770|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-203   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = failureTimeout(120000)
+[ERROR|2026-05-14 00:30:35.812|org.toxsoft.uskat.core.impl.SkCoreApi|main                     ] Unhandled message from backend, topicID= org.toxsoft.uskat.s5.backend, messageId = BeforeConnect, args = {}
+[INFO |2026-05-14 00:30:35.816|ru.toxsoft.l2.core.net.NetworkUtils|main                     ] IDataQualityService addConnectedResources: size = 2
+[INFO |2026-05-14 00:30:35.816|ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule|main                     ] Curr data channels are forced to re-upload curr values, size = 2
+[INFO |2026-05-14 00:33:15.052|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 00:33:15.053|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 00:33:15.053|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 00:33:15.053|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[ERROR|2026-05-14 00:41:15.990|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:50404] 2026-05-14 00:30:35] Обнаружен разрыв соединения канала remote(127.0.0.1:8081), local(127.0.0.1:50404), time =2026-05-14_00:30:35.753. Причина: TsIoRtException: Error acessing file or directory
+[ERROR|2026-05-14 00:41:15.990|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:50404] 2026-05-14 00:30:35] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 00:41:15.993|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:50404] 2026-05-14 00:30:35] restoreSessionQuery(): call handlingUnexpectedBreak()
+[WARN |2026-05-14 00:41:15.995|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:50404] 2026-05-14 00:30:35] S5CallbackClient.disconnected(). clear interrupted state
+[INFO |2026-05-14 00:41:15.995|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-208   ] client options: 
+{
+  sklogin = "root"
+  skpassword = "************************"
+  org.toxsoft.uskat.s5.client.hosts = @ S5HostList[1] { localhost:8080 }
+  org.toxsoft.uskat.s5.client.clientProgram = "l2"
+  org.toxsoft.uskat.s5.client.clientVersion = @ 22.13 2025-05-19 16:00:00
+  org.toxsoft.uskat.s5.client.connectTimeout = 3000
+  org.toxsoft.uskat.s5.client.failureTimeout = 120000
+  org.toxsoft.uskat.s5.client.currdataTimeout = 1000
+  org.toxsoft.uskat.s5.client.histdataTimeout = 10000
+  org.toxsoft.uskat.s5.client.sessionID = @ sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+  org.toxsoft.uskat.s5.client.clientAddress = "127.0.0.1"
+  org.toxsoft.uskat.s5.client.clientPort = 50404
+}
+[INFO |2026-05-14 00:41:16.001|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-208   ] tryConnect(...): topology: no_cluster:standalone[localhost:8080]
+[INFO |2026-05-14 00:41:16.002|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 00:41:16] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=34050]
+[INFO |2026-05-14 00:41:16.003|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 00:41:16] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:34050), time =2026-05-14_00:41:16.002
+[INFO |2026-05-14 00:41:16.003|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:34050] 2026-05-14 00:41:16] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:34050), time =2026-05-14_00:41:16.002, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 00:41:16.003|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5ConnectionThread-208   ] Ожидание callback-каналов = 2 msec. Установленных каналов = 1
+[INFO |2026-05-14 00:41:16.004|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-208   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = createTimeout(3000)
+[INFO |2026-05-14 00:41:16.004|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-208   ] tryConnect(...): classLoader = jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+[INFO |2026-05-14 00:41:16.022|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-208   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = failureTimeout(120000)
+[ERROR|2026-05-14 00:41:16.024|org.toxsoft.uskat.core.impl.SkCoreApi|main                     ] Unhandled message from backend, topicID= org.toxsoft.uskat.s5.backend, messageId = BeforeConnect, args = {}
+[INFO |2026-05-14 00:41:16.027|ru.toxsoft.l2.core.net.NetworkUtils|main                     ] IDataQualityService addConnectedResources: size = 2
+[INFO |2026-05-14 00:41:16.027|ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule|main                     ] Curr data channels are forced to re-upload curr values, size = 2
+[INFO |2026-05-14 00:43:15.185|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 00:43:15.185|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 00:43:15.185|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 00:43:15.185|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 00:53:15.316|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 00:53:15.316|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 00:53:15.316|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 00:53:15.317|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 01:03:15.447|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 01:03:15.447|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 01:03:15.447|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 01:03:15.447|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 01:13:15.580|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 01:13:15.580|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 01:13:15.580|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 01:13:15.580|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 01:23:15.711|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 01:23:15.711|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 01:23:15.711|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 01:23:15.711|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 01:33:15.844|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 01:33:15.845|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 01:33:15.845|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 01:33:15.845|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 01:43:15.977|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 01:43:15.977|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 01:43:15.977|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 01:43:15.977|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[ERROR|2026-05-14 01:46:37.163|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5CallbackClient doJob   ] remote(127.0.0.1:8081), local(127.0.0.1:34050), time =2026-05-14_00:41:16.002. Завершение работы канала по обнаруженному отказу работы (isFailure = true). failureTimeout = 80000, waitTime = 80012
+[ERROR|2026-05-14 01:46:37.163|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5CallbackClient doJob   ] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 01:46:37.163|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5CallbackClient doJob   ] restoreSessionQuery(): call handlingUnexpectedBreak()
+[INFO |2026-05-14 01:46:37.165|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:34050] 2026-05-14 00:41:16] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=32898]
+[INFO |2026-05-14 01:46:37.166|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:34050] 2026-05-14 00:41:16] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:32898), time =2026-05-14_01:46:37.165
+[INFO |2026-05-14 01:46:37.166|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:32898] 2026-05-14 01:46:37] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:32898), time =2026-05-14_01:46:37.165, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 01:46:37.166|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-218   ] client options: 
+{
+  sklogin = "root"
+  skpassword = "************************"
+  org.toxsoft.uskat.s5.client.hosts = @ S5HostList[1] { localhost:8080 }
+  org.toxsoft.uskat.s5.client.clientProgram = "l2"
+  org.toxsoft.uskat.s5.client.clientVersion = @ 22.13 2025-05-19 16:00:00
+  org.toxsoft.uskat.s5.client.connectTimeout = 3000
+  org.toxsoft.uskat.s5.client.failureTimeout = 120000
+  org.toxsoft.uskat.s5.client.currdataTimeout = 1000
+  org.toxsoft.uskat.s5.client.histdataTimeout = 10000
+  org.toxsoft.uskat.s5.client.sessionID = @ sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+  org.toxsoft.uskat.s5.client.clientAddress = "127.0.0.1"
+  org.toxsoft.uskat.s5.client.clientPort = 34050
+}
+[ERROR|2026-05-14 01:46:37.168|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:32898] 2026-05-14 01:46:37] Ошибка чтения объекта из потока канала remote(127.0.0.1:8081), local(127.0.0.1:32898), time =2026-05-14_01:46:37.165. Причина: StrioRtException: Character '{' was expected instead of EOF
+org.toxsoft.core.tslib.bricks.strio.StrioRtException: Character '{' was expected instead of EOF
+	at org.toxsoft.core.tslib.bricks.strio.StrioRtException.checkTrue(StrioRtException.java:101)
+	at org.toxsoft.core.tslib.bricks.strio.impl.StrioReader.ensureChar(StrioReader.java:295)
+	at org.toxsoft.core.tslib.bricks.strio.impl.StrioReader.readSetBegin(StrioReader.java:759)
+	at org.toxsoft.core.pas.tj.impl.TsJsonObjectStorage.load(TsJsonObjectStorage.java:29)
+	at org.toxsoft.core.pas.tj.impl.TjUtils.loadObject(TjUtils.java:142)
+	at org.toxsoft.core.pas.common.PasChannel.readFromChannel(PasChannel.java:1074)
+	at org.toxsoft.core.pas.common.PasChannel.run(PasChannel.java:315)
+	at org.toxsoft.core.pas.client.PasClient.run(PasClient.java:210)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+[INFO |2026-05-14 01:46:37.171|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-218   ] tryConnect(...): topology: no_cluster:standalone[localhost:8080]
+[INFO |2026-05-14 01:46:37.172|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 01:46:37] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=32900]
+[WARN |2026-05-14 01:46:37.172|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:32898] 2026-05-14 01:46:37] onCloseChannel. Notification is ignored (notificationEnabled = false)
+[ERROR|2026-05-14 01:46:37.172|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:32898] 2026-05-14 01:46:37] 
+java.net.SocketException: Socket closed
+	at java.base/sun.nio.ch.NioSocketImpl.ensureOpenAndConnected(NioSocketImpl.java:163)
+	at java.base/sun.nio.ch.NioSocketImpl.beginWrite(NioSocketImpl.java:362)
+	at java.base/sun.nio.ch.NioSocketImpl.implWrite(NioSocketImpl.java:407)
+	at java.base/sun.nio.ch.NioSocketImpl.write(NioSocketImpl.java:440)
+	at java.base/sun.nio.ch.NioSocketImpl$2.write(NioSocketImpl.java:819)
+	at java.base/java.net.Socket$SocketOutputStream.write(Socket.java:1195)
+	at java.base/sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:309)
+	at java.base/sun.nio.cs.StreamEncoder.implClose(StreamEncoder.java:432)
+	at java.base/sun.nio.cs.StreamEncoder.lockedClose(StreamEncoder.java:237)
+	at java.base/sun.nio.cs.StreamEncoder.close(StreamEncoder.java:222)
+	at java.base/java.io.OutputStreamWriter.close(OutputStreamWriter.java:266)
+	at org.toxsoft.core.pas.common.PasChannel.close(PasChannel.java:1279)
+	at org.toxsoft.core.pas.common.PasChannel.run(PasChannel.java:346)
+	at org.toxsoft.core.pas.client.PasClient.run(PasClient.java:210)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+[INFO |2026-05-14 01:46:37.173|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 01:46:37] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:32900), time =2026-05-14_01:46:37.172
+[ERROR|2026-05-14 01:46:37.172|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS writer[remote(127.0.0.1:8081), local(127.0.0.1:32898), time =2026-05-14_01:46:37.165]] 
+org.toxsoft.core.tslib.bricks.strio.StrioRtException: Input/output exception (IOException) happened
+	at org.toxsoft.core.tslib.bricks.strio.impl.StrioWriter.outChar(StrioWriter.java:112)
+	at org.toxsoft.core.tslib.bricks.strio.impl.StrioWriter.writeQuotedString(StrioWriter.java:437)
+	at org.toxsoft.core.pas.tj.impl.TsJsonObjectStorage.save(TsJsonObjectStorage.java:52)
+	at org.toxsoft.core.pas.tj.impl.TjUtils.saveObject(TjUtils.java:129)
+	at org.toxsoft.core.pas.common.PasChannel.writeJsonObject(PasChannel.java:761)
+	at org.toxsoft.core.pas.common.PasChannelWriter.run(PasChannelWriter.java:123)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+[INFO |2026-05-14 01:46:37.173|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:32900] 2026-05-14 01:46:37] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:32900), time =2026-05-14_01:46:37.172, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 01:46:37.174|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5ConnectionThread-218   ] Ожидание callback-каналов = 3 msec. Установленных каналов = 1
+[INFO |2026-05-14 01:46:37.174|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-218   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = createTimeout(3000)
+[INFO |2026-05-14 01:46:37.174|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-218   ] tryConnect(...): classLoader = jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+[INFO |2026-05-14 01:46:37.197|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-218   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = failureTimeout(120000)
+[ERROR|2026-05-14 01:46:37.201|org.toxsoft.uskat.core.impl.SkCoreApi|main                     ] Unhandled message from backend, topicID= org.toxsoft.uskat.s5.backend, messageId = BeforeConnect, args = {}
+[INFO |2026-05-14 01:46:37.204|ru.toxsoft.l2.core.net.NetworkUtils|main                     ] IDataQualityService addConnectedResources: size = 2
+[INFO |2026-05-14 01:46:37.204|ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule|main                     ] Curr data channels are forced to re-upload curr values, size = 2
+[ERROR|2026-05-14 01:51:57.707|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:32900] 2026-05-14 01:46:37] Обнаружен разрыв соединения канала remote(127.0.0.1:8081), local(127.0.0.1:32900), time =2026-05-14_01:46:37.172. Причина: TsIoRtException: Error acessing file or directory
+[ERROR|2026-05-14 01:51:57.707|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:32900] 2026-05-14 01:46:37] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 01:51:57.707|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:32900] 2026-05-14 01:46:37] restoreSessionQuery(): call handlingUnexpectedBreak()
+[WARN |2026-05-14 01:51:57.709|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:32900] 2026-05-14 01:46:37] S5CallbackClient.disconnected(). clear interrupted state
+[INFO |2026-05-14 01:51:57.709|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-222   ] client options: 
+{
+  sklogin = "root"
+  skpassword = "************************"
+  org.toxsoft.uskat.s5.client.hosts = @ S5HostList[1] { localhost:8080 }
+  org.toxsoft.uskat.s5.client.clientProgram = "l2"
+  org.toxsoft.uskat.s5.client.clientVersion = @ 22.13 2025-05-19 16:00:00
+  org.toxsoft.uskat.s5.client.connectTimeout = 3000
+  org.toxsoft.uskat.s5.client.failureTimeout = 120000
+  org.toxsoft.uskat.s5.client.currdataTimeout = 1000
+  org.toxsoft.uskat.s5.client.histdataTimeout = 10000
+  org.toxsoft.uskat.s5.client.sessionID = @ sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+  org.toxsoft.uskat.s5.client.clientAddress = "127.0.0.1"
+  org.toxsoft.uskat.s5.client.clientPort = 32900
+}
+[INFO |2026-05-14 01:51:57.714|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-222   ] tryConnect(...): topology: no_cluster:standalone[localhost:8080]
+[INFO |2026-05-14 01:51:57.715|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 01:51:57] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=54314]
+[INFO |2026-05-14 01:51:57.715|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 01:51:57] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:54314), time =2026-05-14_01:51:57.715
+[INFO |2026-05-14 01:51:57.715|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:54314] 2026-05-14 01:51:57] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:54314), time =2026-05-14_01:51:57.715, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 01:51:57.716|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5ConnectionThread-222   ] Ожидание callback-каналов = 2 msec. Установленных каналов = 1
+[INFO |2026-05-14 01:51:57.716|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-222   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = createTimeout(3000)
+[INFO |2026-05-14 01:51:57.716|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-222   ] tryConnect(...): classLoader = jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+[INFO |2026-05-14 01:51:57.732|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-222   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = failureTimeout(120000)
+[ERROR|2026-05-14 01:51:57.735|org.toxsoft.uskat.core.impl.SkCoreApi|main                     ] Unhandled message from backend, topicID= org.toxsoft.uskat.s5.backend, messageId = BeforeConnect, args = {}
+[INFO |2026-05-14 01:51:57.737|ru.toxsoft.l2.core.net.NetworkUtils|main                     ] IDataQualityService addConnectedResources: size = 2
+[INFO |2026-05-14 01:51:57.737|ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule|main                     ] Curr data channels are forced to re-upload curr values, size = 2
+[INFO |2026-05-14 01:53:16.108|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 01:53:16.108|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 01:53:16.108|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 01:53:16.108|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[ERROR|2026-05-14 01:53:18.209|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5CallbackClient doJob   ] remote(127.0.0.1:8081), local(127.0.0.1:54314), time =2026-05-14_01:51:57.715. Завершение работы канала по обнаруженному отказу работы (isFailure = true). failureTimeout = 80000, waitTime = 80472
+[ERROR|2026-05-14 01:53:18.210|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5CallbackClient doJob   ] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 01:53:18.210|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5CallbackClient doJob   ] restoreSessionQuery(): call handlingUnexpectedBreak()
+[ERROR|2026-05-14 01:53:18.212|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:54314] 2026-05-14 01:51:57] Обнаружен разрыв соединения канала remote(127.0.0.1:8081), local(0.0.0.0:54314), time =2026-05-14_01:51:57.715. Причина: TsIoRtException: Error acessing file or directory
+[INFO |2026-05-14 01:53:18.212|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-226   ] client options: 
+{
+  sklogin = "root"
+  skpassword = "************************"
+  org.toxsoft.uskat.s5.client.hosts = @ S5HostList[1] { localhost:8080 }
+  org.toxsoft.uskat.s5.client.clientProgram = "l2"
+  org.toxsoft.uskat.s5.client.clientVersion = @ 22.13 2025-05-19 16:00:00
+  org.toxsoft.uskat.s5.client.connectTimeout = 3000
+  org.toxsoft.uskat.s5.client.failureTimeout = 120000
+  org.toxsoft.uskat.s5.client.currdataTimeout = 1000
+  org.toxsoft.uskat.s5.client.histdataTimeout = 10000
+  org.toxsoft.uskat.s5.client.sessionID = @ sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+  org.toxsoft.uskat.s5.client.clientAddress = "127.0.0.1"
+  org.toxsoft.uskat.s5.client.clientPort = 54314
+}
+[INFO |2026-05-14 01:53:18.216|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-226   ] tryConnect(...): topology: no_cluster:standalone[localhost:8080]
+[INFO |2026-05-14 01:53:18.217|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 01:53:18] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=52104]
+[INFO |2026-05-14 01:53:18.218|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 01:53:18] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:52104), time =2026-05-14_01:53:18.217
+[INFO |2026-05-14 01:53:18.218|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:52104] 2026-05-14 01:53:18] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:52104), time =2026-05-14_01:53:18.217, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 01:53:18.219|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5ConnectionThread-226   ] Ожидание callback-каналов = 2 msec. Установленных каналов = 1
+[INFO |2026-05-14 01:53:18.219|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-226   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = createTimeout(3000)
+[INFO |2026-05-14 01:53:18.219|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-226   ] tryConnect(...): classLoader = jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+[INFO |2026-05-14 01:53:18.235|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-226   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = failureTimeout(120000)
+[ERROR|2026-05-14 01:53:18.237|org.toxsoft.uskat.core.impl.SkCoreApi|main                     ] Unhandled message from backend, topicID= org.toxsoft.uskat.s5.backend, messageId = BeforeConnect, args = {}
+[INFO |2026-05-14 01:53:18.240|ru.toxsoft.l2.core.net.NetworkUtils|main                     ] IDataQualityService addConnectedResources: size = 2
+[INFO |2026-05-14 01:53:18.240|ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule|main                     ] Curr data channels are forced to re-upload curr values, size = 2
+[ERROR|2026-05-14 01:58:38.274|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:52104] 2026-05-14 01:53:18] Обнаружен разрыв соединения канала remote(127.0.0.1:8081), local(127.0.0.1:52104), time =2026-05-14_01:53:18.217. Причина: TsIoRtException: Error acessing file or directory
+[ERROR|2026-05-14 01:58:38.274|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:52104] 2026-05-14 01:53:18] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 01:58:38.274|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:52104] 2026-05-14 01:53:18] restoreSessionQuery(): call handlingUnexpectedBreak()
+[WARN |2026-05-14 01:58:38.276|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:52104] 2026-05-14 01:53:18] S5CallbackClient.disconnected(). clear interrupted state
+[INFO |2026-05-14 01:58:38.278|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-231   ] client options: 
+{
+  sklogin = "root"
+  skpassword = "************************"
+  org.toxsoft.uskat.s5.client.hosts = @ S5HostList[1] { localhost:8080 }
+  org.toxsoft.uskat.s5.client.clientProgram = "l2"
+  org.toxsoft.uskat.s5.client.clientVersion = @ 22.13 2025-05-19 16:00:00
+  org.toxsoft.uskat.s5.client.connectTimeout = 3000
+  org.toxsoft.uskat.s5.client.failureTimeout = 120000
+  org.toxsoft.uskat.s5.client.currdataTimeout = 1000
+  org.toxsoft.uskat.s5.client.histdataTimeout = 10000
+  org.toxsoft.uskat.s5.client.sessionID = @ sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+  org.toxsoft.uskat.s5.client.clientAddress = "127.0.0.1"
+  org.toxsoft.uskat.s5.client.clientPort = 52104
+}
+[INFO |2026-05-14 01:58:38.282|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-231   ] tryConnect(...): topology: no_cluster:standalone[localhost:8080]
+[INFO |2026-05-14 01:58:38.283|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 01:58:38] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=57460]
+[INFO |2026-05-14 01:58:38.283|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 01:58:38] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:57460), time =2026-05-14_01:58:38.283
+[INFO |2026-05-14 01:58:38.283|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:57460] 2026-05-14 01:58:38] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:57460), time =2026-05-14_01:58:38.283, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 01:58:38.284|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5ConnectionThread-231   ] Ожидание callback-каналов = 2 msec. Установленных каналов = 1
+[INFO |2026-05-14 01:58:38.284|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-231   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = createTimeout(3000)
+[INFO |2026-05-14 01:58:38.284|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-231   ] tryConnect(...): classLoader = jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+[INFO |2026-05-14 01:58:38.301|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-231   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = failureTimeout(120000)
+[ERROR|2026-05-14 01:58:38.350|org.toxsoft.uskat.core.impl.SkCoreApi|main                     ] Unhandled message from backend, topicID= org.toxsoft.uskat.s5.backend, messageId = BeforeConnect, args = {}
+[INFO |2026-05-14 01:58:38.353|ru.toxsoft.l2.core.net.NetworkUtils|main                     ] IDataQualityService addConnectedResources: size = 2
+[INFO |2026-05-14 01:58:38.353|ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule|main                     ] Curr data channels are forced to re-upload curr values, size = 2
+[ERROR|2026-05-14 02:01:18.802|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:57460] 2026-05-14 01:58:38] Обнаружен разрыв соединения канала remote(127.0.0.1:8081), local(127.0.0.1:57460), time =2026-05-14_01:58:38.283. Причина: TsIoRtException: Error acessing file or directory
+[ERROR|2026-05-14 02:01:18.802|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:57460] 2026-05-14 01:58:38] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 02:01:18.802|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:57460] 2026-05-14 01:58:38] restoreSessionQuery(): call handlingUnexpectedBreak()
+[WARN |2026-05-14 02:01:18.804|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:57460] 2026-05-14 01:58:38] S5CallbackClient.disconnected(). clear interrupted state
+[INFO |2026-05-14 02:01:18.805|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-236   ] client options: 
+{
+  sklogin = "root"
+  skpassword = "************************"
+  org.toxsoft.uskat.s5.client.hosts = @ S5HostList[1] { localhost:8080 }
+  org.toxsoft.uskat.s5.client.clientProgram = "l2"
+  org.toxsoft.uskat.s5.client.clientVersion = @ 22.13 2025-05-19 16:00:00
+  org.toxsoft.uskat.s5.client.connectTimeout = 3000
+  org.toxsoft.uskat.s5.client.failureTimeout = 120000
+  org.toxsoft.uskat.s5.client.currdataTimeout = 1000
+  org.toxsoft.uskat.s5.client.histdataTimeout = 10000
+  org.toxsoft.uskat.s5.client.sessionID = @ sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+  org.toxsoft.uskat.s5.client.clientAddress = "127.0.0.1"
+  org.toxsoft.uskat.s5.client.clientPort = 57460
+}
+[INFO |2026-05-14 02:01:18.809|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-236   ] tryConnect(...): topology: no_cluster:standalone[localhost:8080]
+[INFO |2026-05-14 02:01:18.810|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 02:01:18] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=42404]
+[INFO |2026-05-14 02:01:18.811|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 02:01:18] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:42404), time =2026-05-14_02:01:18.811
+[INFO |2026-05-14 02:01:18.811|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:42404] 2026-05-14 02:01:18] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:42404), time =2026-05-14_02:01:18.811, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 02:01:18.812|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5ConnectionThread-236   ] Ожидание callback-каналов = 1 msec. Установленных каналов = 1
+[INFO |2026-05-14 02:01:18.812|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-236   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = createTimeout(3000)
+[INFO |2026-05-14 02:01:18.812|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-236   ] tryConnect(...): classLoader = jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+[INFO |2026-05-14 02:01:18.831|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-236   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = failureTimeout(120000)
+[ERROR|2026-05-14 02:01:18.846|org.toxsoft.uskat.core.impl.SkCoreApi|main                     ] Unhandled message from backend, topicID= org.toxsoft.uskat.s5.backend, messageId = BeforeConnect, args = {}
+[INFO |2026-05-14 02:01:18.848|ru.toxsoft.l2.core.net.NetworkUtils|main                     ] IDataQualityService addConnectedResources: size = 2
+[INFO |2026-05-14 02:01:18.849|ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule|main                     ] Curr data channels are forced to re-upload curr values, size = 2
+[ERROR|2026-05-14 02:02:39.267|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5CallbackClient doJob   ] remote(127.0.0.1:8081), local(127.0.0.1:42404), time =2026-05-14_02:01:18.811. Завершение работы канала по обнаруженному отказу работы (isFailure = true). failureTimeout = 80000, waitTime = 80419
+[ERROR|2026-05-14 02:02:39.267|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5CallbackClient doJob   ] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 02:02:39.267|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5CallbackClient doJob   ] restoreSessionQuery(): call handlingUnexpectedBreak()
+[ERROR|2026-05-14 02:02:39.269|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:42404] 2026-05-14 02:01:18] Обнаружен разрыв соединения канала remote(127.0.0.1:8081), local(0.0.0.0:42404), time =2026-05-14_02:01:18.811. Причина: TsIoRtException: Error acessing file or directory
+[INFO |2026-05-14 02:02:39.269|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-240   ] client options: 
+{
+  sklogin = "root"
+  skpassword = "************************"
+  org.toxsoft.uskat.s5.client.hosts = @ S5HostList[1] { localhost:8080 }
+  org.toxsoft.uskat.s5.client.clientProgram = "l2"
+  org.toxsoft.uskat.s5.client.clientVersion = @ 22.13 2025-05-19 16:00:00
+  org.toxsoft.uskat.s5.client.connectTimeout = 3000
+  org.toxsoft.uskat.s5.client.failureTimeout = 120000
+  org.toxsoft.uskat.s5.client.currdataTimeout = 1000
+  org.toxsoft.uskat.s5.client.histdataTimeout = 10000
+  org.toxsoft.uskat.s5.client.sessionID = @ sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+  org.toxsoft.uskat.s5.client.clientAddress = "127.0.0.1"
+  org.toxsoft.uskat.s5.client.clientPort = 42404
+}
+[INFO |2026-05-14 02:02:39.273|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-240   ] tryConnect(...): topology: no_cluster:standalone[localhost:8080]
+[INFO |2026-05-14 02:02:39.274|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 02:02:39] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=59082]
+[INFO |2026-05-14 02:02:39.275|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 02:02:39] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:59082), time =2026-05-14_02:02:39.274
+[INFO |2026-05-14 02:02:39.275|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:59082] 2026-05-14 02:02:39] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:59082), time =2026-05-14_02:02:39.274, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 02:02:39.275|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5ConnectionThread-240   ] Ожидание callback-каналов = 2 msec. Установленных каналов = 1
+[INFO |2026-05-14 02:02:39.276|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-240   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = createTimeout(3000)
+[INFO |2026-05-14 02:02:39.276|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-240   ] tryConnect(...): classLoader = jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+[INFO |2026-05-14 02:02:39.292|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-240   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = failureTimeout(120000)
+[ERROR|2026-05-14 02:02:39.338|org.toxsoft.uskat.core.impl.SkCoreApi|main                     ] Unhandled message from backend, topicID= org.toxsoft.uskat.s5.backend, messageId = BeforeConnect, args = {}
+[INFO |2026-05-14 02:02:39.342|ru.toxsoft.l2.core.net.NetworkUtils|main                     ] IDataQualityService addConnectedResources: size = 2
+[INFO |2026-05-14 02:02:39.342|ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule|main                     ] Curr data channels are forced to re-upload curr values, size = 2
+[INFO |2026-05-14 02:03:16.236|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 02:03:16.236|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 02:03:16.236|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 02:03:16.236|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 02:13:16.364|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 02:13:16.364|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 02:13:16.365|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 02:13:16.365|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 02:23:16.492|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 02:23:16.492|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 02:23:16.492|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 02:23:16.492|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 02:33:16.619|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 02:33:16.619|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 02:33:16.619|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 02:33:16.619|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 02:43:16.746|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 02:43:16.746|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 02:43:16.746|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 02:43:16.746|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[ERROR|2026-05-14 02:50:40.306|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:59082] 2026-05-14 02:02:39] Обнаружен разрыв соединения канала remote(127.0.0.1:8081), local(127.0.0.1:59082), time =2026-05-14_02:02:39.274. Причина: TsIoRtException: Error acessing file or directory
+[ERROR|2026-05-14 02:50:40.306|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:59082] 2026-05-14 02:02:39] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 02:50:40.309|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:59082] 2026-05-14 02:02:39] restoreSessionQuery(): call handlingUnexpectedBreak()
+[WARN |2026-05-14 02:50:40.311|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:59082] 2026-05-14 02:02:39] S5CallbackClient.disconnected(). clear interrupted state
+[INFO |2026-05-14 02:50:40.312|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-248   ] client options: 
+{
+  sklogin = "root"
+  skpassword = "************************"
+  org.toxsoft.uskat.s5.client.hosts = @ S5HostList[1] { localhost:8080 }
+  org.toxsoft.uskat.s5.client.clientProgram = "l2"
+  org.toxsoft.uskat.s5.client.clientVersion = @ 22.13 2025-05-19 16:00:00
+  org.toxsoft.uskat.s5.client.connectTimeout = 3000
+  org.toxsoft.uskat.s5.client.failureTimeout = 120000
+  org.toxsoft.uskat.s5.client.currdataTimeout = 1000
+  org.toxsoft.uskat.s5.client.histdataTimeout = 10000
+  org.toxsoft.uskat.s5.client.sessionID = @ sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+  org.toxsoft.uskat.s5.client.clientAddress = "127.0.0.1"
+  org.toxsoft.uskat.s5.client.clientPort = 59082
+}
+[INFO |2026-05-14 02:50:40.317|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-248   ] tryConnect(...): topology: no_cluster:standalone[localhost:8080]
+[INFO |2026-05-14 02:50:40.318|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 02:50:40] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=50844]
+[INFO |2026-05-14 02:50:40.318|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 02:50:40] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:50844), time =2026-05-14_02:50:40.318
+[INFO |2026-05-14 02:50:40.318|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:50844] 2026-05-14 02:50:40] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:50844), time =2026-05-14_02:50:40.318, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 02:50:40.319|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5ConnectionThread-248   ] Ожидание callback-каналов = 2 msec. Установленных каналов = 1
+[INFO |2026-05-14 02:50:40.319|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-248   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = createTimeout(3000)
+[INFO |2026-05-14 02:50:40.319|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-248   ] tryConnect(...): classLoader = jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+[INFO |2026-05-14 02:50:40.335|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-248   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = failureTimeout(120000)
+[ERROR|2026-05-14 02:50:40.337|org.toxsoft.uskat.core.impl.SkCoreApi|main                     ] Unhandled message from backend, topicID= org.toxsoft.uskat.s5.backend, messageId = BeforeConnect, args = {}
+[INFO |2026-05-14 02:50:40.340|ru.toxsoft.l2.core.net.NetworkUtils|main                     ] IDataQualityService addConnectedResources: size = 2
+[INFO |2026-05-14 02:50:40.340|ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule|main                     ] Curr data channels are forced to re-upload curr values, size = 2
+[ERROR|2026-05-14 02:52:00.552|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5CallbackClient doJob   ] remote(127.0.0.1:8081), local(127.0.0.1:50844), time =2026-05-14_02:50:40.318. Завершение работы канала по обнаруженному отказу работы (isFailure = true). failureTimeout = 80000, waitTime = 80211
+[ERROR|2026-05-14 02:52:00.552|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5CallbackClient doJob   ] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 02:52:00.552|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5CallbackClient doJob   ] restoreSessionQuery(): call handlingUnexpectedBreak()
+[INFO |2026-05-14 02:52:00.554|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-252   ] client options: 
+{
+  sklogin = "root"
+  skpassword = "************************"
+  org.toxsoft.uskat.s5.client.hosts = @ S5HostList[1] { localhost:8080 }
+  org.toxsoft.uskat.s5.client.clientProgram = "l2"
+  org.toxsoft.uskat.s5.client.clientVersion = @ 22.13 2025-05-19 16:00:00
+  org.toxsoft.uskat.s5.client.connectTimeout = 3000
+  org.toxsoft.uskat.s5.client.failureTimeout = 120000
+  org.toxsoft.uskat.s5.client.currdataTimeout = 1000
+  org.toxsoft.uskat.s5.client.histdataTimeout = 10000
+  org.toxsoft.uskat.s5.client.sessionID = @ sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+  org.toxsoft.uskat.s5.client.clientAddress = "127.0.0.1"
+  org.toxsoft.uskat.s5.client.clientPort = 50844
+}
+[ERROR|2026-05-14 02:52:00.554|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:50844] 2026-05-14 02:50:40] Обнаружен разрыв соединения канала remote(127.0.0.1:8081), local(0.0.0.0:50844), time =2026-05-14_02:50:40.318. Причина: TsIoRtException: Error acessing file or directory
+[INFO |2026-05-14 02:52:00.559|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-252   ] tryConnect(...): topology: no_cluster:standalone[localhost:8080]
+[INFO |2026-05-14 02:52:00.559|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 02:52:00] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=44418]
+[INFO |2026-05-14 02:52:00.560|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 02:52:00] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:44418), time =2026-05-14_02:52:00.560
+[INFO |2026-05-14 02:52:00.560|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:44418] 2026-05-14 02:52:00] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:44418), time =2026-05-14_02:52:00.560, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 02:52:00.561|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5ConnectionThread-252   ] Ожидание callback-каналов = 2 msec. Установленных каналов = 1
+[INFO |2026-05-14 02:52:00.561|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-252   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = createTimeout(3000)
+[INFO |2026-05-14 02:52:00.561|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-252   ] tryConnect(...): classLoader = jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+[INFO |2026-05-14 02:52:00.577|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-252   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = failureTimeout(120000)
+[ERROR|2026-05-14 02:52:00.586|org.toxsoft.uskat.core.impl.SkCoreApi|main                     ] Unhandled message from backend, topicID= org.toxsoft.uskat.s5.backend, messageId = BeforeConnect, args = {}
+[INFO |2026-05-14 02:52:00.589|ru.toxsoft.l2.core.net.NetworkUtils|main                     ] IDataQualityService addConnectedResources: size = 2
+[INFO |2026-05-14 02:52:00.589|ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule|main                     ] Curr data channels are forced to re-upload curr values, size = 2
+[INFO |2026-05-14 02:53:16.877|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 02:53:16.877|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 02:53:16.880|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 02:53:16.880|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 03:03:17.007|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 03:03:17.007|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 03:03:17.007|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 03:03:17.007|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 03:13:17.135|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 03:13:17.135|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 03:13:17.135|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 03:13:17.135|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 03:23:17.263|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 03:23:17.263|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 03:23:17.263|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 03:23:17.263|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 03:33:17.395|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 03:33:17.395|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 03:33:17.395|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 03:33:17.395|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 03:43:17.524|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 03:43:17.525|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 03:43:17.525|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 03:43:17.525|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 03:53:17.651|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 03:53:17.651|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 03:53:17.651|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 03:53:17.651|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 04:03:17.781|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 04:03:17.781|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 04:03:17.784|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 04:03:17.784|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 04:13:17.918|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 04:13:17.918|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 04:13:17.918|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 04:13:17.918|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 04:23:18.048|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 04:23:18.048|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 04:23:18.048|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 04:23:18.048|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 04:33:18.175|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 04:33:18.175|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 04:33:18.175|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 04:33:18.175|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 04:43:18.304|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 04:43:18.304|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 04:43:18.304|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 04:43:18.304|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 04:53:18.432|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 04:53:18.432|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 04:53:18.432|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 04:53:18.432|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 05:03:18.560|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 05:03:18.560|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 05:03:18.560|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 05:03:18.560|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 05:13:18.690|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 05:13:18.690|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 05:13:18.690|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 05:13:18.690|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 05:23:18.820|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 05:23:18.820|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 05:23:18.820|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 05:23:18.820|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[ERROR|2026-05-14 05:29:22.411|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5CallbackClient doJob   ] remote(127.0.0.1:8081), local(127.0.0.1:44418), time =2026-05-14_02:52:00.560. Завершение работы канала по обнаруженному отказу работы (isFailure = true). failureTimeout = 80000, waitTime = 80011
+[ERROR|2026-05-14 05:29:22.412|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5CallbackClient doJob   ] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 05:29:22.412|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5CallbackClient doJob   ] restoreSessionQuery(): call handlingUnexpectedBreak()
+[INFO |2026-05-14 05:29:22.413|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:44418] 2026-05-14 02:52:00] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=53540]
+[INFO |2026-05-14 05:29:22.414|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:44418] 2026-05-14 02:52:00] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:53540), time =2026-05-14_05:29:22.413
+[ERROR|2026-05-14 05:29:22.414|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5CallbackClient doJob   ] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 05:29:22.414|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5CallbackClient doJob   ] restoreSessionQuery(): call handlingUnexpectedBreak()
+[INFO |2026-05-14 05:29:22.414|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:53540] 2026-05-14 05:29:22] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:53540), time =2026-05-14_05:29:22.413, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[WARN |2026-05-14 05:29:22.414|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5CallbackClient doJob   ] Поток восстановления соединения уже существует: [S5ConnectionThread-267]
+[INFO |2026-05-14 05:29:22.415|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-267   ] client options: 
+{
+  sklogin = "root"
+  skpassword = "************************"
+  org.toxsoft.uskat.s5.client.hosts = @ S5HostList[1] { localhost:8080 }
+  org.toxsoft.uskat.s5.client.clientProgram = "l2"
+  org.toxsoft.uskat.s5.client.clientVersion = @ 22.13 2025-05-19 16:00:00
+  org.toxsoft.uskat.s5.client.connectTimeout = 3000
+  org.toxsoft.uskat.s5.client.failureTimeout = 120000
+  org.toxsoft.uskat.s5.client.currdataTimeout = 1000
+  org.toxsoft.uskat.s5.client.histdataTimeout = 10000
+  org.toxsoft.uskat.s5.client.sessionID = @ sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+  org.toxsoft.uskat.s5.client.clientAddress = "127.0.0.1"
+  org.toxsoft.uskat.s5.client.clientPort = 44418
+}
+[ERROR|2026-05-14 05:29:22.415|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:53540] 2026-05-14 05:29:22] Обнаружен разрыв соединения канала remote(127.0.0.1:8081), local(0.0.0.0:53540), time =2026-05-14_05:29:22.413. Причина: TsIoRtException: Error acessing file or directory
+[ERROR|2026-05-14 05:29:22.415|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:53540] 2026-05-14 05:29:22] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 05:29:22.415|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:53540] 2026-05-14 05:29:22] restoreSessionQuery(): call handlingUnexpectedBreak()
+[ERROR|2026-05-14 05:29:22.417|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:53540] 2026-05-14 05:29:22] 
+org.toxsoft.core.tslib.utils.errors.TsIllegalStateRtException: S5LockControl[2][PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:53540] 2026-05-14 05:29:22]: Ожидание блокировки прервано вызовом Thread.interrupt()
+	at org.toxsoft.uskat.s5.utils.threads.impl.S5LockControl.tryLockWrite(S5LockControl.java:291)
+	at org.toxsoft.uskat.s5.utils.threads.impl.S5Lockable.tryLockWrite(S5Lockable.java:242)
+	at org.toxsoft.uskat.s5.utils.threads.impl.S5Lockable.tryLockWrite(S5Lockable.java:361)
+	at org.toxsoft.uskat.s5.client.remote.connection.S5Connection.restoreSessionQuery(S5Connection.java:433)
+	at org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient.onCloseChannel(S5CallbackClient.java:374)
+	at org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackChannel.doClose(S5CallbackChannel.java:63)
+	at org.toxsoft.core.pas.common.PasChannel.close(PasChannel.java:377)
+	at org.toxsoft.core.pas.client.PasClient$InternalPasChannelHandler.onReceiveError(PasClient.java:384)
+	at org.toxsoft.core.pas.client.PasClient$InternalPasChannelHandler.onReceiveError(PasClient.java:1)
+	at org.toxsoft.core.pas.common.PasChannel.handlerErrorNotify(PasChannel.java:1053)
+	at org.toxsoft.core.pas.common.PasChannel.readFromChannel(PasChannel.java:1111)
+	at org.toxsoft.core.pas.common.PasChannel.run(PasChannel.java:315)
+	at org.toxsoft.core.pas.client.PasClient.run(PasClient.java:210)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.InterruptedException
+	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer.tryAcquireNanos(AbstractQueuedSynchronizer.java:1079)
+	at java.base/java.util.concurrent.locks.ReentrantReadWriteLock$WriteLock.tryLock(ReentrantReadWriteLock.java:1131)
+	at org.toxsoft.uskat.s5.utils.threads.impl.S5LockControl.tryLockWrite(S5LockControl.java:272)
+	... 13 more
+[INFO |2026-05-14 05:29:22.419|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-267   ] tryConnect(...): topology: no_cluster:standalone[localhost:8080]
+[INFO |2026-05-14 05:29:22.420|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 05:29:22] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=53552]
+[INFO |2026-05-14 05:29:22.420|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 05:29:22] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:53552), time =2026-05-14_05:29:22.420
+[INFO |2026-05-14 05:29:22.421|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:53552] 2026-05-14 05:29:22] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:53552), time =2026-05-14_05:29:22.420, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 05:29:22.421|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5ConnectionThread-267   ] Ожидание callback-каналов = 2 msec. Установленных каналов = 1
+[INFO |2026-05-14 05:29:22.421|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-267   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = createTimeout(3000)
+[INFO |2026-05-14 05:29:22.421|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-267   ] tryConnect(...): classLoader = jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+[INFO |2026-05-14 05:29:22.442|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-267   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = failureTimeout(120000)
+[ERROR|2026-05-14 05:29:22.449|org.toxsoft.uskat.core.impl.SkCoreApi|main                     ] Unhandled message from backend, topicID= org.toxsoft.uskat.s5.backend, messageId = BeforeConnect, args = {}
+[INFO |2026-05-14 05:29:22.452|ru.toxsoft.l2.core.net.NetworkUtils|main                     ] IDataQualityService addConnectedResources: size = 2
+[INFO |2026-05-14 05:29:22.452|ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule|main                     ] Curr data channels are forced to re-upload curr values, size = 2
+[INFO |2026-05-14 05:33:18.948|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 05:33:18.948|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 05:33:18.948|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 05:33:18.948|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 05:43:19.076|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 05:43:19.076|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 05:43:19.076|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 05:43:19.076|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 05:53:19.205|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 05:53:19.205|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 05:53:19.205|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 05:53:19.205|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 06:03:19.335|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 06:03:19.335|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 06:03:19.335|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 06:03:19.335|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 06:13:19.464|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 06:13:19.464|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 06:13:19.465|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 06:13:19.465|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 06:23:19.592|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 06:23:19.592|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 06:23:19.592|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 06:23:19.592|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 06:33:19.720|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 06:33:19.720|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 06:33:19.720|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 06:33:19.720|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 06:43:19.849|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 06:43:19.849|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 06:43:19.849|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 06:43:19.849|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[INFO |2026-05-14 06:53:19.978|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] <-------------
+[INFO |2026-05-14 06:53:19.978|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] deadlockedThreads = 0
+[INFO |2026-05-14 06:53:19.978|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] monitorDeadlockedThreads = 0
+[INFO |2026-05-14 06:53:19.978|ru.toxsoft.l2.core.main.L2CoreMain|L2 Threads Monitor Thread] ------------->
+[ERROR|2026-05-14 07:01:37.493|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:53552] 2026-05-14 05:29:22] Обнаружен разрыв соединения канала remote(127.0.0.1:8081), local(127.0.0.1:53552), time =2026-05-14_05:29:22.420. Причина: TsIoRtException: Error acessing file or directory
+[ERROR|2026-05-14 07:01:37.493|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:53552] 2026-05-14 05:29:22] Нет callback-соединений сервера. Пересоздание соединения
+[WARN |2026-05-14 07:01:37.493|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:53552] 2026-05-14 05:29:22] restoreSessionQuery(): call handlingUnexpectedBreak()
+[WARN |2026-05-14 07:01:37.495|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:53552] 2026-05-14 05:29:22] S5CallbackClient.disconnected(). clear interrupted state
+[INFO |2026-05-14 07:01:37.496|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-280   ] client options: 
+{
+  sklogin = "root"
+  skpassword = "************************"
+  org.toxsoft.uskat.s5.client.hosts = @ S5HostList[1] { localhost:8080 }
+  org.toxsoft.uskat.s5.client.clientProgram = "l2"
+  org.toxsoft.uskat.s5.client.clientVersion = @ 22.13 2025-05-19 16:00:00
+  org.toxsoft.uskat.s5.client.connectTimeout = 3000
+  org.toxsoft.uskat.s5.client.failureTimeout = 120000
+  org.toxsoft.uskat.s5.client.currdataTimeout = 1000
+  org.toxsoft.uskat.s5.client.histdataTimeout = 10000
+  org.toxsoft.uskat.s5.client.sessionID = @ sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+  org.toxsoft.uskat.s5.client.clientAddress = "127.0.0.1"
+  org.toxsoft.uskat.s5.client.clientPort = 53552
+}
+[INFO |2026-05-14 07:01:37.501|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-280   ] tryConnect(...): topology: no_cluster:standalone[localhost:8080]
+[INFO |2026-05-14 07:01:37.502|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 07:01:37] Подключение к серверу Socket[addr=localhost/127.0.0.1,port=8081,localport=36348]
+[INFO |2026-05-14 07:01:37.502|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS client [remote = localhost:8081] 2026-05-14 07:01:37] Создание канала с сервером remote(127.0.0.1:8081), local(127.0.0.1:36348), time =2026-05-14_07:01:37.502
+[INFO |2026-05-14 07:01:37.503|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|PAS reader [remote = localhost/127.0.0.1:8081, local = /127.0.0.1:36348] 2026-05-14 07:01:37] doOnSended(...): sended INIT SESSION message. aSource = remote(127.0.0.1:8081), local(127.0.0.1:36348), time =2026-05-14_07:01:37.502, aSessionID = sk.Session[root.remote.u149ce58a_63bd_4fb8_aacc_eabd25713380]
+[INFO |2026-05-14 07:01:37.503|org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient|S5ConnectionThread-280   ] Ожидание callback-каналов = 2 msec. Установленных каналов = 1
+[INFO |2026-05-14 07:01:37.503|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-280   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = createTimeout(3000)
+[INFO |2026-05-14 07:01:37.503|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-280   ] tryConnect(...): classLoader = jdk.internal.loader.ClassLoaders$AppClassLoader@639fee48
+[INFO |2026-05-14 07:01:37.521|org.toxsoft.uskat.s5.client.remote.connection.S5Connection|S5ConnectionThread-280   ] S5Connection.tryConnect: EJBClient.setInvocationTimeout (remoteBackend) = failureTimeout(120000)
+[ERROR|2026-05-14 07:01:37.523|org.toxsoft.uskat.core.impl.SkCoreApi|main                     ] Unhandled message from backend, topicID= org.toxsoft.uskat.s5.backend, messageId = BeforeConnect, args = {}
+[INFO |2026-05-14 07:01:37.525|ru.toxsoft.l2.core.net.NetworkUtils|main                     ] IDataQualityService addConnectedResources: size = 2
+[INFO |2026-05-14 07:01:37.525|ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OpcCurrDataModule|main                     ] Curr data channels are forced to re-upload curr values, size = 2
