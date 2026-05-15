@@ -15,19 +15,19 @@ import org.toxsoft.core.tslib.bricks.strid.*;
  * </ul>
  * <p>
  * The {@link #params()} method contains the instance creation parameters of
- * {@link IDlmFactory#createDlm(String, IOptionSet)}. Several DLM instances created by one factory differs by instance
+ * {@link IL2DlmFactory#createDlm(String, IOptionSet)}. Several DLM instances created by one factory differs by instance
  * ID and creation parameters. Also {@link #params()} provides values for {@link #nmName()} and {@link #description()}
  * with options {@link IAvMetaConstants#TSID_NAME} and {@link IAvMetaConstants#TSID_DESCRIPTION}.
  *
  * @author hazard157
  */
-public interface IDlm
+public interface IL2Dlm
     extends IStridableParameterized {
 
   /**
    * Returns identification information about the module.
    * <p>
-   * This is the same information that is returned by this module's factory in the {@link IDlmFactory#info()} method.
+   * This is the same information that is returned by this module's factory in the {@link IL2DlmFactory#info()} method.
    *
    * @return {@link DlmInfo} - information about the module
    */

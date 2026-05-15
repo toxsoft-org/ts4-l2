@@ -8,12 +8,12 @@ import org.toxsoft.core.tslib.utils.errors.*;
  *
  * @author hazard157
  */
-public interface IDlmFactory {
+public interface IL2DlmFactory {
 
   /**
    * Returns information about the module this factory creates.
    * <p>
-   * Created DLM returns the same information via {@link IDlm#info()}.
+   * Created DLM returns the same information via {@link IL2Dlm#info()}.
    *
    * @return {@link DlmInfo} - information about the module
    */

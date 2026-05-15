@@ -10,13 +10,13 @@ import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 
 /**
- * {@link IDlm} base implementation.
+ * {@link IL2Dlm} base implementation.
  *
  * @author hazard157
  */
 public class L2AbstractDlm
     extends AbstractTsCoopCompMultiUse
-    implements IDlm {
+    implements IL2Dlm {
 
   private final String     id;
   private final DlmInfo    info;

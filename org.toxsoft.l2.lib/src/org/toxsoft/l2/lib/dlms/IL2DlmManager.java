@@ -1,6 +1,5 @@
 package org.toxsoft.l2.lib.dlms;
 
-import org.toxsoft.core.tslib.bricks.strid.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.l2.lib.*;
@@ -19,8 +18,8 @@ public interface IL2DlmManager
    * Some DLMs may fail to start during initialization and startup, and the manager will remove them from the list. Even
    * during normal operation, the manager may remove a faulty DLM.
    *
-   * @return {@link IList}&lt;{@link IDlm}&gt; - DLMs list
+   * @return {@link IList}&lt;{@link IL2Dlm}&gt; - DLMs list
    */
-  IStridablesList<IStridable> dlms();
+  IStridablesList<IL2Dlm> dlms();
 
 }

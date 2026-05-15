@@ -7,7 +7,7 @@ import org.toxsoft.core.tslib.utils.plugins.*;
 import org.toxsoft.l2.lib.*;
 
 /**
- * Information about DLM is provided by {@link IDlm} itself.
+ * Information about DLM is provided by {@link IL2Dlm} itself.
  *
  * @author hazard157
  * @param moduleId String - module ID is the same as provider plugin ID {@link IPluginInfo#pluginId()}

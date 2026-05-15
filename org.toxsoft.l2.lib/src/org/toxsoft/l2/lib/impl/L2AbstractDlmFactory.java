@@ -11,7 +11,7 @@ import org.toxsoft.core.tslib.utils.plugins.*;
 import org.toxsoft.l2.lib.dlms.*;
 
 /**
- * {@link IDlmFactory} base implementation.
+ * {@link IL2DlmFactory} base implementation.
  * <p>
  * The constructor implementation in the inheritor must be <b>no arguments</b> so that the plugin manager can
  * instantiate it using <code>class.getDeclaredConstructor().newInstance()</code>.
@@ -19,7 +19,7 @@ import org.toxsoft.l2.lib.dlms.*;
  * @author hazard157
  */
 public abstract class L2AbstractDlmFactory
-    implements IDlmFactory {
+    implements IL2DlmFactory {
 
   private final DlmInfo info;
 

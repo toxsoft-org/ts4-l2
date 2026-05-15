@@ -5,7 +5,6 @@ import static org.toxsoft.l2.lib.l10n.IL2LibSharedResources.*;
 
 import org.toxsoft.core.tslib.bricks.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
-import org.toxsoft.core.tslib.bricks.strid.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
@@ -154,7 +153,7 @@ class L2DlmManager
 
   @SuppressWarnings( { "unchecked", "rawtypes" } )
   @Override
-  public IStridablesList<IStridable> dlms() {
+  public IStridablesList<IL2Dlm> dlms() {
     return switch( compState() ) {
       case CREATED, DESTROYED -> IStridablesList.EMPTY;
       case INITIALIZED -> (IStridablesList)initedDlmsList;

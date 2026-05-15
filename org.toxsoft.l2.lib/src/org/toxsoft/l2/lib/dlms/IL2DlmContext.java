@@ -5,7 +5,7 @@ package org.toxsoft.l2.lib.dlms;
  *
  * @author max
  */
-public interface IDlmContext {
+public interface IL2DlmContext {
 
   //
   // /**
