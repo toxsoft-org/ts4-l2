@@ -1,7 +1,6 @@
 package org.toxsoft.l2.lib.l10n;
 
 import org.toxsoft.l2.lib.*;
-import org.toxsoft.l2.lib.hal.*;
 import org.toxsoft.l2.lib.impl.*;
 
 /**
@@ -51,10 +50,12 @@ public interface IL2LibSharedResources {
   String FMT_ERR_BAD_CFG_FILE_IGNORED     = Messages.getString( "Core.FMT_ERR_BAD_CFG_FILE_IGNORED" );     //$NON-NLS-1$
   String FMT_ERR_DUP_MID_CFG_FILE_IGNORED = Messages.getString( "Core.FMT_ERR_DUP_MID_CFG_FILE_IGNORED" ); //$NON-NLS-1$
 
-  /**
-   * {@link IL2Hal}
-   */
-  String FMT_ERR_NO_HAL_DEVICE_FACTORY = Messages.getString( "Hal.FMT_ERR_NO_HAL_DEVICE_FACTORY" ); //$NON-NLS-1$
+  // ------------------------------------------------------------------------------------
+  // HAL
+  //
+  String FMT_ERR_NO_HAL_DEVICE_FACTORY      = Messages.getString( "Hal.FMT_ERR_NO_HAL_DEVICE_FACTORY" );      //$NON-NLS-1$
+  String FMT_ERR_FACTORY_CANT_CREATE_DEVICE = Messages.getString( "Hal.FMT_ERR_FACTORY_CANT_CREATE_DEVICE" ); //$NON-NLS-1$
+  String FMT_ERR_CANT_START_DEVICE          = Messages.getString( "Hal.FMT_ERR_CANT_START_DEVICE" );          //$NON-NLS-1$
 
   /**
    * {@link IL2GlobalOptions}

@@ -106,8 +106,8 @@ class L2Hal
       }
       catch( Exception ex ) {
         logger().error( ex );
-        vr = ValidationResult.firstNonOk( vr, ValidationResult.warn(
-            "Device configuration '%s' ignored, factory can not create valid device: %s", cfg.id(), ex.getMessage() ) );
+        vr = ValidationResult.firstNonOk( vr,
+            ValidationResult.warn( FMT_ERR_FACTORY_CANT_CREATE_DEVICE, cfg.id(), ex.getMessage() ) );
       }
     }
     // TODO initialize devices from list tmpDeviceList, initialized devices will be added to #deviceList
@@ -119,7 +119,7 @@ class L2Hal
       catch( Exception ex ) {
         logger().error( ex );
         vr = ValidationResult.firstNonOk( vr,
-            ValidationResult.warn( "Device '%s' ignored, error while starting: %s", device.id(), ex.getMessage() ) );
+            ValidationResult.warn( FMT_ERR_CANT_START_DEVICE, device.id(), ex.getMessage() ) );
         device.destroy();
       }
     }
