@@ -7,6 +7,7 @@
         <Logger level="WARN"   name="org.jboss" />
         <Logger level="WARN"   name="org.jboss" />
         <Logger level="WARN"   name="org.jboss.ejb.client" />
+        <Logger level="WARN"   name="org.wildfly" />
 
         <Logger level="INFO"  name="org.toxsoft" />
         <Logger level="WARN"  name="org.toxsoft.core.tslib.bricks.threadexec.TsThreadExecutor" />
@@ -18,7 +19,7 @@
 
         <Logger level="INFO"  name="org.toxsoft.uskat.s5.common" />
         <Logger level="WARN"  name="org.toxsoft.uskat.s5.common.sysdescr.SkSysdescrReader" />
-        <Logger level="ALL"   name="org.toxsoft.uskat.s5.client" />
+        <Logger level="INFO"  name="org.toxsoft.uskat.s5.client" />
         <Logger level="INFO"  name="org.toxsoft.uskat.s5.client.remote.S5BackendRemote" />        
         <Logger level="INFO"  name="org.toxsoft.uskat.s5.server" />
 
