@@ -3,15 +3,19 @@
     <!-- Настройка логгеров -->
     <Loggers>
         <!-- Настройка журналов компонент системы -->
+        <Logger level="WARN"   name="org.jboss.ejb.client" />
+
         <Logger level="INFO"  name="org.toxsoft" />
         <Logger level="WARN"  name="org.toxsoft.core.tslib.bricks.threadexec.TsThreadExecutor" />
 
         <Logger level="INFO"  name="org.toxsoft.uskat.core" />
         <Logger level="WARN"  name="org.toxsoft.uskat.core.impl.SkCoreServObject" />
+        
+        
 
         <Logger level="INFO"  name="org.toxsoft.uskat.s5.common" />
         <Logger level="WARN"  name="org.toxsoft.uskat.s5.common.sysdescr.SkSysdescrReader" />
-        <Logger level="INFO"  name="org.toxsoft.uskat.s5.client" />
+        <Logger level="ALL"   name="org.toxsoft.uskat.s5.client" />
         <Logger level="INFO"  name="org.toxsoft.uskat.s5.server" />
 
 
@@ -19,7 +23,7 @@
         <Logger level="ALL"   name="ru.toxsoft" />
         
         <!-- Корневой логгер: уровень ERROR, выводит в оба аппендера -->
-        <Root level="ERROR">
+        <Root level="ALL">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="File"/>
         </Root>
