@@ -3,6 +3,9 @@
     <!-- Настройка логгеров -->
     <Loggers>
         <!-- Настройка журналов компонент системы -->
+        <Logger level="WARN"   name="org.xnio" />
+        <Logger level="WARN"   name="org.jboss" />
+        <Logger level="WARN"   name="org.jboss" />
         <Logger level="WARN"   name="org.jboss.ejb.client" />
 
         <Logger level="INFO"  name="org.toxsoft" />
@@ -16,6 +19,7 @@
         <Logger level="INFO"  name="org.toxsoft.uskat.s5.common" />
         <Logger level="WARN"  name="org.toxsoft.uskat.s5.common.sysdescr.SkSysdescrReader" />
         <Logger level="ALL"   name="org.toxsoft.uskat.s5.client" />
+        <Logger level="INFO"  name="org.toxsoft.uskat.s5.client.remote.S5BackendRemote" />        
         <Logger level="INFO"  name="org.toxsoft.uskat.s5.server" />
 
 
@@ -33,15 +37,18 @@
     <Appenders>
         <!-- Консольный аппендер -->
         <Console name="Console" target="SYSTEM_OUT">
-            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <ThresholdFilter level="ALL" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!--
             <PatternLayout pattern="[%-5level|%d{HH:mm:ss.SSS}|%-20c{1}] %msg%n%ex{full}"/>
+            -->
+            <PatternLayout pattern="[%-5level|%d{yyyy-MM-dd HH:mm:ss.SSS}|%-20logger{36}|%-25t{36}] %msg%n%ex{full}"/>
         </Console>
 
         <!-- Файловый аппендер с ротацией по дням недели -->
         <RollingFile name="File"
                      fileName="logs/app.log"
                      filePattern="logs/app-%d{EEEE}.log">
-            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <ThresholdFilter level="ALL" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="[%-5level|%d{yyyy-MM-dd HH:mm:ss.SSS}|%-20logger{36}|%-25t{36}] %msg%n%ex{full}"/>
             <Policies>
                 <!-- Политика ротации по времени: каждый день -->
