@@ -10,7 +10,9 @@
         <Logger level="WARN"   name="org.wildfly" />
 
         <Logger level="INFO"  name="org.toxsoft" />
+        
         <Logger level="WARN"  name="org.toxsoft.core.tslib.bricks.threadexec.TsThreadExecutor" />
+        <logger level="INFO"  name="org.toxsoft.core.pas.common.PasChannel" />
 
         <Logger level="INFO"  name="org.toxsoft.uskat.core" />
         <Logger level="WARN"  name="org.toxsoft.uskat.core.impl.SkCoreServObject" />
