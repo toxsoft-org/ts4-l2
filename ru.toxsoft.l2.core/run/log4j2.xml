@@ -41,10 +41,7 @@
         <!-- Консольный аппендер -->
         <Console name="Console" target="SYSTEM_OUT">
             <ThresholdFilter level="ALL" onMatch="ACCEPT" onMismatch="DENY"/>
-            <!--
             <PatternLayout pattern="[%-5level|%d{HH:mm:ss.SSS}|%-20c{1}] %msg%n%ex{full}"/>
-            -->
-            <PatternLayout pattern="[%-5level|%d{yyyy-MM-dd HH:mm:ss.SSS}|%-20logger{36}|%-25t{36}] %msg%n%ex{full}"/>
         </Console>
 
         <!-- Файловый аппендер с ротацией по дням недели -->
