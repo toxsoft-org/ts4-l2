@@ -17,11 +17,11 @@
         <Logger level="INFO"  name="org.toxsoft.uskat.core" />
         <Logger level="WARN"  name="org.toxsoft.uskat.core.impl.SkCoreServObject" />
         
-        
 
         <Logger level="INFO"  name="org.toxsoft.uskat.s5.common" />
         <Logger level="WARN"  name="org.toxsoft.uskat.s5.common.sysdescr.SkSysdescrReader" />
         <Logger level="INFO"  name="org.toxsoft.uskat.s5.client" />
+        <Logger level="INFO"  name="org.toxsoft.uskat.s5.client.remote.connection.pas.S5CallbackClient" />
         <Logger level="INFO"  name="org.toxsoft.uskat.s5.client.remote.S5BackendRemote" />        
         <Logger level="INFO"  name="org.toxsoft.uskat.s5.server" />
 
