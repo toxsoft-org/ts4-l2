@@ -62,11 +62,11 @@
  * ITsContextRefDef.params()}. They are declared in the interfaces:
  * {@link org.toxsoft.l2.lib.IL2GlobalOptions#ALL_GLOBAL_OPDEFS IL2GlobalOptions#ALL_GLOBAL_OPDEFS}.
  * <p>
- * It {@link org.toxsoft.l2.lib.impl.L2Application} user responsibility t prepare global option values. In case when
- * application is invoked by the launcher <code>org.toxsoft.l2.main.L2Main</code> the configuration file is used as
- * described in <code>org.toxsoft.l2.main.IL2MainConstants</code>. Is such case global option values is formed initially
- * from the option definitions default values. Then values are applied from the configuration file and then the values
- * from the launcher command line are applied.
+ * It is {@link org.toxsoft.l2.lib.impl.L2Application L2Application} user responsibility to prepare global option
+ * values. In case when application is invoked by the launcher <code>org.toxsoft.l2.main.L2Main</code> the configuration
+ * file is used as described in <code>org.toxsoft.l2.main.IL2MainConstants</code>. Is such case global option values is
+ * formed initially from the option definitions default values. Then values are applied from the configuration file and
+ * then the values from the launcher command line are applied.
  * <p>
  * <b>Module configuration data</b><br>
  * For each component MCFs are placed in the respective subdirectory of the configuration files root directory
