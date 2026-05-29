@@ -281,510 +281,6 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_Alarms_AlarmMessGroupFlag2.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.Alarms.AlarmMessGroupFlag2",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_Alarms_AlarmMessGroupFlag2",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_Alarms_AlarmMessGroupFlag1.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.Alarms.AlarmMessGroupFlag1",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_Alarms_AlarmMessGroupFlag1",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RemoteCommands.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RemoteCommands",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RemoteCommands",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ReadyCondition.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ReadyCondition",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ReadyCondition",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_State.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.State",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_State",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_StartCmprCmndFromMaster.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.StartCmprCmndFromMaster",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_StartCmprCmndFromMaster",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_StopCmprCmndFromMaster.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.StopCmprCmndFromMaster",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_StopCmprCmndFromMaster",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_LoadCmprCmndFromMaster.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.LoadCmprCmndFromMaster",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_LoadCmprCmndFromMaster",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadCmprCmndFromMaster.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.UnloadCmprCmndFromMaster",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadCmprCmndFromMaster",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ResetWarnsCmndFromMaster.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ResetWarnsCmndFromMaster",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ResetWarnsCmndFromMaster",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_TemperatureUnitCF.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.TemperatureUnitCF",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_TemperatureUnitCF",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_MaintenanceRequired.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.MaintenanceRequired",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_MaintenanceRequired",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_SetPoint.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.SetPoint",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_SetPoint",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadSetPoint.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.UnloadSetPoint",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadSetPoint",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ReloadSetPoint.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ReloadSetPoint",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ReloadSetPoint",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_CompressorRunHours.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.CompressorRunHours",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_CompressorRunHours",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_CompressorLoadHours.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.CompressorLoadHours",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_CompressorLoadHours",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RemoteControlMode.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RemoteControlMode",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RemoteControlMode",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_MotorStarted.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.MotorStarted",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_MotorStarted",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_dischCheckVlvFailure.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_dischCheckVlvFailure",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_dischCheckVlvFailure",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_BOVnotFullyOpened.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_BOVnotFullyOpened",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_BOVnotFullyOpened",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_IGVnotAt0.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_IGVnotAt0",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_IGVnotAt0",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_emerStopBtnPressed.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_emerStopBtnPressed",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_emerStopBtnPressed",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_oilTempLow.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_oilTempLow",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_oilTempLow",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_oilPressLow.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_oilPressLow",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_oilPressLow",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_driveMotorNotStopped.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_driveMotorNotStopped",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_driveMotorNotStopped",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_totalFault.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_totalFault",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_totalFault",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ComprRunMore25sec.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ComprRunMore25sec",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ComprRunMore25sec",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_OutputValveOpened.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.OutputValveOpened",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_OutputValveOpened",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_NoSurgeAlarm.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.NoSurgeAlarm",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_NoSurgeAlarm",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_AutoLoadState.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.AutoLoadState",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_AutoLoadState",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_Loaded.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.Loaded",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_Loaded",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_OilPumpRun.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.OilPumpRun",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_OilPumpRun",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_OilHeaterOn.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.OilHeaterOn",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_OilHeaterOn",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ComprRun.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ComprRun",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ComprRun",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_TotalFault.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.TotalFault",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_TotalFault",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_TotalWarning.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.TotalWarning",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_TotalWarning",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ComprNotReady.def",
-                          {
-                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ComprNotReady",
-                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ComprNotReady",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
                           "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_Engines_Compressor_On.def",
                           {
                             opc.tag = "ns=7;s=ET 200SP station_1.COMP1.Engines.Compressor.On",
@@ -2179,6 +1675,459 @@ DeviceConfig =
                           {
                           }
                         }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_Alarms_AlarmMessGroupFlag2.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.Alarms.AlarmMessGroupFlag2",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_Alarms_AlarmMessGroupFlag2",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_Alarms_AlarmMessGroupFlag1.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.Alarms.AlarmMessGroupFlag1",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_Alarms_AlarmMessGroupFlag1",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ControlModeValue.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ControlModeValue",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ControlModeValue",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RemoteCommands.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RemoteCommands",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RemoteCommands",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ReadyCondition.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ReadyCondition",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ReadyCondition",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_State.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.State",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_State",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_TemperatureUnitCF.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.TemperatureUnitCF",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_TemperatureUnitCF",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_MaintenanceRequired.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.MaintenanceRequired",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_MaintenanceRequired",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_SetPointCur.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.SetPointCur",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_SetPointCur",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadSetPointCur.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.UnloadSetPointCur",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadSetPointCur",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ReloadSetPointCur.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ReloadSetPointCur",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ReloadSetPointCur",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_CompressorRunHours.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.CompressorRunHours",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_CompressorRunHours",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_CompressorLoadHours.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.CompressorLoadHours",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_CompressorLoadHours",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RemoteControlMode.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RemoteControlMode",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RemoteControlMode",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_MotorStarted.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.MotorStarted",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_MotorStarted",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_dischCheckVlvFailure.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_dischCheckVlvFailure",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_dischCheckVlvFailure",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_BOVnotFullyOpened.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_BOVnotFullyOpened",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_BOVnotFullyOpened",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_IGVnotAt0.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_IGVnotAt0",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_IGVnotAt0",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_emerStopBtnPressed.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_emerStopBtnPressed",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_emerStopBtnPressed",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_oilTempLow.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_oilTempLow",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_oilTempLow",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_oilPressLow.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_oilPressLow",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_oilPressLow",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_driveMotorNotStopped.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_driveMotorNotStopped",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_driveMotorNotStopped",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_totalFault.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.RC_totalFault",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_RC_totalFault",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ComprRunMore25sec.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ComprRunMore25sec",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ComprRunMore25sec",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_OutputValveOpened.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.OutputValveOpened",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_OutputValveOpened",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_NoSurgeAlarm.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.NoSurgeAlarm",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_NoSurgeAlarm",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_AutoLoadState.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.AutoLoadState",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_AutoLoadState",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_Loaded.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.Loaded",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_Loaded",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_OilPumpRun.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.OilPumpRun",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_OilPumpRun",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_OilHeaterOn.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.OilHeaterOn",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_OilHeaterOn",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ComprRun.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ComprRun",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ComprRun",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_TotalFault.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.TotalFault",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_TotalFault",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_TotalWarning.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.TotalWarning",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_TotalWarning",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ComprNotReady.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ComprNotReady",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ComprNotReady",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
                       ]
                     }
                   }
@@ -3039,6 +2988,139 @@ DeviceConfig =
                           {
                           }
                         }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_NoChangeMode.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.NoChangeMode",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_NoChangeMode",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ChangeModePulse.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ChangeModePulse",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ChangeModePulse",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ReloadSetPointNew.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ReloadSetPointNew",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ReloadSetPointNew",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadSetPointNew.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.UnloadSetPointNew",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadSetPointNew",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_SetPointNew.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.SetPointNew",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_SetPointNew",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_StartCmprCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.StartCmprCmndFromMaster",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_StartCmprCmndFromMaster",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_StopCmprCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.StopCmprCmndFromMaster",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_StopCmprCmndFromMaster",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_LoadCmprCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.LoadCmprCmndFromMaster",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_LoadCmprCmndFromMaster",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadCmprCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.UnloadCmprCmndFromMaster",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadCmprCmndFromMaster",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ResetWarnsCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ResetWarnsCmndFromMaster",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ResetWarnsCmndFromMaster",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
                       ]
                     }
                   }
@@ -3894,6 +3976,139 @@ DeviceConfig =
                             pin.id = "ns_7_s_ET_200SP_station_1_COMP1_AnalogInputs2_ai26_SystemTemperature_AlarmValue",
                             pin.type = "Integer",
                             pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_NoChangeMode.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.NoChangeMode",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_NoChangeMode",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ChangeModePulse.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ChangeModePulse",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ChangeModePulse",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ReloadSetPointNew.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ReloadSetPointNew",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ReloadSetPointNew",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadSetPointNew.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.UnloadSetPointNew",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadSetPointNew",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_SetPointNew.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.SetPointNew",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_SetPointNew",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_StartCmprCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.StartCmprCmndFromMaster",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_StartCmprCmndFromMaster",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_StopCmprCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.StopCmprCmndFromMaster",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_StopCmprCmndFromMaster",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_LoadCmprCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.LoadCmprCmndFromMaster",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_LoadCmprCmndFromMaster",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadCmprCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.UnloadCmprCmndFromMaster",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_UnloadCmprCmndFromMaster",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ResetWarnsCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=ET 200SP station_1.COMP1.CtrlSystem.ResetWarnsCmndFromMaster",
+                            pin.id = "ns_7_s_ET_200SP_station_1_COMP1_CtrlSystem_ResetWarnsCmndFromMaster",
+                            pin.type = "Boolean"
                           }
                           ,
                           {
