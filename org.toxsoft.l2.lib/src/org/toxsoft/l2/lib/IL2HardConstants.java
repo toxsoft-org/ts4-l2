@@ -90,4 +90,15 @@ public interface IL2HardConstants {
    */
   String NET_MODULE_CONFIG_FILE_EXT = "netcfg"; //$NON-NLS-1$
 
+  // -------------------------------------------------------------------------------------
+  // L2 SK class and commands from server
+
+  String L2_SK_CLASS_ID = "org.toxsoft.l2.Bridge"; // TODO init in sysdescr
+
+  String L2_RESTART_CMD_ID = "restart"; // TODO init in sysdescr
+
+  String L2_STOP_CMD_ID = "stop"; // TODO init in sysdescr
+
+  String L2_RELOAD_CMD_ID = "reload"; // TODO init in sysdescr
+
 }

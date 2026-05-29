@@ -107,8 +107,8 @@ public class L2Application
   }
 
   @Override
-  public L2AppQuitCommand getQuitCommandIfAny() {
-    L2AppQuitCommand cmd = l2Context.hal().getQuitCommandIfAny();
+  public L2AppCommand getQuitCommandIfAny() {
+    L2AppCommand cmd = l2Context.hal().getQuitCommandIfAny();
     if( cmd == null ) {
       cmd = l2Context.dlmMgr().getQuitCommandIfAny();
       if( cmd == null ) {

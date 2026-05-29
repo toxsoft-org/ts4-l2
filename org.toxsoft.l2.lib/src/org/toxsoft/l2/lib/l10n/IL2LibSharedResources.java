@@ -63,4 +63,6 @@ public interface IL2LibSharedResources {
   String STR_L2_COMP_CFG_DIR_ROOT   = Messages.getString( "Core.STR_L2_COMP_CFG_DIR_ROOT" );   //$NON-NLS-1$
   String STR_L2_COMP_CFG_DIR_ROOT_D = Messages.getString( "Core.STR_L2_COMP_CFG_DIR_ROOT_D" ); //$NON-NLS-1$
 
+  String STR_NET_COMP_L2_SK_OBJ_STRID   = "L2 SK object id";
+  String STR_NET_COMP_L2_SK_OBJ_STRID_D = "L2 SK object id";
 }

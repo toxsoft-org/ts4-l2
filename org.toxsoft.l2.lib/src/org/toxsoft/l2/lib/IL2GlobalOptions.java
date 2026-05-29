@@ -41,6 +41,16 @@ public interface IL2GlobalOptions {
   // L2 component: Network
 
   /**
+   * L2 application configuration files root directory.
+   * <p>
+   * Directory contains sub-directories name {@link EL2ComponentKind#id()} with respective component module
+   * configuration files.
+   */
+  IDataDef OPDEF_NET_COMP_L2_SK_OBJ_STRID = DataDef.create( "l2.bridge.strid", STRING, //$NON-NLS-1$
+      TSID_NAME, STR_NET_COMP_L2_SK_OBJ_STRID, //
+      TSID_DESCRIPTION, STR_NET_COMP_L2_SK_OBJ_STRID_D );
+
+  /**
    * Network component option definitions.
    */
   IStridablesListEdit<IDataDef> ALL_NET_COMP_OPDEFS = new StridablesList<>( //

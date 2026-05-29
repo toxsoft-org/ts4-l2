@@ -38,7 +38,7 @@ public class L2MainTextConsole
   // API
   //
 
-  public L2AppQuitCommand getQuitCommandIfAny() {
+  public L2AppCommand getQuitCommandIfAny() {
 
     // TODO L2MainTextConsole.getQuitCommandIfAny()
 

@@ -1,6 +1,7 @@
 package org.toxsoft.l2.main;
 
 import static org.toxsoft.l2.lib.IL2GlobalOptions.*;
+import static org.toxsoft.l2.lib.app.EL2AppCmdCode.*;
 import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
 import static org.toxsoft.l2.main.IL2MainConstants.*;
 import static org.toxsoft.l2.main.l10n.IL2MainSharedResources.*;
@@ -85,20 +86,20 @@ public class L2Main {
     // setup L2Main
     setupL2Main( globalOps );
     // run application with restart if requested
-    L2AppQuitCommand quitCmd;
+    L2AppCommand quitCmd;
     do {
       quitCmd = runApplication( globalOps );
-    } while( quitCmd == null || quitCmd.exitCode() == ECODE_RESTART_L2APP );
+    } while( quitCmd == null || quitCmd.code() == CODE_RESTART_L2APP );
     // finish the program
     sayGoodbye( quitCmd );
-    Runtime.getRuntime().halt( quitCmd.exitCode() ); // halt() to avoid program hang because of crap threads
+    Runtime.getRuntime().halt( quitCmd.code().getCode() ); // halt() to avoid program hang because of crap threads
   }
 
   // ------------------------------------------------------------------------------------
   // implementation
   //
 
-  private static L2AppQuitCommand runApplication( IOptionSet aGlobalOps ) {
+  private static L2AppCommand runApplication( IOptionSet aGlobalOps ) {
     // prepare thread guard
     mainThreadGuard = new TsThreadExecutor( L2Main.class.getSimpleName(), logger );
     // open SkConnection
@@ -108,7 +109,7 @@ public class L2Main {
     }
     catch( Exception ex ) {
       logger.error( ex );
-      return new L2AppQuitCommand( ECODE_CONN_OPEN_FAILED, ex.getMessage() );
+      return new L2AppCommand( CODE_CONN_OPEN_FAILED, ex.getMessage() );
     }
     // prepare L2Application arguments
     ITsContext l2AppArgs = new TsContext();
@@ -120,7 +121,7 @@ public class L2Main {
     ValidationResult vr = app.init( l2AppArgs );
     if( vr.isError() ) {
       logger.error( vr.message() );
-      return new L2AppQuitCommand( ECODE_INIT_FAILED, vr.message() );
+      return new L2AppCommand( CODE_INIT_FAILED, vr.message() );
     }
     // start application
     try {
@@ -128,11 +129,11 @@ public class L2Main {
     }
     catch( Exception ex ) {
       logger.error( ex );
-      return new L2AppQuitCommand( ECODE_START_FAILED, ex.getMessage() );
+      return new L2AppCommand( CODE_START_FAILED, ex.getMessage() );
     }
 
     // run normal main loop until quit command
-    L2AppQuitCommand quitCmd = null;
+    L2AppCommand quitCmd = null;
     while( quitCmd == null ) {
       app.doJob();
       quitCmd = app.getQuitCommandIfAny();
@@ -150,7 +151,7 @@ public class L2Main {
           // process timeout and change exit code
           if( System.currentTimeMillis() - timeStopWasQueried > timeoutMsecs ) {
             String msg = String.format( FMT_ERR_STOP_TIMEOUTED, HmsUtils.autoHms( timeoutSecs ) );
-            quitCmd = new L2AppQuitCommand( ECODE_STOP_TIMEOUTED, msg );
+            quitCmd = new L2AppCommand( CODE_STOP_TIMEOUTED, msg );
             break;
           }
         }
@@ -367,11 +368,11 @@ public class L2Main {
     }
   }
 
-  private static void sayGoodbye( L2AppQuitCommand aQuitCommand ) {
+  private static void sayGoodbye( L2AppCommand aQuitCommand ) {
     if( logger.isSeverityOn( ELogSeverity.INFO ) ) {
-      logger.info( FMT_LOG_L2MAIN_FINISHED, Integer.valueOf( aQuitCommand.exitCode() ), aQuitCommand.message() );
+      logger.info( FMT_LOG_L2MAIN_FINISHED, Integer.valueOf( aQuitCommand.code().getCode() ), aQuitCommand.message() );
     }
-    TsTestUtils.pl( FMT_L2MAIN_FINISHED, aQuitCommand.message(), Integer.valueOf( aQuitCommand.exitCode() ) );
+    TsTestUtils.pl( FMT_L2MAIN_FINISHED, aQuitCommand.message(), Integer.valueOf( aQuitCommand.code().getCode() ) );
   }
 
   private static ValidationResult logResult( ValidationResult aVr ) {

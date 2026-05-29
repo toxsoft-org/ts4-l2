@@ -24,13 +24,13 @@ public interface IL2Application
   /**
    * Returns application quit command if quit was initialized by application itself.
    * <p>
-   * Note that depending on {@link L2AppQuitCommand#exitCode()} application may request restart, not a finish.
+   * Note that depending on {@link L2AppCommand#exitCode()} application may request restart, not a finish.
    * <p>
    * Program quit may be requested for several reasons: remotely by network component or restart will be needed to apply
    * configuration file change.
    *
-   * @return {@link L2AppQuitCommand} - quit command or <code>null</code>
+   * @return {@link L2AppCommand} - quit command or <code>null</code>
    */
-  L2AppQuitCommand getQuitCommandIfAny();
+  L2AppCommand getQuitCommandIfAny();
 
 }

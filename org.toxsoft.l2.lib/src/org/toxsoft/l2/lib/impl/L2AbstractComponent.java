@@ -43,9 +43,9 @@ abstract class L2AbstractComponent
    * The quit command when quit is initialized by this component or <code>null</code>.
    * <p>
    * Quit command is reset to <code>null</code> when initializing, non-<code>null</code> value may be set by subclass by
-   * method {@link #setQuitCommand(L2AppQuitCommand)}.
+   * method {@link #setQuitCommand(L2AppCommand)}.
    */
-  private L2AppQuitCommand quitCmd = null;
+  private L2AppCommand quitCmd = null;
 
   /**
    * Constructor.
@@ -116,7 +116,7 @@ abstract class L2AbstractComponent
   }
 
   @Override
-  final public L2AppQuitCommand getQuitCommandIfAny() {
+  final public L2AppCommand getQuitCommandIfAny() {
     return quitCmd;
   }
 
@@ -138,7 +138,7 @@ abstract class L2AbstractComponent
     return cfgDir;
   }
 
-  final protected void setQuitCommand( L2AppQuitCommand aQuitCmd ) {
+  final protected void setQuitCommand( L2AppCommand aQuitCmd ) {
     if( aQuitCmd != null ) {
       logger.info( FMT_INFO_L2COMP_INITED_QUIT, aQuitCmd.toString() );
     }
