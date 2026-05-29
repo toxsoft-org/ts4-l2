@@ -24,4 +24,9 @@ public interface IL2Hal
    */
   IStridablesList<IL2HalDevice> deviceList();
 
+  // FIXME IStridablesList<IL2Tag> listDeviceTags( String aDeviceId );
+
+  // IStridablesList<IL2Tag> listDeviceTags( String aDeviceId, ERwKind aKind, TextMatcher aIdFilter, TextMatcher
+  // aNameFilter, TextMatcher aDescrFilter, );
+
 }

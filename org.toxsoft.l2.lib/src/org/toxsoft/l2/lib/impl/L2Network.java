@@ -6,7 +6,6 @@ import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.bricks.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
-import org.toxsoft.core.tslib.bricks.threadexec.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
@@ -50,18 +49,15 @@ class L2Network
     params().addAll( netCfgs );
 
     skConn = REFDEF_SK_CONNECTION.getRef( aArgs );
-    ITsThreadExecutor executor = guardThread();
 
-    executor.syncExec( () -> {
-      // TODO - get special service and register itself as l2 bridge on server
+    // TODO - get special service and register itself as l2 bridge on server
 
-      // register l2 as cmd executer (all commands of specified l2 object)
-      String strid = OPDEF_NET_COMP_L2_SK_OBJ_STRID.getValue( params() ).asString();
-      GwidList listOfSelfCmds = new GwidList(); // TODO - from l2 run settings
-      Gwid cmdMainGwid = Gwid.createObj( IL2HardConstants.L2_SK_CLASS_ID, strid );
-      listOfSelfCmds.add( cmdMainGwid );
-      skConn.coreApi().cmdService().registerExecutor( L2Network.this, listOfSelfCmds );
-    } );
+    // register l2 as cmd executer (all commands of specified l2 object)
+    String strid = OPDEF_NET_COMP_L2_SK_OBJ_STRID.getValue( params() ).asString();
+    GwidList listOfSelfCmds = new GwidList(); // TODO - from l2 run settings
+    Gwid cmdMainGwid = Gwid.createObj( IL2HardConstants.CLSID_L2_APPLICATION, strid );
+    listOfSelfCmds.add( cmdMainGwid );
+    skConn.coreApi().cmdService().registerExecutor( L2Network.this, listOfSelfCmds );
 
     // TODO Auto-generated method stub
 

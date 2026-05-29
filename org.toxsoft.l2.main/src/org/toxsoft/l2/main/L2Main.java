@@ -101,7 +101,7 @@ public class L2Main {
 
   private static L2AppCommand runApplication( IOptionSet aGlobalOps ) {
     // prepare thread guard
-    mainThreadGuard = new TsThreadExecutor( L2Main.class.getSimpleName(), logger );
+    mainThreadGuard = new TsThreadExecutor( L2Main.class.getSimpleName(), Thread.currentThread(), logger );
     // open SkConnection
     ISkConnection skConn;
     try {

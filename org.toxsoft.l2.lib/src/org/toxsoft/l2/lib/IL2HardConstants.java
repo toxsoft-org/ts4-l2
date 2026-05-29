@@ -93,7 +93,10 @@ public interface IL2HardConstants {
   // -------------------------------------------------------------------------------------
   // L2 SK class and commands from server
 
-  String L2_SK_CLASS_ID = "org.toxsoft.l2.Bridge"; // TODO init in sysdescr
+  /**
+   * Class ID of the Sk-object representing configure and/or running L2 Application.
+   */
+  String CLSID_L2_APPLICATION = L2_ID + ".Application"; //$NON-NLS-1$
 
   String L2_RESTART_CMD_ID = "restart"; // TODO init in sysdescr
 

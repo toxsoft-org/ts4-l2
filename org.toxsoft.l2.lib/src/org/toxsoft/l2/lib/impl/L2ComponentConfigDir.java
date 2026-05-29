@@ -60,6 +60,11 @@ class L2ComponentConfigDir
     return TsFileUtils.listChildsSorted( dir, cfgFileFilter );
   }
 
+  public IStringMap<L2ModuleConfigFile> readConfigsMap() {
+    // TODO реализовать L2ComponentConfigDir.readConfigs()
+    throw new TsUnderDevelopmentRtException( "L2ComponentConfigDir.readConfigs()" );
+  }
+
   /**
    * Reads configurations from the files specified by the extension.
    * <p>

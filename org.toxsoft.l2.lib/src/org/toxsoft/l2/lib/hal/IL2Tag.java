@@ -24,8 +24,6 @@ public interface IL2Tag
    */
   ERwKind kind();
 
-  // TODO ETagHealth health();
-
   /**
    * Returns the data type of the signal.
    *
