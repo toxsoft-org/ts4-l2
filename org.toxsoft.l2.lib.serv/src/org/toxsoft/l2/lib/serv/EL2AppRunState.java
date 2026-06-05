@@ -1,6 +1,6 @@
 package org.toxsoft.l2.lib.serv;
 
-import static org.toxsoft.l2.skserv.l10n.ISkL2AppServiceSharedResources.*;
+import static org.toxsoft.l2.lib.serv.l10n.ISkL2AppServiceSharedResources.*;
 
 import org.toxsoft.core.tslib.bricks.keeper.*;
 import org.toxsoft.core.tslib.bricks.keeper.std.*;

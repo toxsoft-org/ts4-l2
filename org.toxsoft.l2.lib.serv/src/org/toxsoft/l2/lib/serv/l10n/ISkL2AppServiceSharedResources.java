@@ -1,7 +1,6 @@
 package org.toxsoft.l2.lib.serv.l10n;
 
 import org.toxsoft.l2.lib.serv.*;
-import org.toxsoft.l2.skserv.*;
 
 /**
  * Localizable resources.
