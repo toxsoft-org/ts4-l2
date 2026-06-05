@@ -138,6 +138,10 @@ public class TagImpl
       throw new TsIllegalStateRtException( "ERROR_TRY_SET_READ_ONLY_TAG" );
     }
 
+    if( !aVal.isAssigned() ) {
+      throw new TsIllegalStateRtException( "ERROR_TRY_SET_NONE" );
+    }
+
     // Убрана проверка на то, что значение изменилось
     setDirty( true );
     newValue = aVal;
