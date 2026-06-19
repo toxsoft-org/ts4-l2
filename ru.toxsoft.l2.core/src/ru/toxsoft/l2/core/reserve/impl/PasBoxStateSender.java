@@ -129,7 +129,7 @@ public class PasBoxStateSender
       ctx.put( PasBoxStateSender.class, controller );
       OP_PAS_SERVER_ADDRESS.setValue( ctx.params(), OP_REMOTE_ADDRESS.getValue( aContext.params() ) );
       OP_PAS_SERVER_PORT.setValue( ctx.params(), OP_REMOTE_PORT.getValue( aContext.params() ) );
-      retValue = new PasClient<>( ctx, HotSwapWriterChannel.CREATOR, false, logger );
+      retValue = new PasClient<>( ctx, HotSwapWriterChannel.CREATOR, false );
       retValue.init();
       // retValue.run();
       Thread thread = new Thread( retValue, "hotSwapWriter" ); //$NON-NLS-1$

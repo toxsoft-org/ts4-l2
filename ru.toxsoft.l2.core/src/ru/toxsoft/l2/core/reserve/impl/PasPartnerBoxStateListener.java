@@ -195,7 +195,7 @@ public class PasPartnerBoxStateListener
       ctx.put( PasPartnerBoxStateListener.class, controller );
       OP_PAS_SERVER_ADDRESS.setValue( ctx.params(), OP_LOCAL_ADDRESS.getValue( aContext.params() ) );
       OP_PAS_SERVER_PORT.setValue( ctx.params(), OP_LOCAL_PORT.getValue( aContext.params() ) );
-      retValue = new PasServer<>( ctx, HotSwapReaderChannel.CREATOR, false, logger );
+      retValue = new PasServer<>( ctx, HotSwapReaderChannel.CREATOR, false );
       retValue.init();
       // Регистрация обработчиков уведомлений
       retValue.registerNotificationHandler( NODE_STATE_METHOD, new HotSwapNodeStateNotice( controller ) );
