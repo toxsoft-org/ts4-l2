@@ -69,84 +69,6 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_Engines_Relay_commonShutdownRelay_On.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.Relay.commonShutdownRelay.On",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_Engines_Relay_commonShutdownRelay_On",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_Engines_Relay_motorCoolingFan_On.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.Relay.motorCoolingFan.On",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_Engines_Relay_motorCoolingFan_On",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_Engines_Relay_vacuumPump_On.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.Relay.vacuumPump.On",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_Engines_Relay_vacuumPump_On",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_Engines_Relay_sealAirValve_On.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.Relay.sealAirValve.On",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_Engines_Relay_sealAirValve_On",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_Engines_Relay_outputValve_On.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.Relay.outputValve.On",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_Engines_Relay_outputValve_On",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_Engines_Relay_commonAlarm_On.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.Relay.commonAlarm.On",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_Engines_Relay_commonAlarm_On",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
                           "pin.tag.ns_7_s_3210589_6_3210589_6_Engines_BOV_SetPosition.def",
                           {
                             opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.BOV.SetPosition",
@@ -204,390 +126,6 @@ DeviceConfig =
                           {
                             opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.CtrlRelay.oilPump.On",
                             pin.id = "ns_7_s_3210589_6_3210589_6_Engines_CtrlRelay_oilPump_On",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_State.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.State",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_State",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ReadyCondition.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ReadyCondition",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ReadyCondition",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_MaintenanceRequired.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.MaintenanceRequired",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_MaintenanceRequired",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_SetPointCur.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.SetPointCur",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_SetPointCur",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_UnloadSetPointCur.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.UnloadSetPointCur",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_UnloadSetPointCur",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ReloadSetPointCur.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ReloadSetPointCur",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ReloadSetPointCur",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_CompressorRunHours.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.CompressorRunHours",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_CompressorRunHours",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_CompressorLoadHours.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.CompressorLoadHours",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_CompressorLoadHours",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RemoteControlMode.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RemoteControlMode",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RemoteControlMode",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_MotorStarted.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.MotorStarted",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_MotorStarted",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_dischCheckVlvFailure.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_dischCheckVlvFailure",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_dischCheckVlvFailure",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_BOVnotFullyOpened.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_BOVnotFullyOpened",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_BOVnotFullyOpened",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_IGVnotAt0.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_IGVnotAt0",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_IGVnotAt0",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_emerStopBtnPressed.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_emerStopBtnPressed",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_emerStopBtnPressed",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_oilTempLow.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_oilTempLow",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_oilTempLow",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_oilPressLow.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_oilPressLow",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_oilPressLow",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_driveMotorNotStopped.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_driveMotorNotStopped",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_driveMotorNotStopped",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_totalFault.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_totalFault",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_totalFault",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ComprRunMore25sec.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ComprRunMore25sec",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ComprRunMore25sec",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_OpenOutputValve.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.OpenOutputValve",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_OpenOutputValve",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_NoSurgeAlarm.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.NoSurgeAlarm",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_NoSurgeAlarm",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_AutoLoadState.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.AutoLoadState",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_AutoLoadState",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_Loaded.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.Loaded",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_Loaded",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_OilPumpRun.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.OilPumpRun",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_OilPumpRun",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_OilHeaterOn.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.OilHeaterOn",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_OilHeaterOn",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ComprRun.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ComprRun",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ComprRun",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_TotalFault.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.TotalFault",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_TotalFault",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_TotalWarning.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.TotalWarning",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_TotalWarning",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ComprNotReady.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ComprNotReady",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ComprNotReady",
                             pin.type = "Boolean"
                           }
                           ,
@@ -1299,6 +837,417 @@ DeviceConfig =
                         ,
                         {
                           false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_State.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.State",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_State",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ReadyCondition.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ReadyCondition",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ReadyCondition",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RemoteCommands.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RemoteCommands",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RemoteCommands",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_TemperatureUnitCF.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.TemperatureUnitCF",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_TemperatureUnitCF",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_MaintenanceRequired.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.MaintenanceRequired",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_MaintenanceRequired",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_SetPointCur.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.SetPointCur",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_SetPointCur",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_UnloadSetPointCur.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.UnloadSetPointCur",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_UnloadSetPointCur",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ReloadSetPointCur.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ReloadSetPointCur",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ReloadSetPointCur",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_CompressorRunHours.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.CompressorRunHours",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_CompressorRunHours",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_CompressorLoadHours.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.CompressorLoadHours",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_CompressorLoadHours",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RemoteControlMode.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RemoteControlMode",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RemoteControlMode",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_MotorStarted.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.MotorStarted",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_MotorStarted",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_dischCheckVlvFailure.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_dischCheckVlvFailure",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_dischCheckVlvFailure",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_BOVnotFullyOpened.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_BOVnotFullyOpened",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_BOVnotFullyOpened",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_IGVnotAt0.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_IGVnotAt0",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_IGVnotAt0",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_emerStopBtnPressed.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_emerStopBtnPressed",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_emerStopBtnPressed",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_oilTempLow.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_oilTempLow",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_oilTempLow",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_oilPressLow.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_oilPressLow",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_oilPressLow",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_driveMotorNotStopped.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_driveMotorNotStopped",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_driveMotorNotStopped",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_totalFault.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RC_totalFault",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RC_totalFault",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ComprRunMore25sec.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ComprRunMore25sec",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ComprRunMore25sec",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_OpenOutputValve.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.OpenOutputValve",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_OpenOutputValve",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_NoSurgeAlarm.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.NoSurgeAlarm",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_NoSurgeAlarm",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_AutoLoadState.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.AutoLoadState",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_AutoLoadState",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_Loaded.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.Loaded",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_Loaded",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_OilPumpRun.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.OilPumpRun",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_OilPumpRun",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_OilHeaterOn.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.OilHeaterOn",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_OilHeaterOn",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ComprRun.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ComprRun",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ComprRun",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_TotalFault.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.TotalFault",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_TotalFault",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_TotalWarning.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.TotalWarning",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_TotalWarning",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ComprNotReady.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ComprNotReady",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ComprNotReady",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
                           "pin.tag.ns_7_s_3210589_6_3210589_6_Warnings_EventMessGroupFlag3.def",
                           {
                             opc.tag = "ns=7;s=3210589-6.3210589-6.Warnings.EventMessGroupFlag3",
@@ -1415,20 +1364,6 @@ DeviceConfig =
                           {
                             opc.tag = "ns=7;s=3210589-6.3210589-6.AnalogInputControls.AI_WarnUse4",
                             pin.id = "ns_7_s_3210589_6_3210589_6_AnalogInputControls_AI_WarnUse4",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_AnalogInputControls_AI_AlarmUse3.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.AnalogInputControls.AI_AlarmUse3",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_AnalogInputControls_AI_AlarmUse3",
                             pin.type = "Integer",
                             pin.type.extra = "INT"
                           }
@@ -1576,6 +1511,71 @@ DeviceConfig =
                           {
                           }
                         }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_Engines_Relay_commonShutdownRelay_On.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.Relay.commonShutdownRelay.On",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_Engines_Relay_commonShutdownRelay_On",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_Engines_Relay_motorCoolingFan_On.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.Relay.motorCoolingFan.On",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_Engines_Relay_motorCoolingFan_On",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_Engines_Relay_vacuumPump_On.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.Relay.vacuumPump.On",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_Engines_Relay_vacuumPump_On",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_Engines_Relay_sealAirValve_On.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.Relay.sealAirValve.On",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_Engines_Relay_sealAirValve_On",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_Engines_Relay_outputValve_On.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.Relay.outputValve.On",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_Engines_Relay_outputValve_On",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
                       ]
                     }
                   }
@@ -1651,140 +1651,6 @@ DeviceConfig =
                           {
                             opc.tag = "ns=7;s=3210589-6.3210589-6.Engines.CtrlRelay.oilPump.SwitchOn",
                             pin.id = "ns_7_s_3210589_6_3210589_6_Engines_CtrlRelay_oilPump_SwitchOn",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_UseRemoteSetpoints.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.UseRemoteSetpoints",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_UseRemoteSetpoints",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ChangeModePulse.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ChangeModePulse",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ChangeModePulse",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ReloadSetPointNew.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ReloadSetPointNew",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ReloadSetPointNew",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_UnloadSetPointNew.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.UnloadSetPointNew",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_UnloadSetPointNew",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_SetPointNew.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.SetPointNew",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_SetPointNew",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RemoteCommands.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RemoteCommands",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RemoteCommands",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_StartCmprCmndFromMaster.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.StartCmprCmndFromMaster",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_StartCmprCmndFromMaster",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_StopCmprCmndFromMaster.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.StopCmprCmndFromMaster",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_StopCmprCmndFromMaster",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ResetWarnsCmndFromMaster.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ResetWarnsCmndFromMaster",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ResetWarnsCmndFromMaster",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_TemperatureUnitCF.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.TemperatureUnitCF",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_TemperatureUnitCF",
                             pin.type = "Boolean"
                           }
                           ,
@@ -2514,6 +2380,113 @@ DeviceConfig =
                             pin.id = "ns_7_s_3210589_6_3210589_6_AnalogInputs2_ai26_SystemTemperature_WarnValue",
                             pin.type = "Integer",
                             pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_UseRemoteSetpoints.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.UseRemoteSetpoints",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_UseRemoteSetpoints",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ChangeModePulse.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ChangeModePulse",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ChangeModePulse",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ReloadSetPointNew.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ReloadSetPointNew",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ReloadSetPointNew",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_UnloadSetPointNew.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.UnloadSetPointNew",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_UnloadSetPointNew",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_SetPointNew.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.SetPointNew",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_SetPointNew",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_StartCmprCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.StartCmprCmndFromMaster",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_StartCmprCmndFromMaster",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_StopCmprCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.StopCmprCmndFromMaster",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_StopCmprCmndFromMaster",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ResetWarnsCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ResetWarnsCmndFromMaster",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ResetWarnsCmndFromMaster",
+                            pin.type = "Boolean"
                           }
                           ,
                           {
@@ -2603,140 +2576,6 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_UseRemoteSetpoints.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.UseRemoteSetpoints",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_UseRemoteSetpoints",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ChangeModePulse.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ChangeModePulse",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ChangeModePulse",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ReloadSetPointNew.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ReloadSetPointNew",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ReloadSetPointNew",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_UnloadSetPointNew.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.UnloadSetPointNew",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_UnloadSetPointNew",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_SetPointNew.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.SetPointNew",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_SetPointNew",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_RemoteCommands.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.RemoteCommands",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_RemoteCommands",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_StartCmprCmndFromMaster.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.StartCmprCmndFromMaster",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_StartCmprCmndFromMaster",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_StopCmprCmndFromMaster.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.StopCmprCmndFromMaster",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_StopCmprCmndFromMaster",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ResetWarnsCmndFromMaster.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ResetWarnsCmndFromMaster",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ResetWarnsCmndFromMaster",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_TemperatureUnitCF.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.TemperatureUnitCF",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_TemperatureUnitCF",
-                            pin.type = "Boolean"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,
-                        {
-                          false,
                           "pin.tag.ns_7_s_3210589_6_3210589_6_AnalogInputs1_ai1_IGVPosition_AlarmValue.def",
                           {
                             opc.tag = "ns=7;s=3210589-6.3210589-6.AnalogInputs1.ai1_IGVPosition.AlarmValue",
@@ -3457,6 +3296,113 @@ DeviceConfig =
                             pin.id = "ns_7_s_3210589_6_3210589_6_AnalogInputs2_ai26_SystemTemperature_WarnValue",
                             pin.type = "Integer",
                             pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_UseRemoteSetpoints.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.UseRemoteSetpoints",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_UseRemoteSetpoints",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ChangeModePulse.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ChangeModePulse",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ChangeModePulse",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ReloadSetPointNew.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ReloadSetPointNew",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ReloadSetPointNew",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_UnloadSetPointNew.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.UnloadSetPointNew",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_UnloadSetPointNew",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_SetPointNew.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.SetPointNew",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_SetPointNew",
+                            pin.type = "Integer",
+                            pin.type.extra = "INT"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_StartCmprCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.StartCmprCmndFromMaster",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_StartCmprCmndFromMaster",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_StopCmprCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.StopCmprCmndFromMaster",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_StopCmprCmndFromMaster",
+                            pin.type = "Boolean"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.tag.ns_7_s_3210589_6_3210589_6_CtrlSystem_ResetWarnsCmndFromMaster.def",
+                          {
+                            opc.tag = "ns=7;s=3210589-6.3210589-6.CtrlSystem.ResetWarnsCmndFromMaster",
+                            pin.id = "ns_7_s_3210589_6_3210589_6_CtrlSystem_ResetWarnsCmndFromMaster",
+                            pin.type = "Boolean"
                           }
                           ,
                           {
