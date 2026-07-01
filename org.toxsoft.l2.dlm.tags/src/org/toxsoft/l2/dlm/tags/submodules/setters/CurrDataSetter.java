@@ -14,7 +14,7 @@ import org.toxsoft.uskat.core.api.rtdserv.*;
  * @author max
  */
 public class CurrDataSetter
-    implements IDataSetter {
+    implements IGwidValueSetter {
 
   /**
    * Журнал работы
@@ -40,7 +40,7 @@ public class CurrDataSetter
   }
 
   @Override
-  public boolean setDataValue( IAtomicValue aValue, long aTime ) {
+  public boolean setGwidValue( IAtomicValue aValue, long aTime ) {
     if( !aValue.isAssigned() ) {
       return false;
     }
@@ -65,12 +65,6 @@ public class CurrDataSetter
     }
 
     return result;
-  }
-
-  @Override
-  public void sendOnServer() {
-    // dima 28.03.25 force re-upload current value
-    channel.setValue( value );
   }
 
   @Override

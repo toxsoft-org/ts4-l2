@@ -22,7 +22,7 @@ import org.toxsoft.l2.lib.hal.*;
  * пример скрипта: <br>
  * "var is_transmitted = data0.setDataValue(tag0.get(),curr_time);"
  *
- * @author max 
+ * @author max
  */
 public class ScriptDataGwidTranslator
     implements IDataGwidTranslator {
@@ -39,7 +39,7 @@ public class ScriptDataGwidTranslator
   private ScriptEngine engine;
 
   @Override
-  public boolean transmit( long aTime ) {
+  public boolean translate( long aTime ) {
     // текущее время
     engine.put( SCRIPT_CURR_TIME_VAR, Long.valueOf( aTime ) );
     try {
@@ -69,7 +69,7 @@ public class ScriptDataGwidTranslator
   }
 
   @Override
-  public void start( IDataSetter[] aDataSetindexes, IList<IL2Tag> aTags ) {
+  public void start( IGwidValueSetter[] aDataSetindexes, IList<IL2Tag> aTags ) {
 
     ScriptEngineManager mgr = new ScriptEngineManager();
     engine = mgr.getEngineByName( JAVA_SCRIPT_NAME );
@@ -84,7 +84,7 @@ public class ScriptDataGwidTranslator
     // устанавливаем установщики значений
 
     for( int i = 0; i < aDataSetindexes.length; i++ ) {
-      IDataSetter dataSetter = aDataSetindexes[i];
+      IGwidValueSetter dataSetter = aDataSetindexes[i];
       engine.put( String.format( DATA_SETTER_NAME_FOR_SCRIPT_FORMAT, Integer.valueOf( i ) ), dataSetter );
     }
 
@@ -114,18 +114,12 @@ public class ScriptDataGwidTranslator
 
     testTrans.transmitScript = "var is_transmitted =  data0.setDataValue(tag0.get(),curr_time);"; //$NON-NLS-1$
 
-    IDataSetter setter = new IDataSetter() {
+    IGwidValueSetter setter = new IGwidValueSetter() {
 
       @Override
-      public boolean setDataValue( IAtomicValue aValue, long aTime ) {
+      public boolean setGwidValue( IAtomicValue aValue, long aTime ) {
 
         return aValue.asInt() > 5;
-      }
-
-      @Override
-      public void sendOnServer() {
-        // TODO Auto-generated method stub
-
       }
 
       @Override
@@ -185,9 +179,9 @@ public class ScriptDataGwidTranslator
       }
     };
 
-    testTrans.start( new IDataSetter[] { setter }, new ElemArrayList<>( tag ) );
+    testTrans.start( new IGwidValueSetter[] { setter }, new ElemArrayList<>( tag ) );
 
-    System.out.println( testTrans.transmit( System.currentTimeMillis() ) );
+    System.out.println( testTrans.translate( System.currentTimeMillis() ) );
   }
 
 }

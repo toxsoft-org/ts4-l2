@@ -11,29 +11,22 @@ import org.toxsoft.l2.dlm.tags.submodules.data.*;
  * @author max
  */
 public class CombinedDataSetter
-    implements IDataSetter {
+    implements IGwidValueSetter {
 
-  private IListEdit<IDataSetter> dataSetters = new ElemArrayList<>();
+  private IListEdit<IGwidValueSetter> dataSetters = new ElemArrayList<>();
 
   @Override
-  public boolean setDataValue( IAtomicValue aValue, long aTime ) {
+  public boolean setGwidValue( IAtomicValue aValue, long aTime ) {
     boolean result = false;
-    for( IDataSetter setter : dataSetters ) {
-      result = result | setter.setDataValue( aValue, aTime );
+    for( IGwidValueSetter setter : dataSetters ) {
+      result = result | setter.setGwidValue( aValue, aTime );
     }
     return result;
   }
 
   @Override
-  public void sendOnServer() {
-    for( IDataSetter setter : dataSetters ) {
-      setter.sendOnServer();
-    }
-  }
-
-  @Override
   public void close() {
-    for( IDataSetter setter : dataSetters ) {
+    for( IGwidValueSetter setter : dataSetters ) {
       setter.close();
     }
   }
@@ -43,7 +36,7 @@ public class CombinedDataSetter
    *
    * @param aDataSetter IDataSetter - новый сеттер
    */
-  public void addDataSetter( IDataSetter aDataSetter ) {
+  public void addDataSetter( IGwidValueSetter aDataSetter ) {
     dataSetters.add( aDataSetter );
   }
 }

@@ -71,7 +71,7 @@ public class DataTranslatorsInitializer
    */
   private boolean initialized = false;
 
-  private IMapEdit<Gwid, IDataSetter> dataSetters = new ElemMap<>();
+  private IMapEdit<Gwid, IGwidValueSetter> dataSetters = new ElemMap<>();
 
   // Заплатка от повторяющихся COD-ов
   private IListEdit<String> codStrs = new ElemArrayList<>();
@@ -385,12 +385,12 @@ public class DataTranslatorsInitializer
       GwidList setterGwids = new GwidList();
 
       IListEdit<GwidTranslatorCfgExtension> transDataDefs = dataDefs.get( j );
-      IDataSetter[] tDataSetters = new IDataSetter[transDataDefs.size()];
+      IGwidValueSetter[] tDataSetters = new IGwidValueSetter[transDataDefs.size()];
       for( int i = 0; i < transDataDefs.size(); i++ ) {
         GwidTranslatorCfgExtension dataObjName = transDataDefs.get( i );
 
         Gwid setterGwid = dataObjName.getGwid();
-        IDataSetter setter = createSetter( dataObjName );
+        IGwidValueSetter setter = createSetter( dataObjName );
         tDataSetters[i] = setter;
 
         dataSetters.put( setterGwid, setter );
@@ -436,7 +436,7 @@ public class DataTranslatorsInitializer
     initialized = true;
   }
 
-  protected IDataSetter createSetter( GwidTranslatorCfgExtension aDataObjName ) {
+  protected IGwidValueSetter createSetter( GwidTranslatorCfgExtension aDataObjName ) {
     boolean synch = aDataObjName.isSynch();
     long synchPeriod = aDataObjName.getSynchPeriod();
 
@@ -447,7 +447,7 @@ public class DataTranslatorsInitializer
     }
 
     if( aDataObjName.isHist() ) {
-      IDataSetter setter = synch ? new SynchHistDataSetter( histDataSet, aDataObjName.getGwid(), synchPeriod )
+      IGwidValueSetter setter = synch ? new SynchHistDataSetter( histDataSet, aDataObjName.getGwid(), synchPeriod )
           : new SimpleHistDataSetter( histDataSet, aDataObjName.getGwid() );
       result.addDataSetter( setter );
     }
@@ -476,7 +476,7 @@ public class DataTranslatorsInitializer
   }
 
   @Override
-  public IMap<Gwid, IDataSetter> getDataSetters() {
+  public IMap<Gwid, IGwidValueSetter> getDataSetters() {
     return dataSetters;
   }
 

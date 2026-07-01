@@ -29,12 +29,12 @@ public class SingleIntToSingleBoolDataGwidTranslator
   /**
    * Установщик значений в дата-сет
    */
-  protected IDataSetter dataSetter;
+  protected IGwidValueSetter dataSetter;
 
   /**
    * Установщик инверсного значения в дата-сет
    */
-  protected IDataSetter invDataSetter;
+  protected IGwidValueSetter invDataSetter;
 
   /**
    * Номер значащего бита (от 0)
@@ -42,7 +42,7 @@ public class SingleIntToSingleBoolDataGwidTranslator
   protected int bitIndex = -1;
 
   @Override
-  public boolean transmit( long aTime ) {
+  public boolean translate( long aTime ) {
     IAtomicValue tagValue = tag.get();
 
     if( bitIndex < 0 || tagValue == null || tagValue.equals( IAtomicValue.NULL ) || !tagValue.isAssigned() ) {
@@ -55,7 +55,7 @@ public class SingleIntToSingleBoolDataGwidTranslator
 
     boolean result = false;
     try {
-      result = dataSetter.setDataValue( AvUtils.avBool( val ), aTime );
+      result = dataSetter.setGwidValue( AvUtils.avBool( val ), aTime );
     }
     catch( Exception e ) {
       logger.error( e, "Set data error: gwid: %s, tag: %s, error: %s", dataSetter.toString(), tag.id(),
@@ -64,7 +64,7 @@ public class SingleIntToSingleBoolDataGwidTranslator
 
     if( invDataSetter != null ) {
       try {
-        result = result || invDataSetter.setDataValue( AvUtils.avBool( !val ), aTime );
+        result = result || invDataSetter.setGwidValue( AvUtils.avBool( !val ), aTime );
       }
       catch( Exception e ) {
         logger.error( e, "Set data error: gwid: %s, tag: %s, error: %s", invDataSetter.toString(), tag.id(),
@@ -89,7 +89,7 @@ public class SingleIntToSingleBoolDataGwidTranslator
   }
 
   @Override
-  public void start( IDataSetter[] aDataSetindexes, IList<IL2Tag> aTags ) {
+  public void start( IGwidValueSetter[] aDataSetindexes, IList<IL2Tag> aTags ) {
     dataSetter = aDataSetindexes[0];
     tag = aTags.get( 0 );
 

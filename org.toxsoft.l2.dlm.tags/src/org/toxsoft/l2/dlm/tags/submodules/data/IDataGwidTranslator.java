@@ -21,7 +21,7 @@ public interface IDataGwidTranslator {
    * @return boolean - true - данные поменялись и должны быть переданы наверх, false - данные не изменились и их
    *         передача не нужна.
    */
-  boolean transmit( long aTime );
+  boolean translate( long aTime );
 
   /**
    * Проводит конфигурацию преобразователя передатчика по конфигурационным параметрам.
@@ -38,5 +38,5 @@ public interface IDataGwidTranslator {
    *          сервер.
    * @param aWriteDataSet T - дата-сет на запись
    */
-  void start( IDataSetter[] aDataSetindexes, IList<IL2Tag> aTags );
+  void start( IGwidValueSetter[] aDataSetindexes, IList<IL2Tag> aTags );
 }

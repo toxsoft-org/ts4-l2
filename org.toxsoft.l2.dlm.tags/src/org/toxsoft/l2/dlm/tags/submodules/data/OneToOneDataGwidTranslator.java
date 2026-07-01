@@ -29,10 +29,10 @@ public class OneToOneDataGwidTranslator
   /**
    * Номер данного в дата-сете
    */
-  protected IDataSetter dataSetter;
+  protected IGwidValueSetter dataSetter;
 
   @Override
-  public boolean transmit( long aTime ) {
+  public boolean translate( long aTime ) {
     IAtomicValue newVal = tag.get();
 
     if( newVal == null || newVal.equals( IAtomicValue.NULL ) || !newVal.isAssigned() ) {
@@ -46,7 +46,7 @@ public class OneToOneDataGwidTranslator
 
     boolean result = false;
     try {
-      result = dataSetter.setDataValue( newVal, aTime );
+      result = dataSetter.setGwidValue( newVal, aTime );
     }
     catch( Exception e ) {
       logger.error( e, "Set data error: gwid: %s, tag: %s, error: %s", dataSetter.toString(), tag.id(),
@@ -66,7 +66,7 @@ public class OneToOneDataGwidTranslator
   }
 
   @Override
-  public void start( IDataSetter[] aDataSetindexes, IList<IL2Tag> aTags ) {
+  public void start( IGwidValueSetter[] aDataSetindexes, IList<IL2Tag> aTags ) {
     dataSetter = aDataSetindexes[0];
     tag = aTags.get( 0 );
   }
@@ -75,7 +75,7 @@ public class OneToOneDataGwidTranslator
     return tag;
   }
 
-  protected IDataSetter getInDataSetIndex() {
+  protected IGwidValueSetter getInDataSetIndex() {
     return dataSetter;
   }
 

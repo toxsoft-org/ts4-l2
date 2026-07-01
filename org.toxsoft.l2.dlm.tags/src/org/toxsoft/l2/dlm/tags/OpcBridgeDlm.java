@@ -54,7 +54,7 @@ public class OpcBridgeDlm
     // modules.add( complexTagsModule );
 
     // подмодуль текущих данных
-    AbstractTsCoopCompMultiUse currDataModule = new OpcCurrDataModule( context, info() );
+    AbstractTsCoopCompMultiUse currDataModule = new DataModule( context, info() );
     modules.add( currDataModule );
 
     AbstractTsCoopCompMultiUse eventModule = new EventModule( context, info() );

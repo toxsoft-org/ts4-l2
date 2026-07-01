@@ -7,22 +7,16 @@ import org.toxsoft.core.tslib.av.*;
  *
  * @author max
  */
-public interface IDataSetter {
+public interface IGwidValueSetter {
 
   /**
    * Пустая реализация установщика - ничего не делает.
    */
-  IDataSetter NULL = new IDataSetter() {
+  IGwidValueSetter NULL = new IGwidValueSetter() {
 
     @Override
-    public boolean setDataValue( IAtomicValue aValue, long aTime ) {
+    public boolean setGwidValue( IAtomicValue aValue, long aTime ) {
       return false;
-    }
-
-    @Override
-    public void sendOnServer() {
-      // без реализации
-
     }
 
     @Override
@@ -40,12 +34,7 @@ public interface IDataSetter {
    * @return true - поступившее данное установлено в датасет, false - поступившее данное не установлено в дата-сет
    *         (например, потому что не изменилось по сравнению с предыдущим).
    */
-  boolean setDataValue( IAtomicValue aValue, long aTime );
-
-  /**
-   * Отправляет данные на сервер
-   */
-  void sendOnServer();
+  boolean setGwidValue( IAtomicValue aValue, long aTime );
 
   /**
    * Закрывает установщик данных

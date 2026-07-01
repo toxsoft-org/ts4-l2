@@ -42,7 +42,7 @@ public interface IDataTranslatorsInitializer {
    * @throws TsIllegalStateRtException - выбрасывается, если метод вызывается до {@link #initialize(IL2SharedContext)}
    *           или если во время инициализации произошла ошибка (т.е. конфигурация закончилась ошибкой)
    */
-  IMap<Gwid, IDataSetter> getDataSetters()
+  IMap<Gwid, IGwidValueSetter> getDataSetters()
       throws TsIllegalStateRtException;
 
   /**

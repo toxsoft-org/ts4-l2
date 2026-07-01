@@ -16,11 +16,11 @@ import org.toxsoft.l2.lib.hal.*;
 import org.toxsoft.uskat.core.connection.*;
 
 /**
- * Модуль работы с текущими данными.
+ * Модуль работы с данными (текущими и историческими).
  *
  * @author max
  */
-public class OpcCurrDataModule
+public class DataModule
     extends AbstractTsCoopCompMultiUse {
 
   /**
@@ -51,7 +51,7 @@ public class OpcCurrDataModule
   /**
    * Набор выходных текущих данных.
    */
-  IList<IDataSetter> wCurrDataSet;
+  IList<IGwidValueSetter> wCurrDataSet;
 
   /**
    * Конструктор по DLM контексту
@@ -60,7 +60,7 @@ public class OpcCurrDataModule
    * @param aDlmInfo IDlmInfo - информация о DLM
    * @param aInitializer IPinDataInitializer - инициализатор пинов.
    */
-  public OpcCurrDataModule( IL2SharedContext aContext, DlmInfo aDlmInfo ) {
+  public DataModule( IL2SharedContext aContext, DlmInfo aDlmInfo ) {
     dlmInfo = aDlmInfo;
     context = aContext;
   }
@@ -112,7 +112,7 @@ public class OpcCurrDataModule
     for( IDataGwidTranslator transmitter : pinDataTransmitters ) {
       if( transmitter instanceof OneToOneDataGwidTranslator ) {
         IL2Tag tag = null;// = ((OneToOneDataTransmitter)transmitter).getTag();
-        IDataSetter dataSet = ((OneToOneDataGwidTranslator)transmitter).getInDataSetIndex();
+        IGwidValueSetter dataSet = ((OneToOneDataGwidTranslator)transmitter).getInDataSetIndex();
         if( tag != null ) {
           logger.debug( "Tag: %s, Set: %s", tag.id(), dataSet.toString() );
         }
@@ -139,7 +139,7 @@ public class OpcCurrDataModule
     // выполнение работы каждым передатчиком с проверкой изменения данных
     for( IDataGwidTranslator transmitter : pinDataTransmitters ) {
       try {
-        doCurrWrite |= transmitter.transmit( currTime );
+        doCurrWrite |= transmitter.translate( currTime );
       }
       catch( Exception e ) {
         logger.error( e.getMessage() );
@@ -151,7 +151,7 @@ public class OpcCurrDataModule
   @Override
   protected boolean doQueryStop() {
     if( wCurrDataSet != null ) {
-      for( IDataSetter c : wCurrDataSet ) {
+      for( IGwidValueSetter c : wCurrDataSet ) {
         c.close();
       }
       logger.info( "Curr data channels are closed, size = %d", Integer.valueOf( wCurrDataSet.size() ) ); //$NON-NLS-1$

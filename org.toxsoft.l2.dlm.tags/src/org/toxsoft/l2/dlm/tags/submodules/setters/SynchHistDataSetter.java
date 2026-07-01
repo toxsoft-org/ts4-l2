@@ -29,7 +29,7 @@ public class SynchHistDataSetter
   }
 
   @Override
-  public boolean setDataValue( IAtomicValue aValue, long aTime ) {
+  public boolean setGwidValue( IAtomicValue aValue, long aTime ) {
     IAtomicValue newVal = aValue;
 
     boolean result =
@@ -44,11 +44,6 @@ public class SynchHistDataSetter
       prevSetTime = aTime;
     }
     return result;
-  }
-
-  @Override
-  public void sendOnServer() {
-    super.sendOnServer();
   }
 
 }

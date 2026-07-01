@@ -33,10 +33,10 @@ public class OneIntToManyBoolDataGwidTranslator
   /**
    * Массив установщиков значений в дата-сет
    */
-  protected IDataSetter[] dataSetters;
+  protected IGwidValueSetter[] dataSetters;
 
   @Override
-  public boolean transmit( long aTime ) {
+  public boolean translate( long aTime ) {
     boolean result = false;
     IAtomicValue tagValue = tag.get();
 
@@ -51,7 +51,7 @@ public class OneIntToManyBoolDataGwidTranslator
         boolean val = ((value >> i) & 1) == 1;
 
         if( oldVals[i] == null || oldVals[i].booleanValue() != val ) {
-          result = result || dataSetters[i].setDataValue( AvUtils.avBool( val ), aTime );
+          result = result || dataSetters[i].setGwidValue( AvUtils.avBool( val ), aTime );
           oldVals[i] = Boolean.valueOf( val );
         }
       }
@@ -67,7 +67,7 @@ public class OneIntToManyBoolDataGwidTranslator
   }
 
   @Override
-  public void start( IDataSetter[] aDataSetindexes, IList<IL2Tag> aTags ) {
+  public void start( IGwidValueSetter[] aDataSetindexes, IList<IL2Tag> aTags ) {
     // inDataSetIndex = aDataSetindexes[0];
     tag = aTags.get( 0 );
   }

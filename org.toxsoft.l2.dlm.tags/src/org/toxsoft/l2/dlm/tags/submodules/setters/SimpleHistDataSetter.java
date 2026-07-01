@@ -17,7 +17,7 @@ import org.toxsoft.uskat.core.api.rtdserv.*;
  * @author max
  */
 public class SimpleHistDataSetter
-    implements IDataSetter {
+    implements IGwidValueSetter {
 
   /**
    * Журнал работы
@@ -48,6 +48,15 @@ public class SimpleHistDataSetter
 
   private IAtomicValue value;
 
+  /**
+   * Метка времени последней записи данных на сервер
+   */
+  private long lastWriteStamp  = System.currentTimeMillis();
+  /**
+   * Период между записью данными на сервер
+   */
+  private long dataWritePeriod = 15000L;
+
   public SimpleHistDataSetter( IMap<Gwid, ISkWriteHistDataChannel> aDataSet, Gwid aDataGwid ) {
     TsIllegalArgumentRtException.checkFalse( aDataSet.hasKey( aDataGwid ) );
     channel = aDataSet.getByKey( aDataGwid );
@@ -55,14 +64,21 @@ public class SimpleHistDataSetter
   }
 
   @Override
-  public boolean setDataValue( IAtomicValue aValue, long aTime ) {
+  public boolean setGwidValue( IAtomicValue aValue, long aTime ) {
     boolean result = aValue.isAssigned() && (value == null || !value.equals( aValue ));
 
     if( result ) {
       result = result && doSetDataValue( aValue, aTime );
       value = aValue;
     }
+    if( checkSendOnServer( aTime ) ) {
+      sendOnServer();
+    }
     return result;
+  }
+
+  private boolean checkSendOnServer( long aCurrTime ) {
+    return aCurrTime - lastWriteStamp > dataWritePeriod || aCurrTime < lastWriteStamp;
   }
 
   protected boolean doSetDataValue( IAtomicValue aValue, long aTime ) {
@@ -79,8 +95,7 @@ public class SimpleHistDataSetter
 
   }
 
-  @Override
-  public void sendOnServer() {
+  protected void sendOnServer() {
     if( values.size() > 0 ) {
       try {
         channel.writeValues( timeInterval(), values );
@@ -91,6 +106,7 @@ public class SimpleHistDataSetter
       // logger.info( "wdChannel.writeValues() it's gwid %s", channel.gwid() );
 
       startTime = System.currentTimeMillis();
+      lastWriteStamp = startTime;
       values = new TimedList<>();
     }
   }
