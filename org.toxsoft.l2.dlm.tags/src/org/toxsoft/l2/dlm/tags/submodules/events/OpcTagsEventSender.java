@@ -16,6 +16,7 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.l2.dlm.tags.submodules.data.*;
 import org.toxsoft.l2.lib.common.*;
 import org.toxsoft.l2.lib.hal.*;
 import org.toxsoft.uskat.core.api.evserv.*;
@@ -28,7 +29,7 @@ import org.toxsoft.uskat.core.connection.*;
  * @author max
  */
 public class OpcTagsEventSender
-    implements IEventSender {
+    implements IDataGwidTranslator {
 
   /**
    * Журнал работы
@@ -54,16 +55,17 @@ public class OpcTagsEventSender
   private boolean isStarted = false;
 
   @Override
-  public void sendEvent( long aTime ) {
+  public boolean translate( long aTime ) {
     if( !isStarted ) {
-      return;
+      return false;
     }
     for( IOpcTagsCondition condition : conditions.values() ) {
       if( !condition.isEventCondition( aTime ) ) {
-        return;
+        return false;
       }
     }
     fireEvent( aTime );
+    return true;
   }
 
   private void fireEvent( long aTime ) {
@@ -248,6 +250,11 @@ public class OpcTagsEventSender
   }
 
   @Override
+  public void start( IGwidValueSetter[] aDataSetindexes, IList<IL2Tag> aTags ) {
+    // TODO Auto-generated method stub
+
+  }
+
   public void start( IL2SharedContext aContext ) {
     // соединение
     connection = aContext.net().getSkConnection();

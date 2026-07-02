@@ -12,6 +12,7 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.l2.dlm.tags.submodules.data.*;
 import org.toxsoft.l2.lib.common.*;
 import org.toxsoft.l2.lib.dlms.*;
 import org.toxsoft.uskat.core.connection.*;
@@ -101,7 +102,8 @@ public class EventModule
       for( int i = 0; i < senders.size(); i++ ) {
         IEventSender sender = senders.get( i );
         try {
-          sender.start( context );
+          sender.start( new IGwidValueSetter[0], new ElemArrayList<>() ); // TODO
+          // sender.start( context );
         }
         catch( Exception e ) {
           logger.error( e, "Start of event sender error" );
@@ -143,7 +145,7 @@ public class EventModule
     // соответствующем пине
     for( int i = 0; i < senders.size(); i++ ) {
       IEventSender sender = senders.get( i );
-      sender.sendEvent( time );
+      sender.translate( time );
     }
 
   }
