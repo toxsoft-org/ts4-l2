@@ -1,0 +1,205 @@
+DlmConfig = 
+{
+  false,
+  "opc.dlm.cfg",
+  {
+    id = "ru.toxsoft.l2.dlm.tags.common",
+    description = "ru.toxsoft.l2.dlm.tags.common"
+  }
+  ,
+  {
+    cmdClassDefs=
+    {
+      true,
+      [
+      ]
+    }
+    ,
+    cmdDefs=
+    {
+      true,
+      [
+      ]
+    }
+    ,
+    dataDefs=
+    {
+      true,
+      [
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1783573040727.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1783573040727",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlTemperature",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4000_2",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1783677650299.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1783677650299",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlHumidity",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4004_2",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1783680830816.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1783680830816",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlO2Concentration",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4008_2",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1783681726821.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1783681726821",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlCO2Content",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4012_2",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1783682816868.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1783682816868",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlInsidePressure",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4016_2",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1783683044146.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1783683044146",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlAirPressure1",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4020_2",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1783683068985.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1783683068985",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlAirPressure2",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4024_2",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1783683109010.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1783683109010",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlOxygenPressure",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4028_2",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+      ]
+    }
+    ,
+    eventDefs=
+    {
+      true,
+      [
+      ]
+    }
+    ,
+    complexTagsDefs=
+    {
+      true,
+      [
+      ]
+    }
+  }
+}
