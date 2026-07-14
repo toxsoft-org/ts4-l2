@@ -1,4 +1,4 @@
-package org.toxsoft.l2.dlm.tags.submodules.data;
+package org.toxsoft.l2.dlm.tags;
 
 import org.toxsoft.core.tslib.av.*;
 
@@ -22,7 +22,6 @@ public interface IGwidValueSetter {
     @Override
     public void close() {
       // без реализации
-
     }
   };
 

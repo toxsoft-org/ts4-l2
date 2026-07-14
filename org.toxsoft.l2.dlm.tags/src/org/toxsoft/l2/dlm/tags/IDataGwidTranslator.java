@@ -1,4 +1,4 @@
-package org.toxsoft.l2.dlm.tags.submodules.data;
+package org.toxsoft.l2.dlm.tags;
 
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
@@ -33,10 +33,12 @@ public interface IDataGwidTranslator {
   /**
    * Запускает преобразователь-передатчик данных.
    *
+   * @param aDataSetters
+   * @param aDataGetters
    * @param aDataGwids IList - список данных в дата-сете, в который передаются данные.
    * @param aTags IList - список тегов, из которых поступают данные, необходимые для преобразования и передачи на
    *          сервер.
    * @param aWriteDataSet T - дата-сет на запись
    */
-  void start( IGwidValueSetter[] aDataSetindexes, IList<IL2Tag> aTags );
+  void start( IGwidValueSetter[] aDataSetters, IGwidValueGetter[] aDataGetters, IList<IL2Tag> aTags );
 }

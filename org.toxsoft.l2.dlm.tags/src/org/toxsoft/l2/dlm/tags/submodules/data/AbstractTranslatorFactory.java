@@ -1,6 +1,7 @@
 package org.toxsoft.l2.dlm.tags.submodules.data;
 
 import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.l2.dlm.tags.*;
 
 /**
  * TODO это на самом деле #IL2GwidTranslatorFactory <br>

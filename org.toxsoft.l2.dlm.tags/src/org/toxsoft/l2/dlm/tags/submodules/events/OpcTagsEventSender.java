@@ -16,7 +16,7 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
-import org.toxsoft.l2.dlm.tags.submodules.data.*;
+import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.l2.lib.common.*;
 import org.toxsoft.l2.lib.hal.*;
 import org.toxsoft.uskat.core.api.evserv.*;
@@ -82,6 +82,7 @@ public class OpcTagsEventSender
       return;
     }
     SkEvent ev = new SkEvent( aTime, evenGwid, paramValues );
+
     connection.coreApi().eventService().fireEvent( ev );// TODO
 
     logger.debug( "Event sent: %s", ev.toString() );
@@ -250,7 +251,7 @@ public class OpcTagsEventSender
   }
 
   @Override
-  public void start( IGwidValueSetter[] aDataSetindexes, IList<IL2Tag> aTags ) {
+  public void start( IGwidValueSetter[] aDataSetindexes, IGwidValueGetter[] aDataGetters, IList<IL2Tag> aTags ) {
     // TODO Auto-generated method stub
 
   }

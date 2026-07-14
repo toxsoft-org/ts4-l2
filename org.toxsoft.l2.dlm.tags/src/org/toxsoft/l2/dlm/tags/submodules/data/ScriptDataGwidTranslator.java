@@ -15,6 +15,7 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.rwkind.*;
+import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.l2.lib.hal.*;
 
 /**
@@ -69,7 +70,7 @@ public class ScriptDataGwidTranslator
   }
 
   @Override
-  public void start( IGwidValueSetter[] aDataSetindexes, IList<IL2Tag> aTags ) {
+  public void start( IGwidValueSetter[] aDataSetindexes, IGwidValueGetter[] aDataGetters, IList<IL2Tag> aTags ) {
 
     ScriptEngineManager mgr = new ScriptEngineManager();
     engine = mgr.getEngineByName( JAVA_SCRIPT_NAME );
@@ -179,7 +180,7 @@ public class ScriptDataGwidTranslator
       }
     };
 
-    testTrans.start( new IGwidValueSetter[] { setter }, new ElemArrayList<>( tag ) );
+    testTrans.start( new IGwidValueSetter[] { setter }, new IGwidValueGetter[0], new ElemArrayList<>( tag ) );
 
     System.out.println( testTrans.translate( System.currentTimeMillis() ) );
   }

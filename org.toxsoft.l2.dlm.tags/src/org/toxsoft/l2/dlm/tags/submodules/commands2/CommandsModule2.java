@@ -1,4 +1,4 @@
-package org.toxsoft.l2.dlm.tags.submodules.commands;
+package org.toxsoft.l2.dlm.tags.submodules.commands2;
 
 import static org.toxsoft.l2.dlm.tags.IDlmsBaseConstants.*;
 import static org.toxsoft.l2.dlm.tags.submodules.commands.IL2Resources.*;
@@ -23,6 +23,7 @@ import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.l2.dlm.tags.*;
+import org.toxsoft.l2.dlm.tags.submodules.commands.*;
 import org.toxsoft.l2.lib.common.*;
 import org.toxsoft.l2.lib.dlms.*;
 import org.toxsoft.l2.lib.hal.*;
@@ -35,7 +36,7 @@ import org.toxsoft.uskat.core.connection.*;
  *
  * @author max
  */
-public class CommandsModule
+public class CommandsModule2
     extends AbstractTsCoopCompMultiUse
     implements ISkCommandExecutor {
 
@@ -105,8 +106,8 @@ public class CommandsModule
    * @param aInstanceId
    * @param aComplexTagsContainer IComplexTagsContainer - контейнер сложных тегов.
    */
-  public CommandsModule( IL2SharedContext aContext, DlmInfo aDlmInfo, String aInstanceId ) {// , IComplexTagsContainer
-                                                                                            // aComplexTagsContainer
+  public CommandsModule2( IL2SharedContext aContext, DlmInfo aDlmInfo, String aInstanceId ) {// , IComplexTagsContainer
+                                                                                             // aComplexTagsContainer
     // ) {
     context = aContext;
     dlmInfo = aDlmInfo;

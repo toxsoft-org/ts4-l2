@@ -423,7 +423,7 @@ public class DataTranslatorsInitializer
       // запуск передатчика
       try {
         long t1 = System.currentTimeMillis();
-        transmitter.start( tDataSetters, tags );
+        transmitter.start( tDataSetters, new IGwidValueGetter[0], tags );
         long t2 = System.currentTimeMillis();
         logger.debug( "j = %d, transmitter.start() : %d \n", j, (t2 - t1) );
 

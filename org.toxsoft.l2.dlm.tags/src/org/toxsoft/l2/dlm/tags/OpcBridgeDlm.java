@@ -43,7 +43,7 @@ public class OpcBridgeDlm
   protected OpcBridgeDlm( String aInstanceId, DlmInfo aDlmInfo, IOptionSet aParams ) {
     super( aInstanceId, aDlmInfo, aParams );
 
-    logger = LoggerUtils.getLogger( getClass(), aInstanceId );
+    logger = LoggerUtils.getLogger( getClass(), aDlmInfo.moduleId(), aInstanceId );
 
     modules = new ElemArrayList<>();
 
@@ -54,14 +54,14 @@ public class OpcBridgeDlm
     // modules.add( complexTagsModule );
 
     // подмодуль текущих данных
-    AbstractTsCoopCompMultiUse currDataModule = new DataModule( context, info() );
+    AbstractTsCoopCompMultiUse currDataModule = new DataModule( context, info(), aInstanceId );
     modules.add( currDataModule );
 
-    AbstractTsCoopCompMultiUse eventModule = new EventModule( context, info() );
+    AbstractTsCoopCompMultiUse eventModule = new EventModule( context, info(), aInstanceId );
     modules.add( eventModule );
 
     // создание модуля команд и установка в него модуля комплексных тегов
-    AbstractTsCoopCompMultiUse commandsModule = new CommandsModule( context, info() );
+    AbstractTsCoopCompMultiUse commandsModule = new CommandsModule( context, info(), aInstanceId );
     modules.add( commandsModule );
 
     // dima 25.12.23 add rriModule

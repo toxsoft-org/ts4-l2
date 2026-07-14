@@ -3,6 +3,7 @@ package org.toxsoft.l2.dlm.tags.submodules.setters;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.l2.dlm.tags.submodules.data.*;
 
 /**

@@ -12,7 +12,7 @@ import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.l2.dlm.tags.submodules.data.*;
+import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.l2.lib.common.*;
 import org.toxsoft.l2.lib.dlms.*;
 import org.toxsoft.uskat.core.connection.*;
@@ -24,6 +24,8 @@ import org.toxsoft.uskat.core.connection.*;
  */
 public class EventModule
     extends AbstractTsCoopCompMultiUse {
+
+  private static final String OPC_MODULE_ID = "eventsModule"; //$NON-NLS-1$
 
   /**
    * Журнал работы
@@ -48,18 +50,20 @@ public class EventModule
   /**
    * Объекты локальные отправитель сообщений.
    */
-  private IListEdit<IEventSender> senders;
+  private IListEdit<IDataGwidTranslator> senders;
 
   /**
    * Конструктор по контексту.
    *
    * @param aContext {@link IDlmContext} - контекст подгружаемых модулей.
    * @param aDlmInfo IDlmInfo - информация о DLM
+   * @param aInstanceId
    */
-  public EventModule( IL2SharedContext aContext, DlmInfo aDlmInfo ) {
+  public EventModule( IL2SharedContext aContext, DlmInfo aDlmInfo, String aInstanceId ) {
     context = aContext;
     dlmInfo = aDlmInfo;
-    logger = LoggerUtils.getLogger( this.getClass(), aContext.appId() );
+
+    logger = LoggerUtils.getLogger( this.getClass(), aDlmInfo.moduleId(), aInstanceId, OPC_MODULE_ID );
   }
 
   @Override
@@ -73,7 +77,7 @@ public class EventModule
         IAvTree eventDef = eventDefs.arrayElement( i );
 
         try {
-          IEventSender eventSender = createSender( eventDef );
+          IDataGwidTranslator eventSender = createSender( eventDef );
           eventSender.config( eventDef );
           senders.add( eventSender );
         }
@@ -100,9 +104,9 @@ public class EventModule
     try {
       // запуск локальных отправителей
       for( int i = 0; i < senders.size(); i++ ) {
-        IEventSender sender = senders.get( i );
+        IDataGwidTranslator sender = senders.get( i );
         try {
-          sender.start( new IGwidValueSetter[0], new ElemArrayList<>() ); // TODO
+          sender.start( new IGwidValueSetter[0], new IGwidValueGetter[0], new ElemArrayList<>() ); // TODO
           // sender.start( context );
         }
         catch( Exception e ) {
@@ -144,7 +148,7 @@ public class EventModule
     // вызов каждого отправителя для выполнения работы - отправки сообщения - при переходе значения с 0 на 1 на
     // соответствующем пине
     for( int i = 0; i < senders.size(); i++ ) {
-      IEventSender sender = senders.get( i );
+      IDataGwidTranslator sender = senders.get( i );
       sender.translate( time );
     }
 
@@ -157,14 +161,14 @@ public class EventModule
    * @return IEventSender -
    */
   @SuppressWarnings( "unchecked" )
-  private static IEventSender createSender( IAvTree aConfig ) {
+  private static IDataGwidTranslator createSender( IAvTree aConfig ) {
     // тип передатчика - из конфигурации
     String eventSenderClassStr = aConfig.fields().getStr( EVENT_SENDER_JAVA_CLASS );
 
     try {
-      Class<IEventSender> eventSenderClass = (Class<IEventSender>)Class.forName( eventSenderClassStr );
+      Class<IDataGwidTranslator> eventSenderClass = (Class<IDataGwidTranslator>)Class.forName( eventSenderClassStr );
 
-      IEventSender sender = eventSenderClass.getConstructor().newInstance();
+      IDataGwidTranslator sender = eventSenderClass.getConstructor().newInstance();
 
       return sender;
     }

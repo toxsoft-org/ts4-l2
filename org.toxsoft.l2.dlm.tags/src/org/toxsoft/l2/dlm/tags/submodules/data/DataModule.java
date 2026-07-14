@@ -10,6 +10,8 @@ import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.l2.lib.common.*;
 import org.toxsoft.l2.lib.dlms.*;
 import org.toxsoft.l2.lib.hal.*;
@@ -22,6 +24,8 @@ import org.toxsoft.uskat.core.connection.*;
  */
 public class DataModule
     extends AbstractTsCoopCompMultiUse {
+
+  private static final String OPC_MODULE_ID = "dataModule"; //$NON-NLS-1$
 
   /**
    * Журнал работы
@@ -58,11 +62,14 @@ public class DataModule
    *
    * @param aContext IDlmContext - контекст.
    * @param aDlmInfo IDlmInfo - информация о DLM
+   * @param aInstanceId
    * @param aInitializer IPinDataInitializer - инициализатор пинов.
    */
-  public DataModule( IL2SharedContext aContext, DlmInfo aDlmInfo ) {
+  public DataModule( IL2SharedContext aContext, DlmInfo aDlmInfo, String aInstanceId ) {
     dlmInfo = aDlmInfo;
     context = aContext;
+
+    logger = LoggerUtils.getLogger( this.getClass(), aDlmInfo.moduleId(), aInstanceId, OPC_MODULE_ID );
   }
 
   @Override

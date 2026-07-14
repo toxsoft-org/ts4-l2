@@ -6,7 +6,7 @@ package org.toxsoft.l2.dlm.tags.submodules.commands;
  * @author max
  */
 @SuppressWarnings( "nls" )
-interface IL2Resources {
+public interface IL2Resources {
 
   String ERR_INSTANCE_OF_CMD_EXEC_HAS_NOT_BEEN_CREATED = "Instance %s of Command Executer has not been created";
 

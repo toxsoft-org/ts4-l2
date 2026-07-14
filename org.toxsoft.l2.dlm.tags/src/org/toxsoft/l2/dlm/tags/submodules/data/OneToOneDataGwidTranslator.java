@@ -4,6 +4,7 @@ import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.utils.logs.*;
+import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.l2.lib.hal.*;
 
 /**
@@ -66,7 +67,7 @@ public class OneToOneDataGwidTranslator
   }
 
   @Override
-  public void start( IGwidValueSetter[] aDataSetindexes, IList<IL2Tag> aTags ) {
+  public void start( IGwidValueSetter[] aDataSetindexes, IGwidValueGetter[] aDataGetters, IList<IL2Tag> aTags ) {
     dataSetter = aDataSetindexes[0];
     tag = aTags.get( 0 );
   }
