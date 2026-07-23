@@ -48,6 +48,46 @@ DlmConfig =
         ,
         {
           false,
+          "data.modbus.bridge.cfg.unit.id1784819737777.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1784819737777",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlTemperature",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4002_1",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1784819890008.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1784819890008",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlHumidity",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4004_2",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
           "data.modbus.bridge.cfg.unit.id1783677650299.def",
           {
             pin.id = "modbus.bridge.cfg.unit.id1783677650299",
@@ -57,8 +97,8 @@ DlmConfig =
             is.hist = true,
             class.id = "vdm.AnalogChannel",
             obj.name = "chnlHumidity",
-            data.id = "rtdCurrValue",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4004_2",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4006_1",
             tag.dev.id = "tcp_192_168_12_222_502"
           }
           ,
@@ -88,6 +128,26 @@ DlmConfig =
         ,
         {
           false,
+          "data.modbus.bridge.cfg.unit.id1784819971729.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1784819971729",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlO2Concentration",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4010_1",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
           "data.modbus.bridge.cfg.unit.id1783681726821.def",
           {
             pin.id = "modbus.bridge.cfg.unit.id1783681726821",
@@ -99,6 +159,26 @@ DlmConfig =
             obj.name = "chnlCO2Content",
             data.id = "rtdCurrValue",
             tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4012_2",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1784820035703.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1784820035703",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlCO2Content",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4014_1",
             tag.dev.id = "tcp_192_168_12_222_502"
           }
           ,
@@ -128,6 +208,26 @@ DlmConfig =
         ,
         {
           false,
+          "data.modbus.bridge.cfg.unit.id1784820122134.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1784820122134",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlInsidePressure",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4018_1",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
           "data.modbus.bridge.cfg.unit.id1783683044146.def",
           {
             pin.id = "modbus.bridge.cfg.unit.id1783683044146",
@@ -139,6 +239,26 @@ DlmConfig =
             obj.name = "chnlAirPressure1",
             data.id = "rtdCurrValue",
             tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4020_2",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1784820189344.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1784820189344",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlAirPressure1",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4022_1",
             tag.dev.id = "tcp_192_168_12_222_502"
           }
           ,
@@ -168,6 +288,26 @@ DlmConfig =
         ,
         {
           false,
+          "data.modbus.bridge.cfg.unit.id1784820248658.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1784820248658",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlAirPressure2",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4026_1",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
           "data.modbus.bridge.cfg.unit.id1783683109010.def",
           {
             pin.id = "modbus.bridge.cfg.unit.id1783683109010",
@@ -179,6 +319,26 @@ DlmConfig =
             obj.name = "chnlOxygenPressure",
             data.id = "rtdCurrValue",
             tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4028_2",
+            tag.dev.id = "tcp_192_168_12_222_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1784820302772.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1784820302772",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "vdm.AnalogChannel",
+            obj.name = "chnlOxygenPressure",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4030_1",
             tag.dev.id = "tcp_192_168_12_222_502"
           }
           ,

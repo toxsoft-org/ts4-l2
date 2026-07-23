@@ -58,6 +58,38 @@ DeviceConfig =
                         ,
                         {
                           false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4002_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4002_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4002_1",
+                            request.type = "AI",
+                            register = 4002,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4003_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4003_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4003_1",
+                            request.type = "AI",
+                            register = 4003,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
                           "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4004_2.def",
                           {
                             id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4004_2",
@@ -66,6 +98,38 @@ DeviceConfig =
                             register = 4004,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4006_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4006_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4006_1",
+                            request.type = "AI",
+                            register = 4006,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4007_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4007_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4007_1",
+                            request.type = "AI",
+                            register = 4007,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -90,6 +154,38 @@ DeviceConfig =
                         ,
                         {
                           false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4010_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4010_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4010_1",
+                            request.type = "AI",
+                            register = 4010,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4011_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4011_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4011_1",
+                            request.type = "AI",
+                            register = 4011,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
                           "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4012_2.def",
                           {
                             id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4012_2",
@@ -98,6 +194,38 @@ DeviceConfig =
                             register = 4012,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4014_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4014_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4014_1",
+                            request.type = "AI",
+                            register = 4014,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4015_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4015_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4015_1",
+                            request.type = "AI",
+                            register = 4015,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -122,6 +250,38 @@ DeviceConfig =
                         ,
                         {
                           false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4018_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4018_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4018_1",
+                            request.type = "AI",
+                            register = 4018,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4019_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4019_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4019_1",
+                            request.type = "AI",
+                            register = 4019,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
                           "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4020_2.def",
                           {
                             id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4020_2",
@@ -130,6 +290,38 @@ DeviceConfig =
                             register = 4020,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4022_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4022_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4022_1",
+                            request.type = "AI",
+                            register = 4022,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4023_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4023_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4023_1",
+                            request.type = "AI",
+                            register = 4023,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
@@ -154,6 +346,38 @@ DeviceConfig =
                         ,
                         {
                           false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4026_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4026_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4026_1",
+                            request.type = "AI",
+                            register = 4026,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4027_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4027_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4027_1",
+                            request.type = "AI",
+                            register = 4027,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
                           "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4028_2.def",
                           {
                             id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4028_2",
@@ -162,6 +386,22 @@ DeviceConfig =
                             register = 4028,
                             words.count = 2,
                             translator = "FLOAT_REGISTERS"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4030_1.def",
+                          {
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4030_1",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4030_1",
+                            request.type = "AI",
+                            register = 4030,
+                            words.count = 1,
+                            translator = "INTEGER_REGISTERS"
                           }
                           ,
                           {
