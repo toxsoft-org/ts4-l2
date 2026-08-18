@@ -338,7 +338,7 @@ DlmConfig =
             class.id = "vdm.AnalogChannel",
             obj.name = "chnlOxygenPressure",
             data.id = "rtdChannelState",
-            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4030_1",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AO_1810_2",
             tag.dev.id = "tcp_192_168_12_222_502"
           }
           ,

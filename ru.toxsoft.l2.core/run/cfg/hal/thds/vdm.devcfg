@@ -394,14 +394,15 @@ DeviceConfig =
                         ,
                         {
                           false,
-                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4030_1.def",
+                          "pin.modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AO_1810_2.def",
                           {
-                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4030_1",
-                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AI_4030_1",
-                            request.type = "AI",
-                            register = 4030,
-                            words.count = 1,
-                            translator = "INTEGER_REGISTERS"
+                            id = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AO_1810_2",
+                            descr = "modbus_node_id_tcp_ip_address_192_168_12_222_ip_port_502_AO_1810_2",
+                            request.type = "AO",
+                            register = 1810,
+                            words.count = 2,
+                            translator = "org.toxsoft.l2.thd.modbus.common.translators.VordaqIntegerRegistersTranslator",
+                            translator.params = ""
                           }
                           ,
                           {
