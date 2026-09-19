@@ -19,10 +19,11 @@ import org.toxsoft.l2.lib.hal.*;
 public abstract class L2AbstractTag
     implements IL2Tag {
 
-  private final String     id;
-  private final IOptionSet params;
-  private final IDataType  dataType;
-  private final ERwKind    kind;
+  private final L2AbstractHalDevice device;
+  private final String              id;
+  private final IOptionSet          params;
+  private final IDataType           dataType;
+  private final ERwKind             kind;
 
   /**
    * Constructor.
@@ -37,9 +38,11 @@ public abstract class L2AbstractTag
    * @throws TsNullArgumentRtException any argument = <code>null</code>
    * @throws TsIllegalArgumentRtException ID is not an IDpath
    */
-  protected L2AbstractTag( String aId, IOptionSet aParams, IDataType aDataType, ERwKind aKind ) {
-    TsNullArgumentRtException.checkNulls( aParams, aDataType, aKind );
+  protected L2AbstractTag( L2AbstractHalDevice aDevice, String aId, IOptionSet aParams, IDataType aDataType,
+      ERwKind aKind ) {
+    TsNullArgumentRtException.checkNulls( aDevice, aParams, aDataType, aKind );
     id = StridUtils.checkValidIdPath( aId );
+    device = aDevice;
     params = aParams;
     dataType = aDataType;
     kind = aKind;
@@ -103,6 +106,14 @@ public abstract class L2AbstractTag
     TsUnsupportedFeatureRtException.checkFalse( kind.canWrite() );
     AvTypeCastRtException.checkCanAssign( dataType.atomicType(), aValue.atomicType() );
     doSet( aValue );
+  }
+
+  // ------------------------------------------------------------------------------------
+  // Package API
+  //
+
+  L2AbstractHalDevice device() {
+    return device;
   }
 
   // ------------------------------------------------------------------------------------

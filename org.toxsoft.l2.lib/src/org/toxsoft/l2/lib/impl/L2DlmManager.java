@@ -3,11 +3,14 @@ package org.toxsoft.l2.lib.impl;
 import static org.toxsoft.l2.lib.IL2GlobalOptions.*;
 import static org.toxsoft.l2.lib.l10n.IL2LibSharedResources.*;
 
+import java.io.*;
+
 import org.toxsoft.core.tslib.bricks.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
+import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.l2.lib.*;
 import org.toxsoft.l2.lib.common.*;
@@ -60,6 +63,13 @@ class L2DlmManager
     IStridablesListEdit<L2AbstractDlm> llLoadedDlms = new StridablesList<>();
 
     // TODO load configurations from the files in configuration directory
+    IMap<File, L2ModuleConfigFile> mmCfgs = cfgDir().readConfigs();
+    for( File f : mmCfgs.keys() ) {
+      L2ModuleConfigFile cfg = mmCfgs.getByKey( f );
+
+      // FIXME ???
+    }
+
     // TODO load needed DLM factories from the DLM JAR files directory
     // TODO create requested DLMs
 

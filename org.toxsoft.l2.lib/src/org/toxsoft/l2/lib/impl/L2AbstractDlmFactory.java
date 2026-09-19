@@ -4,10 +4,9 @@ import static org.toxsoft.core.tslib.utils.TsLibUtils.*;
 import static org.toxsoft.l2.lib.IL2HardConstants.*;
 import static org.toxsoft.l2.lib.l10n.IL2LibSharedResources.*;
 
-import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.bricks.strid.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.plugins.*;
+import org.toxsoft.l2.lib.common.*;
 import org.toxsoft.l2.lib.dlms.*;
 
 /**
@@ -42,21 +41,23 @@ public abstract class L2AbstractDlmFactory
   }
 
   @Override
-  final public L2AbstractDlm createDlm( String aInstanceId, IOptionSet aParams ) {
-    StridUtils.checkValidIdPath( aInstanceId );
-    TsNullArgumentRtException.checkNull( aParams );
+  public L2AbstractDlm createDlm( L2ModuleConfigFile aConfig ) {
+    TsNullArgumentRtException.checkNull( aConfig );
     L2AbstractDlm dlm;
     try {
-      dlm = doCreateDlm( aInstanceId, aParams );
+      dlm = doCreateDlm( aConfig, info );
     }
     catch( Throwable e ) {
-      throw new TsInternalErrorRtException( e, MSG_ERR_DLM_CREATION_EXCEPTION, info.moduleId(), aInstanceId );
+      throw new TsInternalErrorRtException( e, MSG_ERR_DLM_CREATION_EXCEPTION, info.moduleId(), aConfig.id() );
     }
     if( dlm == null ) {
-      throw new TsInternalErrorRtException( MSG_ERR_NULL_DLM_CREATED, info.moduleId(), aInstanceId );
+      throw new TsInternalErrorRtException( MSG_ERR_NULL_DLM_CREATED, info.moduleId(), aConfig.id() );
+    }
+    if( !dlm.id().equals( aConfig.id() ) ) {
+      throw new TsInternalErrorRtException( MSG_ERR_DLM_CREATED_WITH_BAD_ID, info.moduleId(), dlm.id(), aConfig.id() );
     }
     if( !info.equals( dlm.info() ) ) {
-      throw new TsInternalErrorRtException( MSG_ERR_DLM_CREATED_WITH_BAD_INFO, info.moduleId(), aInstanceId );
+      throw new TsInternalErrorRtException( MSG_ERR_DLM_CREATED_WITH_BAD_INFO, info.moduleId(), aConfig.id() );
     }
     return dlm;
   }
@@ -65,6 +66,6 @@ public abstract class L2AbstractDlmFactory
   // To override/implement
   //
 
-  protected abstract L2AbstractDlm doCreateDlm( String aInstanceId, IOptionSet aParams );
+  protected abstract L2AbstractDlm doCreateDlm( L2ModuleConfigFile aConfig, DlmInfo aIndo );
 
 }

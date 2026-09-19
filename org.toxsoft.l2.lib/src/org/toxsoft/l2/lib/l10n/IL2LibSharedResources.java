@@ -27,12 +27,13 @@ public interface IL2LibSharedResources {
   String MSG_ERR_DLM_CREATION_EXCEPTION    = Messages.getString( "Dlm.MSG_ERR_DLM_CREATION_EXCEPTION" );    //$NON-NLS-1$
   String MSG_ERR_NULL_DLM_CREATED          = Messages.getString( "Dlm.MSG_ERR_NULL_DLM_CREATED" );          //$NON-NLS-1$
   String MSG_ERR_DLM_CREATED_WITH_BAD_INFO = Messages.getString( "Dlm.MSG_ERR_DLM_CREATED_WITH_BAD_INFO" ); //$NON-NLS-1$
+  String MSG_ERR_DLM_CREATED_WITH_BAD_ID   = Messages.getString( "Dlm.MSG_ERR_DLM_CREATED_WITH_BAD_INFO" ); //$NON-NLS-1$
 
   /**
    * L2DlmManager
    */
-  String FMT_WARN_IGNORED_NOT_INITED_DLM  = Messages.getString( "Core.FMT_WARN_IGNORED_NOT_INITED_DLM" );  //$NON-NLS-1$
-  String FMT_WARN_IGNORED_NOT_STARTED_DLM = Messages.getString( "Core.FMT_WARN_IGNORED_NOT_STARTED_DLM" ); //$NON-NLS-1$
+  String FMT_WARN_IGNORED_NOT_INITED_DLM  = Messages.getString( "Core.FMT_WARN_IGNORED_NOT_INITED_DLM" ); //$NON-NLS-1$
+  String FMT_WARN_IGNORED_NOT_STARTED_DLM = Messages.getString( "Core.MSG_ERR_DLM_CREATED_WITH_BAD_ID" ); //$NON-NLS-1$
 
   /**
    * {@link L2Application}
@@ -56,6 +57,7 @@ public interface IL2LibSharedResources {
   String FMT_ERR_NO_HAL_DEVICE_FACTORY      = Messages.getString( "Hal.FMT_ERR_NO_HAL_DEVICE_FACTORY" );      //$NON-NLS-1$
   String FMT_ERR_FACTORY_CANT_CREATE_DEVICE = Messages.getString( "Hal.FMT_ERR_FACTORY_CANT_CREATE_DEVICE" ); //$NON-NLS-1$
   String FMT_ERR_CANT_START_DEVICE          = Messages.getString( "Hal.FMT_ERR_CANT_START_DEVICE" );          //$NON-NLS-1$
+  String FMT_WARN_DUP_TAG_IGNORED           = Messages.getString( "Hal.FMT_WARN_DUP_TAG_IGNORED" );           //$NON-NLS-1$
 
   /**
    * {@link IL2GlobalOptions}

@@ -31,7 +31,7 @@ public interface IL2Component
   /**
    * Returns application quit command if quit was initialized by this component.
    * <p>
-   * Note that depending on {@link L2AppCommand#exitCode()} application may request restart, not a finish.
+   * Note that depending on {@link L2AppCommand#code()} application may request restart, not a finish.
    *
    * @return {@link L2AppCommand} - quit command or <code>null</code>
    */

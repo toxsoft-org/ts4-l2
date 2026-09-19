@@ -55,6 +55,8 @@ class L2Hal
     deviceList.clear();
   }
 
+  // FIXME load each factory only once!!!
+
   private static IL2HalDeviceFactory getFactory( L2ModuleConfigFile aDeviceCfg )
       throws Exception {
     String factoryClassName = aDeviceCfg.cfg().fields().getStr( HAL_DEVICE_PARAM_PRODUCER_CLASS, EMPTY_STRING );
@@ -123,6 +125,19 @@ class L2Hal
         device.destroy();
       }
     }
+    // add tags to the list, warn if tags have duplicate IDs
+    for( L2AbstractHalDevice device : deviceList ) {
+      IStridablesList<L2AbstractTag> llTags = device.getTags();
+      for( L2AbstractTag tag : llTags ) {
+        L2AbstractTag existingTag = tagsList.findByKey( tag.id() );
+        if( existingTag != null ) {
+          logger().warning( FMT_WARN_DUP_TAG_IGNORED, tag.id(), device.id(), existingTag.device().id() );
+        }
+        else {
+          tagsList.add( tag );
+        }
+      }
+    }
     return vr;
   }
 
@@ -172,6 +187,12 @@ class L2Hal
   @Override
   public IStridablesList<IL2HalDevice> deviceList() {
     return apiDevsList;
+  }
+
+  @SuppressWarnings( { "rawtypes", "unchecked" } )
+  @Override
+  public IStridablesList<IL2Tag> listDeviceTags( String aDeviceId ) {
+    return (IStridablesList)deviceList.getByKey( aDeviceId ).getTags();
   }
 
 }

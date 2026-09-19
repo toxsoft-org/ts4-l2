@@ -46,7 +46,7 @@
  * Each L2 component may load additional modules. For DLM manager it is a DLMs implemented as a JAR-files, for HAL - the
  * device drivers.
  * <h3>Application configuration</h3> <br>
- * There is the two kind of configuration data:
+ * There are the two kind of configuration data:
  * <ul>
  * <li><i>global options</i> - application and components configuration is a plain list of options. Each option is a
  * pair of option ID (an IDpath) and option value (an atomic value {@link org.toxsoft.core.tslib.av.IAtomicValue

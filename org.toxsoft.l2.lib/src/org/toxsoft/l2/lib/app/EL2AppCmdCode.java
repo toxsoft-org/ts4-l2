@@ -3,7 +3,7 @@ package org.toxsoft.l2.lib.app;
 import org.toxsoft.l2.lib.impl.*;
 
 /**
- * Code of application command (exit code of quit command)
+ * Code of application command (exit code of quit command).
  *
  * @author max
  */

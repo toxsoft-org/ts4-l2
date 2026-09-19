@@ -1,7 +1,5 @@
 package org.toxsoft.l2.lib.dlms;
 
-import org.toxsoft.core.tslib.av.metainfo.*;
-import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.bricks.strid.*;
 
 /**
@@ -13,16 +11,11 @@ import org.toxsoft.core.tslib.bricks.strid.*;
  * <li>{@link #nmName()} - the instance name, just for developer to distinguish instances;</li>
  * <li>{@link #description()} - the instance description, usually empty, not used;</li>
  * </ul>
- * <p>
- * The {@link #params()} method contains the instance creation parameters of
- * {@link IL2DlmFactory#createDlm(String, IOptionSet)}. Several DLM instances created by one factory differs by instance
- * ID and creation parameters. Also {@link #params()} provides values for {@link #nmName()} and {@link #description()}
- * with options {@link IAvMetaConstants#TSID_NAME} and {@link IAvMetaConstants#TSID_DESCRIPTION}.
  *
  * @author hazard157
  */
 public interface IL2Dlm
-    extends IStridableParameterized {
+    extends IStridable {
 
   /**
    * Returns identification information about the module.

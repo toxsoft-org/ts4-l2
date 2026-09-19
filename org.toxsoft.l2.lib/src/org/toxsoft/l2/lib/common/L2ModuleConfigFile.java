@@ -23,6 +23,7 @@ import org.toxsoft.core.tslib.utils.errors.*;
 public record L2ModuleConfigFile ( String id, String nmName, String description, IAvTree cfg )
     implements IStridable {
 
+  private static final String KW_INSTANCE_ID = "Id"; //$NON-NLS-1$
   private static final String KW_MODULE_ID = "ModuleId"; //$NON-NLS-1$
   private static final String KW_NAME = "Name"; //$NON-NLS-1$
   private static final String KW_DESCRIPTION = "Description"; //$NON-NLS-1$

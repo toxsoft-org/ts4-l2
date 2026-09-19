@@ -1,7 +1,7 @@
 package org.toxsoft.l2.lib.dlms;
 
-import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.l2.lib.common.*;
 
 /**
  * Factory for creating an instance of a dynamically loadable module.
@@ -21,13 +21,14 @@ public interface IL2DlmFactory {
 
   /**
    * Creates the DLM instance.
+   * <p>
+   * DLM instance will have ID as specified by {@link L2ModuleConfigFile#id()}.
    *
-   * @param aInstanceId String the DLM instance ID (an IDpath)
-   * @param aParams {@link IOptionSet} - instance creation parameters
+   * @param aConfig {@link L2ModuleConfigFile} - DLM configuration
    * @return {@link L2AbstractDlm} - created instance
    * @throws TsNullArgumentRtException any argument = <code>null</code>
    * @throws TsIllegalArgumentRtException ID is not an IDpath
    */
-  L2AbstractDlm createDlm( String aInstanceId, IOptionSet aParams );
+  L2AbstractDlm createDlm( L2ModuleConfigFile aConfig );
 
 }
