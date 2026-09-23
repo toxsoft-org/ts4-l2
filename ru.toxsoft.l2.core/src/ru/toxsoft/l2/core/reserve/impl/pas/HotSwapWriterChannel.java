@@ -6,6 +6,7 @@ import org.toxsoft.core.pas.client.*;
 import org.toxsoft.core.pas.common.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.core.tslib.utils.logs.*;
 
 import ru.toxsoft.l2.core.reserve.impl.*;
 
@@ -26,8 +27,7 @@ public class HotSwapWriterChannel
    * Фабрика каналов
    */
   @SuppressWarnings( "hiding" )
-  public static final IPasClientChannelCreator<HotSwapWriterChannel> CREATOR =
-      HotSwapWriterChannel::new;
+  public static final IPasClientChannelCreator<HotSwapWriterChannel> CREATOR = HotSwapWriterChannel::new;
 
   /**
    * Конструктор.
@@ -35,13 +35,14 @@ public class HotSwapWriterChannel
    * @param aContext {@link ITsContextRo} - контекст выполнения, общий для всех каналов и сервера
    * @param aSocket {@link Socket} сокет соединения
    * @param aHandlerHolder {@link PasHandlerHolder} хранитель обработчиков канала
+   * @param aLogger ILogger - логгер
    * @throws TsNullArgumentRtException любой аргумент = <code>null</code>
    * @throws TsIllegalArgumentRtException ошибка создания читателя канала
    * @throws TsIllegalArgumentRtException ошибка создания писателя канала
    */
   public HotSwapWriterChannel( ITsContextRo aContext, Socket aSocket,
-      PasHandlerHolder<? extends PasClientChannel> aHandlerHolder ) {
-    super( aContext, aSocket, aHandlerHolder );
+      PasHandlerHolder<? extends PasClientChannel> aHandlerHolder, ILogger aLogger ) {
+    super( aContext, aSocket, aHandlerHolder, aLogger );
     controller = aContext.get( PasBoxStateSender.class );
   }
 
