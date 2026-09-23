@@ -2,7 +2,6 @@ package org.toxsoft.l2.dlm.tags;
 
 import static org.toxsoft.l2.dlm.tags.IL2Resources.*;
 
-import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.bricks.coopcomp.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
@@ -34,34 +33,34 @@ public class OpcBridgeDlm
    */
   private IListEdit<AbstractTsCoopCompMultiUse> modules;
 
+  private IL2SharedContext context; // TODO needs context
+
   /**
    * Конструктор.
    *
    * @param aInfo {@link IDlmInfo} - информация о модуле.
    * @param aContext {@link IDlmContext} - контекст нижнего уровня, в котором загружается модуль.
    */
-  protected OpcBridgeDlm( String aInstanceId, DlmInfo aDlmInfo, IOptionSet aParams ) {
-    super( aInstanceId, aDlmInfo, aParams );
-
-    logger = LoggerUtils.getLogger( getClass(), aDlmInfo.moduleId(), aInstanceId );
+  protected OpcBridgeDlm( L2ModuleConfigFile aConfig, DlmInfo aDlmInfo ) {
+    super( aConfig, aDlmInfo );
+    String instanceId = "instanceId";// TODO
+    logger = LoggerUtils.getLogger( getClass(), aDlmInfo.moduleId(), instanceId );
 
     modules = new ElemArrayList<>();
-
-    IL2SharedContext context = aParams.getValobj( "l2.context" ); // TODO needs context
 
     // подмодуль комплексных тегов
     // ComplexTagsModule complexTagsModule = new ComplexTagsModule( aContext, info() );
     // modules.add( complexTagsModule );
 
     // подмодуль текущих данных
-    AbstractTsCoopCompMultiUse currDataModule = new DataModule( context, info(), aInstanceId );
+    AbstractTsCoopCompMultiUse currDataModule = new DataModule( context, info(), instanceId );
     modules.add( currDataModule );
 
-    AbstractTsCoopCompMultiUse eventModule = new EventModule( context, info(), aInstanceId );
+    AbstractTsCoopCompMultiUse eventModule = new EventModule( context, info(), instanceId );
     modules.add( eventModule );
 
     // создание модуля команд и установка в него модуля комплексных тегов
-    AbstractTsCoopCompMultiUse commandsModule = new CommandsModule( context, info(), aInstanceId );
+    AbstractTsCoopCompMultiUse commandsModule = new CommandsModule( context, info(), instanceId );
     modules.add( commandsModule );
 
     // dima 25.12.23 add rriModule
