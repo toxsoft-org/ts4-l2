@@ -9,7 +9,6 @@ import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.bricks.coopcomp.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
-import org.toxsoft.core.tslib.bricks.validator.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.derivative.*;
 import org.toxsoft.core.tslib.coll.derivative.Queue;
@@ -18,12 +17,10 @@ import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.gw.skid.*;
-import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.l2.dlm.tags.*;
-import org.toxsoft.l2.dlm.tags.submodules.commands.*;
 import org.toxsoft.l2.lib.common.*;
 import org.toxsoft.l2.lib.dlms.*;
 import org.toxsoft.l2.lib.hal.*;
@@ -63,38 +60,28 @@ public class CommandsModule2
   ISkConnection connection;
 
   /**
-   * Редактор состояния команд.
-   */
-  // ICommandStateEditor cStateEditor;
-
-  /**
    * Очередь команд, пришедших на обработку.
    */
-  private IQueue<IDtoCommand> commandsQueue;
-
-  /**
-   * Описание команд в терминах сервиса команд, обрабатываемых данным исполнителем.
-   */
-  private IGwidList commandsDef;
-
-  /**
-   * Определение команд из конфигурации
-   */
-  private IList<ProcessedCommandsDefByObjNames> commandsDefByObjNames;
+  private IStringMapEdit<IQueue<IDtoCommand>> commandsQueues;
 
   /**
    * Исполнители команд.
    */
-  private IStringMapEdit<ICommandExec> cmdExecs;
+  private IListEdit<IDataGwidTranslator> commandsTranslators;
+
+  //
+  // ----------------------------------------
+  // Конфигурационная информация
+
+  /**
+   * Определение команд из конфигурации
+   */
+  private IListEdit<ProcessedCommandsDefByObjNames> commandsDefByObjNames;
 
   /**
    * Сконфигурированные исполнители команд.
    */
-  private IListEdit<ICommandExec> cmdExecsConfigured = new ElemArrayList<>();
-
-  private IListEdit<GwidTranslatorCfgExtension> dataObjNemas = new ElemArrayList<>();
-
-  private IListEdit<IStringMap<TagInfo>> tagInfoes = new ElemArrayList<>();
+  private IListEdit<CmdExecConfiguredInfo> cmdExecConfiguredInfoes;
 
   // private IComplexTagsContainer complexTagsContainer;
 
@@ -124,9 +111,288 @@ public class CommandsModule2
 
     // создание локальных исполнителей команд, непосредственной выполняющих установку значений в устройство
     IAvTree cmdDefs = (IAvTree)aArgs.get( CMD_DEFS );
-    configCommandExecs( cmdDefs );
+    cmdExecConfiguredInfoes = configCommandExecs( cmdDefs );
 
     return ValidationResult.SUCCESS;
+  }
+
+  @Override
+  protected void doStart() {
+    boolean isConfigured = true;
+
+    // если модуль не сконфигурирован - выбросить исключение
+    TsIllegalStateRtException.checkFalse( isConfigured, ERR_MSG_COMMAND_MODULE_CANT_BE_STARTED_FORMAT,
+        dlmInfo.moduleId() );
+
+    connection = context.net().getSkConnection();
+    // TsIllegalStateRtException.checkFalse( connection.isConnected(), ERR_MSG_CONNECTION_TO_SERVER_IS_NOT_ESTABLISHED
+    // );
+
+    // Опеределения для регистрации исполнителя
+    GwidList convertedCommandsDef = new GwidList();
+
+    // обращение к серверу с целью конвертации имён в коды
+    for( ProcessedCommandsDefByObjNames cmdDefByObjName : commandsDefByObjNames ) {
+      IList<Gwid> cmdDef = cmdDefByObjName.convert();
+      convertedCommandsDef.addAll( cmdDef );
+    }
+
+    for( Gwid gd : convertedCommandsDef ) {
+      logger.info( "*** Handler registered on command: %s", gd );
+    }
+
+    // регистраци модуля в качестве исполнителя команд
+    connection.coreApi().cmdService().registerExecutor( this, convertedCommandsDef );
+    commandsDefByObjNames.clear();
+
+    // запуск локальных исполнителей
+    for( CmdExecConfiguredInfo cmdExecConfiguredInfo : cmdExecConfiguredInfoes ) {
+      IDataGwidTranslator cExec = cmdExecConfiguredInfo.getCmdExecCfg();
+      IList<TagInfo> execTagsInfoes = cmdExecConfiguredInfo.getTagsCfg();
+
+      IStringMapEdit<IL2Tag> execTags = new StringMap<>();
+
+      for( TagInfo tc : execTagsInfoes ) {
+        IL2Tag tag = null;
+        if( tc.isComplex() ) {
+          // tag = complexTagsContainer.getComplexTagById( tc.tagId );
+        }
+        else {
+          // ITsOpc tagsDevice = (ITsOpc)context.hal().listSpecificDevices().getByKey( tc.getDeviceId() );
+          // tag = tagsDevice.tag( tc.getTagId() );
+          tag = context.hal().tags().getByKey( tc.getTagId() );
+        }
+
+        if( tag == null ) {
+          logger.error( "Tag '%s' not found", tc.getTagId() );
+        }
+        else {
+          execTags.put( tc.getTagId(), tag );
+        }
+      }
+
+      if( execTagsInfoes.size() != execTags.size() ) {
+        continue;
+      }
+
+      GwidTranslatorCfgExtension dataObjName = cmdExecConfiguredInfo.getCmdGwidCfg();
+      String clsId = dataObjName.getClassId();
+      String objId = dataObjName.getObjName();
+      String cmdId = dataObjName.getDataId();
+      ISkClassInfo classInfo = connection.coreApi().sysdescr().findClassInfo( clsId );
+
+      if( classInfo == null ) {
+        logger.error( "Class '%s' not found during command '%s' exec registration", clsId, cmdId );
+        continue;
+      }
+
+      if( !classInfo.cmds().list().hasKey( cmdId ) ) {
+        logger.error( "Command '%s' of class '%s' not found during command exec registration", cmdId, clsId );
+        continue;
+      }
+
+      if( connection.coreApi().objService().find( new Skid( clsId, objId ) ) == null ) {
+        logger.error( "Object '%s' of class '%s' not found during cmd '%s' exec registration", objId, clsId, cmdId );
+        continue;
+      }
+
+      IQueue<IDtoCommand> queue = new Queue<>(); // new SynchronizedQueueWrapper<>( new Queue<>() );
+      commandsQueues.put( getTotalCommandId( cmdId, objId ), queue );
+
+      List<IGwidValueGetter> getters = new ArrayList<>();
+      // создание getters и setters для s5
+      CmdGwidValueGetter cmdGwidValueGetter = new CmdGwidValueGetter( queue, dataObjName.getGwid() );
+      getters.add( cmdGwidValueGetter );
+      IStringList argIds = cmdExecConfiguredInfo.getCmdArgsCfg();
+      for( String argId : argIds ) {
+        CmdArgGwidValueGetter cmdArgGwidValueGetter =
+            new CmdArgGwidValueGetter( queue, Gwid.createCmdArg( clsId, cmdId, argId ) );
+        getters.add( cmdArgGwidValueGetter );
+      }
+
+      CmdStateGwidValueSetter cmdStateGwidValueSetter =
+          new CmdStateGwidValueSetter( queue, connection.coreApi().cmdService(), dataObjName.getGwid() );
+
+      cExec.start( new IGwidValueSetter[] { cmdStateGwidValueSetter }, getters.toArray( new IGwidValueGetter[0] ),
+          execTags.values() );
+
+      commandsTranslators.add( cExec );
+    }
+
+    // очистка конфигурационного набора
+    cmdExecConfiguredInfoes.clear();
+
+    // вывод на печать конфиг информации
+    // for( IProcessedCommandsDef def : commandsDef ) {
+    // System.out.println( "DEFFFF : " + def.classId() );
+    // System.out.println( "CMDs : " );
+    // for( String cmdId : def.cmdIds() ) {
+    // System.out.print( cmdId + ", " );
+    // }
+    // System.out.println();
+    //
+    // System.out.println( "ObjIDs : " );
+    // for( Long objId : def.objIds() ) {
+    // System.out.print( objId + ", " );
+    // }
+    // System.out.println();
+    // }
+
+    // long testComandSentTime = System.currentTimeMillis();
+  }
+
+  // private boolean testComandVal = true;
+  // private long testComandSentPeriod = 30000L;
+
+  @Override
+  protected void doDoJob() {
+    long time = System.currentTimeMillis();
+    // совершение работы всеми локальными исполнителями
+    for( IDataGwidTranslator translator : commandsTranslators ) {
+      translator.translate( time );
+    }
+  }
+
+  private void changeCommandState( String aExecCmdId, SkCommandState aCmdState ) {
+
+    DtoCommandStateChangeInfo cmdStateChangeInfo = new DtoCommandStateChangeInfo( aExecCmdId, aCmdState );
+
+    try {
+      connection.coreApi().cmdService().changeCommandState( cmdStateChangeInfo );
+      logger.debug( "State of command ( %s ) changed  on: %s", aExecCmdId, aCmdState.state().id() );
+    }
+    catch( Exception e ) {
+      logger.error( "Cant change command ( %s ) state: %s", aExecCmdId, e.getMessage() );
+      logger.error( e );
+    }
+  }
+
+  @Override
+  protected boolean doQueryStop() {
+    connection.coreApi().cmdService().unregisterExecutor( this );
+    return true;
+  }
+
+  @Override
+  public void executeCommand( IDtoCommand aCmd ) {
+    String cmdId = aCmd.cmdGwid().propId();
+    String objId = aCmd.cmdGwid().strid();
+
+    String totalCmdId = getTotalCommandId( cmdId, objId );
+
+    // поместить команду в очередь для специфического (объект-тип команды) обработчика
+    if( commandsQueues.hasKey( totalCmdId ) ) {
+      commandsQueues.getByKey( totalCmdId ).putTail( aCmd );
+      changeCommandState( aCmd.instanceId(),
+          new SkCommandState( System.currentTimeMillis(), ESkCommandState.EXECUTING ) );
+    }
+
+    logger.debug( "Get command %s, cmdGwid:%s, and put into queue ", aCmd.instanceId(), //$NON-NLS-1$
+        aCmd.cmdGwid().canonicalString() );
+  }
+
+  /**
+   * Создаёт по конфигурации локальные исполнители - по одному исполнителю на команду.
+   *
+   * @param cmdDefs - {@link IAvTree} - конфигурационные данные.
+   */
+  private static IListEdit<CmdExecConfiguredInfo> configCommandExecs( IAvTree cmdDefs ) {
+    IListEdit<CmdExecConfiguredInfo> result = new ElemArrayList<>();
+    if( cmdDefs != null && cmdDefs.isArray() ) {
+      for( int i = 0; i < cmdDefs.arrayLength(); i++ ) {
+        IAvTree cmdDef = cmdDefs.arrayElement( i );
+
+        IDataGwidTranslator commandExec = createCommandExec( cmdDef );
+        commandExec.config( cmdDef );
+
+        GwidTranslatorCfgExtension dataObjName = new GwidTranslatorCfgExtension( cmdDef.fields() );
+
+        IListEdit<TagInfo> tagsConfig = new ElemArrayList<>();
+        // если есть несколько тегов
+        if( cmdDef.nodes().hasKey( COMMAND_TAGS_ARRAY ) ) {
+          IAvTree tagsTree = cmdDef.nodes().getByKey( COMMAND_TAGS_ARRAY );
+
+          for( int j = 0; j < tagsTree.arrayLength(); j++ ) {
+            IAvTree tagParamsTree = tagsTree.arrayElement( j );
+            try {
+              TagInfo tagConf = createTagConfig( tagParamsTree, cmdDef );
+
+              tagsConfig.add( tagConf );
+            }
+            catch( TsIllegalArgumentRtException e ) {
+              throw new TsIllegalArgumentRtException( e, ERR_MSG_DURING_CONFIG_COMMAND_EXECUTER_FORMAT,
+                  cmdDef.structId() );
+            }
+
+          }
+        }
+        // если один тег - использовать корневой
+        else {
+          TagInfo tagConf = createTagConfig( cmdDef, cmdDef );
+
+          tagsConfig.add( tagConf );
+        }
+
+        IStringList args = new StringArrayList();
+        CmdExecConfiguredInfo cmdExecConfiguredInfo =
+            new CmdExecConfiguredInfo( commandExec, dataObjName, args, tagsConfig );
+        result.add( cmdExecConfiguredInfo );
+      }
+    }
+    return result;
+  }
+
+  private static TagInfo createTagConfig( IAvTree aTagParams, IAvTree aDefaultTagParams ) {
+    if( aTagParams.fields().hasValue( COMPLEX_TAG_ID ) ) {
+      return new TagInfo( aTagParams.fields().getStr( COMPLEX_TAG_ID ) );
+    }
+    TagInfo result = new TagInfo( getConfigParamField( TAG_DEVICE_ID, aTagParams, aDefaultTagParams, null ),
+        getConfigParamField( TAG_ID, aTagParams, aDefaultTagParams, null ) );
+
+    return result;
+  }
+
+  private static String getConfigParamField( String aFieldName, IAvTree aParams, IAvTree aDefaultParams,
+      String aDefault ) {
+    if( aParams.fields().hasValue( aFieldName ) ) {
+      return aParams.fields().getStr( aFieldName );
+    }
+
+    if( aDefaultParams.fields().hasValue( aFieldName ) ) {
+      return aDefaultParams.fields().getStr( aFieldName );
+    }
+
+    if( aDefault != null ) {
+      return aDefault;
+    }
+
+    throw new TsIllegalArgumentRtException( ERR_MSG_FIELD_IS_NOT_PRESENTED_IN_CFG_FILE_FORMAT, aFieldName );
+
+  }
+
+  /**
+   * Создаёт объект - исполнитель команды по конфигурационной информации
+   *
+   * @param aConfig IAvTree - конфигурационная информация
+   * @return ICommandExec -
+   */
+  @SuppressWarnings( "unchecked" )
+  private static IDataGwidTranslator createCommandExec( IAvTree aConfig ) {
+    // тип передатчика - из конфигурации
+    String commandExecClassStr = aConfig.fields().getStr( COMMAND_EXEC_JAVA_CLASS );
+
+    try {
+      Class<IDataGwidTranslator> commandExecClass = (Class<IDataGwidTranslator>)Class.forName( commandExecClassStr );
+
+      IDataGwidTranslator exec = commandExecClass.getDeclaredConstructor().newInstance();
+
+      return exec;
+    }
+    catch( Exception ex ) {
+      throw new TsIllegalArgumentRtException( ex, ERR_MSG_CANT_CREATE_INSTANCE_COMMAND_EXEC_FORMAT,
+          aConfig.structId() );
+    }
+
   }
 
   /**
@@ -135,7 +401,7 @@ public class CommandsModule2
    * @param cmdDefs - {@link IAvTree} - конфигурационные данные.
    * @return {@link IList} - список определяющий команды, классы, объекты исполнителя.
    */
-  public static IList<ProcessedCommandsDefByObjNames> createCmdDefs( IAvTree cmdDefs ) {
+  private static IListEdit<ProcessedCommandsDefByObjNames> createCmdDefs( IAvTree cmdDefs ) {
 
     IListEdit<ProcessedCommandsDefByObjNames> result = new ElemArrayList<>();
 
@@ -158,6 +424,18 @@ public class CommandsModule2
   }
 
   /**
+   * Возвращает полный идентфикатор команды (включающий идентификатор объекта).
+   *
+   * @param aCmdId String - идентфикатор команды.
+   * @param aObjId long - идентификатор объекта
+   * @return String - полный идентфикатор команды.
+   */
+  @SuppressWarnings( "nls" )
+  private static String getTotalCommandId( String aCmdId, String aObjId ) {
+    return "CMD#" + aCmdId + ",OBJ#" + aObjId;
+  }
+
+  /**
    * Создаёт по конфигурации опеределение команд-объектов для регистрации в качестве исполнителя.
    *
    * @param aClassCmdDefs - {@link IAvTree} - конфигурационные данные для одного класса.
@@ -166,7 +444,7 @@ public class CommandsModule2
    * @throws TsUnsupportedFeatureRtException
    * @throws DvTypeCastRtException
    */
-  public static ProcessedCommandsDefByObjNames creatClassCmdDefs( IAvTree aClassCmdDefs )
+  private static ProcessedCommandsDefByObjNames creatClassCmdDefs( IAvTree aClassCmdDefs )
       throws TsItemNotFoundRtException,
       TsUnsupportedFeatureRtException {
     String classId = aClassCmdDefs.fields().getStr( CLASS_ID );
@@ -194,356 +472,38 @@ public class CommandsModule2
     return result;
   }
 
-  @Override
-  protected void doStart() {
-    boolean isConfigured = true;
+  static class CmdExecConfiguredInfo {
 
-    // если модуль не сконфигурирован - выбросить исключение
-    TsIllegalStateRtException.checkFalse( isConfigured, ERR_MSG_COMMAND_MODULE_CANT_BE_STARTED_FORMAT,
-        dlmInfo.moduleId() );
+    private IDataGwidTranslator cmdExecCfg;
 
-    connection = context.net().getSkConnection();
-    // TsIllegalStateRtException.checkFalse( connection.isConnected(), ERR_MSG_CONNECTION_TO_SERVER_IS_NOT_ESTABLISHED
-    // );
+    private GwidTranslatorCfgExtension cmdGwidCfg;
 
-    // Опеределения для регистрации исполнителя
-    GwidList convertedCommandsDef = new GwidList();
+    private IStringList cmdArgsCfg;
 
-    // обращение к серверу с целью конвертации имён в коды
-    for( ProcessedCommandsDefByObjNames cmdDefByObjName : commandsDefByObjNames ) {
-      IList<Gwid> cmdDef = cmdDefByObjName.convert();
-      convertedCommandsDef.addAll( cmdDef );
+    private IList<TagInfo> tagsCfg;
+
+    public CmdExecConfiguredInfo( IDataGwidTranslator aCmdExecCfg, GwidTranslatorCfgExtension aCmdGwidCfg,
+        IStringList aCmdArgsCfg, IList<TagInfo> aTagsCfg ) {
+      cmdExecCfg = aCmdExecCfg;
+      cmdGwidCfg = aCmdGwidCfg;
+      cmdArgsCfg = aCmdArgsCfg;
+      tagsCfg = aTagsCfg;
     }
 
-    commandsDef = convertedCommandsDef;
-
-    for( Gwid gd : commandsDef ) {
-      logger.info( "*** Handler registered on command: %s", gd );
+    public IDataGwidTranslator getCmdExecCfg() {
+      return cmdExecCfg;
     }
 
-    // создание синхронизованной очереди получаемых команд команд
-    commandsQueue = new SynchronizedQueueWrapper<>( new Queue<>() );
-
-    // регистраци модуля в качестве исполнителя команд
-    connection.coreApi().cmdService().registerExecutor( this, commandsDef() );
-
-    // соответствие локального исполнителя команде-объекту
-    cmdExecs = new StringMap<>();
-
-    // запуск локальных исполнителей
-    for( int i = 0; i < cmdExecsConfigured.size(); i++ ) {
-      ICommandExec cExec = cmdExecsConfigured.get( i );
-      IStringMap<TagInfo> execTagsInfoes = tagInfoes.get( i );
-
-      IStringMapEdit<IL2Tag> execTags = new StringMap<>();
-
-      for( String tcId : execTagsInfoes.keys() ) {
-        TagInfo tc = execTagsInfoes.getByKey( tcId );
-
-        IL2Tag tag = null;
-        if( tc.isComplex() ) {
-          // tag = complexTagsContainer.getComplexTagById( tc.tagId );
-        }
-        else {
-          // ITsOpc tagsDevice = (ITsOpc)context.hal().listSpecificDevices().getByKey( tc.getDeviceId() );
-          // tag = tagsDevice.tag( tc.getTagId() );
-          tag = context.hal().tags().getByKey( tc.getTagId() );
-        }
-
-        if( tag == null ) {
-          logger.error( "Tag '%s' not found", tc.getTagId() );
-        }
-        else {
-          execTags.put( tcId, tag );
-        }
-      }
-
-      if( execTagsInfoes.size() != execTags.size() ) {
-        continue;
-      }
-
-      GwidTranslatorCfgExtension dataObjName = dataObjNemas.get( i );
-      String clsId = dataObjName.getClassId();
-      String objId = dataObjName.getObjName();
-      String cmdId = dataObjName.getDataId();
-      ISkClassInfo classInfo = connection.coreApi().sysdescr().findClassInfo( clsId );
-
-      if( classInfo == null ) {
-        logger.error( "Class '%s' not found during command '%s' exec registration", clsId, cmdId );
-        continue;
-      }
-
-      if( !classInfo.cmds().list().hasKey( cmdId ) ) {
-        logger.error( "Command '%s' of class '%s' not found during command exec registration", cmdId, clsId );
-        continue;
-      }
-
-      if( connection.coreApi().objService().find( new Skid( clsId, objId ) ) == null ) {
-        logger.error( "Object '%s' of class '%s' not found during cmd '%s' exec registration", objId, clsId, cmdId );
-        continue;
-      }
-
-      cExec.start( execTags, connection.coreApi().cmdService() );
-
-      cmdExecs.put( getTotalCommandId( cmdId, objId ), cExec );
+    public GwidTranslatorCfgExtension getCmdGwidCfg() {
+      return cmdGwidCfg;
     }
 
-    // очистка конфигурационного набора
-    cmdExecsConfigured.clear();
-
-    // вывод на печать конфиг информации
-    // for( IProcessedCommandsDef def : commandsDef ) {
-    // System.out.println( "DEFFFF : " + def.classId() );
-    // System.out.println( "CMDs : " );
-    // for( String cmdId : def.cmdIds() ) {
-    // System.out.print( cmdId + ", " );
-    // }
-    // System.out.println();
-    //
-    // System.out.println( "ObjIDs : " );
-    // for( Long objId : def.objIds() ) {
-    // System.out.print( objId + ", " );
-    // }
-    // System.out.println();
-    // }
-
-    // long testComandSentTime = System.currentTimeMillis();
-  }
-
-  // private boolean testComandVal = true;
-  // private long testComandSentPeriod = 30000L;
-
-  @Override
-  protected void doDoJob() {
-    // test
-    // if( System.currentTimeMillis() > testComandSentTime + testComandSentPeriod ) {
-    // testComandSentTime = System.currentTimeMillis();
-    // Gwid cmdGwid = Gwid.createCmd( "ci.AnalogInput", "ci_1.AI_BHB", "cmdImitation" );
-    // OptionSet cmdArgs = new OptionSet();
-    // cmdArgs.setValue( "value", AvUtils.avBool( testComandVal ) );
-    // testComandVal = !testComandVal;
-    // logger.debug( "Test Command come to sending" );
-    // connection.coreApi().cmdService().sendCommand( cmdGwid, new Skid( ISkUser.CLASS_ID, "root" ), cmdArgs );
-    // logger.debug( "Test Command just has sent" );
-    // }
-
-    long time = System.currentTimeMillis();
-    // Получение команды
-    IDtoCommand cmd = commandsQueue.peekHeadOrNull();
-
-    if( cmd != null ) {
-      String cmdId = cmd.cmdGwid().propId();
-      String objId = cmd.cmdGwid().strid();
-
-      String totalCmdId = getTotalCommandId( cmdId, objId );
-
-      ICommandExec exec = cmdExecs.findByKey( totalCmdId );
-      if( exec != null ) {
-        if( !exec.isBusy() ) {
-          commandsQueue.getHead();
-          // изменение состояния команды - принята к исполнению
-          setCmdStateForApplication( cmd );
-
-          // выполнение команды соответствующим локальным исполнителем
-          exec.execCommand( cmd, time );
-        }
-      }
-
-      // commandsQueue.getHeadOrNull();
+    public IStringList getCmdArgsCfg() {
+      return cmdArgsCfg;
     }
 
-    // совершение работы всеми локальными исполнителями (если выполнение команды происходит не за один такт - например
-    // подача импульса)
-    for( ICommandExec cExec : cmdExecs.values() ) {
-      cExec.doJob( time );
-    }
-
-  }
-
-  private void setCmdStateForApplication( IDtoCommand aCmd ) {
-    // Изменяем состояние команды
-    ValidationResult vr = ValidationResult.info( MSG_COMMAND_COME_FOR_APPLICATION, aCmd.instanceId() );
-    ValResList result = new ValResList();
-    result.add( vr );
-
-    SkCommandState state = new SkCommandState( System.currentTimeMillis(), ESkCommandState.EXECUTING );
-
-    // ,formMessage( result ), Gwid.createObj( author() ) );
-    changeCommandState( aCmd.instanceId(), state );
-  }
-
-  private void changeCommandState( String aExecCmdId, SkCommandState aCmdState ) {
-
-    DtoCommandStateChangeInfo cmdStateChangeInfo = new DtoCommandStateChangeInfo( aExecCmdId, aCmdState );
-
-    try {
-      connection.coreApi().cmdService().changeCommandState( cmdStateChangeInfo );
-      logger.debug( "State of command ( %s ) changed  on: %s", aExecCmdId, aCmdState.state().id() );
-    }
-    catch( Exception e ) {
-      logger.error( "Cant change command ( %s ) state: %s", aExecCmdId, e.getMessage() );
-      logger.error( e );
-    }
-  }
-
-  /**
-   * @return текущий пользователь
-   */
-  // private Skid author() {
-  // ISkSession session = connection.coreApi().;
-  // ISkUser user = session.getUser();
-  // return user.skid();
-  // }
-
-  private static String formMessage( IValResList aResult ) {
-    String message = aResult == null ? TsLibUtils.EMPTY_STRING
-        : (!aResult.isEmpty() ? aResult.results().get( 0 ).message() : "Empty state message");
-    return message;
-  }
-
-  /**
-   * Возвращает полный идентфикатор команды (включающий идентификатор объекта).
-   *
-   * @param aCmdId String - идентфикатор команды.
-   * @param aObjId long - идентификатор объекта
-   * @return String - полный идентфикатор команды.
-   */
-  @SuppressWarnings( "nls" )
-  private static String getTotalCommandId( String aCmdId, String aObjId ) {
-    return "CMD#" + aCmdId + ",OBJ#" + aObjId;
-  }
-
-  @Override
-  protected boolean doQueryStop() {
-    connection.coreApi().cmdService().unregisterExecutor( this );
-    return true;
-  }
-
-  private IGwidList commandsDef() {
-    return commandsDef;
-  }
-
-  @Override
-  public void executeCommand( IDtoCommand aCmd ) {
-    // System.out.println( "Второй новый" );
-    // System.out.println( "уникальный в системе идентификатор (ИД-путь) команды: " + aCmd.id() );
-    // System.out.println( "идентификатор объекта автора команды: " + aCmd.authorObjId() );
-    // System.out.println( "идентификатор объекта, которому направляется команда: " + aCmd.objId() );
-    // System.out.println( "Идентификатор команды: " + aCmd.cmdId() );
-    // System.out.println( "текущее состояние процесса (этапов) выполнения команды: " + aCmd.state().id() );
-    // System.out.println();
-
-    // поместить команду в очередь с синхронизированным доступом - так как команда может прийти в момент, когда основной
-    // поток выполнения занят на другом участке - а выполнять команду следует в тот момнет, когда основной поток
-    // выполнения заходит в этот модуль
-    // cStateEditor.changeCommandState( aCmd.id(), ECommandState.EXCUTING, ValidationResult.SUCCESS );
-    // TODO
-    // Dima, for debug
-    commandsQueue.putTail( aCmd );
-    logger.debug( "Get command %s, cmdGwid:%s, and put into queue ", aCmd.instanceId(), //$NON-NLS-1$
-        aCmd.cmdGwid().canonicalString() );
-  }
-
-  /**
-   * Создаёт по конфигурации локальные исполнители - по одному исполнителю на команду.
-   *
-   * @param cmdDefs - {@link IAvTree} - конфигурационные данные.
-   */
-  private void configCommandExecs( IAvTree cmdDefs ) {
-
-    if( cmdDefs != null && cmdDefs.isArray() ) {
-      for( int i = 0; i < cmdDefs.arrayLength(); i++ ) {
-        IAvTree cmdDef = cmdDefs.arrayElement( i );
-
-        ICommandExec commandExec = createCommandExec( cmdDef );
-        commandExec.config( cmdDef );
-        cmdExecsConfigured.add( commandExec );
-
-        GwidTranslatorCfgExtension dataObjName = new GwidTranslatorCfgExtension( cmdDef.fields() );
-
-        dataObjNemas.add( dataObjName );
-
-        IStringMapEdit<TagInfo> tagsConfig = new StringMap<>();
-        // если есть несколько тегов
-        if( cmdDef.nodes().hasKey( COMMAND_TAGS_ARRAY ) ) {
-          IAvTree tagsTree = cmdDef.nodes().getByKey( COMMAND_TAGS_ARRAY );
-
-          for( int j = 0; j < tagsTree.arrayLength(); j++ ) {
-            IAvTree tagParamsTree = tagsTree.arrayElement( j );
-            try {
-              TagInfo tagConf = createTagConfig( tagParamsTree, cmdDef );
-
-              tagsConfig.put( tagParamsTree.structId(), tagConf );
-            }
-            catch( TsIllegalArgumentRtException e ) {
-              throw new TsIllegalArgumentRtException( e, ERR_MSG_DURING_CONFIG_COMMAND_EXECUTER_FORMAT,
-                  cmdDef.structId() );
-            }
-
-          }
-        }
-        // если один тег - использовать корневой
-        else {
-          TagInfo tagConf = createTagConfig( cmdDef, cmdDef );
-
-          tagsConfig.put( DEFAULT_TAG_ID, tagConf );
-        }
-
-        tagInfoes.add( tagsConfig );
-
-      }
-    }
-
-  }
-
-  private TagInfo createTagConfig( IAvTree aTagParams, IAvTree aDefaultTagParams ) {
-    if( aTagParams.fields().hasValue( COMPLEX_TAG_ID ) ) {
-      return new TagInfo( aTagParams.fields().getStr( COMPLEX_TAG_ID ) );
-    }
-    TagInfo result = new TagInfo( getConfigParamField( TAG_DEVICE_ID, aTagParams, aDefaultTagParams, null ),
-        getConfigParamField( TAG_ID, aTagParams, aDefaultTagParams, null ) );
-
-    return result;
-  }
-
-  String getConfigParamField( String aFieldName, IAvTree aParams, IAvTree aDefaultParams, String aDefault ) {
-    if( aParams.fields().hasValue( aFieldName ) ) {
-      return aParams.fields().getStr( aFieldName );
-    }
-
-    if( aDefaultParams.fields().hasValue( aFieldName ) ) {
-      return aDefaultParams.fields().getStr( aFieldName );
-    }
-
-    if( aDefault != null ) {
-      return aDefault;
-    }
-
-    throw new TsIllegalArgumentRtException( ERR_MSG_FIELD_IS_NOT_PRESENTED_IN_CFG_FILE_FORMAT, aFieldName );
-
-  }
-
-  /**
-   * Создаёт объект - исполнитель команды по конфигурационной информации
-   *
-   * @param aConfig IAvTree - конфигурационная информация
-   * @return ICommandExec -
-   */
-  @SuppressWarnings( "unchecked" )
-  private static ICommandExec createCommandExec( IAvTree aConfig ) {
-    // тип передатчика - из конфигурации
-    String commandExecClassStr = aConfig.fields().getStr( COMMAND_EXEC_JAVA_CLASS );
-
-    try {
-      Class<ICommandExec> commandExecClass = (Class<ICommandExec>)Class.forName( commandExecClassStr );
-
-      ICommandExec exec = commandExecClass.getDeclaredConstructor().newInstance();
-
-      return exec;
-    }
-    catch( Exception ex ) {
-      throw new TsIllegalArgumentRtException( ex, ERR_MSG_CANT_CREATE_INSTANCE_COMMAND_EXEC_FORMAT,
-          aConfig.structId() );
+    public IList<TagInfo> getTagsCfg() {
+      return tagsCfg;
     }
 
   }
