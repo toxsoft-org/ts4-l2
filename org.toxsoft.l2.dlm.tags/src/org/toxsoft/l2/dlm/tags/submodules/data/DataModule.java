@@ -32,6 +32,8 @@ public class DataModule
    */
   private ILogger logger;
 
+  private IAvTree cfg;
+
   /**
    * Контекст..
    */
@@ -60,21 +62,22 @@ public class DataModule
   /**
    * Конструктор по DLM контексту
    *
-   * @param aContext IDlmContext - контекст.
+   * @param aCfg IAvTree - конфигурация DLM
    * @param aDlmInfo IDlmInfo - информация о DLM
    * @param aInstanceId
-   * @param aInitializer IPinDataInitializer - инициализатор пинов.
    */
-  public DataModule( IL2SharedContext aContext, DlmInfo aDlmInfo, String aInstanceId ) {
+  public DataModule( IAvTree aCfg, DlmInfo aDlmInfo, String aInstanceId ) {
+    cfg = aCfg;
     dlmInfo = aDlmInfo;
-    context = aContext;
 
+    // TODO
     logger = LoggerUtils.getLogger( this.getClass(), aDlmInfo.moduleId(), aInstanceId, OPC_MODULE_ID );
   }
 
   @Override
   protected ValidationResult doInit( ITsContextRo aArgs ) {
-    IAvTree dataDefs = (IAvTree)aArgs.get( DATA_DEFS );
+    context = aArgs.find( IL2SharedContext.class );
+    IAvTree dataDefs = cfg.nodes().getByKey( DATA_DEFS );
 
     // наполнение конфигуратора данными (для текущих данных)
     if( dataDefs != null && dataDefs.isArray() ) {

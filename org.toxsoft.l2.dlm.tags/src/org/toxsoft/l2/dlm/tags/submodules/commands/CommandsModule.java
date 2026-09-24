@@ -61,6 +61,8 @@ public class CommandsModule
    */
   ISkConnection connection;
 
+  private IAvTree cfg;
+
   /**
    * Редактор состояния команд.
    */
@@ -100,15 +102,15 @@ public class CommandsModule
   /**
    * Конструктор по контексту.
    *
-   * @param aContext {@link IDlmContext} - контекст подгружаемых модулей.
+   * @param aCfg IAvTree - конфигурация DLM
    * @param aDlmInfo IDlmInfo - информация о DLM
    * @param aInstanceId
    * @param aComplexTagsContainer IComplexTagsContainer - контейнер сложных тегов.
    */
-  public CommandsModule( IL2SharedContext aContext, DlmInfo aDlmInfo, String aInstanceId ) {// , IComplexTagsContainer
-                                                                                            // aComplexTagsContainer
+  public CommandsModule( IAvTree aCfg, DlmInfo aDlmInfo, String aInstanceId ) {// , IComplexTagsContainer
+                                                                               // aComplexTagsContainer
     // ) {
-    context = aContext;
+    cfg = aCfg;
     dlmInfo = aDlmInfo;
     // complexTagsContainer = aComplexTagsContainer;
 
@@ -117,12 +119,15 @@ public class CommandsModule
 
   @Override
   protected ValidationResult doInit( ITsContextRo aArgs ) {
+    context = aArgs.find( IL2SharedContext.class );
+
     // создание по конфигурации описаний для регистрации в сервисе
-    IAvTree cmdClassDefs = (IAvTree)aArgs.get( CMD_CLASS_DEFS );
-    commandsDefByObjNames = createCmdDefs( cmdClassDefs );
+
+    IAvTree eventDefs = cfg.nodes().getByKey( CMD_CLASS_DEFS );
+    commandsDefByObjNames = createCmdDefs( eventDefs );
 
     // создание локальных исполнителей команд, непосредственной выполняющих установку значений в устройство
-    IAvTree cmdDefs = (IAvTree)aArgs.get( CMD_DEFS );
+    IAvTree cmdDefs = cfg.nodes().getByKey( CMD_DEFS );
     configCommandExecs( cmdDefs );
 
     return ValidationResult.SUCCESS;

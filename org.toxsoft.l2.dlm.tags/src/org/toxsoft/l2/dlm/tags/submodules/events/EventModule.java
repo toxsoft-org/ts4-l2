@@ -32,6 +32,8 @@ public class EventModule
    */
   private ILogger logger;
 
+  private IAvTree cfg;
+
   /**
    * Контекст.
    */
@@ -55,12 +57,12 @@ public class EventModule
   /**
    * Конструктор по контексту.
    *
-   * @param aContext {@link IDlmContext} - контекст подгружаемых модулей.
+   * @param aCfg IAvTree - конфигурация DLM
    * @param aDlmInfo IDlmInfo - информация о DLM
    * @param aInstanceId
    */
-  public EventModule( IL2SharedContext aContext, DlmInfo aDlmInfo, String aInstanceId ) {
-    context = aContext;
+  public EventModule( IAvTree aCfg, DlmInfo aDlmInfo, String aInstanceId ) {
+    cfg = aCfg;
     dlmInfo = aDlmInfo;
 
     logger = LoggerUtils.getLogger( this.getClass(), aDlmInfo.moduleId(), aInstanceId, OPC_MODULE_ID );
@@ -68,7 +70,8 @@ public class EventModule
 
   @Override
   protected ValidationResult doInit( ITsContextRo aArgs ) {
-    IAvTree eventDefs = (IAvTree)aArgs.get( EVENT_DEFS );
+    context = aArgs.find( IL2SharedContext.class );
+    IAvTree eventDefs = cfg.nodes().getByKey( EVENT_DEFS );
 
     senders = new ElemArrayList<>();
 

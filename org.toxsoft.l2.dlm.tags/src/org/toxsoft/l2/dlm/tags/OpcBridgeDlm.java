@@ -53,14 +53,14 @@ public class OpcBridgeDlm
     // modules.add( complexTagsModule );
 
     // подмодуль текущих данных
-    AbstractTsCoopCompMultiUse currDataModule = new DataModule( context, info(), instanceId );
+    AbstractTsCoopCompMultiUse currDataModule = new DataModule( aConfig.cfg(), info(), instanceId );
     modules.add( currDataModule );
 
-    AbstractTsCoopCompMultiUse eventModule = new EventModule( context, info(), instanceId );
+    AbstractTsCoopCompMultiUse eventModule = new EventModule( aConfig.cfg(), info(), instanceId );
     modules.add( eventModule );
 
     // создание модуля команд и установка в него модуля комплексных тегов
-    AbstractTsCoopCompMultiUse commandsModule = new CommandsModule( context, info(), instanceId );
+    AbstractTsCoopCompMultiUse commandsModule = new CommandsModule( aConfig.cfg(), info(), instanceId );
     modules.add( commandsModule );
 
     // dima 25.12.23 add rriModule
