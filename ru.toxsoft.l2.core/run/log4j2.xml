@@ -16,7 +16,7 @@
 
         <Logger level="INFO"  name="org.toxsoft.uskat.core" />
         <Logger level="WARN"  name="org.toxsoft.uskat.core.impl.SkCoreServObject" />
-        
+        <Logger level="WARN"  name="ru.toxsoft.l2.dlm.opc_bridge.submodules.data" />
 
         <Logger level="INFO"  name="org.toxsoft.uskat.s5.common" />
         <Logger level="WARN"  name="org.toxsoft.uskat.s5.common.sysdescr.SkSysdescrReader" />
