@@ -1,10 +1,9 @@
 package org.toxsoft.l2.dlm.tags.submodules.events;
 
-import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.l2.lib.hal.*;
 
 /**
@@ -27,7 +26,8 @@ public interface IEventParamsFormer {
    * @param aTags IMap - теги драйвера OPC, ключ - идентификатор структуры тега из конфигурационного файла ("default" -
    *          если описание тег находится в корневой секции).
    */
-  void start( IMap<String, IL2Tag> aTags );
+  // void start( IMap<String, IL2Tag> aTags );
+  void start( IGwidValueSetter[] aDataSetter, IMapEdit<String, IL2Tag> aTags );
 
   /**
    * Формирует параметры произошедшего события.
@@ -37,6 +37,6 @@ public interface IEventParamsFormer {
    *         описания.
    * @throws TsException - в случае невозможности формирования необходимых параметров.
    */
-  IStringMap<IAtomicValue> getEventParamValues( long aTime )
+  void formEventParamValues( long aTime )
       throws TsException;
 }

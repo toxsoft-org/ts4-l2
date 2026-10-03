@@ -9,9 +9,9 @@ import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.l2.lib.hal.*;
 
 /**
@@ -31,6 +31,8 @@ public class OneTagToOneParamFormer
    * Идентификатор параметра.
    */
   private String eventParamId;
+
+  private IGwidValueSetter eventParamSetter;
 
   private int bitIndex = -1;
 
@@ -55,7 +57,7 @@ public class OneTagToOneParamFormer
   }
 
   @Override
-  public void start( IMap<String, IL2Tag> aTags ) {
+  public void start( IGwidValueSetter[] aDataSetindexes, IMapEdit<String, IL2Tag> aTags ) {
     TsNullArgumentRtException.checkNull( aTags );
     TsIllegalArgumentRtException.checkFalse( aTags.size() == 1 );
 
@@ -64,19 +66,27 @@ public class OneTagToOneParamFormer
     TsIllegalArgumentRtException.checkFalse(
         ((bitIndex >= 0 && tag.atomicType() == EAtomicType.INTEGER) || bitIndex < 0),
         ERR_MSG_IF_BIT_INDEX_IS_SET_THAN_TAG_MUST_HAVE_TYPE_INTEGER );
+
+    for( IGwidValueSetter setter : aDataSetindexes ) {
+      if( setter.gwid().kind() == EGwidKind.GW_EVENT_PARAM && setter.gwid().isSubProp() ) {
+        if( setter.gwid().subPropId().equals( eventParamId ) ) {
+          eventParamSetter = setter;
+        }
+      }
+    }
+    TsIllegalArgumentRtException.checkNull( eventParamSetter );
   }
 
   @Override
-  public IStringMap<IAtomicValue> getEventParamValues( long aTime ) {
+  public void formEventParamValues( long aTime ) {
     IAtomicValue tagValue = tag.get();
-    IStringMapEdit<IAtomicValue> result = new StringMap<>();
+
     if( bitIndex >= 0 ) {
-      result.put( eventParamId, AvUtils.avBool( ((tagValue.asInt() >> bitIndex) & 1) == 1 ) );
+      eventParamSetter.setGwidValue( AvUtils.avBool( ((tagValue.asInt() >> bitIndex) & 1) == 1 ), aTime );
     }
     else {
-      result.put( eventParamId, tagValue );
+      eventParamSetter.setGwidValue( tagValue, aTime );
     }
-    return result;
   }
 
 }

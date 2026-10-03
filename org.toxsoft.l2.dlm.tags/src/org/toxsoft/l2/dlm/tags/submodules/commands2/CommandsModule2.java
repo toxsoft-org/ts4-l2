@@ -8,6 +8,7 @@ import java.util.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.bricks.coopcomp.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.derivative.*;
@@ -214,7 +215,7 @@ public class CommandsModule2
           new CmdStateGwidValueSetter( queue, connection.coreApi().cmdService(), dataObjName.getGwid() );
 
       cExec.start( new IGwidValueSetter[] { cmdStateGwidValueSetter }, getters.toArray( new IGwidValueGetter[0] ),
-          execTags.values() );
+          new StridablesList<>( execTags.values() ) );
 
       commandsTranslators.add( cExec );
     }

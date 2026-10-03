@@ -19,12 +19,13 @@ import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.rwkind.*;
+import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.l2.lib.hal.*;
 
 /**
  * Формирователь параметров события, логика которого программируется в скрипте, расположенном в конфигурационном файле.
  *
- * @author MAX
+ * @author MAX TODO
  */
 public class ScriptParamFormer
     implements IEventParamsFormer {
@@ -60,7 +61,7 @@ public class ScriptParamFormer
   }
 
   @Override
-  public void start( IMap<String, IL2Tag> aTags ) {
+  public void start( IGwidValueSetter[] aDataSetter, IMapEdit<String, IL2Tag> aTags ) {
     ScriptEngineManager mgr = new ScriptEngineManager();
     engine = mgr.getEngineByName( JAVA_SCRIPT_NAME );
 
@@ -86,7 +87,7 @@ public class ScriptParamFormer
   }
 
   @Override
-  public IStringMap<IAtomicValue> getEventParamValues( long aTime )
+  public void formEventParamValues( long aTime )
       throws TsException {
 
     IStringMapEdit<IAtomicValue> result = new StringMap<>();
@@ -105,8 +106,6 @@ public class ScriptParamFormer
       TsIllegalStateRtException.checkFalse( paramValue != null, ERR_MSG_PARAMS_FORMER_SCRIPT_RETURNED_NULL );
       result.put( paramId, paramValue );
     }
-
-    return result;
   }
 
   /**
@@ -192,14 +191,14 @@ public class ScriptParamFormer
 
     IMapEdit<String, IL2Tag> map = new ElemMap();
     map.put( "tag", tag ); //$NON-NLS-1$
-
-    eventParamFormer.start( map );
+    IGwidValueSetter[] setters = {};
+    eventParamFormer.start( setters, map );
 
     Thread.sleep( 100 );
 
-    IStringMap<IAtomicValue> valuesMap;
+    IStringMap<IAtomicValue> valuesMap = new StringMap<>();
     try {
-      valuesMap = eventParamFormer.getEventParamValues( System.currentTimeMillis() );
+      eventParamFormer.formEventParamValues( System.currentTimeMillis() );
       IAtomicValue value = valuesMap.getByKey( paramId );// .replaceAll( DOT, DASH ) );
 
       System.out.println( value.toString() );

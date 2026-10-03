@@ -3,7 +3,7 @@ package org.toxsoft.l2.dlm.tags.submodules.data;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.av.impl.*;
-import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.l2.lib.hal.*;
@@ -68,7 +68,8 @@ public class OneIntToManyBoolDataGwidTranslator
   }
 
   @Override
-  public void start( IGwidValueSetter[] aDataSetindexes, IGwidValueGetter[] aDataGetters, IList<IL2Tag> aTags ) {
+  public void start( IGwidValueSetter[] aDataSetindexes, IGwidValueGetter[] aDataGetters,
+      IStridablesList<IL2Tag> aTags ) {
     // inDataSetIndex = aDataSetindexes[0];
     tag = aTags.get( 0 );
   }

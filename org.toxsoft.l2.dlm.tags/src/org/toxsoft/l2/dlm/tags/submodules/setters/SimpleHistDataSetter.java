@@ -9,7 +9,6 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.l2.dlm.tags.*;
-import org.toxsoft.l2.dlm.tags.submodules.data.*;
 import org.toxsoft.uskat.core.api.rtdserv.*;
 
 /**
@@ -18,7 +17,7 @@ import org.toxsoft.uskat.core.api.rtdserv.*;
  * @author max
  */
 public class SimpleHistDataSetter
-    implements IGwidValueSetter {
+    extends AbstractGwidValueSetter {
 
   /**
    * Журнал работы
@@ -45,8 +44,6 @@ public class SimpleHistDataSetter
    */
   private long endTime;
 
-  private Gwid dataGwid;
-
   private IAtomicValue value;
 
   /**
@@ -59,9 +56,9 @@ public class SimpleHistDataSetter
   private long dataWritePeriod = 15000L;
 
   public SimpleHistDataSetter( IMap<Gwid, ISkWriteHistDataChannel> aDataSet, Gwid aDataGwid ) {
+    super( aDataGwid );
     TsIllegalArgumentRtException.checkFalse( aDataSet.hasKey( aDataGwid ) );
     channel = aDataSet.getByKey( aDataGwid );
-    dataGwid = aDataGwid;
   }
 
   @Override
@@ -102,7 +99,7 @@ public class SimpleHistDataSetter
         channel.writeValues( timeInterval(), values );
       }
       catch( Exception e ) {
-        logger.error( e, "Set Hist data error: gwid: %s,  error: %s", dataGwid, e.getMessage() );
+        logger.error( e, "Set Hist data error: gwid: %s,  error: %s", gwid(), e.getMessage() );
       }
       // logger.info( "wdChannel.writeValues() it's gwid %s", channel.gwid() );
 
@@ -126,7 +123,7 @@ public class SimpleHistDataSetter
 
   @Override
   public String toString() {
-    return dataGwid.canonicalString();
+    return gwid().canonicalString();
   }
 
 }
