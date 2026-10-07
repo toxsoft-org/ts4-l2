@@ -8,9 +8,9 @@ import java.util.*;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
+import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.l2.lib.hal.*;
 
 /**
@@ -31,10 +31,14 @@ public class OneTagToChangedParamFormer
    */
   private String prevValueEventParamId;
 
+  private IGwidValueSetter prevValueSetter;
+
   /**
    * Идентификатор параметра - текущее значение.
    */
   private String currValueEventParamId;
+
+  private IGwidValueSetter currValueSetter;
 
   private IAtomicValue prevValue = IAtomicValue.NULL;
 
@@ -58,25 +62,34 @@ public class OneTagToChangedParamFormer
   }
 
   @Override
-  public void start( IMap<String, IL2Tag> aTags ) {
+  public void start( IGwidValueSetter[] aDataSetindexes, IMapEdit<String, IL2Tag> aTags ) {
     TsNullArgumentRtException.checkNull( aTags );
     TsIllegalArgumentRtException.checkFalse( aTags.size() == 1 );
 
     tag = aTags.values().get( 0 );
     prevValue = tag.get();
+
+    for( IGwidValueSetter setter : aDataSetindexes ) {
+      if( setter.gwid().kind() == EGwidKind.GW_EVENT_PARAM && setter.gwid().isSubProp() ) {
+        if( setter.gwid().subPropId().equals( prevValueEventParamId ) ) {
+          prevValueSetter = setter;
+        }
+        if( setter.gwid().subPropId().equals( currValueEventParamId ) ) {
+          currValueSetter = setter;
+        }
+      }
+    }
+    TsIllegalArgumentRtException.checkNulls( prevValueSetter, currValueSetter );
   }
 
   @Override
-  public IStringMap<IAtomicValue> getEventParamValues( long aTime ) {
+  public void formEventParamValues( long aTime ) {
     IAtomicValue tagValue = tag.get();
 
-    IStringMapEdit<IAtomicValue> result = new StringMap<>();
-    result.put( prevValueEventParamId, prevValue );
-    result.put( currValueEventParamId, tagValue );
+    prevValueSetter.setGwidValue( prevValue, aTime );
+    currValueSetter.setGwidValue( tagValue, aTime );
 
     prevValue = tagValue;
-
-    return result;
   }
 
 }

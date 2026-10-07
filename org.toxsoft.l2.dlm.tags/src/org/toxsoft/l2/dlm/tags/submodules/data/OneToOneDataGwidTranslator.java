@@ -2,7 +2,7 @@ package org.toxsoft.l2.dlm.tags.submodules.data;
 
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
-import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.l2.lib.hal.*;
@@ -50,7 +50,7 @@ public class OneToOneDataGwidTranslator
       result = dataSetter.setGwidValue( newVal, aTime );
     }
     catch( Exception e ) {
-      logger.error( e, "Set data error: gwid: %s, tag: %s, error: %s", dataSetter.toString(), tag.id(),
+      logger.error( e, "Set data error: gwid: %s, tag: %s, error: %s", dataSetter.toString(), tag.id(), //$NON-NLS-1$
           e.getMessage() );
     }
     return result;
@@ -67,7 +67,8 @@ public class OneToOneDataGwidTranslator
   }
 
   @Override
-  public void start( IGwidValueSetter[] aDataSetindexes, IGwidValueGetter[] aDataGetters, IList<IL2Tag> aTags ) {
+  public void start( IGwidValueSetter[] aDataSetindexes, IGwidValueGetter[] aDataGetters,
+      IStridablesList<IL2Tag> aTags ) {
     dataSetter = aDataSetindexes[0];
     tag = aTags.get( 0 );
   }

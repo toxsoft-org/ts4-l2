@@ -3,8 +3,8 @@ package org.toxsoft.l2.dlm.tags.submodules.setters;
 import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.l2.dlm.tags.*;
-import org.toxsoft.l2.dlm.tags.submodules.data.*;
 
 /**
  * Составной источник данных
@@ -12,7 +12,11 @@ import org.toxsoft.l2.dlm.tags.submodules.data.*;
  * @author max
  */
 public class CombinedDataSetter
-    implements IGwidValueSetter {
+    extends AbstractGwidValueSetter {
+
+  public CombinedDataSetter( Gwid aGwid ) {
+    super( aGwid );
+  }
 
   private IListEdit<IGwidValueSetter> dataSetters = new ElemArrayList<>();
 
@@ -40,4 +44,5 @@ public class CombinedDataSetter
   public void addDataSetter( IGwidValueSetter aDataSetter ) {
     dataSetters.add( aDataSetter );
   }
+
 }

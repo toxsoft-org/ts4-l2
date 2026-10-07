@@ -8,6 +8,8 @@ import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
@@ -399,7 +401,7 @@ public class DataTranslatorsInitializer
 
       IListEdit<IOptionSet> transTagsParams = tagsIds.get( j );
 
-      IListEdit<IL2Tag> tags = new ElemArrayList<>();
+      IStridablesListEdit<IL2Tag> tags = new StridablesList<>();
 
       for( int i = 0; i < transTagsParams.size(); i++ ) {
         IOptionSet tagOptSet = transTagsParams.get( i );
@@ -440,7 +442,7 @@ public class DataTranslatorsInitializer
     boolean synch = aDataObjName.isSynch();
     long synchPeriod = aDataObjName.getSynchPeriod();
 
-    CombinedDataSetter result = new CombinedDataSetter();
+    CombinedDataSetter result = new CombinedDataSetter( aDataObjName.getGwid() );
 
     if( aDataObjName.isCurr() ) {
       result.addDataSetter( new CurrDataSetter( currDataSet, aDataObjName.getGwid(), synch ? synchPeriod : 0 ) );

@@ -10,8 +10,9 @@ import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.av.impl.*;
 import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.av.opset.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.rwkind.*;
@@ -70,7 +71,8 @@ public class ScriptDataGwidTranslator
   }
 
   @Override
-  public void start( IGwidValueSetter[] aDataSetindexes, IGwidValueGetter[] aDataGetters, IList<IL2Tag> aTags ) {
+  public void start( IGwidValueSetter[] aDataSetindexes, IGwidValueGetter[] aDataGetters,
+      IStridablesList<IL2Tag> aTags ) {
 
     ScriptEngineManager mgr = new ScriptEngineManager();
     engine = mgr.getEngineByName( JAVA_SCRIPT_NAME );
@@ -109,7 +111,7 @@ public class ScriptDataGwidTranslator
    *
    * @param a - параметры запуска.
    */
-  @SuppressWarnings( { "unchecked", "rawtypes" } )
+
   public static void main( String[] a ) {
     ScriptDataGwidTranslator testTrans = new ScriptDataGwidTranslator();
 
@@ -127,6 +129,12 @@ public class ScriptDataGwidTranslator
       public void close() {
         // TODO Auto-generated method stub
 
+      }
+
+      @Override
+      public Gwid gwid() {
+        // TODO Auto-generated method stub
+        return null;
       }
     };
 
@@ -180,7 +188,7 @@ public class ScriptDataGwidTranslator
       }
     };
 
-    testTrans.start( new IGwidValueSetter[] { setter }, new IGwidValueGetter[0], new ElemArrayList<>( tag ) );
+    testTrans.start( new IGwidValueSetter[] { setter }, new IGwidValueGetter[0], new StridablesList<>( tag ) );
 
     System.out.println( testTrans.translate( System.currentTimeMillis() ) );
   }

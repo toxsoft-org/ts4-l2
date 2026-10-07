@@ -1,6 +1,7 @@
 package org.toxsoft.l2.dlm.tags;
 
 import org.toxsoft.core.tslib.av.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
 
 /**
  * Установщик данных (одного) в датасет на запись.
@@ -23,6 +24,12 @@ public interface IGwidValueSetter {
     public void close() {
       // без реализации
     }
+
+    @Override
+    public Gwid gwid() {
+      // TODO Auto-generated method stub
+      return null;
+    }
   };
 
   /**
@@ -39,4 +46,11 @@ public interface IGwidValueSetter {
    * Закрывает установщик данных
    */
   void close();
+
+  /**
+   * Возвращает gwid, за установку значения которого отвечает этот setter
+   *
+   * @return Gwid - gwid, за установку значения которого отвечает этот setter
+   */
+  Gwid gwid();
 }

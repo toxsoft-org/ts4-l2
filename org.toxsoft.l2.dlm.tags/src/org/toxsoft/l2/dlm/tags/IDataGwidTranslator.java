@@ -1,7 +1,7 @@
 package org.toxsoft.l2.dlm.tags;
 
 import org.toxsoft.core.tslib.av.avtree.*;
-import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.l2.lib.hal.*;
 
 /**
@@ -40,5 +40,5 @@ public interface IDataGwidTranslator {
    *          сервер.
    * @param aWriteDataSet T - дата-сет на запись
    */
-  void start( IGwidValueSetter[] aDataSetters, IGwidValueGetter[] aDataGetters, IList<IL2Tag> aTags );
+  void start( IGwidValueSetter[] aDataSetters, IGwidValueGetter[] aDataGetters, IStridablesList<IL2Tag> aTags );
 }

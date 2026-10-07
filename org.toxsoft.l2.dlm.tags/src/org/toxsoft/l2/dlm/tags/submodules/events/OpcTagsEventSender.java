@@ -9,18 +9,15 @@ import org.toxsoft.core.tslib.av.*;
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.av.opset.impl.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
 import org.toxsoft.core.tslib.gw.gwid.*;
-import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.l2.dlm.tags.*;
-import org.toxsoft.l2.lib.common.*;
 import org.toxsoft.l2.lib.hal.*;
 import org.toxsoft.uskat.core.api.evserv.*;
-import org.toxsoft.uskat.core.api.sysdescr.*;
 import org.toxsoft.uskat.core.connection.*;
 
 /**
@@ -29,7 +26,7 @@ import org.toxsoft.uskat.core.connection.*;
  * @author max
  */
 public class OpcTagsEventSender
-    implements IDataGwidTranslator {
+    extends AbstarctEventSender {
 
   /**
    * Журнал работы
@@ -44,7 +41,7 @@ public class OpcTagsEventSender
   // определяются
   private IMapEdit<String, TagConfig> tagsConfig = new ElemMap<>();
 
-  private IMapEdit<String, IL2Tag> tags = new ElemMap<>();
+  // private IMapEdit<String, IL2Tag> tags = new ElemMap<>();
 
   private IMapEdit<String, IOpcTagsCondition> conditions = new ElemMap<>();
 
@@ -73,8 +70,7 @@ public class OpcTagsEventSender
     IOptionSetEdit paramValues = new OptionSet();
     try {
       for( IEventParamsFormer paramsFormer : formers.values() ) {
-        IStringMap<IAtomicValue> params = paramsFormer.getEventParamValues( aTime );
-        paramValues.putAll( params );
+        paramsFormer.formEventParamValues( aTime );
       }
     }
     catch( TsException ex ) {
@@ -251,60 +247,7 @@ public class OpcTagsEventSender
   }
 
   @Override
-  public void start( IGwidValueSetter[] aDataSetindexes, IGwidValueGetter[] aDataGetters, IList<IL2Tag> aTags ) {
-    // TODO Auto-generated method stub
-
-  }
-
-  public void start( IL2SharedContext aContext ) {
-    // соединение
-    connection = aContext.net().getSkConnection();
-
-    String clasId = evenGwid.classId();
-    String objId = evenGwid.strid();
-    String evntId = evenGwid.propId();
-
-    ISkClassInfo classInfo = connection.coreApi().sysdescr().findClassInfo( clasId );
-
-    if( classInfo == null ) {
-      logger.error( "Class '%s' not found during event '%s' sender registration", clasId, evntId );
-      return;
-    }
-
-    if( !classInfo.events().list().hasKey( evntId ) ) {
-      logger.error( "Event '%s' of class '%s' not found during event sender registration", evntId, clasId );
-      return;
-    }
-
-    if( connection.coreApi().objService().find( new Skid( clasId, objId ) ) == null ) {
-      logger.error( "Object '%s' of class '%s' not found during event '%s' sender registration", objId, clasId,
-          evntId );
-      return;
-    }
-
-    // objId = objNameObject.convert( ); //TODO
-
-    // найти все теги
-    for( String tagKey : tagsConfig.keys() ) {
-      TagConfig tc = tagsConfig.getByKey( tagKey );
-
-      // TODO device fix
-      // ITsOpc tagsDevice = (ITsOpc)aContext.hal().listSpecificDevices().getByKey( tc.getDeviceId() );
-      IL2Tag tag = aContext.hal().tags().getByKey( tc.getTagId() );
-      // IL2Tag tag = tagsDevice.tag( tc.getTagId() );
-
-      if( tag == null ) {
-        logger.error( "Tag '%s' not found", tc.getDeviceId() + " | " + tc.getTagId() );
-      }
-      else {
-        tags.put( tagKey, tag );
-      }
-    }
-
-    if( tags.size() != tagsConfig.size() ) {
-      return;
-    }
-
+  public void start( IGwidValueSetter[] aDataSetters, IGwidValueGetter[] aDataGetters, IStridablesList<IL2Tag> aTags ) {
     // условия
     for( String condKey : conditions.keys() ) {
       IOpcTagsCondition condition = conditions.getByKey( condKey );
@@ -314,7 +257,7 @@ public class OpcTagsEventSender
       for( String tagKey : tagsConfig.keys() ) {
         TagConfig tc = tagsConfig.getByKey( tagKey );
         if( tc.isConditionInList( condKey ) || tagKey.equals( DEFAULT_TAG_ID ) ) {
-          condTags.put( tagKey, tags.getByKey( tagKey ) );
+          condTags.put( tagKey, aTags.getByKey( tc.getTagId() ) );
         }
       }
 
@@ -330,14 +273,14 @@ public class OpcTagsEventSender
       for( String tagKey : tagsConfig.keys() ) {
         TagConfig tc = tagsConfig.getByKey( tagKey );
         if( tc.isParamFormerInList( formerKey ) || tagKey.equals( DEFAULT_TAG_ID ) ) {
-          formerTags.put( tagKey, tags.getByKey( tagKey ) );
+          formerTags.put( tagKey, aTags.getByKey( tc.getTagId() ) );
         }
       }
 
-      former.start( formerTags );
+      former.start( aDataSetters, formerTags );
     }
 
-    logger.info( "Event sender for: '%s' - started", evenGwid.asString() );
+    logger.info( "Event sender for: '%s' - started", evenGwid.canonicalString() );
     isStarted = true;
   }
 
@@ -434,6 +377,12 @@ public class OpcTagsEventSender
       }
     }
 
+  }
+
+  @Override
+  protected IList<String[]> getTagIds() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }

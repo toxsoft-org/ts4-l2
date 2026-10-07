@@ -7,7 +7,7 @@ import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.uskat.core.api.cmdserv.*;
 
 public class CmdStateGwidValueSetter
-    implements IGwidValueSetter {
+    extends AbstractGwidValueSetter {
 
   /**
    * Сссылка на очередь команд
@@ -16,12 +16,10 @@ public class CmdStateGwidValueSetter
 
   private ISkCommandService cmdService;
 
-  private Gwid gwid;
-
   public CmdStateGwidValueSetter( IQueue<IDtoCommand> aQueue, ISkCommandService aCmdService, Gwid aGwid ) {
+    super( aGwid );
     queue = aQueue;
     cmdService = aCmdService;
-    gwid = aGwid;
   }
 
   @Override

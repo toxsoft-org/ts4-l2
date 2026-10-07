@@ -4,17 +4,26 @@ import static org.toxsoft.l2.dlm.tags.IDlmsBaseConstants.*;
 import static org.toxsoft.l2.dlm.tags.submodules.events.IL2Resources.*;
 
 import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.core.tslib.av.metainfo.*;
+import org.toxsoft.core.tslib.av.opset.*;
+import org.toxsoft.core.tslib.av.opset.impl.*;
 import org.toxsoft.core.tslib.bricks.coopcomp.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.coll.*;
 import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.gw.gwid.*;
+import org.toxsoft.core.tslib.gw.skid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.l2.dlm.tags.*;
 import org.toxsoft.l2.lib.common.*;
 import org.toxsoft.l2.lib.dlms.*;
+import org.toxsoft.l2.lib.hal.*;
+import org.toxsoft.uskat.core.api.sysdescr.*;
 import org.toxsoft.uskat.core.connection.*;
 
 /**
@@ -52,7 +61,7 @@ public class EventModule
   /**
    * Объекты локальные отправитель сообщений.
    */
-  private IListEdit<IDataGwidTranslator> senders;
+  private IListEdit<AbstarctEventSender> senders;
 
   /**
    * Конструктор по контексту.
@@ -80,7 +89,7 @@ public class EventModule
         IAvTree eventDef = eventDefs.arrayElement( i );
 
         try {
-          IDataGwidTranslator eventSender = createSender( eventDef );
+          AbstarctEventSender eventSender = createSender( eventDef );
           eventSender.config( eventDef );
           senders.add( eventSender );
         }
@@ -107,10 +116,60 @@ public class EventModule
     try {
       // запуск локальных отправителей
       for( int i = 0; i < senders.size(); i++ ) {
-        IDataGwidTranslator sender = senders.get( i );
+        AbstarctEventSender sender = senders.get( i );
         try {
-          sender.start( new IGwidValueSetter[0], new IGwidValueGetter[0], new ElemArrayList<>() ); // TODO
-          // sender.start( context );
+          Gwid eventGwid = sender.getEventGwid();
+          String clasId = eventGwid.classId();
+          String objId = eventGwid.strid();
+          String evntId = eventGwid.propId();
+
+          ISkClassInfo classInfo = connection.coreApi().sysdescr().findClassInfo( clasId );
+
+          if( classInfo == null ) {
+            logger.error( "Class '%s' not found during event '%s' sender registration", clasId, evntId );
+            return;
+          }
+
+          if( !classInfo.events().list().hasKey( evntId ) ) {
+            logger.error( "Event '%s' of class '%s' not found during event sender registration", evntId, clasId );
+            return;
+          }
+
+          if( connection.coreApi().objService().find( new Skid( clasId, objId ) ) == null ) {
+            logger.error( "Object '%s' of class '%s' not found during event '%s' sender registration", objId, clasId,
+                evntId );
+            return;
+          }
+
+          IStridablesList<IDataDef> paramDefs = classInfo.events().list().getByKey( evntId ).paramDefs();
+
+          IGwidValueSetter[] dataSetters = new IGwidValueSetter[paramDefs.size() + 1];
+
+          IOptionSetEdit options = new OptionSet();
+          dataSetters[0] = new EventGwidValueSetter( connection.coreApi().eventService(), eventGwid, options );
+          for( int j = 0; j < paramDefs.size(); j++ ) {
+            dataSetters[j + 1] = new EventParamGwidValueSetter(
+                Gwid.createEventParam( eventGwid.skid(), eventGwid.propId(), paramDefs.get( j ).id() ), options );
+          }
+
+          IList<String[]> tagIds = sender.getTagIds();
+
+          IStridablesListEdit<IL2Tag> tags = new StridablesList<>();
+
+          // найти все теги
+          for( String[] id : tagIds ) {
+            // TODO device fix
+            IL2Tag tag = context.hal().tags().getByKey( id[1] );
+
+            if( tag == null ) {
+              logger.error( "Tag '%s' not found", id[0] + " | " + id[1] );
+            }
+            else {
+              tags.add( tag );
+            }
+          }
+
+          sender.start( dataSetters, new IGwidValueGetter[0], tags );
         }
         catch( Exception e ) {
           logger.error( e, "Start of event sender error" );
@@ -164,14 +223,14 @@ public class EventModule
    * @return IEventSender -
    */
   @SuppressWarnings( "unchecked" )
-  private static IDataGwidTranslator createSender( IAvTree aConfig ) {
+  private static AbstarctEventSender createSender( IAvTree aConfig ) {
     // тип передатчика - из конфигурации
     String eventSenderClassStr = aConfig.fields().getStr( EVENT_SENDER_JAVA_CLASS );
 
     try {
-      Class<IDataGwidTranslator> eventSenderClass = (Class<IDataGwidTranslator>)Class.forName( eventSenderClassStr );
+      Class<AbstarctEventSender> eventSenderClass = (Class<AbstarctEventSender>)Class.forName( eventSenderClassStr );
 
-      IDataGwidTranslator sender = eventSenderClass.getConstructor().newInstance();
+      AbstarctEventSender sender = eventSenderClass.getConstructor().newInstance();
 
       return sender;
     }

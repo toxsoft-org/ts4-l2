@@ -6,7 +6,6 @@ import org.toxsoft.core.tslib.gw.gwid.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.l2.dlm.tags.*;
-import org.toxsoft.l2.dlm.tags.submodules.data.*;
 import org.toxsoft.uskat.core.api.rtdserv.*;
 
 /**
@@ -15,7 +14,7 @@ import org.toxsoft.uskat.core.api.rtdserv.*;
  * @author max
  */
 public class CurrDataSetter
-    implements IGwidValueSetter {
+    extends AbstractGwidValueSetter {
 
   /**
    * Журнал работы
@@ -26,16 +25,14 @@ public class CurrDataSetter
 
   private IAtomicValue value;
 
-  private Gwid dataGwid;
-
   private long minWritePeriod = 0;
 
   protected long prevSetTime = 0;
 
   public CurrDataSetter( IMap<Gwid, ISkWriteCurrDataChannel> aDataSet, Gwid aDataGwid, long aMinWritePeriod ) {
+    super( aDataGwid );
     TsIllegalArgumentRtException.checkFalse( aDataSet.hasKey( aDataGwid ) );
     channel = aDataSet.getByKey( aDataGwid );
-    dataGwid = aDataGwid;
 
     minWritePeriod = aMinWritePeriod / 2;
   }
@@ -61,7 +58,7 @@ public class CurrDataSetter
       value = aValue;
       prevSetTime = aTime;
 
-      logger.debug( "curr data: %s - change value on: %s", dataGwid.asString(),
+      logger.debug( "curr data: %s - change value on: %s", gwid().canonicalString(),
           (aValue.isAssigned() ? aValue.asString() : "Not Assigned") );
     }
 
@@ -75,6 +72,7 @@ public class CurrDataSetter
 
   @Override
   public String toString() {
-    return dataGwid.asString();
+    return gwid().canonicalString();
   }
+
 }
