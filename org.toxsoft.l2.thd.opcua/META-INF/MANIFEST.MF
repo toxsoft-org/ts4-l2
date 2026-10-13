@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Opc Ua driver
+Bundle-SymbolicName: org.toxsoft.l2.thd.opcua
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.toxsoft.l2.lib,
+ org.toxsoft.core.tslib,
+ org.toxsoft.extlibs.log4j,
+ org.toxsoft.core.log4j,
+ org.toxsoft.core.pas,
+ org.toxsoft.uskat.s5,
+ org.toxsoft.skf.dq.lib,
+ org.toxsoft.uskat.core,
+ org.toxsoft.extlibs.milo;bundle-version="1.0.0"
+Bundle-Vendor: Toxsoft
+Automatic-Module-Name: org.toxsoft.l2.thd.opcua
+Bundle-RequiredExecutionEnvironment: JavaSE-21
