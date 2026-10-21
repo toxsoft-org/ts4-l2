@@ -9,7 +9,7 @@ import org.toxsoft.core.tslib.av.opset.*;
 import org.toxsoft.core.tslib.bricks.strid.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.rwkind.*;
-import org.toxsoft.l2.lib.hal.*;
+import org.toxsoft.l2.lib.api.module.hal.*;
 
 /**
  * {@link IL2Tag} abstract implementation.
@@ -19,7 +19,7 @@ import org.toxsoft.l2.lib.hal.*;
 public abstract class L2AbstractTag
     implements IL2Tag {
 
-  private final L2AbstractHalDevice device;
+  private final L2AbstractHalDriver driver;
   private final String              id;
   private final IOptionSet          params;
   private final IDataType           dataType;
@@ -38,11 +38,11 @@ public abstract class L2AbstractTag
    * @throws TsNullArgumentRtException any argument = <code>null</code>
    * @throws TsIllegalArgumentRtException ID is not an IDpath
    */
-  protected L2AbstractTag( L2AbstractHalDevice aDevice, String aId, IOptionSet aParams, IDataType aDataType,
+  protected L2AbstractTag( L2AbstractHalDriver aDevice, String aId, IOptionSet aParams, IDataType aDataType,
       ERwKind aKind ) {
     TsNullArgumentRtException.checkNulls( aDevice, aParams, aDataType, aKind );
     id = StridUtils.checkValidIdPath( aId );
-    device = aDevice;
+    driver = aDevice;
     params = aParams;
     dataType = aDataType;
     kind = aKind;
@@ -58,12 +58,12 @@ public abstract class L2AbstractTag
   }
 
   @Override
-  public String nmName() {
+  final public String nmName() {
     return params.getStr( DDEF_NAME );
   }
 
   @Override
-  public String description() {
+  final public String description() {
     return params.getStr( DDEF_DESCRIPTION );
   }
 
@@ -77,7 +77,7 @@ public abstract class L2AbstractTag
   }
 
   // ------------------------------------------------------------------------------------
-  // IL2AbstractSignal
+  // IL2Tag
   //
 
   @Override
@@ -108,12 +108,9 @@ public abstract class L2AbstractTag
     doSet( aValue );
   }
 
-  // ------------------------------------------------------------------------------------
-  // Package API
-  //
-
-  L2AbstractHalDevice device() {
-    return device;
+  @Override
+  public L2AbstractHalDriver driver() {
+    return driver;
   }
 
   // ------------------------------------------------------------------------------------

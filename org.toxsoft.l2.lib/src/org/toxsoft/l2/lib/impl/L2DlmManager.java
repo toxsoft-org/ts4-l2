@@ -1,36 +1,22 @@
 package org.toxsoft.l2.lib.impl;
 
-import static org.toxsoft.l2.lib.IL2GlobalOptions.*;
-import static org.toxsoft.l2.lib.l10n.IL2LibSharedResources.*;
-
-import java.io.*;
+import static org.toxsoft.l2.lib.api.app.IL2ApplicationArguments.*;
 
 import org.toxsoft.core.tslib.bricks.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
-import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
-import org.toxsoft.core.tslib.bricks.validator.vrl.*;
-import org.toxsoft.core.tslib.coll.*;
-import org.toxsoft.core.tslib.coll.primtypes.*;
-import org.toxsoft.core.tslib.coll.primtypes.impl.*;
-import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.l2.lib.*;
-import org.toxsoft.l2.lib.common.*;
-import org.toxsoft.l2.lib.dlms.*;
-import org.toxsoft.l2.lib.hal.*;
+import org.toxsoft.l2.lib.api.module.dlm.*;
+import org.toxsoft.l2.lib.impl.comps.*;
 
 /**
- * {@link IL2Hal} implementation.
+ * {@link IL2DlmManager} implementation.
  *
  * @author hazard157
  */
-class L2DlmManager
-    extends L2AbstractComponent
+public final class L2DlmManager
+    extends L2AbstractComponent<L2AbstractDlm>
     implements IL2DlmManager, ICooperativeWorkerComponent {
-
-  private final IStridablesListEdit<L2AbstractDlm> initedDlmsList  = new StridablesList<>();
-  private final IStridablesListEdit<L2AbstractDlm> startedDlmsList = new StridablesList<>();
 
   /**
    * Constructor.
@@ -39,152 +25,47 @@ class L2DlmManager
    */
   public L2DlmManager( IL2SharedContext aL2Context ) {
     super( aL2Context, ALL_DLMMGR_COMP_OPDEFS );
-  }
-
-  // ------------------------------------------------------------------------------------
-  // implementation
-  //
-
-  private void checkDlmFileChangesAndReloadIfNeeded() {
-
-    // TODO check if enough time passed to invoke the check
-
-    // TODO scan for changes in files in configuration directory
-
-    // TODO scan for changes in DLM JAR files directory
-
-  }
-
-  // ------------------------------------------------------------------------------------
-  // AbstractTsCoopCompMultiUse
-  //
-
-  @Override
-  protected ValidationResult doDoInit( ITsContextRo aArgs ) {
-    initedDlmsList.clear();
-    startedDlmsList.clear();
-    IVrListEdit vrList = new VrList();
-
-    IStridablesListEdit<L2AbstractDlm> llLoadedDlms = new StridablesList<>();
-
-    // TODO load configurations from the files in configuration directory
-    IMap<File, L2ModuleConfigFile> mmCfgs = cfgDir().readConfigs();
-    IStringMap<File> cfgsByIds = new StringMap<>();
-    for( File f : mmCfgs.keys() ) {
-      L2ModuleConfigFile cfg = mmCfgs.getByKey( f );
-      // ignore configuratiuon with duplicated ID
-      if( cfgsByIds.hasKey( cfg.id() ) ) {
-        ValidationResult vr = ValidationResult.warn( FMT_DUP_MODULE_ID_IN_FILES_NO2_IGNORED, cfg.id(),
-            cfgsByIds.getByKey( cfg.id() ).getName(), f.getName() );
-        continue;
-      }
-      // TODO load factory
-      IL2DlmFactory factory = null;
-
-      // FIXME ???
-    }
-
-    // TODO load needed DLM factories from the DLM JAR files directory
-    // TODO create requested DLMs
-    // TODO check duplicate IDs
-
-    // initialize created DLMs
-    for( L2AbstractDlm d : llLoadedDlms ) {
-      ValidationResult vrDlm = d.init( aArgs );
-      switch( vrDlm.type() ) {
-        case OK: { // DLM init OK - add to #initedDlmsList
-          initedDlmsList.add( d );
-          break;
-        }
-        case WARNING: { // DLM init OK - add to #initedDlmsList and remember the result
-          initedDlmsList.add( d );
-          vrList.add( vrDlm );
-          break;
-        }
-        case ERROR: { // DLM init FAIL - ignore this DLM and remember the result
-          vrList.add( ValidationResult.warn( FMT_WARN_IGNORED_NOT_INITED_DLM, d.id(), vrDlm.message() ) );
-          break;
-        }
-        default:
-          throw new TsNotAllEnumsUsedRtException();
-      }
-    }
-    // TODO log messages from #vrList
-    return vrList.firstWorstResult();
-  }
-
-  @Override
-  protected void doStart() {
-    for( L2AbstractDlm d : initedDlmsList ) {
-      try {
-        d.start();
-        startedDlmsList.add( d );
-      }
-      catch( Exception ex ) {
-        logger().error( ex, FMT_WARN_IGNORED_NOT_STARTED_DLM, d.id(), ex.getMessage() );
-      }
-    }
-  }
-
-  @Override
-  protected void doDoJob() {
-    checkDlmFileChangesAndReloadIfNeeded();
-    // iterate over existing DLMs and call doJob()
-    for( int i = 0, c = startedDlmsList.size(); i < c; i++ ) { // index iteration to avoid any memory allocation
-      L2AbstractDlm d = startedDlmsList.get( i );
-      try {
-        d.doJob();
-      }
-      catch( Exception ex ) {
-        logger().error( ex );
-      }
-    }
-  }
-
-  @Override
-  protected boolean doQueryStop() {
-    boolean stopped = true;
-    for( L2AbstractDlm d : initedDlmsList ) {
-      boolean b = d.queryStop();
-      stopped = stopped && b;
-    }
-    return stopped;
-  }
-
-  @Override
-  protected void doDestroy() {
-    while( !initedDlmsList.isEmpty() ) {
-      L2AbstractDlm d = initedDlmsList.removeByIndex( 0 );
-      d.destroy();
-    }
+    // TODO Auto-generated constructor stub
   }
 
   // ------------------------------------------------------------------------------------
   // L2AbstractComponent
   //
 
-  // ------------------------------------------------------------------------------------
-  // IL2Component
-  //
+  @Override
+  public EL2ComponentKind kind() {
+    return EL2ComponentKind.DLMMGR;
+  }
 
   @Override
-  final public EL2ComponentKind kind() {
-    return EL2ComponentKind.DLMMGR;
+  protected ValidationResult doDoInit( ITsContextRo aArgs ) {
+    // TODO L2DlmManager.doDoInit()
+    return ValidationResult.SUCCESS;
+  }
+
+  @Override
+  protected void doDoStart() {
+    // TODO L2DlmManager.doDoStart()
+  }
+
+  @Override
+  protected void doDoDoJob() {
+    // TODO L2DlmManager.doDoDoJob()
+  }
+
+  @Override
+  protected boolean doDoQueryStop() {
+    // TODO L2DlmManager.doDoQueryStop()
+    return true;
   }
 
   // ------------------------------------------------------------------------------------
   // IL2DlmManager
   //
 
-  @SuppressWarnings( { "unchecked", "rawtypes" } )
   @Override
   public IStridablesList<IL2Dlm> dlms() {
-    return switch( compState() ) {
-      case CREATED, DESTROYED -> IStridablesList.EMPTY;
-      case INITIALIZED -> (IStridablesList)initedDlmsList;
-      case WORKING, STOPPING -> (IStridablesList)startedDlmsList;
-      default -> throw new TsNotAllEnumsUsedRtException();
-    };
+    return super.modules();
   }
 
 }

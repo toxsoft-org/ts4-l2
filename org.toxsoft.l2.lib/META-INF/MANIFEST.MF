@@ -4,13 +4,15 @@ Bundle-Name: USkat L2 - LowLevel Core Library
 Bundle-SymbolicName: org.toxsoft.l2.lib
 Bundle-Version: 1.0.0.qualifier
 Export-Package: org.toxsoft.l2.lib,
- org.toxsoft.l2.lib.app,
- org.toxsoft.l2.lib.common,
- org.toxsoft.l2.lib.dlms,
- org.toxsoft.l2.lib.hal,
+ org.toxsoft.l2.lib.api,
+ org.toxsoft.l2.lib.api.app,
+ org.toxsoft.l2.lib.api.module,
+ org.toxsoft.l2.lib.api.module.dlm,
+ org.toxsoft.l2.lib.api.module.hal,
+ org.toxsoft.l2.lib.api.module.net,
  org.toxsoft.l2.lib.impl,
- org.toxsoft.l2.lib.l10n,
- org.toxsoft.l2.lib.net
+ org.toxsoft.l2.lib.impl.comps,
+ org.toxsoft.l2.lib.l10n
 Require-Bundle: org.toxsoft.core.tslib,
  org.toxsoft.extlibs.log4j,
  org.toxsoft.core.log4j,

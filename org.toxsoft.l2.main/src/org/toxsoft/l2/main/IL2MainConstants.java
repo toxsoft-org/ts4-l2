@@ -10,8 +10,7 @@ import org.toxsoft.core.tslib.av.metainfo.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.utils.progargs.*;
-import org.toxsoft.l2.lib.app.*;
-import org.toxsoft.l2.lib.impl.*;
+import org.toxsoft.l2.lib.api.app.*;
 
 /**
  * Constants used by application runner {@link L2Main}.
@@ -27,6 +26,8 @@ import org.toxsoft.l2.lib.impl.*;
  * @author hazard157
  */
 public interface IL2MainConstants {
+
+  // FIXME L2 application STRID option
 
   // ------------------------------------------------------------------------------------
   // Command line arguments that are NOT represented as global options
@@ -178,28 +179,5 @@ public interface IL2MainConstants {
       OPDEF_SHUTDOWN_TIMEOUT_SECS, //
       OPDEF_LOGGER_CFG_RESCAN_SECS //
   );
-
-  // ------------------------------------------------------------------------------------
-  // L2Main program exit code
-  //
-
-  /**
-   * This exit code is never returned by {@link L2Main} program.
-   * <p>
-   * It is used internally to restart {@link L2Application} in {@link L2Main}.
-   */
-  short ECODE_RESTART_L2APP = -1;
-
-  short ECODE_OK = 0;
-
-  short ECODE_HELP_DISPLAYED = 1;
-
-  short ECODE_CONN_OPEN_FAILED = 3;
-
-  short ECODE_INIT_FAILED = 4;
-
-  short ECODE_START_FAILED = 5;
-
-  short ECODE_STOP_TIMEOUTED = 6;
 
 }

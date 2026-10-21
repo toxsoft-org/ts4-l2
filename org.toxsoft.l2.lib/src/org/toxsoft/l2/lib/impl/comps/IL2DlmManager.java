@@ -1,0 +1,25 @@
+package org.toxsoft.l2.lib.impl.comps;
+
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.l2.lib.api.module.dlm.*;
+
+/**
+ * DLM Manager - manages Dynamic Loadable Modules.
+ *
+ * @author hazard157
+ */
+public interface IL2DlmManager
+    extends IL2Component {
+
+  /**
+   * Returns list of active DLM in the current state of the DLM manager.
+   * <p>
+   * Some DLMs may fail to start during initialization and startup, and the manager will remove them from the list. Even
+   * during normal operation, the manager may remove a faulty DLM.
+   *
+   * @return {@link IList}&lt;{@link IL2Dlm}&gt; - DLMs list
+   */
+  IStridablesList<IL2Dlm> dlms();
+
+}

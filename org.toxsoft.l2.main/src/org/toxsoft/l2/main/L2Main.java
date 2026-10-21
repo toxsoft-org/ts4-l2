@@ -1,8 +1,7 @@
 package org.toxsoft.l2.main;
 
-import static org.toxsoft.l2.lib.IL2GlobalOptions.*;
-import static org.toxsoft.l2.lib.app.EL2AppCmdCode.*;
-import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
+import static org.toxsoft.l2.lib.api.app.EL2AppCmdCode.*;
+import static org.toxsoft.l2.lib.api.app.IL2ApplicationArguments.*;
 import static org.toxsoft.l2.main.IL2MainConstants.*;
 import static org.toxsoft.l2.main.l10n.IL2MainSharedResources.*;
 
@@ -30,8 +29,8 @@ import org.toxsoft.core.tslib.utils.files.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.core.tslib.utils.progargs.*;
-import org.toxsoft.l2.lib.*;
-import org.toxsoft.l2.lib.app.*;
+import org.toxsoft.l2.lib.api.app.*;
+import org.toxsoft.l2.lib.api.module.*;
 import org.toxsoft.l2.lib.impl.*;
 import org.toxsoft.uskat.core.backend.*;
 import org.toxsoft.uskat.core.backend.metainf.*;
@@ -47,9 +46,10 @@ public class L2Main {
 
   // TODO set Ctrl+C handler
   // TODO try several times to open SkConnection
+  // TODO supply file-based config manager
 
   static {
-    LoggerUtils.setLoggerFactory( org.toxsoft.core.log4j.LoggerWrapper.getFactory() );
+    // LoggerUtils.setLoggerFactory( org.toxsoft.core.log4j.LoggerWrapper.getFactory() );
   }
 
   private static final ILogger logger = LoggerUtils.getLogger( L2Main.class );
@@ -63,8 +63,8 @@ public class L2Main {
    * Guards main thread in {@link #runApplication(IOptionSet)}.
    * <p>
    * This is a thread separator passed to all components of {@link L2Application} in the reference
-   * {@link IL2ApplicationConstants#REFDEF_MAIN_THREAD_GUARD}. This guard is passed also to the {@link ISkConnection}
-   * passed as {@link IL2ApplicationConstants#REFDEF_SK_CONNECTION}.
+   * {@link IL2ApplicationArguments#REFDEF_L2_MAIN_THREAD_GUARD}. This guard is passed also to the {@link ISkConnection}
+   * passed as {@link IL2ApplicationArguments#REFDEF_SK_CONNECTION}.
    */
   private static ITsThreadExecutor mainThreadGuard = null;
 
@@ -80,7 +80,7 @@ public class L2Main {
     ValidationResult vr = validateGlobalOps( globalOps );
     logResult( vr );
     if( vr.isError() ) {
-      System.exit( ECODE_INIT_FAILED );
+      System.exit( EL2AppCmdCode.CODE_INIT_FAILED.getRetCode() );
       return; // just for clear code - here stops the program
     }
     // setup L2Main
@@ -92,7 +92,7 @@ public class L2Main {
     } while( quitCmd == null || quitCmd.code() == CODE_RESTART_L2APP );
     // finish the program
     sayGoodbye( quitCmd );
-    Runtime.getRuntime().halt( quitCmd.code().getCode() ); // halt() to avoid program hang because of crap threads
+    Runtime.getRuntime().halt( quitCmd.code().getRetCode() ); // halt() to avoid program hang because of crap threads
   }
 
   // ------------------------------------------------------------------------------------
@@ -111,13 +111,30 @@ public class L2Main {
       logger.error( ex );
       return new L2AppCommand( CODE_CONN_OPEN_FAILED, ex.getMessage() );
     }
+    // prepare configuration manager
+    IL2ModuleConfigManager configManager;
+    // TODO --- replace simple manager to file-system based manager
+    configManager = new L2ModuleConfigManagerSImple();
+    // ---
+    // prepare module factories repository
+    IL2ModuleFactoriesRepository factoriesRepository;
+    // TODO --- replace simple manager to file-system based repository
+    factoriesRepository = new L2ModuleFactoriesRepositorySimple();
+    // ---
     // prepare L2Application arguments
     ITsContext l2AppArgs = new TsContext();
     l2AppArgs.params().setAll( aGlobalOps );
-    REFDEF_MAIN_THREAD_GUARD.setRef( l2AppArgs, mainThreadGuard );
-    REFDEF_SK_CONNECTION.setRef( l2AppArgs, skConn );
+    IL2ApplicationArguments.REFDEF_L2_MAIN_THREAD_GUARD.setRef( l2AppArgs, mainThreadGuard );
+    IL2ApplicationArguments.REFDEF_L2_MODULE_CONFIG_MANAGER.setRef( l2AppArgs, configManager );
+    IL2ApplicationArguments.REFDEF_L2_MODULE_FACTORIES_REPOSITORY.setRef( l2AppArgs, factoriesRepository );
+    IL2ApplicationArguments.REFDEF_SK_CONNECTION.setRef( l2AppArgs, skConn );
     // initialize application
-    L2Application app = new L2AppImpl();
+
+    // FIXME ---get app ID from the global options
+    String appId = "temporary";
+    // ---
+
+    L2Application app = new L2Application( appId );
     ValidationResult vr = app.init( l2AppArgs );
     if( vr.isError() ) {
       logger.error( vr.message() );
@@ -206,11 +223,6 @@ public class L2Main {
       throw ex;
     }
     catch( Exception ex ) {
-
-      // DEBUG ---
-      ex.printStackTrace();
-      // ---
-
       throw new TsIoRtException( ex );
     }
   }
@@ -225,14 +237,14 @@ public class L2Main {
    * All parameters means following options:
    * <ul>
    * <li>{@link L2Main} specific options listed in {@link IL2MainConstants#ALL_L2_MAIN_PARAMS};</li>
-   * <li>{@link IL2Application} specific options listed in {@link IL2GlobalOptions#ALL_L2_INIT_OPDEFS};</li>
+   * <li>{@link IL2Application} specific options listed in {@link IL2ApplicationArguments#listAllGlobalOpDefs() };</li>
    * <li>Any other parameters specified by user in configuration file or in command line..</li>
    * </ul>
    * <p>
    * Option values are initialized in following order:
    * <ul>
    * <li>filled by default values from {@link IL2MainConstants#ALL_L2_MAIN_PARAMS} and
-   * {@link IL2GlobalOptions#ALL_L2_INIT_OPDEFS};</li>
+   * {@link IL2ApplicationArguments#listAllGlobalOpDefs()};</li>
    * <li>updated by the values read from main configuration file
    * {@link IL2MainConstants#CLINEARG_MAIN_CFG_FILE_NAME};</li>
    * <li>updated by the values parsed from command line, when parsing command line {@link AvTextParser} is used to read
@@ -247,7 +259,7 @@ public class L2Main {
     // create global options
     IOptionSetEdit globalOps = new OptionSet();
     OptionSetUtils.initOptionSet( globalOps, ALL_L2_MAIN_PARAMS );
-    OptionSetUtils.initOptionSet( globalOps, ALL_GLOBAL_OPDEFS );
+    OptionSetUtils.initOptionSet( globalOps, listAllGlobalOpDefs() );
     // read and apply settings from config file
     File cfgFile = extractConfigFile( clineArgs );
     readAndApplyCfgFileOps( cfgFile, globalOps );
@@ -331,7 +343,7 @@ public class L2Main {
     if( vr.isError() ) {
       return vr;
     }
-    return ValidationResult.firstNonOk( vr, OptionSetUtils.validateOptionSet( aGlobalOps, ALL_GLOBAL_OPDEFS ) );
+    return ValidationResult.firstNonOk( vr, OptionSetUtils.validateOptionSet( aGlobalOps, listAllGlobalOpDefs() ) );
   }
 
   private static void setupL2Main( IOptionSet aGlobalOps ) {
@@ -356,7 +368,7 @@ public class L2Main {
     }
     TsTestUtils.nl();
     logger.info( STR_HELP_SHOWN_EXIT );
-    System.exit( ECODE_HELP_DISPLAYED );
+    System.exit( EL2AppCmdCode.CODE_HELP_DISPLAYED.getRetCode() );
   }
 
   private static void sayHello() {
@@ -370,9 +382,10 @@ public class L2Main {
 
   private static void sayGoodbye( L2AppCommand aQuitCommand ) {
     if( logger.isSeverityOn( ELogSeverity.INFO ) ) {
-      logger.info( FMT_LOG_L2MAIN_FINISHED, Integer.valueOf( aQuitCommand.code().getCode() ), aQuitCommand.message() );
+      logger.info( FMT_LOG_L2MAIN_FINISHED, Integer.valueOf( aQuitCommand.code().getRetCode() ),
+          aQuitCommand.message() );
     }
-    TsTestUtils.pl( FMT_L2MAIN_FINISHED, aQuitCommand.message(), Integer.valueOf( aQuitCommand.code().getCode() ) );
+    TsTestUtils.pl( FMT_L2MAIN_FINISHED, aQuitCommand.message(), Integer.valueOf( aQuitCommand.code().getRetCode() ) );
   }
 
   private static ValidationResult logResult( ValidationResult aVr ) {

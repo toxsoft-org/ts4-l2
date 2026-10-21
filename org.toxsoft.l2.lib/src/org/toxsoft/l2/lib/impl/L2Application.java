@@ -1,7 +1,6 @@
 package org.toxsoft.l2.lib.impl;
 
 import static org.toxsoft.core.tslib.bricks.validator.ValidationResult.*;
-import static org.toxsoft.l2.lib.app.IL2ApplicationConstants.*;
 import static org.toxsoft.l2.lib.l10n.IL2LibSharedResources.*;
 
 import org.toxsoft.core.tslib.bricks.coopcomp.*;
@@ -10,7 +9,7 @@ import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.l2.lib.app.*;
+import org.toxsoft.l2.lib.api.app.*;
 
 /**
  * {@link IL2Application} implementation.
@@ -45,7 +44,7 @@ public class L2Application
 
   @Override
   protected ValidationResult doInit( ITsContextRo aArgs ) {
-    l2Context.setThreadGuard( REFDEF_MAIN_THREAD_GUARD.getRef( aArgs ) );
+    l2Context.init( aArgs );
     ValidationResult vr = l2Context.hal().init( aArgs );
     if( !vr.isError() ) {
       vr = firstNonOk( vr, l2Context.net().init( aArgs ) );
@@ -66,11 +65,14 @@ public class L2Application
 
   @Override
   protected void doDoJob() {
+    l2Context.sweepStarted();
+    l2Context.setSweepStep( EL2SweepStep.IO_READ );
     l2Context.hal().doJob();
+    l2Context.setSweepStep( EL2SweepStep.DLM_RUN );
     l2Context.dlmMgr().doJob();
-    // FIXME --- HAL must process I/O read BEFORE DLM manager and I/O write AFTER
-    // l2Context.hal().doJob();
-    // ---
+    l2Context.setSweepStep( EL2SweepStep.IO_WRITE );
+    l2Context.hal().doJob();
+    l2Context.setSweepStep( EL2SweepStep.NET_INOUT );
     l2Context.net().doJob();
   }
 

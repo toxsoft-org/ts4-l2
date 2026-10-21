@@ -1,0 +1,29 @@
+sk.backend.Classes = {
+  ClassInfos = []
+}
+sk.backend.Objects = {
+  
+}
+sk.backend.Clobs = {
+  ClobData = {}
+}
+sk.backend.Links = {
+  LinksByGwids = []
+}
+sk.backend.Events = {
+  EventsHistory = []
+}
+sk.backend.RTdata = {
+  HistoryData = [
+    
+  ]
+}
+sk.backend.Commands = {
+  CommandsHistory = []
+}
+sk.backend.Queries = {
+  
+}
+sk.backend.GwidDb = {
+  
+}
