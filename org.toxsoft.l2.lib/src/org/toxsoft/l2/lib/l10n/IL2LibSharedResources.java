@@ -32,8 +32,9 @@ public interface IL2LibSharedResources {
   /**
    * L2DlmManager
    */
-  String FMT_WARN_IGNORED_NOT_INITED_DLM  = Messages.getString( "Core.FMT_WARN_IGNORED_NOT_INITED_DLM" ); //$NON-NLS-1$
-  String FMT_WARN_IGNORED_NOT_STARTED_DLM = Messages.getString( "Core.MSG_ERR_DLM_CREATED_WITH_BAD_ID" ); //$NON-NLS-1$
+  String FMT_DUP_MODULE_ID_IN_FILES_NO2_IGNORED = Messages.getString( "Core.FMT_DUP_MODULE_ID_IN_FILES_NO2_IGNORED" ); //$NON-NLS-1$
+  String FMT_WARN_IGNORED_NOT_INITED_DLM        = Messages.getString( "Core.FMT_WARN_IGNORED_NOT_INITED_DLM" );        //$NON-NLS-1$
+  String FMT_WARN_IGNORED_NOT_STARTED_DLM       = Messages.getString( "Core.MSG_ERR_DLM_CREATED_WITH_BAD_ID" );        //$NON-NLS-1$
 
   /**
    * {@link L2Application}

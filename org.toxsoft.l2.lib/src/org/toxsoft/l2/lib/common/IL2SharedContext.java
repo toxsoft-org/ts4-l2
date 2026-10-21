@@ -9,7 +9,7 @@ import org.toxsoft.l2.lib.net.*;
 /**
  * Context (references and options) shared between all components and modules.
  * <p>
- * Important note: during the application initialization when components and modules are created som methods of this
+ * Important note: during the application initialization when components and modules are created, some methods of this
  * interface may return <code>null</code> values or even throw an exception.
  *
  * @author hazard157

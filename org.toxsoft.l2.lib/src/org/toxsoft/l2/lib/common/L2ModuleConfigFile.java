@@ -16,15 +16,16 @@ import org.toxsoft.core.tslib.utils.errors.*;
  *
  * @author hazard157
  * @param id String - the module ID (an IDpath)
+ * @param factoryId String - the ID of the factory - creator of the module instance
  * @param nmName String - mandatory short name
  * @param description String - detailed description
  * @param cfg {@link IAvTree} - module-specific configuration data
  */
-public record L2ModuleConfigFile ( String id, String nmName, String description, IAvTree cfg )
+public record L2ModuleConfigFile ( String id, String factoryId, String nmName, String description, IAvTree cfg )
     implements IStridable {
 
-  private static final String KW_INSTANCE_ID = "Id"; //$NON-NLS-1$
   private static final String KW_MODULE_ID = "ModuleId"; //$NON-NLS-1$
+  private static final String KW_FACTORY_ID = "FactoryId"; //$NON-NLS-1$
   private static final String KW_NAME = "Name"; //$NON-NLS-1$
   private static final String KW_DESCRIPTION = "Description"; //$NON-NLS-1$
 
@@ -39,6 +40,9 @@ public record L2ModuleConfigFile ( String id, String nmName, String description,
           boolean saved = aSw.setIndented( true );
           StrioUtils.writeKeywordHeader( aSw, KW_MODULE_ID );
           aSw.writeAsIs( aEntity.id() );
+          aSw.writeEol();
+          StrioUtils.writeKeywordHeader( aSw, KW_FACTORY_ID );
+          aSw.writeAsIs( aEntity.factoryId() );
           aSw.writeEol();
           StrioUtils.writeKeywordHeader( aSw, KW_NAME );
           aSw.writeQuotedString( aEntity.nmName() );
@@ -55,12 +59,14 @@ public record L2ModuleConfigFile ( String id, String nmName, String description,
         protected L2ModuleConfigFile doRead( IStrioReader aSr ) {
           StrioUtils.ensureKeywordHeader( aSr, KW_MODULE_ID );
           String id = aSr.readIdPath();
+          StrioUtils.ensureKeywordHeader( aSr, KW_FACTORY_ID );
+          String factoryId = aSr.readIdPath();
           StrioUtils.ensureKeywordHeader( aSr, KW_NAME );
           String name = aSr.readQuotedString();
           StrioUtils.ensureKeywordHeader( aSr, KW_DESCRIPTION );
           String description = aSr.readQuotedString();
           IAvTree cfg = AvTreeKeeperCompact.KEEPER.read( aSr );
-          return new L2ModuleConfigFile( id, name, description, cfg );
+          return new L2ModuleConfigFile( id, factoryId, name, description, cfg );
         }
       };
 
@@ -68,6 +74,7 @@ public record L2ModuleConfigFile ( String id, String nmName, String description,
    * Constructor.
    *
    * @param id String - the module ID (an IDpath)
+   * @param factoryId String - the ID of the factory - creator of the module instance
    * @param nmName String - mandatory short name
    * @param description String - detailed description
    * @param cfg {@link IAvTree} - module-specific configuration data
@@ -75,8 +82,9 @@ public record L2ModuleConfigFile ( String id, String nmName, String description,
    * @throws TsIllegalArgumentRtException ID is not an ID path
    * @throws TsIllegalArgumentRtException name is a blank string
    */
-  public L2ModuleConfigFile( String id, String nmName, String description, IAvTree cfg ) {
+  public L2ModuleConfigFile( String id, String factoryId, String nmName, String description, IAvTree cfg ) {
     this.id = StridUtils.checkValidIdPath( id );
+    this.factoryId = StridUtils.checkValidIdPath( factoryId );
     this.nmName = TsErrorUtils.checkNonBlank( nmName );
     TsNullArgumentRtException.checkNulls( description, cfg );
     this.description = description;

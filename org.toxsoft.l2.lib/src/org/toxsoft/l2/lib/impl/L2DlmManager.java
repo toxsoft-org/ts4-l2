@@ -10,7 +10,10 @@ import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
+import org.toxsoft.core.tslib.bricks.validator.vrl.*;
 import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.primtypes.*;
+import org.toxsoft.core.tslib.coll.primtypes.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.l2.lib.*;
 import org.toxsoft.l2.lib.common.*;
@@ -60,21 +63,32 @@ class L2DlmManager
   protected ValidationResult doDoInit( ITsContextRo aArgs ) {
     initedDlmsList.clear();
     startedDlmsList.clear();
+    IVrListEdit vrList = new VrList();
+
     IStridablesListEdit<L2AbstractDlm> llLoadedDlms = new StridablesList<>();
 
     // TODO load configurations from the files in configuration directory
     IMap<File, L2ModuleConfigFile> mmCfgs = cfgDir().readConfigs();
+    IStringMap<File> cfgsByIds = new StringMap<>();
     for( File f : mmCfgs.keys() ) {
       L2ModuleConfigFile cfg = mmCfgs.getByKey( f );
+      // ignore configuratiuon with duplicated ID
+      if( cfgsByIds.hasKey( cfg.id() ) ) {
+        ValidationResult vr = ValidationResult.warn( FMT_DUP_MODULE_ID_IN_FILES_NO2_IGNORED, cfg.id(),
+            cfgsByIds.getByKey( cfg.id() ).getName(), f.getName() );
+        continue;
+      }
+      // TODO load factory
+      IL2DlmFactory factory = null;
 
       // FIXME ???
     }
 
     // TODO load needed DLM factories from the DLM JAR files directory
     // TODO create requested DLMs
+    // TODO check duplicate IDs
 
     // initialize created DLMs
-    ValidationResult vr = ValidationResult.SUCCESS;
     for( L2AbstractDlm d : llLoadedDlms ) {
       ValidationResult vrDlm = d.init( aArgs );
       switch( vrDlm.type() ) {
@@ -84,18 +98,19 @@ class L2DlmManager
         }
         case WARNING: { // DLM init OK - add to #initedDlmsList and remember the result
           initedDlmsList.add( d );
-          vr = ValidationResult.firstNonOk( vr, vrDlm );
+          vrList.add( vrDlm );
           break;
         }
         case ERROR: { // DLM init FAIL - ignore this DLM and remember the result
-          vr = ValidationResult.warn( FMT_WARN_IGNORED_NOT_INITED_DLM, d.id(), vrDlm.message() );
+          vrList.add( ValidationResult.warn( FMT_WARN_IGNORED_NOT_INITED_DLM, d.id(), vrDlm.message() ) );
           break;
         }
         default:
           throw new TsNotAllEnumsUsedRtException();
       }
     }
-    return vr;
+    // TODO log messages from #vrList
+    return vrList.firstWorstResult();
   }
 
   @Override
