@@ -12,7 +12,8 @@ Require-Bundle: org.toxsoft.core.tslib,
  org.toxsoft.uskat.core,
  ru.toxsoft.l2.core,
  org.toxsoft.extlibs.modbus;bundle-version="1.0.0",
- ru.toxsoft.l2.thd.opc.da;bundle-version="1.0.0"
+ ru.toxsoft.l2.thd.opc.da;bundle-version="1.0.0",
+ org.toxsoft.skf.bridge.cfg.opcua.gui
 Export-Package: org.toxsoft.l2.thd.modbus.common,
  org.toxsoft.l2.thd.modbus.common.connections,
  org.toxsoft.l2.thd.modbus.common.test,
