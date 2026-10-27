@@ -36,7 +36,7 @@ public class TestTcpConnect {
     // optSet.setStr( IP_PARAM_ID, "192.168.0.129" ); // БРВ №2
     // optSet.setStr( IP_PARAM_ID, "192.168.0.147" ); // рег. № 1225
     // optSet.setStr( IP_PARAM_ID, "192.168.0.131" ); // рег. № 1240 Элметро в АКО
-    optSet.setStr( IP_PARAM_ID, "172.27.232.2" ); // Vordaq
+    optSet.setStr( IP_PARAM_ID, "192.168.12.91" ); // Vordaq
     optSet.setInt( PORT_PARAM_ID, 502 );
 
     transactionCreator.config( optSet );
@@ -65,12 +65,15 @@ public class TestTcpConnect {
           readAOReg( adress, reg, regVal );
           break;
         case "ai":
-          readAIReg( adress, reg, regVal );
+          owenFloatVal( reg );
+          // owenIntVal( 4064 );
+          owenIntVal( 4072 );
+          // readAIReg( adress, reg, regVal );
           // 0 is first register
           // owenReadAIReg( 1, 0, 13 );
           // rmt59ReadAIReg( 1, 0x500, 9 );
           // rmt79ReadAIReg( 1, 0x4000, 4 );
-          // vkm360ReadAIReg( 1, 4000, 2 );
+          // vkm360ReadAIReg( 1, 4000, 1 );
           // elmetroReadAIReg( 1, 0, 3 );
           break;
 
@@ -150,8 +153,13 @@ public class TestTcpConnect {
       int[] ints = new int[2];
       ints[0] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 0 );
       ints[1] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 1 );
-      IAtomicValue translatedVal = translateVdq( ints );
-      System.out.println( "translated val as integer: " + translatedVal.asInt() );
+      // IAtomicValue translatedVal = translateVdq( ints );
+      // System.out.println( "translated val as integer: " + translatedVal.asInt() );
+      IAtomicValue fval = translateCDAB( ints );
+      System.out.println( "channel float fval CDAB: " + fval );
+      // fval = translateABCD( ints );
+      // System.out.println( "channel float fval ABCD: " + fval );
+
     }
     catch( ModbusException e ) {
       System.out.println( "Havnt read " + aAdress );
@@ -160,8 +168,8 @@ public class TestTcpConnect {
     // for( int ri = 0; ri < aCount; ri++ ) {
     // int currReg = aReg + 3 * ri;
     //
-    // // формирование запроса
-    // ReadMultipleRegistersRequest cr = new ReadMultipleRegistersRequest( currReg, 3 );
+    // формирование запроса
+    // ReadMultipleRegistersRequest cr = new ReadMultipleRegistersRequest( aReg, 2 );
     // cr.setUnitID( aAdress );
     // // cr.setHeadless();
     //
@@ -172,11 +180,11 @@ public class TestTcpConnect {
     // // испонение транзакции
     // try {
     // trans.execute();
-    // System.out.println( "\nPen №" + (ri + 1) + " read reg = " + Integer.toHexString( currReg ) );
+    // System.out.println( " read reg = " + Integer.toHexString( aReg ).toUpperCase() );
     // ModbusResponse r = trans.getResponse();
     // byte[] hiBytes = ((ReadMultipleRegistersResponse)r).getRegister( 0 ).toBytes();
     // byte[] lowBytes = ((ReadMultipleRegistersResponse)r).getRegister( 1 ).toBytes();
-    // int penError = ((ReadMultipleRegistersResponse)r).getRegister( 2 ).getValue();
+    // // int penError = ((ReadMultipleRegistersResponse)r).getRegister( 2 ).getValue();
     // byte[] bytes = new byte[4];
     // bytes[0] = hiBytes[0];
     // bytes[1] = hiBytes[1];
@@ -191,6 +199,7 @@ public class TestTcpConnect {
     // e.printStackTrace();
     // }
     // }
+
   }
 
   /**
@@ -218,9 +227,10 @@ public class TestTcpConnect {
       ModbusResponse r = trans.getResponse();
       int[] ints = new int[2];
       ints[0] = ((ReadInputRegistersResponse)r).getRegisterValue( 0 );
-      ints[1] = ((ReadInputRegistersResponse)r).getRegisterValue( 1 );
-      IAtomicValue translatedVal = translateVdq( ints );
-      System.out.println( "translated val as integer: " + translatedVal.asInt() );
+      // ints[1] = ((ReadInputRegistersResponse)r).getRegisterValue( 1 );
+      // IAtomicValue translatedVal = translateVdq( ints );
+      // System.out.println( "translated val as integer: " + translatedVal.asInt() );
+      System.out.println( "translated val as HEX: " + Integer.toHexString( ints[0] ).toUpperCase() );
     }
     catch( ModbusException e ) {
       System.out.println( "Havnt read " + aAdress );
@@ -241,7 +251,7 @@ public class TestTcpConnect {
       int currReg = aReg + 4 * ri;
       // int currReg = aReg + 100 * ri;
       // формирование запроса FC4
-      ReadInputRegistersRequest cr = new ReadInputRegistersRequest( currReg, 3 );
+      ReadInputRegistersRequest cr = new ReadInputRegistersRequest( currReg, 2 );
       cr.setUnitID( aAdress );
       // cr.setHeadless();
 
@@ -745,4 +755,59 @@ public class TestTcpConnect {
 
   }
 
+  public static void owenFloatVal( int aReg ) {
+
+    // формирование запроса FC3
+    ReadMultipleRegistersRequest cr = new ReadMultipleRegistersRequest( aReg, 2 );
+    cr.setUnitID( 1 );
+
+    // транзакция
+    ModbusTransaction trans = transactionCreator.createModbusTransaction();
+    trans.setRequest( cr );
+
+    // исполнение транзакции
+    try {
+      System.out.println( " read reg = " + Integer.toHexString( aReg ) );
+      trans.execute();
+
+      ModbusResponse r = trans.getResponse();
+      int[] ints = new int[2];
+      ints[0] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 0 );
+      ints[1] = ((ReadMultipleRegistersResponse)r).getRegisterValue( 1 );
+      IAtomicValue fval = translateCDAB( ints );
+      System.out.println( "channel float fval CDAB: " + fval );
+      // fval = translateABCD( ints );
+      // System.out.println( "channel float fval ABCD: " + fval );
+    }
+    catch( ModbusException e ) {
+      System.out.println( "Havnt read " + aReg );
+      e.printStackTrace();
+    }
+  }
+
+  public static void owenIntVal( int aReg ) {
+
+    // формирование запроса FC3
+    ReadMultipleRegistersRequest cr = new ReadMultipleRegistersRequest( aReg, 1 );
+    cr.setUnitID( 1 );
+
+    // транзакция
+    ModbusTransaction trans = transactionCreator.createModbusTransaction();
+    trans.setRequest( cr );
+
+    // исполнение транзакции
+    try {
+      System.out.println( " read reg = " + Integer.toHexString( aReg ) );
+      trans.execute();
+
+      ModbusResponse r = trans.getResponse();
+      int iVal = ((ReadMultipleRegistersResponse)r).getRegister( 0 ).toShort();
+      System.out.println( "channel int val : " + iVal );
+      System.out.println( "channel int HEX val : " + Integer.toHexString( iVal ).toUpperCase() );
+    }
+    catch( ModbusException e ) {
+      System.out.println( "Havnt read " + aReg );
+      e.printStackTrace();
+    }
+  }
 }

@@ -141,42 +141,47 @@ public class DataBlockWriter
    */
   @Override
   public void addTagDefinition( IAvTree aTagDefinition ) {
-    // read tagId
-    String tagId = aTagDefinition.fields().getStr( TAG_ID );
-    // read offset in data block
-    int tagBufferOffset = aTagDefinition.fields().getInt( TAG_BUFFER_OFFSET );
-    // read tag type
-    EAtomicType tagType = EAtomicType.getById( aTagDefinition.fields().getStr( TAG_VALUE_TYPE_ID ) );
-    S7TagWriter writer = null;
-    switch( tagType ) {
-      case BOOLEAN:
-        int bitNumber = aTagDefinition.fields().getInt( BIT_NUMBER );
-        writer = new S7TagWriter( tagId, dbNumber, tagBufferOffset, bitNumber );
-        break;
-      case FLOATING:
-        writer = new S7TagWriter( tagId, dbNumber, tagType, tagBufferOffset );
-        break;
-      case INTEGER:
-        writer = new S7TagWriter( tagId, dbNumber, tagType, tagBufferOffset );
-        break;
-      case NONE:
-        break;
-      case STRING:
-        break;
-      case TIMESTAMP:
-        break;
-      case VALOBJ:
-      default:
-        throw new TsNotAllEnumsUsedRtException();
-    }
-    TsIllegalStateRtException.checkNull( writer );
-    writers.put( tagId, writer );
-    dbTags.put( tagId, new WriteTagImpl( tagId ) );
-    // tune buffer size
-    @SuppressWarnings( "null" )
-    int dataBufferRightBorder = tagBufferOffset + writer.tagValBufferSize();
-    if( bufferSize < dataBufferRightBorder ) {
-      bufferSize = dataBufferRightBorder;
+    EKind tagType = EKind.findByName( aTagDefinition.fields().getStr( TAG_KIND_ID ) );
+    if( !tagType.equals( EKind.R ) ) {
+      // read tagId
+      String tagId = aTagDefinition.fields().getStr( TAG_ID );
+      // add suffix ".input"
+      tagId = tagId.concat( ".output" ); //$NON-NLS-1$
+      // read offset in data block
+      int tagBufferOffset = aTagDefinition.fields().getInt( TAG_BUFFER_OFFSET );
+      // read tag type
+      EAtomicType tagValueType = EAtomicType.getById( aTagDefinition.fields().getStr( TAG_VALUE_TYPE_ID ) );
+      S7TagWriter writer = null;
+      switch( tagValueType ) {
+        case BOOLEAN:
+          int bitNumber = aTagDefinition.fields().getInt( BIT_NUMBER );
+          writer = new S7TagWriter( tagId, dbNumber, tagBufferOffset, bitNumber );
+          break;
+        case FLOATING:
+          writer = new S7TagWriter( tagId, dbNumber, tagValueType, tagBufferOffset );
+          break;
+        case INTEGER:
+          writer = new S7TagWriter( tagId, dbNumber, tagValueType, tagBufferOffset );
+          break;
+        case NONE:
+          break;
+        case STRING:
+          break;
+        case TIMESTAMP:
+          break;
+        case VALOBJ:
+        default:
+          throw new TsNotAllEnumsUsedRtException();
+      }
+      TsIllegalStateRtException.checkNull( writer );
+      writers.put( tagId, writer );
+      dbTags.put( tagId, new WriteTagImpl( tagId ) );
+      // tune buffer size
+      @SuppressWarnings( "null" )
+      int dataBufferRightBorder = tagBufferOffset + writer.tagValBufferSize();
+      if( bufferSize < dataBufferRightBorder ) {
+        bufferSize = dataBufferRightBorder;
+      }
     }
   }
 

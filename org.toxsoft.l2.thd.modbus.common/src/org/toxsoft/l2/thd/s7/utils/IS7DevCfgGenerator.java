@@ -18,6 +18,8 @@ public interface IS7DevCfgGenerator {
    */
   IAvTree generate();
 
+  String DEV_CONFIG_STR = "DeviceConfig = ";
+
   String JAVA_CLASS_PARAM_NAME         = "javaClassName";
   String JAVA_CLASS_PARAM_VAL_TEMPLATE = "org.toxsoft.l2.thd.s7.S7DeviceProducer";
 
@@ -29,24 +31,5 @@ public interface IS7DevCfgGenerator {
   String DESCRIPTION_PARAM_NAME         = "description";
   String DESCRIPTION_PARAM_VAL_TEMPLATE = "Siemens S7 apparat producer";
   String SYNCH_PERIOD_PARAM_NAME        = "period";
-
-  String DEVICE_DEF_FORMAT     = "device.%s.def";
-  String DEVICE_ID             = "device.id";
-  String DEVICE_IP_ADDRESS     = "IP";
-  String DEVICE_RACK           = "rack";
-  String DEVICE_SLOT           = "slot";
-  String DATABLOCKS_ARRAY_NAME = "data.blocks";
-
-  String DB_DEF_FORMAT   = "db.%s.def";
-  String DB_ID           = "db.id";
-  String DB_NUM          = "db.num";
-  String TAGS_ARRAY_NAME = "tags";
-
-  String TAG_DEF_FORMAT    = "tag.%s.def";
-  String TAG_ID            = "tag.id";
-  String TAG_BUFFER_OFFSET = "tag.buffer.offset";
-  String TAG_KIND_ID       = "tag.kind";         // «R\W\RW»
-  String TAG_VALUE_TYPE_ID = "tag.value.type";
-  String BIT_NUMBER        = "bit.number";       // только для типа Boolean
 
 }

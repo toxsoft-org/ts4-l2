@@ -29,6 +29,7 @@ public class GuiS7Tag {
     dataBlock = aGuiS7DataBlock;
     bufferOffset = aBufferOffset;
     valueType = aValueType;
+    bitNumber = aBitNumber;
     tagKind = aTagKind;
   }
 
@@ -37,8 +38,15 @@ public class GuiS7Tag {
    */
   @SuppressWarnings( "nls" )
   public String getId() {
-    String ID_FMT_STR = "%s.tagOffset_%d.valType_%s";
-    String retVal = String.format( ID_FMT_STR, dataBlock.getId(), Integer.valueOf( bufferOffset ), valueType.id() );
+    if( !valueType.equals( EAtomicType.BOOLEAN ) ) {
+      String ID_FMT_STR = "%s.tagKind_%s.tagOffset_%d.valType_%s";
+      String retVal = String.format( ID_FMT_STR, dataBlock.getId(), tagKind.getName(), Integer.valueOf( bufferOffset ),
+          valueType.id() );
+      return retVal;
+    }
+    String ID_FMT_STR = "%s.tagKind_%s.tagOffset_%d.valType_%s.bitNumber_%d";
+    String retVal = String.format( ID_FMT_STR, dataBlock.getId(), tagKind.getName(), Integer.valueOf( bufferOffset ),
+        valueType.id(), Integer.valueOf( bitNumber ) );
     return retVal;
   }
 

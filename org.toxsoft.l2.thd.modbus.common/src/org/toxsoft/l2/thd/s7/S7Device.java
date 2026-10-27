@@ -74,22 +74,17 @@ public class S7Device
   private void configYourself( IAvTree aDefinition ) {
     // конфигурация соединения
     configConnection( aDefinition.fields() );
-    // config db readers
-    IAvTree dbArray = aDefinition.nodes().findByKey( READ_DATA_BLOCKS );
+    // config db readers and writers
+    IAvTree dbArray = aDefinition.nodes().findByKey( DATABLOCKS_ARRAY_NAME );
     for( int i = 0; i < dbArray.arrayLength(); i++ ) {
       IAvTree dbParams = dbArray.arrayElement( i );
       configReadDataBlock( dbParams );
-    }
-    // config db writers
-    dbArray = aDefinition.nodes().findByKey( WRITE_DATA_BLOCKS );
-    for( int i = 0; i < dbArray.arrayLength(); i++ ) {
-      IAvTree dbParams = dbArray.arrayElement( i );
       configWriteDataBlock( dbParams );
     }
   }
 
   private void configReadDataBlock( IAvTree aDbParams ) {
-    int dbNumber = aDbParams.fields().getInt( DATA_BLOCK_NUM );
+    int dbNumber = aDbParams.fields().getInt( DB_NUM );
     DataBlockReader dbReader = new DataBlockReader( Client, dbNumber );
     dbReader.configYourself( aDbParams );
     dbReaders.add( dbReader );
@@ -97,7 +92,7 @@ public class S7Device
   }
 
   private void configWriteDataBlock( IAvTree aDbParams ) {
-    int dbNumber = aDbParams.fields().getInt( DATA_BLOCK_NUM );
+    int dbNumber = aDbParams.fields().getInt( DB_NUM );
     DataBlockWriter dbWriter = new DataBlockWriter( Client, dbNumber );
     dbWriter.configYourself( aDbParams );
     dbWriters.add( dbWriter );
@@ -106,14 +101,14 @@ public class S7Device
 
   @SuppressWarnings( { "nls", "boxing" } )
   private static void configConnection( IOptionSet aConnectionParams ) {
-    String IpAddress = aConnectionParams.getStr( IP_ID, TsLibUtils.EMPTY_STRING );
-    int rack = aConnectionParams.getInt( RACK_ID, 0 ); // Default 0 for S7300
-    int slot = aConnectionParams.getInt( SLOT_ID, 2 ); // Default 2 for S7300
+    String IpAddress = aConnectionParams.getStr( DEVICE_IP_ADDRESS, TsLibUtils.EMPTY_STRING );
+    int rack = aConnectionParams.getInt( DEVICE_RACK, 0 ); // Default 0 for S7300
+    int slot = aConnectionParams.getInt( DEVICE_SLOT, 2 ); // Default 2 for S7300
     Client.SetConnectionType( S7.OP );
     int Result = Client.ConnectTo( IpAddress, rack, slot );
     if( Result == 0 ) {
-      LoggerUtils.error( "Connected to IP : %s (Rack=%d, Slot= %d)", IpAddress, rack, slot );
-      LoggerUtils.error( "PDU negotiated : %d bytes", Client.PDULength() );
+      LoggerUtils.debug( "Connected to IP : %s (Rack=%d, Slot= %d)", IpAddress, rack, slot );
+      LoggerUtils.debug( "PDU negotiated : %d bytes", Client.PDULength() );
     }
   }
 
@@ -176,4 +171,28 @@ public class S7Device
       throws Exception {
     // TODO
   }
+
+  // for test only
+  public void readValuesFromLL1()
+      throws TsMultipleApparatRtException {
+    LoggerUtils.debug( "DB count = %s", String.valueOf( dbReaders.size() ) );
+    for( DataBlockReader dbReader : dbReaders ) {
+      // just read whole block form Siemens only
+      int errCode = dbReader.readDB();
+      if( errCode != 0 ) {
+        LoggerUtils.error( "data block : %d, error code = ", dbReader.dbNumber(), errCode );
+      }
+    }
+    try {
+      Thread.sleep( REQUESTS_INTERVAL );
+    }
+    catch( InterruptedException e ) {
+      LoggerUtils.error( e );
+    }
+    for( DataBlockReader dbReader : dbReaders ) {
+      dbReader.fromBuffer2Tags();
+    }
+
+  }
+
 }

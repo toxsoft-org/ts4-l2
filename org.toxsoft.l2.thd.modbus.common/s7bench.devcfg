@@ -1,0 +1,196 @@
+DeviceConfig = 
+{
+  false,
+  "s7.common.cfg",
+  {
+    javaClassName = "org.toxsoft.l2.thd.s7.S7DeviceProducer",
+    id = "s7.bridge.collection.id",
+    description = "Siemens S7 apparat producer",
+    period = 1000
+  }
+  ,
+  {
+    s7.devices=
+    {
+      true,
+      [
+        {
+          false,
+          "bench_IP_192_168_12_39_rack_0.slot_1.id",
+          {
+            device.id = "bench_IP_192_168_12_39_rack_0.slot_1.id",
+            IP = "192.168.12.39",
+            rack = 0,
+            slot = 1
+          }
+          ,
+          {
+            data.blocks=
+            {
+              true,
+              [
+                {
+                  false,
+                  "db.tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock6.def",
+                  {
+                    db.id = "tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock6",
+                    db.num = 6
+                  }
+                  ,
+                  {
+                    db.tags=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "tag.tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock6.tagKind_RW.tagOffset_20.valType_Float.def",
+                          {
+                            tag.id = "tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock6.tagKind_RW.tagOffset_20.valType_Float",
+                            tag.buffer.offset = 20,
+                            tag.kind = "RW",
+                            tag.value.type.id = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "tag.tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock6.tagKind_RW.tagOffset_24.valType_Float.def",
+                          {
+                            tag.id = "tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock6.tagKind_RW.tagOffset_24.valType_Float",
+                            tag.buffer.offset = 24,
+                            tag.kind = "RW",
+                            tag.value.type.id = "Float"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "db.tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock50.def",
+                  {
+                    db.id = "tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock50",
+                    db.num = 50
+                  }
+                  ,
+                  {
+                    db.tags=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "tag.tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock50.tagKind_RW.tagOffset_0.valType_Boolean.def",
+                          {
+                            tag.id = "tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock50.tagKind_RW.tagOffset_0.valType_Boolean",
+                            tag.buffer.offset = 0,
+                            tag.kind = "RW",
+                            tag.value.type.id = "Boolean",
+                            bit.number = 2
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "tag.tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock50.tagKind_RW.tagOffset_4.valType_Boolean.def",
+                          {
+                            tag.id = "tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock50.tagKind_RW.tagOffset_4.valType_Boolean",
+                            tag.buffer.offset = 4,
+                            tag.kind = "RW",
+                            tag.value.type.id = "Boolean",
+                            bit.number = 5
+                          }
+                          ,
+                          {
+                          }
+                        }
+                        ,
+                        {
+                          false,
+                          "tag.tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock50.tagKind_RW.tagOffset_4.valType_Boolean.def",
+                          {
+                            tag.id = "tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock50.tagKind_RW.tagOffset_4.valType_Boolean",
+                            tag.buffer.offset = 4,
+                            tag.kind = "RW",
+                            tag.value.type.id = "Boolean",
+                            bit.number = 6
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+                ,
+                {
+                  false,
+                  "db.tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock58.def",
+                  {
+                    db.id = "tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock58",
+                    db.num = 58
+                  }
+                  ,
+                  {
+                    db.tags=
+                    {
+                      true,
+                      [
+                        {
+                          false,
+                          "tag.tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock58.tagKind_RW.tagOffset_12.valType_Integer.def",
+                          {
+                            tag.id = "tcp_ip_address_192_168_12_39_rack_0_slot_1.dataBlock58.tagKind_RW.tagOffset_12.valType_Integer",
+                            tag.buffer.offset = 12,
+                            tag.kind = "RW",
+                            tag.value.type.id = "Integer"
+                          }
+                          ,
+                          {
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+        ,
+        {
+          false,
+          "fake_device.id",
+          {
+            device.id = "fake_device.id",
+            IP = "192.168.12.39",
+            rack = 0,
+            slot = 1
+          }
+          ,
+          {
+            data.blocks=
+            {
+              true,
+              [
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -17,8 +17,6 @@ public class GuiS7DataBlock {
 
   private String params = TsLibUtils.EMPTY_STRING;
 
-  private boolean isOutput = false;
-
   private IListEdit<GuiS7Tag> tags = new ElemArrayList<>();
 
   /**
@@ -26,10 +24,9 @@ public class GuiS7DataBlock {
    * @param aDBNumber - number of DB
    * @param aIsOutput - output DB
    */
-  public GuiS7DataBlock( GuiS7Device aGuiS7Device, int aDBNumber, Boolean aIsOutput ) {
+  public GuiS7DataBlock( GuiS7Device aGuiS7Device, int aDBNumber ) {
     guiS7Device = aGuiS7Device;
     dbNumber = aDBNumber;
-    isOutput = aIsOutput.booleanValue();
   }
 
   /**
@@ -37,10 +34,9 @@ public class GuiS7DataBlock {
    */
   @SuppressWarnings( "nls" )
   public String getId() {
-    // String flattenID = guiS7Device.getDeviceId();
+    String deviceID = guiS7Device.getDeviceId();
     String ID_FMT_STR = "%s.dataBlock%d";
-    String dbType = isOutput ? "write" : "read";
-    String retVal = String.format( ID_FMT_STR, dbType, Integer.valueOf( dbNumber ) );
+    String retVal = String.format( ID_FMT_STR, deviceID, Integer.valueOf( dbNumber ) );
     return retVal;
   }
 
@@ -74,20 +70,6 @@ public class GuiS7DataBlock {
    */
   public void setDBNumber( int aDBNumber ) {
     dbNumber = aDBNumber;
-  }
-
-  /**
-   * @return true - node for output
-   */
-  public boolean isOutput() {
-    return isOutput;
-  }
-
-  /**
-   * @param aIsOutput - set output flag
-   */
-  public void setOutput( boolean aIsOutput ) {
-    isOutput = aIsOutput;
   }
 
   /**

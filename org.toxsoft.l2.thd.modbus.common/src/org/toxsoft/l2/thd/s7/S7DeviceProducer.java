@@ -1,6 +1,6 @@
 package org.toxsoft.l2.thd.s7;
 
-import static org.toxsoft.l2.thd.modbus.common.IModbusThdConstants.*;
+import static org.toxsoft.l2.thd.s7.IS7ThdConstants.*;
 
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
@@ -14,11 +14,9 @@ import ru.toxsoft.l2.core.hal.devices.*;
 import ru.toxsoft.l2.core.hal.devices.impl.*;
 
 /**
- * Поставщик универсальных аппаратов, работающих по протоколу Modbus. // сделать хитрый продюсер - каждое соединение -
- * своё специфическое устройство, и сделать одно интегральное устройство - но все его методы оставить пустыми - только
- * API выставлять наружу. Продумать диагностику и тайм-ауты.
+ * Поставщик универсальных аппаратов, работающих по протоколу Siemens S7.
  *
- * @author MAX
+ * @author dima
  */
 public class S7DeviceProducer
     implements IDevicesProducer {
@@ -35,17 +33,18 @@ public class S7DeviceProducer
       throws TsIllegalArgumentRtException {
     IAvTree params = aConfig.params();
 
-    // Массив соединений
-    IAvTree connections = params.nodes().findByKey( CONNECTIONS_PARAM_ID );
-    if( connections == null ) {
+    // Массив S7 устройств
+    IAvTree s7Devices = params.nodes().findByKey( S7_DEVICES_PARAM_ID );
+    if( s7Devices == null ) {
       throw new TsIllegalArgumentRtException();
     }
-    for( int i = 0; i < connections.arrayLength(); i++ ) {
-      IAvTree devices = connections.arrayElement( i );
+    for( int i = 0; i < s7Devices.arrayLength(); i++ ) {
+      IAvTree deviceConfigTree = s7Devices.arrayElement( i );
 
       try {
 
-        S7Device dev = new S7Device( devices.structId(), devices.structId(), devices, errorProcessor );
+        S7Device dev =
+            new S7Device( deviceConfigTree.structId(), deviceConfigTree.structId(), deviceConfigTree, errorProcessor );
         specDevices.add( dev );
       }
       catch( Exception e ) {

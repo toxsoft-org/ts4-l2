@@ -64,12 +64,14 @@ abstract public class DataBlockBase {
   abstract void addTagDefinition( IAvTree aTagDefinition );
 
   void configYourself( IAvTree aDbParams ) {
-    IAvTree tagsArray = aDbParams.nodes().findByKey( DATA_BLOCK_TAGS );
+    IAvTree tagsArray = aDbParams.nodes().findByKey( DB_TAGS_ARRAY_NAME );
 
     for( int i = 0; i < tagsArray.arrayLength(); i++ ) {
       IAvTree tagParams = tagsArray.arrayElement( i );
       addTagDefinition( tagParams );
     }
+    // allocate data buffer
+    dataBuffer = new byte[bufferSize];
   }
 
   int dbNumber() {

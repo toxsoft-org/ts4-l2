@@ -37,7 +37,7 @@ public enum EKind {
   private String description;
 
   /**
-   * Конструктор состояния.
+   * Конструктор типа тега.
    *
    * @param aId byte - идентфикатор состояния (из протокола)
    * @param aName - название состояния.
@@ -50,7 +50,7 @@ public enum EKind {
   }
 
   /**
-   * Возвращает идентификатор состояния.
+   * Возвращает идентификатор типа.
    *
    * @return int байтовый идентфикатор состояния.
    */
@@ -59,7 +59,7 @@ public enum EKind {
   }
 
   /**
-   * Возвращает название состояния
+   * Возвращает название типа
    *
    * @return String - название состояния.
    */
@@ -68,7 +68,7 @@ public enum EKind {
   }
 
   /**
-   * Возвращает описание состояния команды (отображаемое имя).
+   * Возвращает описание типа (отображаемое имя).
    *
    * @return String - описание состояния команды (отображаемое имя).
    */
@@ -77,7 +77,7 @@ public enum EKind {
   }
 
   /**
-   * Возвращает состояние по идентификатору или null.
+   * Возвращает тип тега по идентификатору или null.
    *
    * @param aId int - идентификатор
    * @return EKind - найденный тип, или null если нет типа с таким идентификатором
@@ -86,6 +86,22 @@ public enum EKind {
 
     for( EKind item : values() ) {
       if( item.id == aId ) {
+        return item;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Возвращает тип тега по названию или null.
+   *
+   * @param aName String - название тега
+   * @return EKind - найденный тип, или null если нет типа с таким идентификатором
+   */
+  public static EKind findByNameOrNull( String aName ) {
+
+    for( EKind item : values() ) {
+      if( item.name.compareTo( aName ) == 0 ) {
         return item;
       }
     }
@@ -103,4 +119,14 @@ public enum EKind {
     return TsItemNotFoundRtException.checkNull( findByIdOrNull( aId ) );
   }
 
+  /**
+   * Возвращает тип тега по названию или выбрасывает исключение.
+   *
+   * @param aName String - название типа
+   * @return {@link EKind} - найденный тип
+   * @throws TsItemNotFoundRtException нет типа с таким идентификатором
+   */
+  public static EKind findByName( String aName ) {
+    return TsItemNotFoundRtException.checkNull( findByNameOrNull( aName ) );
+  }
 }

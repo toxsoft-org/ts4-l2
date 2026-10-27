@@ -44,7 +44,7 @@ public interface S7DeviceOptionsUtils {
   IDataDef OP_SLOT = create( "slot", INTEGER, //$NON-NLS-1$
       TSID_NAME, "slot", //
       TSID_DESCRIPTION, "number of slot", //
-      TSID_DEFAULT_VALUE, avInt( 2 ) //
+      TSID_DEFAULT_VALUE, avInt( 1 ) //
   ); //
 
   @SuppressWarnings( "javadoc" )

@@ -122,42 +122,48 @@ public class DataBlockReader
    */
   @Override
   void addTagDefinition( IAvTree aTagDefinition ) {
-    // read tagId
-    String tagId = aTagDefinition.fields().getStr( TAG_ID );
-    // read offset in data block
-    int tagBufferOffset = aTagDefinition.fields().getInt( TAG_BUFFER_OFFSET );
-    // read tag value type
-    EAtomicType tagType = EAtomicType.getById( aTagDefinition.fields().getStr( TAG_VALUE_TYPE_ID ) );
-    S7TagReader reader = null;
-    switch( tagType ) {
-      case BOOLEAN:
-        int bitNumber = aTagDefinition.fields().getInt( BIT_NUMBER );
-        reader = new S7TagReader( tagId, dbNumber, tagBufferOffset, bitNumber );
-        break;
-      case FLOATING:
-        reader = new S7TagReader( tagId, dbNumber, tagType, tagBufferOffset );
-        break;
-      case INTEGER:
-        reader = new S7TagReader( tagId, dbNumber, tagType, tagBufferOffset );
-        break;
-      case NONE:
-        break;
-      case STRING:
-        break;
-      case TIMESTAMP:
-        break;
-      case VALOBJ:
-      default:
-        throw new TsNotAllEnumsUsedRtException();
-    }
-    TsIllegalStateRtException.checkNull( reader );
-    readers.add( reader );
-    dbTags.put( tagId, new ReadTagImpl( tagId ) );
-    // tune buffer size
-    @SuppressWarnings( "null" )
-    int dataBufferRightBorder = tagBufferOffset + reader.tagValBufferSize();
-    if( bufferSize < dataBufferRightBorder ) {
-      bufferSize = dataBufferRightBorder;
+    // read tag type
+    EKind tagKind = EKind.findByName( aTagDefinition.fields().getStr( TAG_KIND_ID ) );
+    if( !tagKind.equals( EKind.W ) ) {
+      // read tagId
+      String tagId = aTagDefinition.fields().getStr( TAG_ID );
+      // add suffix ".input"
+      tagId = tagId.concat( ".input" ); //$NON-NLS-1$
+      // read offset in data block
+      int tagBufferOffset = aTagDefinition.fields().getInt( TAG_BUFFER_OFFSET );
+      // read tag value type
+      EAtomicType tagValueType = EAtomicType.getById( aTagDefinition.fields().getStr( TAG_VALUE_TYPE_ID ) );
+      S7TagReader reader = null;
+      switch( tagValueType ) {
+        case BOOLEAN:
+          int bitNumber = aTagDefinition.fields().getInt( BIT_NUMBER );
+          reader = new S7TagReader( tagId, dbNumber, tagBufferOffset, bitNumber );
+          break;
+        case FLOATING:
+          reader = new S7TagReader( tagId, dbNumber, tagValueType, tagBufferOffset );
+          break;
+        case INTEGER:
+          reader = new S7TagReader( tagId, dbNumber, tagValueType, tagBufferOffset );
+          break;
+        case NONE:
+          break;
+        case STRING:
+          break;
+        case TIMESTAMP:
+          break;
+        case VALOBJ:
+        default:
+          throw new TsNotAllEnumsUsedRtException();
+      }
+      TsIllegalStateRtException.checkNull( reader );
+      readers.add( reader );
+      dbTags.put( tagId, new ReadTagImpl( tagId ) );
+      // tune buffer size
+      @SuppressWarnings( "null" )
+      int dataBufferRightBorder = tagBufferOffset + reader.tagValBufferSize();
+      if( bufferSize < dataBufferRightBorder ) {
+        bufferSize = dataBufferRightBorder;
+      }
     }
   }
 
