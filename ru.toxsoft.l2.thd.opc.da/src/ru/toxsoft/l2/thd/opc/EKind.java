@@ -92,6 +92,16 @@ public enum EKind {
     return null;
   }
 
+  public static EKind findByNameOrNull( String aName ) {
+
+    for( EKind item : values() ) {
+      if( item.name.equals( aName ) ) {
+        return item;
+      }
+    }
+    return null;
+  }
+
   /**
    * Возвращает тип тега по идентификатору или выбрасывает исключение.
    *
@@ -101,6 +111,10 @@ public enum EKind {
    */
   public static EKind findById( int aId ) {
     return TsItemNotFoundRtException.checkNull( findByIdOrNull( aId ) );
+  }
+
+  public static EKind findByName( String aName ) {
+    return TsItemNotFoundRtException.checkNull( findByNameOrNull( aName ) );
   }
 
 }

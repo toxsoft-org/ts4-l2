@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: S7
+Bundle-SymbolicName: org.toxsoft.l2.thd.s7
+Bundle-Version: 1.0.0.qualifier
+Export-Package: org.toxsoft.l2.thd.s7
+Require-Bundle: org.toxsoft.extlibs.moka7,
+ org.toxsoft.core.tslib,
+ ru.toxsoft.l2.core,
+ ru.toxsoft.l2.thd.opc.da
+Bundle-Vendor: ToxSoft Ltd.
+Automatic-Module-Name: org.toxsoft.l2.thd.s7
+Bundle-RequiredExecutionEnvironment: JavaSE-21
