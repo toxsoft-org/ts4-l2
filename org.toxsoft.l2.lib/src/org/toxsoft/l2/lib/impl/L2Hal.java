@@ -29,7 +29,7 @@ public final class L2Hal
   }
 
   // ------------------------------------------------------------------------------------
-  // L2AbstractComponent
+  // IL2Component
   //
 
   @Override
@@ -37,26 +37,24 @@ public final class L2Hal
     return EL2ComponentKind.HAL;
   }
 
+  // ------------------------------------------------------------------------------------
+  // L2AbstractComponent
+  //
+
   @Override
-  protected ValidationResult doDoInit( ITsContextRo aArgs ) {
-    // TODO L2Hal.doDoInit()
+  protected ValidationResult doL2Init( ITsContextRo aArgs ) {
+    // TODO Auto-generated method stub
     return ValidationResult.SUCCESS;
   }
 
   @Override
-  protected void doDoStart() {
-    // TODO L2Hal.doDoStart()
+  protected void doL2DestroyBeforeModules() {
+    // TODO Auto-generated method stub
   }
 
   @Override
-  protected void doDoDoJob() {
-    // TODO L2Hal.doDoDoJob()
-  }
-
-  @Override
-  protected boolean doDoQueryStop() {
-    // TODO L2Hal.doDoQueryStop()
-    return false;
+  protected void doL2DestroyAfterModules() {
+    // TODO Auto-generated method stub
   }
 
   // ------------------------------------------------------------------------------------

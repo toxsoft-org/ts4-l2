@@ -44,6 +44,7 @@ public interface IL2LibSharedResources {
   String FMT_ERR_CANT_START_MODULE           = Messages.getString( "Core.FMT_ERR_CANT_START_MODULE" );           //$NON-NLS-1$
   String FMT_WARN_CANT_START_MODULE          = Messages.getString( "Core.FMT_WARN_CANT_START_MODULE" );          //$NON-NLS-1$
   String FMT_INFO_MODULE_STARTED             = Messages.getString( "Core.FMT_INFO_MODULE_STARTED" );             //$NON-NLS-1$
+  String FMT_L2COMP_VOID_ERROR               = Messages.getString( "Core.FMT_L2COMP_VOID_ERROR" );               //$NON-NLS-1$
 
   /**
    * {@link L2AbstractModuleFactory}

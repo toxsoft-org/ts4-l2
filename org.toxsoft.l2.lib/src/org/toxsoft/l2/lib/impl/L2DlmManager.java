@@ -29,7 +29,7 @@ public final class L2DlmManager
   }
 
   // ------------------------------------------------------------------------------------
-  // L2AbstractComponent
+  // IL2Component
   //
 
   @Override
@@ -37,26 +37,24 @@ public final class L2DlmManager
     return EL2ComponentKind.DLMMGR;
   }
 
+  // ------------------------------------------------------------------------------------
+  // L2AbstractComponent
+  //
+
   @Override
-  protected ValidationResult doDoInit( ITsContextRo aArgs ) {
-    // TODO L2DlmManager.doDoInit()
+  protected ValidationResult doL2Init( ITsContextRo aArgs ) {
+    // TODO Auto-generated method stub
     return ValidationResult.SUCCESS;
   }
 
   @Override
-  protected void doDoStart() {
-    // TODO L2DlmManager.doDoStart()
+  protected void doL2DestroyBeforeModules() {
+    // TODO Auto-generated method stub
   }
 
   @Override
-  protected void doDoDoJob() {
-    // TODO L2DlmManager.doDoDoJob()
-  }
-
-  @Override
-  protected boolean doDoQueryStop() {
-    // TODO L2DlmManager.doDoQueryStop()
-    return true;
+  protected void doL2DestroyAfterModules() {
+    // TODO Auto-generated method stub
   }
 
   // ------------------------------------------------------------------------------------

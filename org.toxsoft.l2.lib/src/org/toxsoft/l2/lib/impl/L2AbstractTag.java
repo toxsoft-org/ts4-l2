@@ -34,18 +34,17 @@ public abstract class L2AbstractTag
    * @param aId String - the signal ID
    * @param aParams {@link IOptionSet} - {@link #params()} values
    * @param aDataType {@link IDataType} - the signal type
-   * @param aKind {@link ERwKind} - the signal R/W kind
    * @throws TsNullArgumentRtException any argument = <code>null</code>
    * @throws TsIllegalArgumentRtException ID is not an IDpath
    */
-  protected L2AbstractTag( L2AbstractHalDriver aDevice, String aId, IOptionSet aParams, IDataType aDataType,
-      ERwKind aKind ) {
-    TsNullArgumentRtException.checkNulls( aDevice, aParams, aDataType, aKind );
+  protected L2AbstractTag( L2AbstractHalDriver aDevice, ERwKind aKind, String aId, IOptionSet aParams,
+      IDataType aDataType ) {
+    TsNullArgumentRtException.checkNulls( aDevice, aKind, aParams, aDataType );
     id = StridUtils.checkValidIdPath( aId );
+    kind = aKind;
     driver = aDevice;
     params = aParams;
     dataType = aDataType;
-    kind = aKind;
   }
 
   // ------------------------------------------------------------------------------------
@@ -109,7 +108,7 @@ public abstract class L2AbstractTag
   }
 
   @Override
-  public L2AbstractHalDriver driver() {
+  final public L2AbstractHalDriver driver() {
     return driver;
   }
 

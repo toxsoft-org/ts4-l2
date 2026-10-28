@@ -26,6 +26,17 @@ import org.toxsoft.l2.lib.impl.comps.*;
 
 /**
  * Base implementation of L2 application component {@link IL2Component}.
+ * <p>
+ * Notes for subclass implementes:<br>
+ * The L2-component contains modules that themselves implement cooperative multitasking within the component. So
+ * L2-component executes {@link ITsCooperativeComponent} methods in three steps:
+ * <ul>
+ * <li><b>before</b> modules are called;</li>
+ * <li>modules are called in sequence of their order;</li>
+ * <li><b>after</b> the modules are called.</li>
+ * </ul>
+ * Respective protected methods (to be overridden or implemented) are named as
+ * <code>doL2<i>Operation<b>[Before|After]</b>Modules()</i></code>.
  *
  * @author hazard157
  * @param <M> - modules class may be {@link L2AbstractDlm}, {@link L2AbstractHalDriver} or {@link L2AbstractNetModule}
@@ -47,7 +58,7 @@ public abstract class L2AbstractComponent<M extends L2AbstractModule>
    * The quit command when quit is initialized by this component or <code>null</code>.
    * <p>
    * Quit command is reset to <code>null</code> when initializing, non-<code>null</code> value may be set by subclass by
-   * method {@link #setQuitCommand(L2AppCommand)}.
+   * method {@link #setQuitCommand1(L2AppCommand)}.
    */
   private L2AppCommand quitCmd = null;
 
@@ -166,12 +177,36 @@ public abstract class L2AbstractComponent<M extends L2AbstractModule>
     // TODO L2AbstractComponent.checkChangesAndRestartModules()
   }
 
+  /**
+   * Helper for {@link L2AbstractComponent#callVoid(VoidMethod, String)}.
+   *
+   * @author hazard157
+   */
+  interface VoidMethod {
+    void call();
+  }
+
+  /**
+   * Helper caller to mask the exception
+   *
+   * @param aMethod {@link VoidMethod} - method of this class to be called
+   * @param aMethodName String - name of method, used in log error message
+   */
+  private final void callVoid( VoidMethod aMethod, String aMethodName ) {
+    try {
+      aMethod.call();
+    }
+    catch( Exception ex ) {
+      LoggerUtils.error( ex, FMT_L2COMP_VOID_ERROR, kind().id(), aMethodName, ex.getMessage() );
+    }
+  }
+
   // ------------------------------------------------------------------------------------
   // AbstractTsCooperativeComponent
   //
 
   @Override
-  protected ValidationResult doInit( ITsContextRo aArgs ) {
+  final protected ValidationResult doInit( ITsContextRo aArgs ) {
     // reset class fields
     quitCmd = null;
     modulesList.clear();
@@ -194,19 +229,22 @@ public abstract class L2AbstractComponent<M extends L2AbstractModule>
     // initialize module instances
     initLoadedModules( aArgs, throwExOnError );
     // subclass initialization
-    vrl.add( doDoInit( aArgs ) );
+    vrl.add( doL2Init( aArgs ) );
     return vrl.firstWorstResult();
   }
 
   @Override
-  protected void doStart() {
+  final protected void doStart() {
+    doL2StartBeforeModules();
     boolean throwExOnError = OPDEF_FAIL_APP_ON_MODULE_START_FAIL.getValue( l2Context.params() ).asBool();
     startInitedModules( throwExOnError );
+    doL2StartAfterModules();
   }
 
   @Override
-  protected void doDoJob() {
+  final protected void doDoJob() {
     checkChangesAndRestartModules();
+    callVoid( this::doL2JobBeforeModules, "doL2JobBeforeModules" ); //$NON-NLS-1$
     // iterate over existing modules and call doJob()
     for( int i = 0, c = modulesList.size(); i < c; i++ ) { // index iteration to avoid any memory allocation
       L2AbstractModule m = modulesList.get( i );
@@ -223,22 +261,24 @@ public abstract class L2AbstractComponent<M extends L2AbstractModule>
         // maybe we need some strategy: A) ignore failed, B) pause/resume C) stop D) destroy E) something else?
       }
     }
+    callVoid( this::doL2JobAfterModules, "doL2JobAfterModules" ); //$NON-NLS-1$
   }
 
   @Override
-  protected boolean doQueryStop() {
+  final protected boolean doQueryStop() {
     boolean isStopped = true;
+    callVoid( this::doL2QueryStopBeforeModules, "doL2QueryStopBeforeModules" ); //$NON-NLS-1$
     for( int i = 0, c = modulesList.size(); i < c; i++ ) { // index iteration to avoid any memory allocation
       L2AbstractModule m = modulesList.get( i );
       if( !m.queryStop() ) {
         isStopped = false;
       }
     }
-    return isStopped;
+    return doL2QueryStopAfterModules( isStopped );
   }
 
   @Override
-  protected boolean doStopping() {
+  final protected boolean doStopping() {
     boolean isStopped = true;
     for( int i = 0, c = modulesList.size(); i < c; i++ ) { // index iteration to avoid any memory allocation
       L2AbstractModule m = modulesList.get( i );
@@ -246,14 +286,16 @@ public abstract class L2AbstractComponent<M extends L2AbstractModule>
         isStopped = false;
       }
     }
-    return isStopped;
+    return doL2IsStopped( isStopped );
   }
 
   @Override
   protected void doDestroy() {
+    callVoid( this::doL2DestroyBeforeModules, "doL2DestroyBeforeModules" ); //$NON-NLS-1$
     for( L2AbstractModule m : modulesList ) {
       m.destroy();
     }
+    callVoid( this::doL2DestroyAfterModules, "doL2DestroyAfterModules" ); //$NON-NLS-1$
   }
 
   // ------------------------------------------------------------------------------------
@@ -329,19 +371,110 @@ public abstract class L2AbstractComponent<M extends L2AbstractModule>
   //
 
   /**
-   * Subclass may perform additional initialization.
-   * <p>
-   * Called from {@link #init(ITsContextRo)} when internal fields are initialized and component modules are loaded..
+   * Subclass must perform additional, com[component-specific initialization.
    *
    * @param aArgs {@link ITsContextRo} - the initialization arguments
    * @return {@link ValidationResult} - determines the success of the initialization
    */
-  protected abstract ValidationResult doDoInit( ITsContextRo aArgs );
+  protected abstract ValidationResult doL2Init( ITsContextRo aArgs );
 
-  protected abstract void doDoStart();
+  /**
+   * Implementation may perform additional actions before modules {@link #start()} method are called.
+   * <p>
+   * Default implementation does nothing. There is no need to call superclass method when overriding.
+   */
+  protected void doL2StartBeforeModules() {
+    // nop
+  }
 
-  protected abstract void doDoDoJob();
+  /**
+   * Implementation may perform additional actions after modules {@link #start()} method are called.
+   * <p>
+   * Default implementation does nothing. There is no need to call superclass method when overriding.
+   */
+  protected void doL2StartAfterModules() {
+    // nop
+  }
 
-  protected abstract boolean doDoQueryStop();
+  /**
+   * Implementation may perform additional actions before modules {@link #doJob()} method are called.
+   * <p>
+   * Default implementation does nothing. There is no need to call superclass method when overriding.
+   */
+  protected void doL2JobBeforeModules() {
+    // nop
+  }
+
+  /**
+   * Implementation may perform additional actions after modules {@link #doJob()} method are called.
+   * <p>
+   * Default implementation does nothing. There is no need to call superclass method when overriding.
+   */
+  protected void doL2JobAfterModules() {
+    // nop
+  }
+
+  /**
+   * Implemetation may perfiorm actions to correctly stop the component.
+   * <p>
+   * Called from {@link #isStopped()} before modules are queried to stop.
+   * <p>
+   * Default implementation does nothing. There is no need to call superclass method when overriding.
+   */
+  protected void doL2QueryStopBeforeModules() {
+    // nop
+  }
+
+  /**
+   * Implemetation may perfiorm actions to correctly stop the component.
+   * <p>
+   * Called from {@link #isStopped()} after modules are queried to stop.
+   * <p>
+   * If all modules has stopped successfully the argument is <code>true</code>. If at least one module are still
+   * stopping, <code>aIdAllModulesStopped</code> = <code>false</code>.
+   * <p>
+   * Default implementation simply returns value of argument. There is no need to call superclass method when
+   * overriding.
+   *
+   * @param aIdAllModulesStopped boolean - <code>true</code> if all modules are stopped already
+   * @return <b>true</b> - the component has stopped working;<br>
+   *         <b>false</b> - component is still stopping.
+   */
+  protected boolean doL2QueryStopAfterModules( boolean aIdAllModulesStopped ) {
+    return aIdAllModulesStopped;
+  }
+
+  /**
+   * Implementation may perform additional checks if component has stopped.
+   * <p>
+   * Called from {@link #isStopped()} after modules are asked.
+   * <p>
+   * If all modules has stopped successfully the argument is <code>true</code>. If at least one module are still
+   * stopping, <code>aIdAllModulesStopped</code> = <code>false</code>.
+   * <p>
+   * Default implementation simply returns value of argument. There is no need to call superclass method when
+   * overriding.
+   *
+   * @param aIdAllModulesStopped boolean - <code>true</code> if all modules are stopped already
+   * @return <b>true</b> - the component has stopped working;<br>
+   *         <b>false</b> - component is still stopping.
+   */
+  protected boolean doL2IsStopped( boolean aIdAllModulesStopped ) {
+    return aIdAllModulesStopped;
+  }
+
+  /**
+   * Called from {@link #destroy()} after modules are destroyed.
+   * <p>
+   * Any thrown exception will be caught an logged by the called.
+   */
+  protected abstract void doL2DestroyBeforeModules();
+
+  /**
+   * Called from {@link #destroy()} before modules are destroyed.
+   * <p>
+   * Any thrown exception will be caught an logged by the called.
+   */
+  protected abstract void doL2DestroyAfterModules();
 
 }
