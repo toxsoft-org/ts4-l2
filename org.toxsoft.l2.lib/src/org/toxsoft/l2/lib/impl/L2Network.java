@@ -7,7 +7,6 @@ import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
 import org.toxsoft.core.tslib.utils.errors.*;
-import org.toxsoft.l2.lib.api.app.*;
 import org.toxsoft.l2.lib.api.module.net.*;
 import org.toxsoft.l2.lib.impl.comps.*;
 import org.toxsoft.uskat.core.connection.*;
@@ -34,7 +33,7 @@ public final class L2Network
   }
 
   // ------------------------------------------------------------------------------------
-  // L2AbstractComponent
+  // IL2Component
   //
 
   @Override
@@ -42,28 +41,24 @@ public final class L2Network
     return EL2ComponentKind.NETWORK;
   }
 
-  @Override
-  protected ValidationResult doDoInit( ITsContextRo aArgs ) {
-    skConn = IL2ApplicationArguments.REFDEF_SK_CONNECTION.getRef( aArgs );
+  // ------------------------------------------------------------------------------------
+  // L2AbstractComponent
+  //
 
-    // TODO L2Network.doDoInit()
+  @Override
+  protected ValidationResult doL2Init( ITsContextRo aArgs ) {
+    // TODO Auto-generated method stub
     return ValidationResult.SUCCESS;
   }
 
   @Override
-  protected void doDoStart() {
-    // TODO L2Network.doDoStart()
+  protected void doL2DestroyBeforeModules() {
+    // TODO Auto-generated method stub
   }
 
   @Override
-  protected void doDoDoJob() {
-    // TODO L2Network.doDoDoJob()
-  }
-
-  @Override
-  protected boolean doDoQueryStop() {
-    // TODO L2Network.doDoQueryStop()
-    return false;
+  protected void doL2DestroyAfterModules() {
+    // TODO Auto-generated method stub
   }
 
   // ------------------------------------------------------------------------------------

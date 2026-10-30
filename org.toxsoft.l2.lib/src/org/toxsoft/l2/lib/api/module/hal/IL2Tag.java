@@ -8,7 +8,7 @@ import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.rwkind.*;
 
 /**
- * The signal is the single data (signal, I/O, etc) provided by the I/O hardware driver to the L2 DLMs.
+ * The tag is a single atoic value (signal, I/O, etc) provided by the I/O hardware driver to the L2 DLMs.
  *
  * @author hazard157
  */
