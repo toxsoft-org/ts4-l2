@@ -19,7 +19,7 @@ DeviceConfig =
           {
             id = "opc2s5.bridge.collection.id",
             description = "opc 2 s5 pins UA apparat producer",
-            host = "opc.tcp://192.168.12.57:55101",
+            host = "opc.tcp://191.30.5.177:55101",
             user = "",
             password = ""
           }
@@ -41,20 +41,6 @@ DeviceConfig =
                     {
                       true,
                       [
-                        {
-                          false,
-                          "pin.tag.ns_7_s_3210589_6_3210589_6_AnalogInputs2_ai27_OutletCoolingWaterTemp_CVint.def",
-                          {
-                            opc.tag = "ns=7;s=3210589-6.3210589-6.AnalogInputs2.ai27_OutletCoolingWaterTemp.CVint",
-                            pin.id = "ns_7_s_3210589_6_3210589_6_AnalogInputs2_ai27_OutletCoolingWaterTemp_CVint",
-                            pin.type = "Integer",
-                            pin.type.extra = "INT"
-                          }
-                          ,
-                          {
-                          }
-                        }
-                        ,                      
                         {
                           false,
                           "pin.tag.ns_7_s_3210589_6_3210589_6_Engines_Relay_commonShutdownRelay_On.def",

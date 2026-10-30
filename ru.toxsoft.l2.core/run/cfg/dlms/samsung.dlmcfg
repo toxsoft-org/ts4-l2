@@ -2158,26 +2158,6 @@ DlmConfig =
       [
         {
           false,
-          "data.opctos5.bridge.cfg.data.unit.id1791279816108.ai27_OutletCoolingWaterTemp.rtdCVint.def",
-          {
-            pin.id = "opctos5.bridge.cfg.data.unit.id1791279816108.ai27_OutletCoolingWaterTemp.rtdCVint",
-            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
-            synch.period = 1,
-            is.curr = true,
-            is.hist = true,
-            class.id = "AnalogInput",
-            obj.name = "ai27_OutletCoolingWaterTemp",
-            data.id = "rtdCVint",
-            tag.id = "ns=7;s=3210589-6.3210589-6.AnalogInputs2.ai27_OutletCoolingWaterTemp.CVint",
-            tag.dev.id = "opc2s5.bridge.collection.id"
-          }
-          ,
-          {
-          }
-        }
-        ,
-        {
-          false,
           "data.opctos5.bridge.cfg.data.unit.id1782456729838.commonShutdownRelay.rtdOn.def",
           {
             pin.id = "opctos5.bridge.cfg.data.unit.id1782456729838.commonShutdownRelay.rtdOn",
@@ -4249,8 +4229,6 @@ DlmConfig =
             obj.name = "ai25_CoolingWaterReturnTemp",
             data.id = "rtdCVint",
             tag.id = "ns=7;s=3210589-6.3210589-6.AnalogInputs2.ai25_CoolingWaterReturnTemp.CVint",
-           opc.tag = "ns=7;s=3210589-6.3210589-6.AnalogInputs2.ai25_CoolingWaterReturnTemp.CVint",
-            
             tag.dev.id = "opc2s5.bridge.collection.id"
           }
           ,
