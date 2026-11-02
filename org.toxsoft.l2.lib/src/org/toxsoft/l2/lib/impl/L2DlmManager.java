@@ -25,7 +25,6 @@ public final class L2DlmManager
    */
   public L2DlmManager( IL2SharedContext aL2Context ) {
     super( aL2Context, ALL_DLMMGR_COMP_OPDEFS );
-    // TODO Auto-generated constructor stub
   }
 
   // ------------------------------------------------------------------------------------
@@ -45,11 +44,6 @@ public final class L2DlmManager
   protected ValidationResult doL2Init( ITsContextRo aArgs ) {
     // TODO Auto-generated method stub
     return ValidationResult.SUCCESS;
-  }
-
-  @Override
-  protected void doL2DestroyBeforeModules() {
-    // TODO Auto-generated method stub
   }
 
   @Override

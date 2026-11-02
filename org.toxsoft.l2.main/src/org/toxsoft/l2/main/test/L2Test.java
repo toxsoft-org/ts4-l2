@@ -19,6 +19,7 @@ import org.toxsoft.core.tslib.bricks.validator.impl.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
+import org.toxsoft.l2.lib.*;
 import org.toxsoft.l2.lib.api.app.*;
 import org.toxsoft.l2.lib.api.module.*;
 import org.toxsoft.l2.lib.impl.*;
@@ -46,6 +47,7 @@ public class L2Test {
 
   public static void main( String[] aArgs ) {
     pl( "L2 testing program." );
+    L2LibUtils.initialize();
     // prepare
     L2ModuleFactoriesRepositorySimple repo = new L2ModuleFactoriesRepositorySimple();
     repo.addFactory( NetModuleQuitAfterTime.FACTORY );

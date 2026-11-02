@@ -48,4 +48,13 @@ public interface IL2HardConstants {
    */
   String CLSID_L2_APPLICATION = L2_ID + ".Application"; //$NON-NLS-1$
 
+  // ------------------------------------------------------------------------------------
+  // L2 Application runtime constants
+  //
+
+  /**
+   * Format string of the HAL driver hardware I/O thread.
+   */
+  String L2_HALDRV_HARDIO_THREAD_NAME_FORMAT = "HAL Driver '%s' hardware I/O thread"; //$NON-NLS-1$
+
 }

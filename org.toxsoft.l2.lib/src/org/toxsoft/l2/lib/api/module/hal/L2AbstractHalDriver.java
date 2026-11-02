@@ -1,9 +1,22 @@
 package org.toxsoft.l2.lib.api.module.hal;
 
+import static org.toxsoft.l2.lib.IL2HardConstants.*;
+import static org.toxsoft.l2.lib.api.app.IL2ApplicationArguments.*;
+import static org.toxsoft.l2.lib.api.module.IL2ModuleConfigConstants.*;
+import static org.toxsoft.l2.lib.l10n.IL2LibSharedResources.*;
+
+import org.toxsoft.core.tslib.av.avtree.*;
+import org.toxsoft.core.tslib.bricks.coopcomp.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
+import org.toxsoft.core.tslib.coll.*;
+import org.toxsoft.core.tslib.coll.impl.*;
+import org.toxsoft.core.tslib.math.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.l2.lib.api.module.*;
+import org.toxsoft.l2.lib.devel.*;
 import org.toxsoft.l2.lib.impl.*;
 
 /**
@@ -15,7 +28,21 @@ public abstract class L2AbstractHalDriver
     extends L2AbstractModule
     implements IL2HalDriver {
 
-  private final L2Hal owner;
+  private static final IntRange PRIORITY_RANGE = new IntRange( Thread.MIN_PRIORITY, Thread.MAX_PRIORITY );
+
+  private final L2Hal                      owner;
+  private final IStridablesListEdit<L2Tag> tagsList = new StridablesList<>();
+
+  /**
+   * Lower half is created by the subclass in {@link #init(ITsContextRo)}.
+   */
+  private L2AbstractHDLH lowerHalf = null;
+
+  /**
+   * Hardware interaction is performed in this thread.<br>
+   * Initialized and started in {@link #doStart()}.
+   */
+  private Thread hardwareIoThread = null;
 
   /**
    * Constructor.
@@ -31,6 +58,105 @@ public abstract class L2AbstractHalDriver
   }
 
   // ------------------------------------------------------------------------------------
+  // implementation
+  //
+
+  /**
+   * Loads all {@link L2TagInfo} from the config node {@link IL2ModuleConfigConstants#L2_HAL_MODCFG_NODEID_TAGINFOS}.
+   *
+   * @return {@link IList}&lt;{@link L2TagInfo}&gt; - all declared tags for this module
+   */
+  private IList<L2TagInfo> getTagInfos() {
+    String nodeId = L2_HAL_MODCFG_NODEID_TAGINFOS;
+    IAvTree tagInfosNode = moduleConfig().cfg().nodes().findByKey( nodeId );
+    TsItemNotFoundRtException.checkNull( tagInfosNode, FMT_ERR_NO_TAGS_NODE_IN_CFG, id(), nodeId );
+    TsIllegalStateRtException.checkTrue( tagInfosNode.isArray(), FMT_ERR_TAGS_NODE_IS_ARRAY, id(), nodeId );
+    IListEdit<L2TagInfo> llInfos = new ElemArrayList<>( tagInfosNode.fields().size() );
+    for( String fieldId : tagInfosNode.fields().keys() ) {
+      String tagInfoKtor = tagInfosNode.fields().getStr( fieldId );
+      L2TagInfo tagInfo;
+      try {
+        tagInfo = L2TagInfo.KEEPER.str2ent( tagInfoKtor );
+      }
+      catch( Exception ex ) {
+        throw new TsIoRtException( ex, FMT_ERR_CFG_FIELD_NOT_TAGINFO, id(), nodeId, fieldId, L2TagInfo.KEEPER_ID );
+      }
+      if( !fieldId.equals( tagInfo.id() ) ) {
+        throw new TsIoRtException( FMT_ERR_FIELD_ID_NOT_TAGINFO_ID, id(), nodeId, fieldId, tagInfo.id() );
+      }
+      llInfos.add( tagInfo );
+    }
+    return llInfos;
+  }
+
+  /**
+   * Creates {@link L2AbstractHDLH} using {@link #doCreateLowerHalf()} with all necessary checks.
+   *
+   * @return {@link L2AbstractHDLH} - created and correct instance
+   * @throws TsInternalErrorRtException lower part is not correctly created
+   */
+  private L2AbstractHDLH createLowerHalf() {
+    L2AbstractHDLH lh = doCreateLowerHalf();
+    TsInternalErrorRtException.checkNull( lh );
+    TsInternalErrorRtException.checkTrue( lh.owner() != this );
+    return lh;
+  }
+
+  /**
+   * Determines {@link #hardwareIoThread} priority from applcation and module options.
+   *
+   * @return int - thread priority checked in range {@link #PRIORITY_RANGE}.
+   */
+  private int getHardIoThreadPriority() {
+    int p = OPDEF_HAL_HARDIO_THREAD_DEFAULT_PRIORITY.getValue( compInitArgs().params() ).asInt();
+    p = params().getInt( OPID_HALDRV_HARD_IO_THREAD_PRIORITY, p );
+    return PRIORITY_RANGE.inRange( p );
+  }
+
+  private void runHardwareIoThread() {
+    // initialize hardware
+    ValidationResult vr;
+    try {
+      vr = lowerHalf.initHardware();
+    }
+    catch( Exception ex ) {
+      logger().error( ex );
+      vr = ValidationResult.error( ex );
+    }
+    vr.logTo( logger() ); // log only non-OK
+    // hardware initialization error make driver unusable
+    if( vr.isError() ) {
+      setDoJobCallable( false ); // exclude driver from working loop
+      logger().error( FMT_ERR_HALDRV_IGNORED_ON_INIT_FAIL, vr.message() );
+      return; // finish the thread
+    }
+    // main loop
+    mainLoop();
+    // normally reset hardware
+    try {
+      lowerHalf.closeHardware();
+    }
+    catch( Exception ex ) {
+      logger().error( ex );
+    }
+  }
+
+  private void mainLoop() {
+
+    // TODO L2AbstractHalDriver.runHardwareIoLoop()
+
+    if( compState() == ETsCoopCompState.STOPPING ) {
+      // TODO ???
+      return;
+    }
+    if( Thread.interrupted() ) {
+      // TODO log it
+      return;
+    }
+
+  }
+
+  // ------------------------------------------------------------------------------------
   // L2AbstractModule
   //
 
@@ -40,10 +166,29 @@ public abstract class L2AbstractHalDriver
   }
 
   @Override
-  protected abstract ValidationResult doInit( ITsContextRo aArgs );
+  final protected ValidationResult doInit( ITsContextRo aArgs ) {
+    // create tag instances
+    IList<L2TagInfo> llInfos = getTagInfos();
+    for( L2TagInfo tinf : llInfos ) {
+      L2Tag tag = new L2Tag( this, tinf.id(), tinf.kind(), tinf.atomicType(), tinf.params() );
+      tagsList.add( tag );
+    }
+    // lower half creation
+    lowerHalf = createLowerHalf();
+    // subclass initialization
+    return doDoInit( aArgs );
+  }
 
   @Override
-  protected abstract void doStart();
+  final protected void doStart() {
+    // create and start hardware I/O thread
+    hardwareIoThread = new Thread( this::runHardwareIoThread );
+    String threadName = String.format( L2_HALDRV_HARDIO_THREAD_NAME_FORMAT, id() );
+    hardwareIoThread.setName( threadName );
+    hardwareIoThread.setPriority( getHardIoThreadPriority() );
+    hardwareIoThread.start();
+    logger().debug( FMT_DBG_HALDRV_HARD_IO_THREAD_STARTED, threadName );
+  }
 
   @Override
   protected abstract void doDoJob();
@@ -55,12 +200,56 @@ public abstract class L2AbstractHalDriver
   protected abstract boolean doStopping();
 
   @Override
-  protected abstract void doDestroy();
+  final protected void doDestroy() {
+    // forcibly finish the hardware I/O thread
+    if( hardwareIoThread != null ) {
+      hardwareIoThread.interrupt();
+      hardwareIoThread = null;
+    }
+    doDoDestroy();
+  }
 
   // ------------------------------------------------------------------------------------
   // IL2HalDriver
   //
 
-  // TODO implement driver API
+  @Override
+  public IStridablesList<L2Tag> tags() {
+    return tagsList;
+  }
+
+  // ------------------------------------------------------------------------------------
+  // To override/implement
+  //
+
+  /**
+   * Subclass must create the driver lower half.
+   *
+   * @return {@link L2AbstractHDLH} - created instance
+   */
+  protected abstract L2AbstractHDLH doCreateLowerHalf();
+
+  /**
+   * Subclass must perform initialization, usually prepare the hardware.
+   * <p>
+   * Called from {@link #init(ITsContextRo)} after all declared tags and a n HDLH were created successfully.
+   * <p>
+   * Note: do <b>not</b> work with the hardware in this method!
+   *
+   * @param aArgs {@link ITsContextRo} - the initialization arguments
+   * @return {@link ValidationResult} - determines the success of the initialization
+   */
+  protected abstract ValidationResult doDoInit( ITsContextRo aArgs );
+
+  /**
+   * Subclass may perform additional cluec-up when module is destroyed.
+   * <p>
+   * Note: do <b>not</b> work with the hardware in this method!
+   * <p>
+   * Does nothing in base class, there is no need to call superclass method when overriding.
+   */
+  protected void doDoDestroy() {
+    // nop
+  }
 
 }

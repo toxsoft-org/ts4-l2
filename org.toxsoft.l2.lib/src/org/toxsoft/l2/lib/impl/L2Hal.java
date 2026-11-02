@@ -1,11 +1,14 @@
 package org.toxsoft.l2.lib.impl;
 
 import static org.toxsoft.l2.lib.api.app.IL2ApplicationArguments.*;
+import static org.toxsoft.l2.lib.l10n.IL2LibSharedResources.*;
 
 import org.toxsoft.core.tslib.bricks.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
 import org.toxsoft.core.tslib.bricks.strid.coll.*;
+import org.toxsoft.core.tslib.bricks.strid.coll.impl.*;
 import org.toxsoft.core.tslib.bricks.validator.*;
+import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.l2.lib.api.module.hal.*;
 import org.toxsoft.l2.lib.impl.comps.*;
 
@@ -18,6 +21,10 @@ public final class L2Hal
     extends L2AbstractComponent<L2AbstractHalDriver>
     implements IL2Hal, ICooperativeWorkerComponent {
 
+  // TODO add stopping timeout - forcibly kill drivers after timeout
+
+  private final IStridablesListEdit<L2Tag> tagsList = new StridablesList<>( 1000 );
+
   /**
    * Constructor.
    *
@@ -25,7 +32,14 @@ public final class L2Hal
    */
   public L2Hal( IL2SharedContext aL2Context ) {
     super( aL2Context, ALL_HAL_COMP_OPDEFS );
-    // TODO Auto-generated constructor stub
+  }
+
+  // ------------------------------------------------------------------------------------
+  // implementation
+  //
+
+  private IStridablesList<L2AbstractHalDriver> driversList() {
+    return super.modules();
   }
 
   // ------------------------------------------------------------------------------------
@@ -43,18 +57,28 @@ public final class L2Hal
 
   @Override
   protected ValidationResult doL2Init( ITsContextRo aArgs ) {
-    // TODO Auto-generated method stub
+    // check for duplicate IDs
+    for( L2AbstractHalDriver d1 : driversList() ) {
+      for( L2AbstractHalDriver d2 : driversList() ) {
+        if( d1 != d2 ) {
+          for( String id : d1.tags().keys() ) {
+            if( d2.tags().hasKey( id ) ) {
+              throw new TsItemAlreadyExistsRtException( FMT_ERR_DUP_TAG_ID, id, d1.id(), d2.id() );
+            }
+          }
+        }
+      }
+    }
+    // fill #tagsList with tags provided by the modules and check for duplicate IDs
+    for( L2AbstractHalDriver d1 : driversList() ) {
+      tagsList.addAll( d1.tags() );
+    }
     return ValidationResult.SUCCESS;
   }
 
   @Override
-  protected void doL2DestroyBeforeModules() {
-    // TODO Auto-generated method stub
-  }
-
-  @Override
   protected void doL2DestroyAfterModules() {
-    // TODO Auto-generated method stub
+    // nop
   }
 
   // ------------------------------------------------------------------------------------
@@ -66,16 +90,16 @@ public final class L2Hal
     return super.modules();
   }
 
+  @SuppressWarnings( { "rawtypes", "unchecked" } )
   @Override
   public IStridablesList<IL2Tag> tags() {
-    // TODO Auto-generated method stub
-    return null;
+    return (IStridablesList)tagsList;
   }
 
+  @SuppressWarnings( { "rawtypes", "unchecked" } )
   @Override
   public IStridablesList<IL2Tag> listDeviceTags( String aDeviceId ) {
-    // TODO Auto-generated method stub
-    return null;
+    return (IStridablesList)drivers().getByKey( aDeviceId ).tags();
   }
 
 }

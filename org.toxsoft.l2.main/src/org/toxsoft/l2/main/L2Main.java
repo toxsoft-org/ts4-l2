@@ -29,6 +29,7 @@ import org.toxsoft.core.tslib.utils.files.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
 import org.toxsoft.core.tslib.utils.progargs.*;
+import org.toxsoft.l2.lib.*;
 import org.toxsoft.l2.lib.api.app.*;
 import org.toxsoft.l2.lib.api.module.*;
 import org.toxsoft.l2.lib.impl.*;
@@ -75,6 +76,7 @@ public class L2Main {
    */
   public static void main( String[] aArgs ) {
     sayHello();
+    L2LibUtils.initialize();
     // create and validate global options from all sources
     IOptionSetEdit globalOps = prepareGlobalOptions( aArgs );
     ValidationResult vr = validateGlobalOps( globalOps );

@@ -72,7 +72,7 @@ public class L2Application
     l2Context.dlmMgr().doJob();
     l2Context.setSweepStep( EL2SweepStep.IO_WRITE );
     l2Context.hal().doJob();
-    l2Context.setSweepStep( EL2SweepStep.NET_INOUT );
+    l2Context.setSweepStep( EL2SweepStep.NET_COMM );
     l2Context.net().doJob();
   }
 

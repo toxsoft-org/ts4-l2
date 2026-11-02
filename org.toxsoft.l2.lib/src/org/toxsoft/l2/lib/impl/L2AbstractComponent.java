@@ -72,7 +72,7 @@ public abstract class L2AbstractComponent<M extends L2AbstractModule>
     l2Context = aL2Context;
     opDefs = aOpDefs;
     OptionSetUtils.initOptionSet( params, opDefs );
-    logger = LoggerUtils.getLogger( this.getClass(), l2Context.appId() );
+    logger = LoggerUtils.getLogger( this.getClass(), l2Context.appId(), kind().id() );
   }
 
   // ------------------------------------------------------------------------------------
@@ -467,8 +467,12 @@ public abstract class L2AbstractComponent<M extends L2AbstractModule>
    * Called from {@link #destroy()} after modules are destroyed.
    * <p>
    * Any thrown exception will be caught an logged by the called.
+   * <p>
+   * Default implementation does nothing. There is no need to call superclass method when overriding.
    */
-  protected abstract void doL2DestroyBeforeModules();
+  protected void doL2DestroyBeforeModules() {
+    // nop
+  }
 
   /**
    * Called from {@link #destroy()} before modules are destroyed.

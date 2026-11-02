@@ -1,6 +1,7 @@
 package org.toxsoft.l2.lib.l10n;
 
 import org.toxsoft.l2.lib.api.module.*;
+import org.toxsoft.l2.lib.api.module.hal.*;
 import org.toxsoft.l2.lib.impl.*;
 import org.toxsoft.l2.lib.impl.comps.*;
 
@@ -51,6 +52,37 @@ public interface IL2LibSharedResources {
    */
   String FMT_ERR_INV_CREATED_MODULE_CLASS = Messages.getString( "Core.FMT_ERR_INV_CREATED_MODULE_CLASS" ); //$NON-NLS-1$
 
+  /**
+   * {@link EL2SweepStep}
+   */
+  String STR_L2SWST_IO_READ    = Messages.getString( "Core.STR_L2SWST_IO_READ" );    //$NON-NLS-1$
+  String STR_L2SWST_IO_READ_D  = Messages.getString( "Core.STR_L2SWST_IO_READ_D" );  //$NON-NLS-1$
+  String STR_L2SWST_DLM_RUN    = Messages.getString( "Core.STR_L2SWST_DLM_RUN" );    //$NON-NLS-1$
+  String STR_L2SWST_DLM_RUN_D  = Messages.getString( "Core.STR_L2SWST_DLM_RUN_D" );  //$NON-NLS-1$
+  String STR_L2SWST_IO_WRITE   = Messages.getString( "Core.STR_L2SWST_IO_WRITE" );   //$NON-NLS-1$
+  String STR_L2SWST_IO_WRITE_D = Messages.getString( "Core.STR_L2SWST_IO_WRITE_D" ); //$NON-NLS-1$
+  String STR_L2SWST_NET_COMM   = Messages.getString( "Core.STR_L2SWST_NET_COMM" );   //$NON-NLS-1$
+  String STR_L2SWST_NET_COMM_D = Messages.getString( "Core.STR_L2SWST_NET_COMM_D" ); //$NON-NLS-1$
+
+  // ------------------------------------------------------------------------------------
+  // Hal.xxx
+  //
+
+  /**
+   * {@link L2Hal}
+   */
+  String FMT_ERR_DUP_TAG_ID = Messages.getString( "Hal.FMT_ERR_DUP_TAG_ID" ); //$NON-NLS-1$
+
+  /**
+   * {@link L2AbstractHalDriver}
+   */
+  String FMT_ERR_NO_TAGS_NODE_IN_CFG           = Messages.getString( "Hal.FMT_ERR_NO_TAGS_NODE_IN_CFG" );           //$NON-NLS-1$
+  String FMT_ERR_TAGS_NODE_IS_ARRAY            = Messages.getString( "Hal.FMT_ERR_TAGS_NODE_IS_ARRAY" );            //$NON-NLS-1$
+  String FMT_ERR_CFG_FIELD_NOT_TAGINFO         = Messages.getString( "Hal.FMT_ERR_CFG_FIELD_NOT_TAGINFO" );         //$NON-NLS-1$
+  String FMT_ERR_FIELD_ID_NOT_TAGINFO_ID       = Messages.getString( "Hal.FMT_ERR_FIELD_ID_NOT_TAGINFO_ID" );       //$NON-NLS-1$
+  String FMT_DBG_HALDRV_HARD_IO_THREAD_STARTED = Messages.getString( "Hal.FMT_DBG_HALDRV_HARD_IO_THREAD_STARTED" ); //$NON-NLS-1$
+  String FMT_ERR_HALDRV_IGNORED_ON_INIT_FAIL   = Messages.getString( "Hal.FMT_ERR_HALDRV_IGNORED_ON_INIT_FAIL" );   //$NON-NLS-1$
+
   // // ------------------------------------------------------------------------------------
   // // Net.xxx
   //
@@ -97,9 +129,6 @@ public interface IL2LibSharedResources {
   // String STR_L2_COMP_CFG_DIR_ROOT = Messages.getString( "Core.STR_L2_COMP_CFG_DIR_ROOT" ); //$NON-NLS-1$
   // String STR_L2_COMP_CFG_DIR_ROOT_D = Messages.getString( "Core.STR_L2_COMP_CFG_DIR_ROOT_D" ); //$NON-NLS-1$
   //
-  // // ------------------------------------------------------------------------------------
-  // // Hal.xxx
-  // //
   // String FMT_ERR_CANT_START_DEVICE = Messages.getString( "Hal.FMT_ERR_CANT_START_DEVICE" ); //$NON-NLS-1$
   // String FMT_WARN_DUP_TAG_IGNORED = Messages.getString( "Hal.FMT_WARN_DUP_TAG_IGNORED" ); //$NON-NLS-1$
 

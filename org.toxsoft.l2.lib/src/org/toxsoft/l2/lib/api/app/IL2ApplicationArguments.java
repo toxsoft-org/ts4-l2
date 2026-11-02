@@ -72,7 +72,7 @@ public interface IL2ApplicationArguments {
    */
   IDataDef OPDEF_FAIL_APP_ON_MODULE_START_FAIL = DataDef.create( "l2.abort_on_module_init_failure", BOOLEAN, //$NON-NLS-1$
       TSID_NAME, "Abort on fail?", //
-      TSID_NAME, "The flag to interpret module load/init/start as critical failure rather than ignore failure", //
+      TSID_DESCRIPTION, "The flag to interpret module load/init/start as critical failure rather than ignore failure", //
       TSID_DEFAULT_VALUE, AV_FALSE //
   );
 
@@ -91,10 +91,26 @@ public interface IL2ApplicationArguments {
   );
 
   /**
+   * Default HAL driver hardware I/O thread priority.
+   * <p>
+   * Default value may be overridden by the module-specific option
+   * {@link IL2ModuleConfigConstants#OPDEF_HALDRV_HARD_IO_THREAD_PRIORITY}.
+   */
+  IDataDef OPDEF_HAL_HARDIO_THREAD_DEFAULT_PRIORITY = DataDef.create( "l2.hal.hardio_thread_default_priority", INTEGER, //$NON-NLS-1$
+      TSID_NAME, "Hard I/O default priority", //
+      TSID_DESCRIPTION,
+      "Each HAL driver hardware I/O thread default priority " + '(' + Thread.MIN_PRIORITY + '-' + Thread.MAX_PRIORITY
+          + ')', //
+      TSID_MIN_INCLUSIVE, avInt( Thread.MIN_PRIORITY ), //
+      TSID_MAX_INCLUSIVE, avInt( Thread.MAX_PRIORITY ), //
+      TSID_DEFAULT_VALUE, avInt( Thread.MIN_PRIORITY ) //
+  );
+
+  /**
    * HAL component option definitions.
    */
   IStridablesListEdit<IDataDef> ALL_HAL_COMP_OPDEFS = new StridablesList<>( //
-  //
+      OPDEF_HAL_HARDIO_THREAD_DEFAULT_PRIORITY //
   );
 
   /**
