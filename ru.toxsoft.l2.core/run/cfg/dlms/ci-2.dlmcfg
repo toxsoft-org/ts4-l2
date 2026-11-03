@@ -1,0 +1,125 @@
+DlmConfig = 
+{
+  false,
+  "opc.dlm.cfg",
+  {
+    id = "ru.toxsoft.l2.dlm.tags.common",
+    description = "ru.toxsoft.l2.dlm.tags.common"
+  }
+  ,
+  {
+    cmdClassDefs=
+    {
+      true,
+      [
+      ]
+    }
+    ,
+    cmdDefs=
+    {
+      true,
+      [
+      ]
+    }
+    ,
+    dataDefs=
+    {
+      true,
+      [
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1793686718678.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1793686718678",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "ci.AnalogChannel",
+            obj.name = "chnlKS1_Temp1",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_91_ip_port_502_AI_4000_2",
+            tag.dev.id = "tcp_192_168_12_91_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1793686839469.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1793686839469",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "ci.AnalogChannel",
+            obj.name = "chnlKS1_Temp2",
+            data.id = "rtdCurrValue",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_91_ip_port_502_AI_4003_2",
+            tag.dev.id = "tcp_192_168_12_91_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1793686980201.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1793686980201",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "ci.AnalogChannel",
+            obj.name = "chnlKS1_Temp1",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_91_ip_port_502_AI_4072_1",
+            tag.dev.id = "tcp_192_168_12_91_502"
+          }
+          ,
+          {
+          }
+        }
+        ,
+        {
+          false,
+          "data.modbus.bridge.cfg.unit.id1793687009954.def",
+          {
+            pin.id = "modbus.bridge.cfg.unit.id1793687009954",
+            java.class = "ru.toxsoft.l2.dlm.opc_bridge.submodules.data.OneToOneDataTransmitterFactory",
+            synch.period = 1000,
+            is.curr = true,
+            is.hist = true,
+            class.id = "ci.AnalogChannel",
+            obj.name = "chnlKS1_Temp2",
+            data.id = "rtdChannelState",
+            tag.id = "modbus_node_id_tcp_ip_address_192_168_12_91_ip_port_502_AI_4073_1",
+            tag.dev.id = "tcp_192_168_12_91_502"
+          }
+          ,
+          {
+          }
+        }
+      ]
+    }
+    ,
+    eventDefs=
+    {
+      true,
+      [
+      ]
+    }
+    ,
+    complexTagsDefs=
+    {
+      true,
+      [
+      ]
+    }
+  }
+}
