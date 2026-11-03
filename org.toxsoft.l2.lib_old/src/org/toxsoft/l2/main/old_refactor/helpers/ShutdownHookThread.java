@@ -3,7 +3,7 @@ package org.toxsoft.l2.main.old_refactor.helpers;
 import static org.toxsoft.l2.main.old_refactor.helpers.IL2MainSharedResources.*;
 
 import org.toxsoft.core.tslib.utils.logs.*;
-import org.toxsoft.l2.lib.main.impl.*;
+import org.toxsoft.l2.lib_old.main.impl.*;
 import org.toxsoft.l2.main.old_refactor.*;
 
 /**

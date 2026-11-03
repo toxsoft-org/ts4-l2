@@ -1,6 +1,6 @@
 package org.toxsoft.l2.main.old_refactor;
 
-import static org.toxsoft.l2.lib.IL2HardConstants.*;
+import static org.toxsoft.l2.lib_old.IL2HardConstants.*;
 import static org.toxsoft.l2.main.old_refactor.helpers.IL2MainSharedResources.*;
 import static org.toxsoft.l2.main.old_refactor.helpers.L2AppUtils.*;
 
@@ -13,14 +13,14 @@ import org.toxsoft.core.tslib.bricks.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
 import org.toxsoft.core.tslib.utils.logs.impl.*;
-import org.toxsoft.l2.lib.app.*;
-import org.toxsoft.l2.lib.dlm.*;
-import org.toxsoft.l2.lib.dlm.impl.*;
-import org.toxsoft.l2.lib.hal.*;
-import org.toxsoft.l2.lib.main.*;
-import org.toxsoft.l2.lib.main.impl.*;
-import org.toxsoft.l2.lib.net.*;
-import org.toxsoft.l2.lib.reserve.*;
+import org.toxsoft.l2.lib_old.app.*;
+import org.toxsoft.l2.lib_old.dlm.*;
+import org.toxsoft.l2.lib_old.dlm.impl.*;
+import org.toxsoft.l2.lib_old.hal.*;
+import org.toxsoft.l2.lib_old.main.*;
+import org.toxsoft.l2.lib_old.main.impl.*;
+import org.toxsoft.l2.lib_old.net.*;
+import org.toxsoft.l2.lib_old.reserve.*;
 import org.toxsoft.l2.main.old_refactor.helpers.*;
 import org.toxsoft.skf.dq.lib.impl.*;
 import org.toxsoft.skf.rri.lib.impl.*;
