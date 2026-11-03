@@ -19,9 +19,9 @@ import org.toxsoft.core.tslib.bricks.strio.impl.*;
 import org.toxsoft.core.tslib.utils.*;
 import org.toxsoft.core.tslib.utils.errors.*;
 import org.toxsoft.core.tslib.utils.logs.*;
-import org.toxsoft.l2.lib.app.*;
-import org.toxsoft.l2.lib.main.*;
-import org.toxsoft.l2.lib.main.impl.*;
+import org.toxsoft.l2.lib_old.app.*;
+import org.toxsoft.l2.lib_old.main.*;
+import org.toxsoft.l2.lib_old.main.impl.*;
 import org.toxsoft.l2.main.old_refactor.*;
 
 /**

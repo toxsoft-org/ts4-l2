@@ -72,7 +72,8 @@ public interface IL2ApplicationArguments {
    */
   IDataDef OPDEF_FAIL_APP_ON_MODULE_START_FAIL = DataDef.create( "l2.abort_on_module_init_failure", BOOLEAN, //$NON-NLS-1$
       TSID_NAME, "Abort on fail?", //
-      TSID_DESCRIPTION, "The flag to interpret module load/init/start as critical failure rather than ignore failure", //
+      TSID_DESCRIPTION,
+      "The flag to interpret module load/init/start as critical failure rather than ignore failed module", //
       TSID_DEFAULT_VALUE, AV_FALSE //
   );
 
