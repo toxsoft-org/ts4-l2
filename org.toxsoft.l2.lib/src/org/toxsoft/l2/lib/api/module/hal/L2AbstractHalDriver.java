@@ -5,6 +5,8 @@ import static org.toxsoft.l2.lib.api.app.IL2ApplicationArguments.*;
 import static org.toxsoft.l2.lib.api.module.IL2ModuleConfigConstants.*;
 import static org.toxsoft.l2.lib.l10n.IL2LibSharedResources.*;
 
+import java.util.concurrent.*;
+
 import org.toxsoft.core.tslib.av.avtree.*;
 import org.toxsoft.core.tslib.bricks.coopcomp.*;
 import org.toxsoft.core.tslib.bricks.ctx.*;
@@ -250,6 +252,203 @@ public abstract class L2AbstractHalDriver
    */
   protected void doDoDestroy() {
     // nop
+  }
+
+  // --------------------------------------------------------------------
+  // by Max - наброски
+  //
+
+  protected enum ENextMethod {
+    READ_DEVICE,
+    WRITE_VALUES,
+    READ_VALUES,
+    ANY
+  }
+
+  /**
+   * Указание на то, какой метод должен быть вызван контейнером. вызов другого метода будет проигнорирован.
+   */
+  protected ENextMethod nextMethod = ENextMethod.ANY;
+
+  /**
+   * Сервис управления вспомогательным потоком записи-чтения с физ уровня.
+   */
+  private ExecutorService executor;
+
+  /**
+   * Результат выполнения текущей задачи обмена данными с устройством.
+   */
+  private Future<?> result;
+
+  /**
+   * Запускает сервис управления вспомогательным потоком записи-чтения с физ уровня.
+   */
+  public void startExecutor() {
+    executor = Executors.newSingleThreadExecutor();
+  }
+
+  /**
+   * Начинает процесс закрытия (освобождения ресурсов). Должен забирать управление на короткое время.
+   */
+  public void closeExecutor() {
+    // TODO - надо ли проверять состояние закрытия, т.е. периодически проверять closeResult
+    Future<?> closeResult = executor.submit( () -> {
+
+      lowerHalf.closeHardware();
+
+    } );
+
+    executor.shutdown();
+  }
+
+  /**
+   * Небезопасное завершение работы драйвера. Не гарантирует остановки драйвера, сообщая, что драйвер завершил работу.
+   */
+  public void destroyExecutor() {
+    executor.shutdownNow();
+  }
+
+  /**
+   * Проверяет закрытие (освобождение ресурсов). Должен забирать управление на короткое время.
+   *
+   * @return boolean - <b>true</b> - спец оборудование закрыто,
+   *         <p>
+   *         <b>false</b> - спец оборудование не закрыто.
+   */
+  public boolean isExecutorClosed() {
+    return executor.isShutdown();
+  }
+
+  /**
+   * Записывает текущие значения в буфер и инициирует процесс записи знчений из буфера на физ. уровень. Если выполнение
+   * метода невозможно в силу того, что предыдущий процесс записи или чтения не был завершён, будет вызван метод
+   * {@link #writeValuesWrongMode()}.
+   */
+  public void writeValues() {
+    if( result == null || checkIsDone() ) {
+      if( nextMethod == ENextMethod.ANY || nextMethod == ENextMethod.WRITE_VALUES ) {
+        nextMethod = ENextMethod.ANY;
+
+        // TODO - сюда нужно передать теги
+        lowerHalf.getFromTagsToInternalBuffer( null );
+        result = executor.submit( () -> lowerHalf.sendBufferValuesToHardware() );
+      }
+    }
+    else {
+      if( nextMethod == ENextMethod.ANY ) {
+        nextMethod = ENextMethod.WRITE_VALUES;
+      }
+
+      writeValuesWrongMode();
+    }
+  }
+
+  /**
+   * Инициирует процесс чтения значений с физ. уровня. Если выполнение метода невозможно в силу того, что предыдущий
+   * процесс записи или чтения не был завершён, будет вызван метод {@link #readDevicesWrongMode()}.
+   */
+  public void readDevices() {
+    if( result == null || checkIsDone() ) {
+      if( nextMethod == ENextMethod.ANY || nextMethod == ENextMethod.READ_DEVICE ) {
+        nextMethod = ENextMethod.ANY;
+
+        result = executor.submit( () -> lowerHalf.receiveBufferValuesFromHardware() );
+      }
+    }
+    else {
+      if( nextMethod == ENextMethod.ANY ) {
+        nextMethod = ENextMethod.READ_DEVICE;
+      }
+
+      readDevicesWrongMode();
+    }
+  }
+
+  /**
+   * Читает значения из буфера. Если выполнение метода невозможно в силу того, что предыдущий процесс записи или чтения
+   * не был завершён, будет вызван метод {@link #readValuesWrongMode()}.
+   */
+  public void readValues() {
+    if( result == null || checkIsDone() ) {
+      if( nextMethod == ENextMethod.ANY || nextMethod == ENextMethod.READ_VALUES ) {
+        nextMethod = ENextMethod.ANY;
+
+        // TODO - сюда нужно передать теги
+        lowerHalf.setToTagsFromInternalBuffer( null );
+      }
+    }
+    else {
+      if( nextMethod == ENextMethod.ANY ) {
+        nextMethod = ENextMethod.READ_VALUES;
+      }
+
+      readValuesWrongMode();
+    }
+  }
+
+  /**
+   * Проверяем, что задача, выполняемая в отдельном потоке завершена. И если завершена с ошибкой - передать ошибку на
+   * обработку
+   *
+   * @return boolean - задача в отдельном потоке завершена (можно начинать следующую)
+   */
+  private boolean checkIsDone() {
+    if( result != null && result.isDone() ) {
+      try {
+        try {
+          result.get();
+        }
+        catch( InterruptedException ex ) {
+          // TODO - что то надо сделать
+          ex.printStackTrace();
+        }
+      }
+      catch( ExecutionException e ) {
+        // отправка ошибки задачи на обработку
+        onError( e.getCause() );
+      }
+      return true;
+
+    }
+    return false;
+  }
+
+  /**
+   * Метод обработки ошибки обмена с физ уровнем
+   *
+   * @param aError Throwable - ошибка обмена с физ уровнем.
+   */
+  protected void onError( Throwable aError ) {
+    // TODO
+  }
+
+  //
+  // ----------------------------------------------------------
+  // методы обработки исключительных ситуаций, появляющихся в конкретных методах
+
+  /**
+   * Метод обработки исключения: метод {@link #writeValues()} вызван в тот момент, когда не был завершён предыдущий
+   * процесс чтения (записи) с физ. уровня.
+   */
+
+  protected void writeValuesWrongMode() {
+    // по мере необходимости реализуется в наследниках
+  }
+
+  /**
+   * Метод обработки исключения: метод {@link #readDevices()} вызван в тот момент, когда не был завершён предыдущий
+   * процесс чтения (записи) с физ. уровня.
+   */
+  protected void readDevicesWrongMode() {
+    // по мере необходимости реализуется в наследниках
+  }
+
+  /**
+   * Метод обработки исключения: метод {@link #readValues()} вызван в тот момент, когда не был завершён предыдущий
+   * процесс чтения (записи) с физ. уровня.
+   */
+  protected void readValuesWrongMode() {
+    // по мере необходимости реализуется в наследниках
   }
 
 }
